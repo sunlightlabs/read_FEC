@@ -1,0 +1,11 @@
+Inspired by NYT's ruby FEC parser: https://github.com/NYTimes/Fech
+
+Parse a limited subset of FEC forms by using the handy csv descriptors put together in NYT's Fech (which is pronounced 'Feck'); they are included in the sources/ directory.
+
+Separates file retrieval and parsing into separate steps; allows retrieval from (and saving to) the local filesystem. Includes a util (download_old_fec_filings.py) to download and unzip .fec files en mass from the FEC's archives into the file cache directory.
+
+Currently only works for FEC v 6.0 and higher; could be made to work prior to that by sniffing for a file delimiter. This should be sufficient for the current electoral cycle; since 1/1/2011 forms have been v6.4 and higher. 
+
+Currently supports F3, F3X, F3P, F9, F5, F24 and only lightly tested on these; the NYT's csv files are available for a wider set of forms... 
+
+This doesn't include the csv generation routines included in FECH. 
