@@ -25,6 +25,7 @@ class form_parser(object):
             'F7':1,
             'F4':1,
             'F3L':1,
+            'F13':1,
         }
 
         # Init the line parsers for lines we'll need.
@@ -88,6 +89,10 @@ class form_parser(object):
 
         # Allow text in lines
         text = line_parser('TEXT')
+        
+        f13 = line_parser('F13')
+        f132 = line_parser('F132')
+        f133 = line_parser('F133')
 
         # match form type to appropriate parsers; must be applied with re.I
         # the leading ^ are redundant if we're using re.match, but...
@@ -128,11 +133,14 @@ class form_parser(object):
             '^F7[A|N]$': f7,
             '^F76$': f76,
             '^SA3L':sa3l,
+            '^F13[A|N]$':f13,
+            '^F132':f132,
+            '^F133':f133,
         }
 
         # we gotta test the regexes in the correct order, and if it's a match pull the line parser from line_dict. Use an array to insure they're tested in the order we want
         # these must be an *EXACT MATCH* to the way they appear in the line_dict above; they are used as the keys.
-        self.regex_array = ['^SA3L', '^SA', '^SB', '^SC1', '^SC2', '^SC', '^SD', '^SE', '^SF', '^F3X[A|N|T]', '^F3P[A|N|T]', '^F3S', '^F3[A|N|T]$', '^F91', '^F92', '^F93', '^F94', '^F9', '^F6[A|N]*$', '^F65', '^F57', '^F5', '^TEXT', '^F24', '^H1', '^H2', '^H3', '^H4', '^H5', '^H6', '^SL','^F3PS','^F76$', '^F7[A|N]$', '^F4[A|N]', '^F3L[A|N]']
+        self.regex_array = ['^SA3L', '^SA', '^SB', '^SC1', '^SC2', '^SC', '^SD', '^SE', '^SF', '^F3X[A|N|T]', '^F3P[A|N|T]', '^F3S', '^F3[A|N|T]$', '^F91', '^F92', '^F93', '^F94', '^F9', '^F6[A|N]*$', '^F65', '^F57', '^F5', '^TEXT', '^F24', '^H1', '^H2', '^H3', '^H4', '^H5', '^H6', '^SL','^F3PS','^F76$', '^F7[A|N]$', '^F4[A|N]', '^F3L[A|N]','^F13[A|N]$','^F132','^F133']
 
     # This only checks the top level form name--not the individual lines. This tests the 'base' form as returned by filing.get_form_type() -- i.e. with the trailing A|N|T designator removed.
     def is_allowed_form(self, form_name):
