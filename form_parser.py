@@ -7,6 +7,8 @@ from line_parser import line_parser
 # The new FCC files are delimited by ascii 28
 delimiter = chr(28)
 
+class ParserMissingError(Exception):
+ pass
 
 class form_parser(object):
 
@@ -18,7 +20,11 @@ class form_parser(object):
             'F3P': 1,
             'F9': 1,
             'F5': 1,
-            'F24': 1
+            'F24': 1, 
+            'F6':1,
+            'F7':1,
+            'F4':1,
+            'F3L':1,
         }
 
         # Init the line parsers for lines we'll need.
@@ -28,9 +34,14 @@ class form_parser(object):
 
         # F3X -- periodic pac filing
         f3x = line_parser('F3X')
+        f3ps = line_parser('F3PS')
+        
+        # F4 inaugural committees
+        f4 = line_parser('F4')
 
-        # common schedules
+        # schedules
         sa = line_parser('SchA')
+        sa3l = line_parser('SchA3L')
         sb = line_parser('SchB')
         sc1 = line_parser('SchC1')
         sc2 = line_parser('SchC2')
@@ -38,7 +49,14 @@ class form_parser(object):
         sd = line_parser('SchD')
         se = line_parser('SchE')
         sf = line_parser('SchF')
-
+        h1 = line_parser('H1')
+        h2 = line_parser('H2')
+        h3 = line_parser('H3')
+        h4 = line_parser('H4')
+        h5 = line_parser('H5')
+        h6 = line_parser('H6')
+        sl = line_parser('SchL')
+                
         # F24 -- 24 hr ie report
         f24 = line_parser('F24')
 
@@ -52,10 +70,21 @@ class form_parser(object):
         # IE report by non-committee, roughly
         f5 = line_parser('F5')
         f57 = line_parser('F57')
-
+        
+        # 48-hr report from candidate committee
+        f6 = line_parser('F6')
+        f65 = line_parser('F65')
+        
+        # communication cost - these are typically filed in print
+        f7 = line_parser('F7')
+        f76 = line_parser('F76')
+        
         # F3 Periodic report for candidate
         f3 = line_parser('F3')
         f3s = line_parser('F3S')
+        
+        # lobbyist bundling
+        f3l = line_parser('F3L')
 
         # Allow text in lines
         text = line_parser('TEXT')
@@ -71,10 +100,22 @@ class form_parser(object):
             '^SD': sd,
             '^SE': se,
             '^SF': sf,
+            '^SL':sl,
+            '^H1':h1,
+            '^H2':h2,
+            '^H3':h3,
+            '^H4':h4,
+            '^H5':h5,
+            '^H6':h6,
             '^F3X[A|N|T]': f3x,
             '^F3P[A|N|T]': f3p,
+            '^F3L[A|N]':f3l,
+            '^F4[A|N]': f4,
+            '^F3PS':f3ps,
             '^F3S': f3s,
             '^F3[A|N|T]$': f3,
+            '^F6[A|N]*$':f6,
+            '^F65':f65,
             '^F91': f91,
             '^F92': f92,
             '^F93': f93,
@@ -83,12 +124,15 @@ class form_parser(object):
             '^F57': f57,
             '^F5': f5,
             '^TEXT': text,
-            '^F24': f24
+            '^F24': f24,
+            '^F7[A|N]$': f7,
+            '^F76$': f76,
+            '^SA3L':sa3l,
         }
 
         # we gotta test the regexes in the correct order, and if it's a match pull the line parser from line_dict. Use an array to insure they're tested in the order we want
         # these must be an *EXACT MATCH* to the way they appear in the line_dict above; they are used as the keys.
-        self.regex_array = ['^SA', '^SB', '^SC1', '^SC2', '^SC', '^SD', '^SE', '^SF', '^F3X[A|N|T]', '^F3P[A|N|T]', '^F3S', '^F3[A|N|T]$', '^F91', '^F92', '^F93', '^F94', '^F9', '^F57', '^F5', '^TEXT', '^F24']
+        self.regex_array = ['^SA3L', '^SA', '^SB', '^SC1', '^SC2', '^SC', '^SD', '^SE', '^SF', '^F3X[A|N|T]', '^F3P[A|N|T]', '^F3S', '^F3[A|N|T]$', '^F91', '^F92', '^F93', '^F94', '^F9', '^F6[A|N]*$', '^F65', '^F57', '^F5', '^TEXT', '^F24', '^H1', '^H2', '^H3', '^H4', '^H5', '^H6', '^SL','^F3PS','^F76$', '^F7[A|N]$', '^F4[A|N]', '^F3L[A|N]']
 
     # This only checks the top level form name--not the individual lines. This tests the 'base' form as returned by filing.get_form_type() -- i.e. with the trailing A|N|T designator removed.
     def is_allowed_form(self, form_name):
@@ -105,9 +149,6 @@ class form_parser(object):
         #print "Trying to parse with v=%s line array=%s " % (version, line_array)
         form_type = line_array[0].replace('"', '').upper()
         #print "parsing form type: %s" % (form_type)
-        # Ignore problem lines. Some (most) of these may not be allowed by FEC but have been found in the wild.
-        if (form_type == 'H4' or form_type == 'H1' or form_type == 'H2' or form_type =='H3' or form_type == 'H5' or form_type == 'H6' or form_type == 'F3Z'  or form_type == 'F3ZT'  or form_type == 'F3ZA'  or form_type == 'F3ZN' or form_type == 'SL'):
-            return None
 
         for regex in self.regex_array:
             if re.match(regex,form_type, re.I):
@@ -119,7 +160,7 @@ class form_parser(object):
         
         # Complain if we can't find a parser
         # To do: raise a specific exception so we can catch it elsewhere. 
-        raise Exception ("Couldn't find parser for form type %s, v=%s" % (form_type, version))
+        raise ParserMissingError ("Couldn't find parser for form type %s, v=%s" % (form_type, version))
 
 
     def parse_raw_form_line(self, rawline, version):

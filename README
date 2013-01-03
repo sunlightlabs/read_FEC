@@ -1,11 +1,51 @@
 Inspired by NYT's ruby FEC parser: https://github.com/NYTimes/Fech
 
-Parse a limited subset of FEC forms by using the handy csv descriptors put together in NYT's Fech (which is pronounced 'Feck'); they are included in the sources/ directory.
+Parse a subset of FEC forms by using the handy csv descriptors put together in NYT's Fech (which is pronounced 'Feck'); they are included in the sources/ directory. There may be slight differences in these files; an additional SchA3L.csv was added to handle SA3L lines in F3L reports. The csv generation routines have not been ported.
 
 Separates file retrieval and parsing into separate steps; allows retrieval from (and saving to) the local filesystem. Includes a util (download_old_fec_filings.py) to download and unzip .fec files en mass from the FEC's archives into the file cache directory.
 
-Currently only works for FEC v 6.0 and higher; could be made to work prior to that by sniffing for a file delimiter. This should be sufficient for the current electoral cycle; since 1/1/2011 forms have been v6.4 and higher. 
+Currently only works for FEC v 6.0 and higher; could be made to work prior to that by sniffing for a file delimiter. This should be sufficient for 1/1/2011 forwards. 
 
-Currently supports F3, F3X, F3P, F9, F5, F24 and only lightly tested on these; the NYT's csv files are available for a wider set of forms... 
+Supported forms:
+F3 Report of Receipts and Disbursements for House and Senate candidates' authorized campaign committees (includes Schedules A - D)
 
-This doesn't include the csv generation routines included in FECH. 
+F3X Report of Receipts and Disbursements filed by unauthorized committees, including PACs and party committees (includes Schedules A - L).
+
+F3P Report of Receipts and Disbursements for Presidential candidates' authorized campaign committees (includes Schedules A-P - D-P). 
+
+F9 24-Hour Notice of Disbursements/Obligations for Electioneering Communications filed by individuals and groups.
+
+F5 Report of Independent Expenditures Made and Contributions Received filed by individuals or groups.
+Instructions 
+
+F24 24-hour notice of independent expenditures made by committees. 
+
+F6 48-Hour Notice of Contributions/Loans Received used to disclose the receipt of last-minute contributions of $1,000 or more. 
+
+F7 Report of Communication Costs by Corporations and Membership Organizations. (some examples: 826448, 827512, 827798 )
+
+F4 Report of Receipts and Disbursements filed by committees or organizations supporting a national nominating convention (includes Schedules A - D). 
+
+F3L Report of Contributions Bundled by Lobbyists/Registrants and Lobbyist/Registrant PACs used by candidates, party committees and Leadership PACs to disclose bundled contributions forwarded by or credited to lobbyists, registrants and their PACs.
+
+Needs to be added:
+
+F13 Report of Donations Accepted for Inaugural Committee
+F8 Debt Settlement Plan filed by committees attempting to settle debts for less than the full amount owed.
+
+Not supported ( approximate number 1/1/11-12/31/12 )
+
+F1 5,587 Statement of Organization used to register parties and PACs. 
+F2 1,075 Statement of Candidacy used to register candidates for House, Senate and President.
+F1M 251 Notification of Multicandidate Status filed by parties and PACs. 
+F99 4,323 Miscellaneous Report
+
+Also: 6.4 had some F3Z reports, but they are no longer used. More about them from the spec: 
+
+FEC E-FILING SPECIFICATIONS REQUIREMENTS
+VERSION 6.4 May 13, 2009 DocID: FEC_Format_v6.4.pdf CONSOLIDATED CANDIDATE COMMITTEE REPORTING WITH FORM 3Z – (F3Z)
+F3Z records are used to report consolidated totals from all F3 filings prepared by Primary and related Authorized Candidate Committees. There must be one F3Z record for the Principal Candidate Committee’s consolidated report, one or more F3Z records (one each) for Authorized Committees and one final F3ZT Totals record for the entire F3Z filing (attached to an F3 report) to be considered valid.
+The line-items on each F3Z record must be accurate (e.g. Line 11E must equal Line 11A + 11B + 11C + 11D). The line-item amounts in the F3ZT Totals record must equal the sums of the corresponding line-items from all F3Z records (including the record for the Principal Candidate Committee and records for all Authorized Committees). Warnings are given when dollar amounts do not match.
+Fields #2 (Filer’s FEC ID#) and #3 (Filing Candidate Committee’s Name) are the same on all F3Z records (including the F3ZT – Totals record), and must be the same as used in Fields #2 & #3 on the F3 Cover record.
+Coverage From and Through Dates (Fields #4 and #5) are the same on all F3Z records (including the F3ZT – Totals record), and must be the same as used in Fields #16 & #17 on the F3 Cover record.
+Fields #6 (FEC ID#) and field #7 (Committee Name) are used to carry the PCC ID# and Name (on the first F3Z record) and the ID#’s and Names of Authorized Committees on all subsequent F3Z records. The F3ZT – Totals record should not contain any values in Fields #6 and #7.

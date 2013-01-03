@@ -7,11 +7,11 @@ from time import sleep
 
 from read_FEC_settings import FEC_FILE_LOCATION, USER_AGENT, ZIP_DIRECTORY, FILECACHE_DIRECTORY, DELAY_TIME
 
-# Note that 2011/12/04 is missing
+# Note that 2011/12/04, 2012/07/01, 2012/12/15, 2012/12/25 do not exist; presumably no filings were received on these days.
 
 # todo: take these as cmd line args--but do I really wanna deal with parsing 'em? 
-start_date = date(2012,4,1)
-end_date = date(2012,4,11)
+start_date = date(2012,12,26)
+end_date = date(2012,12,31)
 
 one_day = timedelta(days=1)
 

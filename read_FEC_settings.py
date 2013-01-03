@@ -11,8 +11,6 @@ ZIP_DIRECTORY = BASE_DIR + '/data/zipped_fec_filings'
 # where are NYT's csv definitional files? These are generally swiped from here, and fixed up (some of them need tweaking): https://github.com/NYTimes/Fech/tree/master/sources -- or maybe bycoffe's branch: https://github.com/NYTimes/Fech/tree/huffingtonpost/sources
 CSV_FILE_DIRECTORY = BASE_DIR + '/sources'
 
-
-
 # where does the FEC keep the zip files in bulk ? 
 FEC_FILE_LOCATION = "ftp://ftp.fec.gov/FEC/electronic/%s.zip"
 

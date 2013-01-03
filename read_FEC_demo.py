@@ -5,9 +5,8 @@ from filing import filing
 fp = form_parser()
 
 
-# http://query.nictusa.com/cgi-bin/dcdev/forms/C00502849/767585/
 
-filingnumbers=(767585, 767587) 
+filingnumbers=(767585, 800502, 808218, 842576, 841933) 
 
 for filingnum in filingnumbers:
     # read from cache if it's available; by default it won't save to cache
@@ -17,6 +16,8 @@ for filingnum in filingnumbers:
     version = f1.version
 
     print "Got form number %s - type=%s version=%s is_amended: %s" % (f1.filing_number, formtype, version, f1.is_amendment)
+    if f1.is_amendment:
+        print "Original filing is: %s" % (filing.headers['filing_amended'])
     
     # If it's a F24 save it to cache; this won't overwrite if it's already there
     if formtype=='F24':
