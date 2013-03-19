@@ -1,6 +1,10 @@
+
+
+
 # ASSUMES THAT FILECACHE_DIRECTORY AND ZIP_DIRECTORY EXIST AND ARE WRITEABLE!
 
 BASE_DIR = '.'
+
 
 # where can we save local files? THIS MUST ALREADY EXIST
 FILECACHE_DIRECTORY = BASE_DIR + '/data/fec_filings'
@@ -25,4 +29,9 @@ USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)"
 # THIS SHOULD BE AT LEAST 1! THE FEC DOESN'T APPRECIATE FOLKS HITTING THEIR SERVERS TOO HARD, AND WILL BLOCK YOU!
 DELAY_TIME=2
 
+try:
+    from local_FEC_settings import *
+except Exception, e:
+    print "Exception in local settings: %s" % (e)
+    pass
 
