@@ -1,13 +1,25 @@
 import re
 import os
 
-from form_parser import form_parser, ParserMissingError
-from filing import filing
 
-from read_FEC_settings import FILECACHE_DIRECTORY
+from pymongo import MongoClient, ASCENDING, DESCENDING
+from bson.objectid import ObjectId
+
+from mongo.mongo_utils import get_db
+from mongo.mongo_settings import FILING_HEADERS, FILING_LINES
+
+from parsing.form_parser import form_parser, ParserMissingError
+from parsing.filing import filing
+
+from parsing.read_FEC_settings import FILECACHE_DIRECTORY
 
 # load up a form parser
 fp = form_parser()
+
+# get database, and collections
+d = get_db()
+headers = d[FILING_HEADERS]
+lines = d[FILING_LINES]
 
 unprocessable_form_hash = {}
 parser_missing_hash = {}
@@ -36,10 +48,14 @@ def process_file(filingnum):
 
     if verbose:
         print "Found parseable form: %s - %s" % (form, filingnum)
-    rows =  f1.get_all_rows()
+    
+    header = f1.get_first_row()
+    print "header is %s" % header
+    assert False
+    body_rows =  f1.get_body_rows()
     #rows = f1.get_first_row()
     #print "rows: %s" % rows
-    for row in rows:
+    for row in body_rows:
         # the last line is empty, so don't try to parse it
         if len(row)>1:
             #if verbose:
