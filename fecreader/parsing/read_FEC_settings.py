@@ -1,16 +1,19 @@
 
 
+CYCLE = '2014'
+
 
 # ASSUMES THAT FILECACHE_DIRECTORY AND ZIP_DIRECTORY EXIST AND ARE WRITEABLE!
 
-BASE_DIR = '.'
-
+BASE_DIR = '/Users/jfenton/github-whitelabel/read_FEC/fecreader/parsing'
+ARCHIVE_DIR = '/Users/jfenton/reporting/reportingsitenew/reportingsite/outside_spending'
 
 # where can we save local files? THIS MUST ALREADY EXIST
-FILECACHE_DIRECTORY = BASE_DIR + '/data/fec_filings'
+
+FILECACHE_DIRECTORY = ARCHIVE_DIR + '/data/fec_filings'
 
 # where can we save raw zip files downloaded from the FEC before unzipping
-ZIP_DIRECTORY = BASE_DIR + '/data/zipped_fec_filings'
+ZIP_DIRECTORY = ARCHIVE_DIR + '/data/zipped_fec_filings'
 
 # where are NYT's csv definitional files? These are generally swiped from here, and fixed up (some of them need tweaking): https://github.com/NYTimes/Fech/tree/master/sources -- or maybe bycoffe's branch: https://github.com/NYTimes/Fech/tree/huffingtonpost/sources
 CSV_FILE_DIRECTORY = BASE_DIR + '/sources'
@@ -28,6 +31,10 @@ USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)"
 # scraper delay time, in seconds. 
 # THIS SHOULD BE AT LEAST 1! THE FEC DOESN'T APPRECIATE FOLKS HITTING THEIR SERVERS TOO HARD, AND WILL BLOCK YOU!
 DELAY_TIME=2
+
+LOG_DIRECTORY = BASE_DIR + "/log"
+
+LOG_NAME = 'fcc_rss_reader.txt'
 
 try:
     from local_FEC_settings import *

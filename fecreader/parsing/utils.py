@@ -2,8 +2,10 @@ from string import maketrans
 
 # Some windows (?) characters that appear to have gotten in...
 
-pretrans = "\x85\x91\x92\x93\x94\x97"
-posttrans = ".''\"\"-"
+# Note that the bar character is our delimiter when we're using postgres copy, so we need to replace it too
+# the sequence \. is end of data for the stdin entry stuff -- so remove backslashes throughout. Sometimes we generate "end-of-copy marker corrupt" errors. There's probably a better way to do this. 
+pretrans = "\n\x85\x91\x92\x93\x94\x97|\\"
+posttrans = " .''\"\"-, "
 trans = maketrans(pretrans, posttrans)
 
 # also remove tabs. 

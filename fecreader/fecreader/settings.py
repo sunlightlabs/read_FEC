@@ -1,7 +1,10 @@
 # Django settings for fecreader project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -103,6 +106,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'fecreader.urls'
 
+IE_MEDIA_URL = 'https://s3.amazonaws.com/assets.sunlightfoundation.com/brisket/1.0/'
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'fecreader.wsgi.application'
 
@@ -120,11 +125,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'formdata',
     'ftpdata',
+    'fec_alerts',
+    'legislators',
+    'race_curation',
 )
 
 # A sample logging configuration. The only tangible logging

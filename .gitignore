@@ -1,5 +1,7 @@
 local_settings.py
 local_FEC_settings.py
+mongo_settings.py
+*cheatsheet*
 *.DS_Store
 
 *.py[cod]

@@ -70,6 +70,7 @@ class form_parser(object):
 
         # IE report by non-committee, roughly
         f5 = line_parser('F5')
+        f56 = line_parser('F56')
         f57 = line_parser('F57')
         
         # 48-hr report from candidate committee
@@ -127,6 +128,7 @@ class form_parser(object):
             '^F94': f94,
             '^F9': f9,
             '^F57': f57,
+            '^F56': f56,            
             '^F5': f5,
             '^TEXT': text,
             '^F24': f24,
@@ -140,7 +142,7 @@ class form_parser(object):
 
         # we gotta test the regexes in the correct order, and if it's a match pull the line parser from line_dict. Use an array to insure they're tested in the order we want
         # these must be an *EXACT MATCH* to the way they appear in the line_dict above; they are used as the keys.
-        self.regex_array = ['^SA3L', '^SA', '^SB', '^SC1', '^SC2', '^SC', '^SD', '^SE', '^SF', '^F3X[A|N|T]', '^F3P[A|N|T]', '^F3S', '^F3[A|N|T]$', '^F91', '^F92', '^F93', '^F94', '^F9', '^F6[A|N]*$', '^F65', '^F57', '^F5', '^TEXT', '^F24', '^H1', '^H2', '^H3', '^H4', '^H5', '^H6', '^SL','^F3PS','^F76$', '^F7[A|N]$', '^F4[A|N]', '^F3L[A|N]','^F13[A|N]$','^F132','^F133']
+        self.regex_array = ['^SA3L', '^SA', '^SB', '^SC1', '^SC2', '^SC', '^SD', '^SE', '^SF', '^F3X[A|N|T]', '^F3P[A|N|T]', '^F3S', '^F3[A|N|T]$', '^F91', '^F92', '^F93', '^F94', '^F9', '^F6[A|N]*$', '^F65', '^F57', '^F56', '^F5', '^TEXT', '^F24', '^H1', '^H2', '^H3', '^H4', '^H5', '^H6', '^SL','^F3PS','^F76$', '^F7[A|N]$', '^F4[A|N]', '^F3L[A|N]','^F13[A|N]$','^F132','^F133']
 
     # This only checks the top level form name--not the individual lines. This tests the 'base' form as returned by filing.get_form_type() -- i.e. with the trailing A|N|T designator removed.
     def is_allowed_form(self, form_name):
@@ -152,23 +154,38 @@ class form_parser(object):
             #print "Not a parseable form: %s " % (form_name)
             return False
 
+    def get_line_parser(self, form_type):
+        
+        # Ignore some v6.4 debt reporting cycles
+        ## It appears taht 'SC/10' and 'SC/12' are line types from v. 6.4, but they can be parsed by 'SC' so... 
+        
+        
+        for regex in self.regex_array:
+            if re.match(regex,form_type, re.I):
+                #print "**Got match with regex: %s" % (regex)
+                parser = self.line_dict[regex]
+                return parser
+                #print "parser = %s" % parser
+        return None
+        
     def parse_form_line(self, line_array, version):
 
         #print "Trying to parse with v=%s line array=%s " % (version, line_array)
         form_type = line_array[0].replace('"', '').upper()
         #print "parsing form type: %s" % (form_type)
 
-        for regex in self.regex_array:
-            if re.match(regex,form_type, re.I):
-                #print "**Got match with regex: %s" % (regex)
-                parser = self.line_dict[regex]
-                #print "parser = %s" % parser
-                parsed_line = parser.parse_line(line_array, version)
-                return parsed_line
-        
-        # Complain if we can't find a parser
-        # To do: raise a specific exception so we can catch it elsewhere. 
-        raise ParserMissingError ("Couldn't find parser for form type %s, v=%s" % (form_type, version))
+        parser = self.get_line_parser(form_type)
+        if parser:
+            parsed_line = parser.parse_line(line_array, version)
+            # also record the line parser name
+            parsed_line['form_parser'] = parser.form
+            return parsed_line
+        else:
+            # Complain if we can't find a parser
+            # To do: raise a specific exception so we can catch it elsewhere. 
+            raise ParserMissingError ("Couldn't find parser for form type %s, v=%s" % (form_type, version))
+            
+            
 
 
     def parse_raw_form_line(self, rawline, version):

@@ -1,1 +1,11 @@
-pymongo
+
+django>=1.5
+# It would be silly to run this without postgres
+psycopg2
+# for hstore
+git+git://github.com/niwibe/djorm-ext-hstore.git
+python-dateutil
+pytz
+lxml
+# for parsing legislators -- don't care about performance...
+pyyaml
