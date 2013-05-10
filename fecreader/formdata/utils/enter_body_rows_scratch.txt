@@ -1,0 +1,38 @@
+# transient data holder to keep data lines in until we can commit it
+cd = CSV_dumper()
+
+if rows_need_entry:
+    # Now enter content rows:
+    line_dict = {}
+    content_rows = f1.get_body_rows()
+    total_lines = 0
+    for row in content_rows:
+        # instead of parsing the line, just assume form type is the first arg.
+        r_type = row[0].upper().strip()
+    
+        # sometimes there are blank lines within files--see 707076.fec
+        if not r_type:
+            continue
+        
+        total_lines += 1
+        # what type of line parser would be used here? 
+        lp = fp.get_line_parser(r_type)
+        if lp:
+            form = lp.form
+            r_type = form
+            #print "line parser: %s from %s" % (form, r_type)
+        
+            linedict = fp.parse_form_line(row, version)
+
+            process_body_row(form, linedict, filingnum, this_filing_header, cd)
+        
+        else:
+            print "Missing parser from %s" % (r_type) 
+    
+        try: 
+            num = line_dict[r_type]
+            line_dict[r_type] = num + 1
+        except KeyError:
+            line_dict[r_type] = 1
+            
+

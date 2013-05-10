@@ -1,0 +1,296 @@
+{% load static from staticfiles %}
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+        <title>{% block pagetitle %}{% endblock %}Influence Explorer{% block pagetopics %}{% endblock %}</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="keywords" content="campaign contributions, sunlight foundation, influence explorer, politics, government, influence" />
+        <meta name="description" content="{% block metadesc %}Influence Explorer is the central source for information on money and influence in politics. From here you can explore who the big donors to a politician are, how companies and whole industries spend their political money, and who politically connected individuals have given money to.{% endblock %}" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+        <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+	
+        <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+        <!--[if IE 6]><link rel="stylesheet" type="text/css" href="{% static 'css/buggy.css' %}" /><![endif]-->
+        <!--[if IE 7]><link rel="stylesheet" type="text/css" href="{% static 'css/buggy7.css' %}" /><![endif]-->
+        <!--[if lt IE 9]>
+            <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        
+        <!-- temporary overrides to ease the pain -->
+        <style type="text/css">
+        /* reduce bulky whitespace at top of page; reduce eyesore during development */
+        h1 { padding-top: 20px; }
+        h5 { margin-bottom: 0px; padding-bottom:0px;}
+        #contentHeader { margin-bottom: 5px; padding: 0 40px 10px; }
+        #search { padding-top: 10px; width: 370px;}
+
+        /* slim down subnav */
+        #td_nav { background: url(../images/bg_tdNav.png) right top no-repeat; margin-top: -32px; padding: 14px 0 0 0; height: 42px; margin-bottom: 0px;}
+        #td_nav ul { margin-right: 25px;}
+        #td_nav li { float: right; border-right: 1px solid #cacdce; padding: 0 9px; line-height: 15px; text-align: center;}
+        #td_nav li.last { border-right: none;}
+        #td_nav li:hover, .documentation #td_nav #documentation, .downloads #td_nav #downloads, .api #td_nav #api, .flexwidth #td_nav #searchTD, .searchTD #td_nav #searchTD{ font-weight: normal;}
+        
+        
+        /* Need some sorta style for the summary boxes. This is not gonna do it */
+        .numeric_summary { border-top: 1px solid #999; border-bottom: 1px solid #999; margin-bottom: 5px; margin-top:5px; padding-bottom: 5px; padding-top:5px; width: 400px; }
+        
+        /* For the love of meatballs, don't make this lowercase! WTF! */
+        .tip { margin-bottom:0px; margin-top:0px; padding: 0px; text-transform: none;}
+        
+        /* Use colors, size from existing span.amount */
+        .amount_description { text-transform: uppercase; font-size: 140%;}
+        .amount_dollars {  font-color: #797070; text-transform: uppercase; font-size: 140%;}
+        </style>
+        <script type="text/javascript" src="{% static 'js/jquery-1.4.2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jquery-placehold.min.js' %}"></script>
+        
+        {% block js %}{% endblock %}
+	    {% block og %}
+    	    <meta name="og:title" content="Influence Explorer">
+    	    <meta name="og:description" content="Influence Explorer connects the dots of political contributions on the federal and state level allowing you to track influence by lawmaker, company or prominent individual.">
+    	    <meta name="og:type" content="cause">
+    	    <meta name="og:image" content="http://s3.amazonaws.com/assets.sunlightfoundation.com/brisket/1.0/images/projects_icon_influencexplorer.png">
+    	    <meta name="og:site_name" content="Influence Explorer">
+    	    <meta name="fb:admins" content="7812952,5308565">
+	    {% endblock %}
+        <script type="text/javascript" src="http://use.typekit.com/rum2sap.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	    <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-1265484-62']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </head>
+
+    <body class="{% block body_class %}{% endblock %}">
+        <div id="wrapper">
+            <div id="pageMain">
+                <header>
+                    {% block search %}
+                    
+                    <div id="search">
+                      <form id="searchForm" action="http://influenceexplorer.com/search" method="get">
+                        <input data-initial="SEARCH" name="query" value="SEARCH" maxlength="200" type="text" id="id_query" />
+                        <input type="hidden" name="from_form" value="1" />
+                        <button class="searchBtn_sm" type="submit">
+                          <span>Go</span>
+                        </button>
+                      </form>
+                      <div class="clear"></div>
+                      <span class="tip">Enter a politician, company or individual donor</span>
+                    </div>
+                    
+                    {% endblock %}
+                    <h1><a id="logo" href="http://influenceexplorer.com/">Influence Explorer</a></h1>
+                    <div id="share-buttons" class="clear"></div>
+                    <nav class="clear">
+                        <ul>
+                            <li id="people"><a href="http://influenceexplorer.com/people">People</a></li>
+                            <li id="orgs"><a href="http://influenceexplorer.com/organizations">Organizations</a></li>
+                            <li id="politicians"><a href="http://influenceexplorer.com/politicians">Politicians</a></li>
+	                        <li id="industries"><a href="http://influenceexplorer.com/industries">Industries</a></li>
+	                        <li id="data"><a href="http://data.influenceexplorer.com/">Data</a></li>
+                        </ul>
+                    </nav>
+                </header>
+                <div id="mainContent_top"></div>
+
+                <div id="mainContent">
+                <!-- wrap the whole page in an unidentified module -->
+                
+                <nav id="td_nav">
+                    {% block subnavitems %}
+                    <ul>
+                        <li class="last"><a href="/downloads/">Downloads</a></li>
+                        <li><a href="/">Newest Filings</a></li>
+                        <li><a href="/">Filing Alerts</a></li>
+                        <li><a href="/">New Committees</a></li>
+                        <li><a href="/">Latest Spending</a></li>
+                        <li><a href="/">Super PACs</a></li>
+                        <li><a href="/">Races</a></li>
+                        <li><a href="/">States</a></li>
+                        <li><a href="/">Candidates</a></li>
+                        <li><a href="/">Overview</a></li>
+                        
+                        
+                    </ul>
+                    {% endblock %}
+                    <div class="clear"></div>
+                </nav>
+                  {% block main %}
+                  {% endblock %}
+                  <div class="clear"></div>
+                </div>
+                
+                <div id="mainContent_bottom"></div>
+
+            </div> <!-- end pageMain -->
+
+            <footer>
+                <div id="footerLinks">
+                    <nav>
+                        <ul>
+                            <li id="aboutLink"><a href="http://influenceexplorer.com/about/">About</a></li>
+                            <li><a href="http://influenceexplorer.com/contact/">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <div id="sunlightRequests">
+                        <span id="badgeHeader">A Product of the Sunlight Foundation</span>
+                        <div id="requestsContent">
+                            <h4 class="withTip">Like this Project and Want to Discover Others Like It?</h4>
+                            <p class="tip">Join the Sunlight Foundation's open government community to learn more.</p>
+                        </div>
+                        <form id="signupForm" action="" method="post">
+                            <ul>
+                              <li>
+                                <label class="hidden">Email</label>
+                                <input id="id_email" type="text" placeholder="Your email address" name="email"/>
+                              </li>
+                              <li>
+                                <label class="hidden">Zip Code</label>
+                                <input id="id_zip" type="text" placeholder="Your zip code" name="zipcode"/>
+                              </li>
+                              <li>
+                                <button class="signupBtn" type="submit">
+                                  <span>Sign Up</span>
+                                </button>
+                              </li>
+                            </ul>
+                            <div class="clear"></div>
+                        </form>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div id="bottomFooter">
+                    <ul id="footerPolicy">
+                        <li><a class="logo" id="sunlightFoundation" href="http://www.sunlightfoundation.com">Sunlight Foundation</a></li>
+                        <li><a class="logo" id="openSecrets" href="http://www.opensecrets.org/">Open Secrets</a></li>
+                        <li><a class="logo" id="followthemoney" href="http://www.followthemoney.org/">National Institute on Money in State Politics</a></li>
+                        <li><a class="logo" id="pogo" href="http://www.pogo.org/">Project on Government Oversight</a></li>
+                    </ul>
+                    <p id="description" class="clear">Founded in 2006, the Sunlight Foundation is a non-partisan non-profit that uses cutting-edge technology and ideas to make government transparent and accountable. Visit <a href="http://www.sunlightfoundation.com">SunlightFoundation.com</a> to learn more.</p>
+                </div>
+            </footer>
+
+        </div>
+    
+    	<img height="1" border="0" width="1" alt="" src="http://ad.doubleclick.net/activity;src=1379696;dcnet=4155;boom=41134;sz=1x1;ord=1?" />
+    	<script type="text/javascript" src="{% static 'js/brisket-all.js.gz' %}"></script>
+        <script type="text/javascript">BrisketFallback.PATH = "/chart/";</script>
+	
+    	{% block gsfn %}
+        <script type="text/javascript" charset="utf-8">
+          var is_ssl = ("https:" == document.location.protocol);
+          var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+          document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+
+        <script type="text/javascript" charset="utf-8">
+          var feedback_widget_options = {};
+
+          feedback_widget_options.display = "overlay";  
+          feedback_widget_options.company = "sunlightfoundation";
+          feedback_widget_options.placement = "right";
+          feedback_widget_options.color = "#222";
+          feedback_widget_options.style = "question";
+
+          var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+        </script>
+    	{% endblock %}
+	
+    	<script type="text/javascript">
+            var _sf_async_config={uid:980,domain:"influenceexplorer.com"};
+            (function(){
+              function loadChartbeat() {
+                window._sf_endpt=(new Date()).getTime();
+                var e = document.createElement('script');
+                e.setAttribute('language', 'javascript');
+                e.setAttribute('type', 'text/javascript');
+                e.setAttribute('src',
+                   (("https:" == document.location.protocol) ? "https://s3.amazonaws.com/" : "http://") +
+                   "static.chartbeat.com/js/chartbeat.js");
+                document.body.appendChild(e);
+              }
+              var oldonload = window.onload;
+              window.onload = (typeof window.onload != 'function') ?
+                 loadChartbeat : function() { oldonload(); loadChartbeat(); };
+            })();
+        </script>
+    	<!-- Quantcast Tag -->
+    	<script type="text/javascript">
+    	var _qevents = _qevents || [];
+	
+    	(function() {
+    	var elem = document.createElement('script');
+    	elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+    	elem.async = true;
+    	elem.type = "text/javascript";
+    	var scpt = document.getElementsByTagName('script')[0];
+    	scpt.parentNode.insertBefore(elem, scpt);
+    	})();
+	
+    	_qevents.push({
+    	qacct:"p-c3mmNWXstPmj6"
+    	});
+    	</script>
+
+        <script>
+            (function() {
+                var insertScript = function(url) {
+                    var elem = document.createElement('script');
+                    elem.src = (document.location.protocol == "https:" ? "https://cdns" : "http://cdn") + ".gigya.com/js/" + url;
+                    elem.async = true;
+                    elem.type = "text/javascript";
+                    $('script').eq(0).before(elem);
+                }
+                window.onGigyaServiceReady = function(type) {
+                    if (type !== "socialize") return;
+                    insertScript("gigyaGAIntegration.js")
+
+                    var ua = new gigya.socialize.UserAction();
+                    var head = $('head');
+                    var url = head.find('meta[name=og:url]').attr('content');
+                    ua.setLinkBack(url);
+                    ua.setTitle(head.find('meta[name=og:title]').attr('content'));
+                    ua.setDescription(head.find('meta[name=og:description]').attr('content'));
+                    ua.addMediaItem({
+                        type: 'image',
+                        href: url,
+                        src: head.find('meta[name=og:image]').attr('content')
+                    });
+
+                    var params = {
+                        containerID: 'share-buttons',
+                        iconsOnly: true,
+                        layout: 'horizontal',
+                        noButtonBorders: true,
+                        shareButtons: 'facebook,twitter',
+                        shortURLs: 'never',
+                        showCounts: 'none',
+                        userAction: ua
+                    };
+                    gigya.socialize.showShareBarUI(params);
+                }
+                insertScript("socialize.js?apiKey=3_BLRB_2LlQJZDUW1wb9_ZOps-sOnnzA_e6xxNSwJBBGoB-SavmPAKHkaVVZPE5Kx8")
+            })();
+        </script>
+	
+    	<noscript>
+    	<div style="display:none;">
+    	<img src="//pixel.quantserve.com/pixel/p-c3mmNWXstPmj6.gif" border="0" height="1" width="1" alt="Quantcast"/>
+    	</div>
+    	</noscript>
+    	<!-- End Quantcast tag -->
+    </body>
+</html>

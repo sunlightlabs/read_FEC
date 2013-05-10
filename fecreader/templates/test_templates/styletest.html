@@ -1,0 +1,59 @@
+{% extends "test_templates/search_base.html" %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}Style test - body_class{% endblock %}
+
+ {% block main %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>H2 Content Header</h2>
+</div>
+<h5>H5 header</h5>
+<div class="numeric_summary">
+   <span class="amount_dollars">Total: $523,232,111,000</span>
+</div>
+<span class="tip">This is the italicized advice we sometimes give.</span>
+<p>This is a sortable table</p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                      <th class="sort">Name</th>
+                      <th class="sort">Office</th>
+                      <th class="sort">Party</th>
+                      <th class="sort">State</th>
+                      <th class="sort">Itemized Contributions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  
+                  <tr class="even">
+                      <td class="lawmakerName">
+                          <a href="/politician/mitt-romney/d2d1b6f4ea644455b8845be3b4c8116c?cycle=2012">Mitt Romney</a>
+                      </td>
+                      <td>President</td>
+                      <td>R</td>
+                      <td></td>
+                      <td>$356,911,898</td>
+                  </tr>
+                  
+                  <tr class="odd">
+                      <td class="lawmakerName">
+                          <a href="/politician/barack-obama/4148b26f6f1c437cb50ea9ca4699417a?cycle=2012">Barack Obama</a>
+                      </td>
+                      <td>President</td>
+                      <td>D</td>
+                      <td></td>
+                      <td>$315,000,730</td>
+                  </tr>
+</tbody>
+</table>
+</div>
+  {% endblock %}
+  
+
+{# override get satisfaction #}  
+  {% block gsfn %}{% endblock %}

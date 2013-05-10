@@ -1,0 +1,21 @@
+
+file_list = get_file_list(767159, 20)
+Elapsed time = 568.746407032 seconds
+
+a: 42032
+b: 7877
+e: 246
+other: 398
+total: 19
+
+~ 100 / second. 
+
+
+
+With three threads: 
+
+Elapsed time = 579.038808107 seconds
+
+-- but processing time without entering data is 350 seconds. Hmm. 
+
+profiling with: python -m cProfile  enter_files.py 

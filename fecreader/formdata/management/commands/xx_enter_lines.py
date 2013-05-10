@@ -1,3 +1,5 @@
+""" process changed since this was written. """
+
 from django.core.management.base import BaseCommand, CommandError
 from dateutil.parser import parse as dateparse
 

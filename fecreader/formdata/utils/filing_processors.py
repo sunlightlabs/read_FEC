@@ -4,13 +4,27 @@ from dateutil.parser import parse as dateparse
 from parsing.form_parser import form_parser, ParserMissingError
 from parsing.filing import filing
 from parsing.read_FEC_settings import FILECACHE_DIRECTORY
-from formdata.models import Filing_Header
-
+from formdata.models import Filing_Header, Committee_Changed
+from formdata.utils.write_csv_to_db import CSV_dumper
 from formdata.utils.form_mappers import *
 
+from django.db import connection, transaction
+
+
 verbose = True
+cursor = connection.cursor()
 
 
+def exec_raw_sql(cmd_list):
+    for cmd in cmd_list:
+        try:
+            print "running cmd <<<%s>>>" % cmd
+            cursor.execute(cmd)
+            status = cursor.statusmessage
+            if status:
+                print "STATUS: %s" % status
+        except IntegrityError:
+            print "Integrity Error!!!"
 
 
 def mark_superceded_body_rows(header_row):
@@ -68,77 +82,12 @@ def mark_superceded_F65s(new_f3_filing_header):
     SkedA.objects.filter(form_type__istartswith='F56', filer_committee_id_number=raw_filer_id, superceded_by_amendment=False, contribution_date__gte=coverage_from_date, contribution_date__lte=coverage_from_date).update(superceded_by_amendment=True)
     
 
-def process_body_row(form, linedict, filingnum, header):
-    #print "processing header row with header amendment %s" % (header.is_superceded)
-    if form=='SchA':
-        skeda_from_skedadict(linedict, filingnum, header)
-        
-    elif form=='SchB':
-        skedb_from_skedbdict(linedict, filingnum, header)                        
-        
-    elif form=='SchE':
-        skede_from_skededict(linedict, filingnum, header)
+
+
+def process_filing_header(filingnum, fp=None, filing_time=None, filing_time_is_exact=False):
+    """ Enter the file header if needed. Post processing is still needed once it's complete. """
     
-    # Treat 48-hour contribution notices like sked A.
-    # Requires special handling for amendment, since these are superceded
-    # by regular F3 forms. 
-    elif form=='F65':
-        skeda_from_f65(linedict, filingnum, header)
-        
-    # disclosed donor to non-commmittee. Sorta rare, but.. 
-    elif form=='F56':
-        skeda_from_f56(linedict, filingnum, header)
-    
-    # disclosed electioneering donor
-    elif form=='F92':
-        skeda_from_f92(linedict, filingnum, header)   
-    
-    # inaugural donors
-    elif form=='F132':
-        skeda_from_f132(linedict, filingnum, header)                    
-    
-    #inaugural refunds
-    elif form=='F133':
-        skeda_from_f133(linedict, filingnum, header)                    
-    
-    # IE's disclosed by non-committees. Note that they use this for * both * quarterly and 24- hour notices. There's not much consistency with this--be careful with superceding stuff. 
-    elif form=='F57':
-        skede_from_f57(linedict, filingnum, header)
-
-    # Its another kind of line. Just dump it in Other lines.
-    else:
-        otherline_from_line(linedict, filingnum, header, formname=form)
-
-
-def process_file(filingnum, fp=None, filing_time=None, filing_time_is_exact=False):
-    
-    if not fp:
-        fp = form_parser()
-        
-    #print "Processing filing %s" % (filingnum)
-    f1 = filing(filingnum, read_from_cache=True, write_to_cache=True)
-    f1.download()
-    form = f1.get_form_type()
-    version = f1.get_version()
-
-    # only parse forms that we're set up to read
-    
-    if not fp.is_allowed_form(form):
-        if verbose:
-            print "Not a parseable form: %s - %s" % (form, filingnum)
-
-            
-        return
-
-    header = f1.get_first_row()
-    header_line = fp.parse_form_line(header, version)
-
-    amended_filing=None
-    if f1.is_amendment:
-        amended_filing = f1.headers['filing_amended']
-
     header_needs_entry = True
-    rows_need_entry = True
     this_filing_header = None
     
     # enter it if we don't have it already:
@@ -152,89 +101,80 @@ def process_file(filingnum, fp=None, filing_time=None, filing_time_is_exact=Fals
     except Filing_Header.DoesNotExist:
         pass
     
-    if not header_needs_entry and not rows_need_entry:
-        #We're done. Probably the previous amendments have been set -- if not and we're here for some other reason, the amendments should be fixed in a daily-ish cleanup.
-        print "Filing totally entered"
-        return None
+    if not header_needs_entry:
+        return True
+    
+    
+    
+    if not fp:
+        fp = form_parser()
         
-    if header_needs_entry or rows_need_entry:
-        # mark that we're about to mess with this committee id.
-        Committee_Changed.objects.get_or_create(committee_id=f1.headers['fec_id'])
-        
-    if header_needs_entry:
-        
-        from_date = None
-        through_date = None
-        try:
-            # dateparse('') will give today, oddly
-            if header_line['coverage_from_date']:
-                from_date = dateparse(header_line['coverage_from_date'])
-            if header_line['coverage_through_date']:
-                through_date = dateparse(header_line['coverage_through_date'])
-        except KeyError:
-            pass
-        
-        # Create the filing -- but don't mark it as being complete. 
-        this_filing_header = Filing_Header(
-            raw_filer_id=f1.headers['fec_id'],
-            form=form,
-            filing_number=filingnum,
-            version=f1.version,
-            coverage_from_date=from_date,
-            coverage_through_date = through_date,
-            is_amendment=f1.is_amendment,
-            amends_filing=amended_filing,
-            amendment_number = f1.headers['report_number'] or None,
-            header_data=header_line,
-            filing_time=filing_time,
-            filing_time_is_exact=filing_time_is_exact)
-        
-        this_filing_header.save(force_insert=True)
-       
-    if rows_need_entry:
-        # Now enter content rows:
-        line_dict = {}
-        content_rows = f1.get_body_rows()
-        total_lines = 0
-        for row in content_rows:
-            # instead of parsing the line, just assume form type is the first arg.
-            r_type = row[0].upper().strip()
-        
-            # sometimes there are blank lines within files--see 707076.fec
-            if not r_type:
-                continue
-            
-            total_lines += 1
-            # what type of line parser would be used here? 
-            lp = fp.get_line_parser(r_type)
-            if lp:
-                form = lp.form
-                r_type = form
-                #print "line parser: %s from %s" % (form, r_type)
-            
-                linedict = fp.parse_form_line(row, version)
+    #print "Processing filing %s" % (filingnum)
+    f1 = filing(filingnum)
+    form = f1.get_form_type()
+    version = f1.get_version()
 
-                process_body_row(form, linedict, filingnum, this_filing_header)
-            
-            else:
-                print "Missing parser from %s" % (r_type) 
+    # only parse forms that we're set up to read
+    
+    if not fp.is_allowed_form(form):
+        if verbose:
+            print "Not a parseable form: %s - %s" % (form, filingnum)
+
+        return True
+
+    header = f1.get_first_row()
+    header_line = fp.parse_form_line(header, version)
+
+    amended_filing=None
+    if f1.is_amendment:
+        amended_filing = f1.headers['filing_amended']
+
+
         
-            try: 
-                num = line_dict[r_type]
-                line_dict[r_type] = num + 1
-            except KeyError:
-                line_dict[r_type] = 1
-        
-        
-    # We finished entering the line. Add the line mapping dict, and set the complete flag. 
+    Committee_Changed.objects.get_or_create(committee_id=f1.headers['fec_id'])
+    
+    from_date = None
+    through_date = None
+    try:
+        # dateparse('') will give today, oddly
+        if header_line['coverage_from_date']:
+            from_date = dateparse(header_line['coverage_from_date'])
+        if header_line['coverage_through_date']:
+            through_date = dateparse(header_line['coverage_through_date'])
+    except KeyError:
+        pass
+    
+    # Create the filing -- but don't mark it as being complete. 
+    this_filing_header = Filing_Header(
+        raw_filer_id=f1.headers['fec_id'],
+        form=form,
+        filing_number=filingnum,
+        version=f1.version,
+        coverage_from_date=from_date,
+        coverage_through_date = through_date,
+        is_amendment=f1.is_amendment,
+        amends_filing=amended_filing,
+        amendment_number = f1.headers['report_number'] or None,
+        header_data=header_line,
+        filing_time=filing_time,
+        filing_time_is_exact=filing_time_is_exact)
+    
+    this_filing_header.save(force_insert=True)
+    return True
+
+def post_process_filing(filing_number, linedict):
+    
+    this_filing_header = Filing_Header.objects.get(filing_number=filingnum)
+    
     this_filing_header.lines_present = line_dict
     this_filing_header.entry_complete = True
     this_filing_header.save()
-            
+
+
     # if this is an amended file, mark that the originals were superceded.
     if amended_filing:
         mark_superceded_amendment_header_rows(this_filing_header)
-        
+
     # if it's got sked E's and it's an F3X, overwrite 24-hr reports
     if this_filing_header.form=='F3X':
         try:
@@ -254,6 +194,4 @@ def process_file(filingnum, fp=None, filing_time=None, filing_time_is_exact=Fals
 
     # NOT YET SURE: if it's a quarterly F5 ignore it, we think, maybe
     
-    
-            
-            
+        

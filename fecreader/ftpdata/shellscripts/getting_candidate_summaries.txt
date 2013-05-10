@@ -1,0 +1,8 @@
+The data in the candidate and committee report-by-report stuff is broken into five different files. On this page: http://www.fec.gov/data/CampaignAndCommitteeSummary.do?format=html&election_yr=2014 you have to click the customize box, and pick the type of money: types = ['HOUSE_SENATE', 'INDEPENDENT_EXPENDITURE', 'PAC', 'PARTY', 'PRESIDENTIAL']. You can grab a zipped archive of all the five original (xml) data here: ftp://ftp.fec.gov/FEC/data.fec.gov/ccsummary2014.zip  but you'll still have to parse 5 different files. 
+
+
+
+types = ['HOUSE_SENATE', 'INDEPENDENT_EXPENDITURE', 'PAC', 'PARTY', 'PRESIDENTIAL']
+You can get the csv files here. The down side of the csv files is that currency is formatted as currency--but since I already wrote stuff to deal with this I'm just gonna leave it. 
+
+GET http://fec.gov/data/CampaignAndCommitteeSummary.do?format=csv&election_yr=2014&fil_typ=PRESIDENTIAL

@@ -1,0 +1,35 @@
+-- set with 1000 transactions per commit:
+( about 12 mb in top)
+
+-- with blank db:
+
+824988 - 217MB
+Total rows: 874103 Tally is: {'A': 478355, 'B': 395746, 'E': 0, 'O': 2}
+total time = 209.438835859
+rate: 4174
+
+840327 OFA   169MB - | 2012-10-18         | 2012-11-26
+Total rows: 938093 Tally is: {'A': 900046, 'B': 37815, 'E': 0, 'O': 232}
+total time = 233.911335945
+ [ rate 4010 / sec ]
+-----
+Now with 5000 transactions:
+( about 17 MB in top)
+
+824988 - 217MB
+Total rows: 874103 Tally is: {'A': 478355, 'B': 395746, 'E': 0, 'O': 2}
+total time = 207.489346981
+
+Commit completed.
+Total rows: 938093 Tally is: {'A': 900046, 'B': 37815, 'E': 0, 'O': 232}
+total time = 257.581276178
+
+---
+
+Now try 200:
+
+Total rows: 874103 Tally is: {'A': 478355, 'B': 395746, 'E': 0, 'O': 2}
+total time = 224.358439922
+
+Total rows: 938093 Tally is: {'A': 900046, 'B': 37815, 'E': 0, 'O': 232}
+total time = 237.333858013

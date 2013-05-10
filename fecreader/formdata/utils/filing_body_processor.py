@@ -1,0 +1,153 @@
+# django independent entry process; no db abstraction; this is built for postgresql
+
+import psycopg2, sys, time
+
+sys.path.append('/Users/jfenton/github-whitelabel/read_FEC/fecreader/fecreader/')
+sys.path.append('/Users/jfenton/github-whitelabel/read_FEC/fecreader/')
+
+from parsing.filing import filing
+from parsing.form_parser import form_parser
+from local_settings import DATABASES
+from form_mappers import *
+
+from write_csv_to_db import CSV_dumper
+
+fp = form_parser()
+
+def get_connection():
+    dbname = DATABASES['default']['NAME']
+    pw = DATABASES['default']['PASSWORD']
+    user = DATABASES['default']['USER']
+    host = DATABASES['default']['HOST']
+    port = DATABASES['default']['PORT']
+    if not host:
+        host = 'localhost'
+    if not port:
+        port = 5432
+        
+    conn_string = "host='%s' dbname='%s' user='%s' password='%s' port='%s'" % (host, dbname, user, pw, port)
+    conn = psycopg2.connect(conn_string)
+    return conn
+
+
+def process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id):
+    form = linedict['form_parser']
+    #print "processing form type: %s" % (form)
+    if form=='SchA':
+        skeda_from_skedadict(linedict, filingnum, header_id, is_amended, cd)
+
+    elif form=='SchB':
+        skedb_from_skedbdict(linedict, filingnum, header_id, is_amended, cd)                        
+
+    elif form=='SchE':
+        skede_from_skededict(linedict, filingnum, header_id, is_amended, cd)
+
+    # Treat 48-hour contribution notices like sked A.
+    # Requires special handling for amendment, since these are superceded
+    # by regular F3 forms. 
+    elif form=='F65':
+        skeda_from_f65(linedict, filingnum, header_id, is_amended, cd)
+
+    # disclosed donor to non-commmittee. Sorta rare, but.. 
+    elif form=='F56':
+        skeda_from_f56(linedict, filingnum, header_id, is_amended, cd)
+
+    # disclosed electioneering donor
+    elif form=='F92':
+        skeda_from_f92(linedict, filingnum, header_id, is_amended, cd)   
+
+    # inaugural donors
+    elif form=='F132':
+        skeda_from_f132(linedict, filingnum, header_id, is_amended, cd)                    
+
+    #inaugural refunds
+    elif form=='F133':
+        skeda_from_f133(linedict, filingnum, header_id, is_amended, cd)                    
+
+    # IE's disclosed by non-committees. Note that they use this for * both * quarterly and 24- hour notices. There's not much consistency with this--be careful with superceding stuff. 
+    elif form=='F57':
+        skede_from_f57(linedict, filingnum, header_id, is_amended, cd)
+
+    # Its another kind of line. Just dump it in Other lines.
+    else:
+        otherline_from_line(linedict, filingnum, header_id, is_amended, cd, filer_id)
+
+
+def process_filing_body(filingnum, fp):
+    
+    
+    connection = get_connection()
+    cursor = connection.cursor()
+    cmd = "select id, is_superceded from formdata_filing_header where filing_number=%s" % (filingnum)
+    cursor.execute(cmd)
+    
+    cd = CSV_dumper(connection)
+    
+    result = cursor.fetchone()
+    if not result:
+        print "couldn't find header!!!"
+        # raise something here
+        return None
+    
+    # will throw a TypeError if it's missing.
+    header_id = result[0]
+    is_amended = result[1]
+    
+    #print "Processing filing %s" % (filingnum)
+    f1 = filing(filingnum)
+    form = f1.get_form_type()
+    version = f1.get_version()
+    filer_id = f1.get_filer_id()
+    
+    
+
+    # only parse forms that we're set up to read
+    
+    if not fp.is_allowed_form(form):
+        if verbose:
+            print "Not a parseable form: %s - %s" % (form, filingnum)
+        return None
+    
+    while True:
+        row = f1.get_body_row()
+        if not row:
+            break
+        
+        #print "row is %s" % (row)
+        #print "\n\n\nForm is %s" % form
+        
+        linedict = fp.parse_form_line(row, version)
+        #print "\n\n\nform is %s" % form
+        process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
+    
+    # commit all the leftovers
+    cd.commit_all()
+    cd.close()
+    counter = cd.get_counter()
+    total_rows = 0
+    for i in counter:
+        total_rows += counter[i]
+        
+    print "Total rows: %s Tally is: %s" % (total_rows, counter)
+    
+
+t0 = time.time()
+#process_filing_body(824988, fp)
+# 869853, 869866
+for fn in [869888]:
+    process_filing_body(fn, fp)
+t1 = time.time()
+print "total time = " + str(t1-t0)
+# long one: 767168
+#FAILS WITH STATE ADDRESS PROBLEM:  biggest one on file: 838168 (510 mb) - act blue - 2012-10-18         | 2012-11-26
+# second biggest: 824988 (217.3mb) - act blue - 2012-10-01         | 2012-10-17 - 874K lines
+# 840327 - 169MB  C00431445 - OFA   | 2012-10-18         | 2012-11-26
+# 821325 - 144 mb Obama for america 2012-09-01         | 2012-09-30
+# 798883 - 141 mb
+# 804867 - 127 mb
+# 827978 - 119 mb
+# 754317 - 118 mb
+
+
+
+

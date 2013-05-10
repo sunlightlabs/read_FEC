@@ -1,0 +1,38 @@
+from formdata.utils.filing_processors import process_file
+process_file(767160)
+
+
+>>> from formdata.models import *
+>>> fields = sorted(SkedE._meta.get_all_field_names())
+fieldlist = ""
+
+return ''.join(["'`num`'" for num in xrange(loop_count)])
+
+["'%s'" for fields in xrange(len(fields))]
+
+copy formdata_sked%s (%s) from stdin with delimiter as ',' quote as '"' null as ''
+
+copy formdata_skede  ('back_reference_sched_name','back_reference_tran_id_number','calendar_y_t_d_per_election_office','candidate_district','candidate_first_name','candidate_id_number','candidate_last_name','candidate_middle_name','candidate_name','candidate_office','candidate_prefix','candidate_state','candidate_suffix','category_code','completing_first_name','completing_last_name','completing_middle_name','completing_prefix','completing_suffix','date_signed','date_signed_formatted','election_code','election_other_description','entity_type','expenditure_amount','expenditure_date','expenditure_date_formatted','expenditure_purpose_code','expenditure_purpose_descrip','filer_committee_id_number','filing_number','form_type','header_id','memo_code','memo_text_description','payee_city','payee_cmtte_fec_id_number','payee_first_name','payee_last_name','payee_middle_name','payee_name','payee_organization_name','payee_prefix','payee_state','payee_street_1','payee_street_2','payee_suffix','payee_zip','superceded_by_amendment','support_oppose_code','transaction_id') from stdin with delimiter as ',' quote as '"' null as ''
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,ORG,1000.0,20120116,2012-01-16 00:00:00,,Media Buy,C00498097,767160,SE,,,,,Springfield,C00496067,,,,,"Media Ad Ventures, Inc.",,VA,8136 Old Keene Mill Road,Suite A-300,,22152,False,S,D267175
+
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,130.47,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Brooklyn,C00496067,Erica,Myrickes,,,,,NY,628 2nd Street #11,,,11215,False,S,D267187
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,ORG,350.0,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Ridgewood,C00496067,,,,,Purple Canoe Productions,,NJ,997 Hilcrest Road,,,07450,False,S,D267191
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,145.0,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Florham Park,C00496067,Andro,Buneta,,,,,NJ,32 Beechwood Road,,,07932,False,S,D267127
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,200.0,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Beverly Hills,C00496067,Opus,Moreschi,,,,,CA,360 North Crescent Drive,,,90210,False,S,D267183
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,190.75,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Beverly Hills,C00496067,Peter,Gwinn,,,,,CA,9465 Wilshire Blvd.,,,90212,False,S,D267212
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,ORG,56.25,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,,,,,"Corduroy Suit Productions, Inc.",,NY,"204 West 92nd Street, Apt. 1R",,,10025,False,S,D267146
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,ORG,651.0,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Los Angeles,C00496067,,,,,"Tateh Productions, Inc",,CA,10250 Constellation Blvd.,,,90067,False,S,D265835
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,12.5,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,Victoria,Stahl,,,,,NY,235 East 25th,#17,,10010,False,S,D267199
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,387.5,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Brooklyn,C00496067,Christein,Goldstein,,,,,NY,55 Hicks St.,#6,,11201,False,S,D267160
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,326.62,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,Jeremy,Tchaban,,,,,NY,146 East 39th St.,#1C,,10016,False,S,D267202
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,50.0,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Brooklyn,C00496067,Liz,Miggliaco,,,,,NY,122 7th Ave,,,11217,False,S,D267179
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,ORG,137.5,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,,,,,Beyond Freedom  Dignity Productions,,NY,331 West End Ave,#4B,,10023,False,S,D267116
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,15.63,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Brooklyn,C00496067,Kyle,Healy,,,,,NY,716 Sackett St.,#1R,,11217,False,S,D267162
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,62.5,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Westfield,C00496067,Margaret,Driscoll,,,,,NJ,605 Short Hills Ct.,,,07090,False,S,D265854
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,277.5,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,Scott,Lawrie,,,,,NY,442 10th Ave,,,10001,False,S,D267170
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,326.25,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,Nick,Vasile,,,,,NY,164 Ludlow St,,,10002,False,S,D267206
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,1112.5,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Chester,C00496067,Jason,Baker,,,,,CT,12 N. Main St.,,,06412,False,S,D265857
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,850.0,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Hastings on Hudson,C00496067,Matt,Lappin,,,,,NY,137 Southside Ave,,,10706,False,S,D267166
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,IND,87.5,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,Amy,Schwartz,,,,,NY,33 West End Ave,,,10023,False,S,D267195
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,ORG,193.31,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,New York,C00496067,,,,,"Attitude New York, Inc.",,NY,PO Box 1974,,,10101,False,S,D265888
+,,22822.83,,Herman,P00003608,Cain,,,P,,SC,,,Shauna,Polk,,,,20120220,,P2012,,ORG,6058.0,20120116,2012-01-16 00:00:00,,Ad Production Costs,C00498097,767160,SE,,,,,Saint Louis,C00496067,,,,,"Getty Images (US), Inc.",,MO,PO Box 953604,,,631953604,False,S,D267154

@@ -1,0 +1,6 @@
+-
+
+delete from outside_spending_2014_contribution;
+delete from outside_spending_2014_expenditure;
+delete from outside_spending_2014_f3x_summary;
+delete from outside_spending_2014_filing_header;

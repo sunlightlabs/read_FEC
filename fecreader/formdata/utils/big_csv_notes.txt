@@ -1,0 +1,41 @@
+http://stackoverflow.com/questions/13585850/csv-export-in-stream-from-django-admin-on-heroku
+
+
+http://blog.ekini.net/2010/10/15/file-streaming-in-django-sending-large-files-through-django/
+
+filewrapper is really in wsgiref
+
+http://docs.python.org/2/library/wsgiref.html
+---
+
+Finally, you can pass HttpResponse an iterator rather than strings. If you use this technique, the iterator should return strings.
+
+Passing an iterator as content to HttpResponse creates a streaming response if (and only if) no middleware accesses the HttpResponse.content attribute before the response is returned.
+
+In django 1.5: 
+
+ Changed in Django 1.5.
+
+This technique is fragile and was deprecated in Django 1.5. If you need the response to be streamed from the iterator to the client, you should use the StreamingHttpResponse class instead.
+
+1.5 dox: 
+
+https://docs.djangoproject.com/en/1.5/ref/request-response/#django.http.StreamingHttpResponse
+
+
+=-----
+http://stackoverflow.com/a/8601118
+
+--
+
+They give this example:
+
+from StringIO import StringIO
+from wsgiref.util import FileWrapper
+
+# We're using a StringIO-buffer for as the file-like object
+filelike = StringIO("This is an example file-like object"*10)
+wrapper = FileWrapper(filelike, blksize=5)
+
+for chunk in wrapper:
+    print chunk

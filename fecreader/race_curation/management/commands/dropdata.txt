@@ -1,0 +1,4 @@
+delete from race_curation_election_candidate;
+delete from race_curation_election;
+delete from race_curation_candidate_overlay;
+delete from race_curation_district;

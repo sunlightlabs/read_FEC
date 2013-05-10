@@ -51,63 +51,6 @@ class Command(BaseCommand):
                 if lp:
                     form = lp.form
                     r_type = form
-                    #print "line parser: %s from %s" % (form, r_type)
-                    if form=='SchA':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skeda_from_skedadict(linedict, filingnum, header)
-                        
-                    elif form=='SchB':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skedb_from_skedbdict(linedict, filingnum, header)                        
-                        
-                    elif form=='SchE':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skede_from_skededict(linedict, filingnum, header)
-                    
-                    # Treat 48-hour contribution notices like sked A.
-                    # Requires special handling for amendment, since these are superceded
-                    # by regular F3 forms. 
-                    elif form=='F65':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skeda_from_f65(linedict, filingnum, header)
-                        
-                    # disclosed donor to non-commmittee. Sorta rare, but.. 
-                    elif form=='F56':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skeda_from_f56(linedict, filingnum, header)
-                    
-                    # disclosed electioneering donor
-                    elif form=='F92':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skeda_from_f92(linedict, filingnum, header)   
-                    
-                    elif form=='F132':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skeda_from_f132(linedict, filingnum, header)                    
-                    
-                    elif form=='F133':
-                        pass
-                    #   linedict = fp.parse_form_line(row, version)
-                    #   skeda_from_f133(linedict, filingnum, header)                    
-                    
-                    # IE's disclosed by non-committees. Note that they use this for * both * quarterly and 24- hour notices. There's not much consistency with this--be careful with superceding stuff. 
-                    elif form=='F57':
-                        pass
-                    #    linedict = fp.parse_form_line(row, version)
-                    #    skede_from_f57(linedict, filingnum, header)
-                
-                    # Its another kind of line. Just dump it in Other lines.
-                    else:
-                        linedict = fp.parse_form_line(row, version)
-                        otherline_from_line(linedict, filingnum, header, formname=form) 
-                                         
                 else:
                     print "Missing parser from %s" % (r_type) 
                 
@@ -117,7 +60,7 @@ class Command(BaseCommand):
                 except KeyError:
                     line_dict[r_type] = 1
             
-            #print "Found total lines = %s with dict=%s" % (total_lines, line_dict)
+            print "Found total lines = %s with dict=%s" % (total_lines, line_dict)
             #header.lines_present = line_dict
             #header.save()
             

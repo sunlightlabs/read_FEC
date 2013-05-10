@@ -1,13 +1,32 @@
+"""
+* We have to drop the primary key indexes that django creates and create a different one with specific settings--see formdata/sql/<model>.sql for details. 
+
+"""
+
+
+
 from django.db import models
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
 
 
-# This is really a queue for updating summary stats on a committee. If we touch a committee, mark it here. Remove it when fixed. Hourly(ish) scripts will do the recalculating... Should have one for candidates too, but... 
+# This is a flag for when we need to update summary stats on a committee. If we touch a committee, mark it here. Remove it when fixed. Hourly(ish) scripts will do the recalculating...
 class Committee_Changed(models.Model):
     committee_id=models.CharField(max_length=9, blank=True)
     time = models.DateTimeField(auto_now=True)
+    
+# Because the entry process for data rows is done by non-django processes, we need to track when it's done. Also mark when it starts, so that if it fails half way through we have some db record of it (and hence don't have to wade through log files)
+# class Filing_Data_Entry_Status(models.Model):
+#     filing_number=models.IntegerField(unique=True)
+#     entry_begun = models.BooleanField()
+#     entry_complete = models.BooleanField()
+#     is_error = models.BooleanField(help_text="If there's an error, flag it here--however, any file where entry has begun and not finished some amount of time later can probably be considered to be in error")
+#     error_text = models.TextField("Text of first DB error -- we give up on entry after the first error.")
+#     last_update_time = models.DateTimeField(auto_now=True)
+#     # which filing types are contained? Store as a dict:
+#     lines_present =  DictionaryField(db_index=True, null=True)
+#     objects = HStoreManager()
 
 class Filing_Header(models.Model):
     raw_filer_id=models.CharField(max_length=9, blank=True)
@@ -53,21 +72,12 @@ class Filing_Header(models.Model):
     
     def __unicode__(self):
         return str(self.filing_number)
-        
-# rows we care about: A, B, E; also
-# do we make F56 go to schedule E ?  (That's from F5 -- ie's by noncommittees)
-# does F65 go to sked A ? That's 48-hr contribs
-
-
-## Also F92, F93 and F94 ... 
-
-# how do we flag forms present in each filing ? 
 
 
 # field sizes are based on v8.0 specs, generally
 class SkedA(models.Model):
     # additional fields 
-    header = models.ForeignKey(Filing_Header, null=True)
+    header_id = models.IntegerField()
     filing_number = models.IntegerField()
     superceded_by_amendment = models.BooleanField(default=False)
     
@@ -124,14 +134,10 @@ class SkedA(models.Model):
     memo_code = models.CharField(max_length=1, blank=True, null=True)
     memo_text_description = models.CharField(max_length=100, blank=True, null=True)
     reference_code = models.CharField(max_length=9, blank=True, null=True)
-    
-    class Meta:
-        unique_together = ("filing_number", "transaction_id")
-
 
 class SkedB(models.Model):
     # additional fields 
-    header = models.ForeignKey(Filing_Header, null=True)
+    header_id = models.IntegerField()
     filing_number = models.IntegerField()
     superceded_by_amendment = models.BooleanField(default=False)
 
@@ -188,14 +194,11 @@ class SkedB(models.Model):
     ref_to_sys_code_ids_acct = models.CharField(max_length=9, blank=True, null=True)
     refund_or_disposal_of_excess = models.CharField(max_length=20, blank=True, null=True, help_text="deprecated")
     communication_date = models.CharField(max_length=9, blank=True, null=True, help_text="deprecated")
-    
-    class Meta:
-        unique_together = ("filing_number", "transaction_id")
 
 
 class SkedE(models.Model):
     # additional fields 
-    header = models.ForeignKey(Filing_Header, null=True)
+    header_id = models.IntegerField()
     filing_number = models.IntegerField()
     # can be superceded by amendment or by later filing
     superceded_by_amendment = models.BooleanField(default=False)
@@ -250,15 +253,11 @@ class SkedE(models.Model):
     date_signed_formatted = models.DateField(null=True, help_text="Populated from parsing raw field")
     memo_code = models.CharField(max_length=1, blank=True, null=True)
     memo_text_description = models.CharField(max_length=100, blank=True, null=True)
-
-    
-    class Meta:
-        unique_together = ("filing_number", "transaction_id")
         
         
 class OtherLine(models.Model):
     # additional fields 
-    header = models.ForeignKey(Filing_Header, null=True)
+    header_id = models.IntegerField()
     filing_number = models.IntegerField()
     superceded_by_amendment = models.BooleanField(default=False)
     
@@ -274,5 +273,6 @@ class OtherLine(models.Model):
     line_data =  DictionaryField(db_index=False, null=True)
     objects = HStoreManager()
     
-    class Meta:
-        unique_together = ("filing_number", "transaction_id")
+# the webk summary file is now being served from the data catalog page--see here:
+# http://www.fec.gov/data/CommitteeSummary.do?format=html&election_yr=2014
+
