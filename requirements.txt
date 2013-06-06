@@ -9,3 +9,8 @@ pytz
 lxml
 # for parsing legislators -- don't care about performance...
 pyyaml
+
+# for running all the stuff
+supervisor
+redis
+celery

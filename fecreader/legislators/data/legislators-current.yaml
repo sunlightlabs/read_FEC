@@ -687,6 +687,7 @@
     - H2NJ13075
     cspan: 29608
     house_history: 18124
+    wikipedia: Bob Menendez
   name:
     first: Robert
     last: Menéndez
@@ -774,7 +775,7 @@
     fax: 202-228-2197
     contact_form: http://menendez.senate.gov/contact/
     office: 528 Hart Senate Office Building
-    state_rank: junior
+    state_rank: senior
     rss_url: http://www.menendez.senate.gov/rss/feeds/index.cfm?type=news
 - id:
     bioguide: N000032
@@ -1266,6 +1267,7 @@
     fec:
     - S2TN00058
     cspan: 5
+    wikipedia: Lamar Alexander
   name:
     first: Lamar
     last: Alexander
@@ -1628,6 +1630,7 @@
     fec:
     - S2TX00106
     cspan: 93131
+    wikipedia: John Cornyn
   name:
     first: John
     last: Cornyn
@@ -1912,6 +1915,7 @@
     - S4IA00020
     cspan: 2005
     house_history: 14542
+    wikipedia: Tom Harkin
   name:
     first: Thomas
     last: Harkin
@@ -2230,66 +2234,6 @@
     office: 703 Hart Senate Office Building
     state_rank: senior
 - id:
-    bioguide: L000123
-    thomas: '01381'
-    lis: S166
-    govtrack: 300064
-    opensecrets: N00000659
-    votesmart: 53324
-    icpsr: 14914
-    fec:
-    - S2NJ00080
-    cspan: 2515
-    wikipedia: Frank Lautenberg
-  name:
-    first: Frank
-    middle: R.
-    last: Lautenberg
-    official_full: Frank R. Lautenberg
-  bio:
-    birthday: '1924-01-23'
-    gender: M
-    religion: Jewish
-  terms:
-  - type: sen
-    start: '1982-01-01'
-    end: '1988-10-22'
-    state: NJ
-    class: 1
-    party: Democrat
-  - type: sen
-    start: '1989-01-03'
-    end: '1994-12-01'
-    state: NJ
-    class: 1
-    party: Democrat
-  - type: sen
-    start: '1995-01-04'
-    end: '2000-12-15'
-    state: NJ
-    class: 1
-    party: Democrat
-  - type: sen
-    start: '2003-01-07'
-    end: '2009-01-03'
-    state: NJ
-    class: 2
-    party: Democrat
-    url: http://lautenberg.senate.gov/
-  - type: sen
-    start: '2009-01-06'
-    end: '2015-01-03'
-    state: NJ
-    class: 2
-    party: Democrat
-    url: http://www.lautenberg.senate.gov
-    address: 141 HART SENATE OFFICE BUILDING WASHINGTON DC 20510
-    phone: 202-224-3224
-    fax: 202-228-4054
-    contact_form: http://www.lautenberg.senate.gov/contact/routing.cfm
-    office: 141 Hart Senate Office Building
-    state_rank: senior
-- id:
     bioguide: L000261
     thomas: '01384'
     lis: S131
@@ -2365,6 +2309,7 @@
     fec:
     - S2KY00012
     cspan: 2351
+    wikipedia: Mitch McConnell
   name:
     first: Mitch
     last: McConnell
@@ -2373,6 +2318,22 @@
     birthday: '1942-02-20'
     gender: M
     religion: Baptist
+  leadership_roles:
+  - title: Minority Leader
+    chamber: senate
+    start: '2007-01-04'
+    end: '2009-01-06'
+  - title: Minority Leader
+    chamber: senate
+    start: '2009-01-06'
+    end: '2011-01-05'
+  - title: Minority Leader
+    chamber: senate
+    start: '2011-01-05'
+    end: '2013-01-03'
+  - title: Minority Leader
+    chamber: senate
+    start: '2013-01-03'
   terms:
   - type: sen
     start: '1985-01-03'
@@ -3521,6 +3482,7 @@
     - H6MN06074
     cspan: 1021492
     house_history: 10411
+    wikipedia: Michele Bachmann
   name:
     first: Michele
     middle: Marie
@@ -3769,6 +3731,7 @@
     - H2PA11098
     cspan: 29618
     house_history: 10432
+    wikipedia: Lou Barletta
   name:
     first: Lou
     last: Barletta
@@ -4769,10 +4732,10 @@
     class: 3
     party: Democrat
     url: http://www.blumenthal.senate.gov
-    address: 702 HART SENATE OFFICE BUILDING WASHINGTON DC 20510
+    address: 724 HART SENATE OFFICE BUILDING WASHINGTON DC 20510
     phone: 202-224-2823
     contact_form: http://www.blumenthal.senate.gov/contact/
-    office: 702 Hart Senate Office Building
+    office: 724 Hart Senate Office Building
     state_rank: senior
 - id:
     bioguide: B000575
@@ -4873,6 +4836,14 @@
     birthday: '1949-11-17'
     gender: M
     religion: Roman Catholic
+  leadership_roles:
+  - title: Speaker
+    chamber: house
+    start: '2011-01-05'
+    end: '2013-01-03'
+  - title: Speaker
+    chamber: house
+    start: '2013-01-03'
   terms:
   - type: rep
     start: '1991-01-03'
@@ -5254,6 +5225,7 @@
     - S2CA00286
     cspan: 2470
     house_history: 9704
+    wikipedia: Barbara Boxer
   name:
     first: Barbara
     last: Boxer
@@ -5678,7 +5650,7 @@
     opensecrets: N00002713
     votesmart: 26797
     fec:
-    - H4FL03060
+    - H2FL03056
     cspan: 26192
     wikipedia: Corrine Brown
   name:
@@ -5957,6 +5929,7 @@
     - S4NC00089
     cspan: 31054
     house_history: 10236
+    wikipedia: Richard Burr
   name:
     first: Richard
     middle: M.
@@ -7146,6 +7119,7 @@
     - H4VI00054
     cspan: 48879
     house_history: 10930
+    wikipedia: Donna Christian-Christensen
   name:
     first: Donna
     middle: M.
@@ -7895,7 +7869,7 @@
     opensecrets: N00024753
     votesmart: 1535
     fec:
-    - H2CO00019
+    - H8CO06138
     cspan: 1031340
     wikipedia: Mike Coffman
     house_history: 11815
@@ -7933,11 +7907,11 @@
     party: Republican
     district: 6
     url: http://coffman.house.gov
-    address: 2443 Longworth HOB; Washington DC 20515-0606
+    address: 2443 Rayburn HOB; Washington DC 20515-0606
     phone: 202-225-7882
     fax: 202-226-4623
     contact_form: https://forms.house.gov/coffman/contact-form.shtml
-    office: 2443 Longworth House Office Building
+    office: 2443 Rayburn House Office Building
     rss_url: http://coffman.house.gov/index.php?format=feed&amp;type=rss
 - id:
     bioguide: C001068
@@ -8496,6 +8470,7 @@
     - H4CA20082
     cspan: 19599
     house_history: 11782
+    wikipedia: Jim Costa
   name:
     first: Jim
     last: Costa
@@ -8559,6 +8534,7 @@
     - H2CT02112
     cspan: 1021284
     house_history: 11802
+    wikipedia: Joe Courtney (politician)
   name:
     first: Joe
     last: Courtney
@@ -11367,6 +11343,7 @@
     - H4PA08074
     cspan: 33378
     house_history: 13549
+    wikipedia: Mike Fitzpatrick
   name:
     first: Michael
     middle: G.
@@ -11416,6 +11393,7 @@
     - H0AZ01184
     cspan: 87582
     house_history: 13537
+    wikipedia: Jeff Flake
   name:
     first: Jeff
     last: Flake
@@ -11694,7 +11672,7 @@
     state: VA
     party: Republican
     district: 4
-    url: http://www.house.gov/forbes
+    url: http://forbes.house.gov/
     address: 2135 Rayburn HOB; Washington DC 20515-4604
     phone: 202-225-6365
     fax: 202-226-1170
@@ -11897,7 +11875,7 @@
     state: AZ
     party: Republican
     district: 8
-    url: http://www.house.gov/franks
+    url: http://franks.house.gov/
     address: 2435 Rayburn HOB; Washington DC 20515-0302
     phone: 202-225-4576
     fax: 202-225-6328
@@ -12011,6 +11989,7 @@
     - H8OH11141
     cspan: 1030928
     house_history: 13557
+    wikipedia: Marcia Fudge
   name:
     first: Marcia
     last: Fudge
@@ -12390,6 +12369,7 @@
     - H2GA11149
     cspan: 1003565
     house_history: 14259
+    wikipedia: Phil Gingrey
   name:
     first: Phil
     last: Gingrey
@@ -12445,7 +12425,7 @@
     state: GA
     party: Republican
     district: 11
-    url: http://www.house.gov/gingrey
+    url: http://gingrey.house.gov/
     address: 442 Cannon HOB; Washington DC 20515-1011
     phone: 202-225-2931
     fax: 202-225-2944
@@ -12616,7 +12596,7 @@
     state: VA
     party: Republican
     district: 6
-    url: http://www.house.gov/goodlatte
+    url: http://goodlatte.house.gov/
     address: 2309 Rayburn HOB; Washington DC 20515-4606
     phone: 202-225-5431
     fax: 202-225-9681
@@ -13677,7 +13657,7 @@
     state: TX
     party: Republican
     district: 4
-    url: http://www.house.gov/ralphhall
+    url: http://ralphhall.house.gov/
     address: 2405 Rayburn HOB; Washington DC 20515-4304
     phone: 202-225-6673
     fax: 202-225-3332
@@ -14266,7 +14246,7 @@
     state: TX
     party: Republican
     district: 5
-    url: http://www.house.gov/hensarling
+    url: http://hensarling.house.gov/
     address: 2228 Rayburn HOB; Washington DC 20515-4305
     phone: 202-225-3484
     fax: 202-226-4888
@@ -14325,6 +14305,7 @@
     - H4NY27076
     cspan: 1013050
     house_history: 15572
+    wikipedia: Brian Higgins
   name:
     first: Brian
     middle: M.
@@ -14609,10 +14590,10 @@
     class: 3
     party: Republican
     url: http://www.hoeven.senate.gov
-    address: 120 RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
+    address: 338 RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
     phone: 202-224-2551
     contact_form: http://www.hoeven.senate.gov/public/index.cfm/email-the-senator
-    office: 120 Russell Senate Office Building
+    office: 338 Russell Senate Office Building
     state_rank: senior
 - id:
     bioguide: H001032
@@ -15356,7 +15337,7 @@
     state: CA
     party: Republican
     district: 49
-    url: http://www.house.gov/issa
+    url: http://issa.house.gov/
     address: 2347 Rayburn HOB; Washington DC 20515-0549
     phone: 202-225-3906
     fax: 202-225-3303
@@ -15744,10 +15725,10 @@
     class: 3
     party: Republican
     url: http://www.ronjohnson.senate.gov
-    address: 386 RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
+    address: 328 HART SENATE OFFICE BUILDING WASHINGTON DC 20510
     phone: 202-224-5323
     contact_form: http://www.ronjohnson.senate.gov/public/index.cfm/contact
-    office: 386 Russell Senate Office Building
+    office: 328 Hart Senate Office Building
     state_rank: senior
 - id:
     bioguide: J000174
@@ -16442,6 +16423,7 @@
     - H2IA05072
     cspan: 1003590
     house_history: 16548
+    wikipedia: Steve King
   name:
     first: Steve
     middle: A.
@@ -17474,6 +17456,7 @@
     - H8CA09060
     cspan: 54579
     house_history: 17282
+    wikipedia: Barbara Lee
   name:
     first: Barbara
     last: Lee
@@ -17596,6 +17579,7 @@
     - H2MI17023
     cspan: 251
     house_history: 16921
+    wikipedia: Sander M. Levin
   name:
     first: Sander
     middle: M.
@@ -18416,7 +18400,7 @@
     state: OK
     party: Republican
     district: 3
-    url: http://www.house.gov/lucas
+    url: http://lucas.house.gov/
     address: 2311 Rayburn HOB; Washington DC 20515-3603
     phone: 202-225-5565
     fax: 202-225-8698
@@ -18819,7 +18803,7 @@
     state: TX
     party: Republican
     district: 24
-    url: http://www.house.gov/marchant
+    url: http://marchant.house.gov/
     address: 1110 Longworth HOB; Washington DC 20515-4324
     phone: 202-225-6605
     fax: 202-225-0074
@@ -19346,6 +19330,7 @@
     - H6CA22125
     cspan: 85231
     house_history: 18801
+    wikipedia: Kevin McCarthy (California politician)
   name:
     first: Kevin
     last: McCarthy
@@ -19452,7 +19437,7 @@
     state: TX
     party: Republican
     district: 10
-    url: http://www.house.gov/mccaul
+    url: http://mccaul.house.gov/
     address: 131 Cannon HOB; Washington DC 20515-4310
     phone: 202-225-2401
     fax: 202-225-5955
@@ -19468,6 +19453,7 @@
     - H8CA04152
     cspan: 30359
     house_history: 18824
+    wikipedia: Tom McClintock
   name:
     first: Tom
     last: McClintock
@@ -19856,7 +19842,7 @@
     state: NC
     party: Republican
     district: 10
-    url: http://www.house.gov/mchenry
+    url: http://mchenry.house.gov/
     address: 2334 Rayburn HOB; Washington DC 20515-3310
     phone: 202-225-2576
     fax: 202-225-0316
@@ -19964,6 +19950,7 @@
     - H2CA25036
     cspan: 26483
     house_history: 17963
+    wikipedia: Howard McKeon
   name:
     first: Howard
     middle: P.
@@ -20637,6 +20624,7 @@
     - H6MI12181
     cspan: 1003594
     house_history: 18772
+    wikipedia: Candice Miller
   name:
     first: Candice
     last: Miller
@@ -21016,7 +21004,7 @@
     state: FL
     party: Republican
     district: 1
-    url: http://www.house.gov/jeffmiller
+    url: http://jeffmiller.house.gov/
     address: 336 Cannon HOB; Washington DC 20515-0901
     phone: 202-225-4136
     fax: 202-225-3414
@@ -21953,6 +21941,7 @@
     - H0SD00054
     cspan: 62717
     house_history: 19064
+    wikipedia: Kristi Noem
   name:
     first: Kristi
     last: Noem
@@ -22148,6 +22137,7 @@
     - H8CA20059
     cspan: 1003553
     house_history: 19058
+    wikipedia: Devin Nunes
   name:
     first: Devin
     middle: G.
@@ -22626,6 +22616,7 @@
     - H2AZ02055
     cspan: 20628
     house_history: 19396
+    wikipedia: Ed Pastor
   name:
     first: Ed
     last: Pastor
@@ -22750,10 +22741,10 @@
     class: 3
     party: Republican
     url: http://www.paul.senate.gov
-    address: 208 RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
+    address: 124 RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
     phone: 202-224-4343
     contact_form: http://www.paul.senate.gov/?p=contact
-    office: 208 Russell Senate Office Building
+    office: 124 Russell Senate Office Building
     state_rank: junior
 - id:
     bioguide: P000594
@@ -22889,6 +22880,14 @@
     birthday: '1940-03-26'
     gender: F
     religion: Roman Catholic
+  leadership_roles:
+  - title: Minority Leader
+    chamber: house
+    start: '2011-01-05'
+    end: '2013-01-03'
+  - title: Minority Leader
+    chamber: house
+    start: '2013-01-03'
   terms:
   - type: rep
     start: '1987-01-06'
@@ -23539,7 +23538,7 @@
     state: PA
     party: Republican
     district: 16
-    url: http://www.house.gov/pitts
+    url: http://pitts.house.gov/
     address: 420 Cannon HOB; Washington DC 20515-3816
     phone: 202-225-2411
     fax: 202-225-2013
@@ -23604,7 +23603,7 @@
     state: TX
     party: Republican
     district: 2
-    url: http://www.house.gov/poe
+    url: http://poe.house.gov/
     address: 2412 Rayburn HOB; Washington DC 20515-4302
     phone: 202-225-6565
     fax: 202-225-5547
@@ -23669,9 +23668,10 @@
     opensecrets: N00030744
     votesmart: 125023
     fec:
-    - H0KS0405
+    - H0KS04051
     cspan: 623387
     house_history: 20041
+    wikipedia: Mike Pompeo
   name:
     first: Mike
     last: Pompeo
@@ -23714,6 +23714,7 @@
     - S0OH00133
     cspan: 31819
     house_history: 19838
+    wikipedia: Rob Portman
   name:
     first: Robert
     middle: J.
@@ -24526,6 +24527,22 @@
     birthday: '1939-12-02'
     gender: M
     religion: Latter Day Saints
+  leadership_roles:
+  - title: Majority Leader
+    chamber: senate
+    start: '2007-01-04'
+    end: '2009-01-06'
+  - title: Majority Leader
+    chamber: senate
+    start: '2009-01-06'
+    end: '2011-01-05'
+  - title: Majority Leader
+    chamber: senate
+    start: '2011-01-05'
+    end: '2013-01-03'
+  - title: Majority Leader
+    chamber: senate
+    start: '2013-01-03'
   terms:
   - type: rep
     start: '1983-01-03'
@@ -24994,6 +25011,7 @@
     - H0MI08042
     cspan: 86133
     house_history: 20789
+    wikipedia: Mike Rogers (Michigan politician)
   name:
     first: Mike
     last: Rogers
@@ -25126,7 +25144,7 @@
     state: AL
     party: Republican
     district: 3
-    url: http://www.house.gov/mike-rogers
+    url: http://mike-rogers.house.gov/
     address: 324 Cannon HOB; Washington DC 20515-0103
     phone: 202-225-3261
     fax: 202-226-8485
@@ -25144,6 +25162,7 @@
     - H8CA42061
     cspan: 5590
     house_history: 20593
+    wikipedia: Dana Rohrabacher
   name:
     first: Dana
     middle: T.
@@ -25760,7 +25779,7 @@
     state: CA
     party: Republican
     district: 39
-    url: http://www.royce.house.gov
+    url: http://royce.house.gov/
     address: 2185 Rayburn HOB; Washington DC 20515-0540
     phone: 202-225-4111
     fax: 202-226-0335
@@ -25777,6 +25796,7 @@
     fec:
     - S0FL00338
     cspan: 87599
+    wikipedia: Marco Rubio
   name:
     first: Marco
     last: Rubio
@@ -25792,11 +25812,11 @@
     class: 3
     party: Republican
     url: http://www.rubio.senate.gov
-    address: 317 HART SENATE OFFICE BUILDING WASHINGTON DC 20510
+    address: 284 RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
     phone: 202-224-3041
     fax: 202-224-3041
     contact_form: http://www.rubio.senate.gov/public/index.cfm/contact
-    office: 317 Hart Senate Office Building
+    office: 284 Russell Senate Office Building
     state_rank: junior
 - id:
     bioguide: R000594
@@ -26711,6 +26731,7 @@
     fec:
     - S8NY00082
     cspan: 5929
+    wikipedia: Chuck Schumer
   name:
     first: Charles
     middle: E.
@@ -27154,7 +27175,7 @@
     office: 1117 Longworth House Office Building
   - type: sen
     start: '2013-01-03'
-    end: '2013-05-07'
+    end: '2015-01-03'
     state: SC
     party: Republican
     class: 3
@@ -27512,7 +27533,7 @@
     state: TX
     party: Republican
     district: 32
-    url: http://www.house.gov/sessions
+    url: http://sessions.house.gov/
     address: 2233 Rayburn HOB; Washington DC 20515-4332
     phone: 202-225-2231
     fax: 202-225-5878
@@ -27655,6 +27676,7 @@
     fec:
     - H6CA24113
     cspan: 45124
+    wikipedia: Brad Sherman
   name:
     first: Brad
     middle: J.
@@ -28314,7 +28336,7 @@
     state: NE
     party: Republican
     district: 3
-    url: http://www.adriansmith.house.gov
+    url: http://adriansmith.house.gov/
     address: 2241 Rayburn HOB; Washington DC 20515-2703
     phone: 202-225-6435
     fax: 202-225-0207
@@ -29258,7 +29280,7 @@
     state: TX
     party: Republican
     district: 13
-    url: http://www.house.gov/thornberry
+    url: http://thornberry.house.gov/
     address: 2329 Rayburn HOB; Washington DC 20515-4313
     phone: 202-225-3706
     fax: 202-225-3486
@@ -29629,10 +29651,10 @@
     class: 3
     party: Republican
     url: http://www.toomey.senate.gov
-    address: 502 HART SENATE OFFICE BUILDING WASHINGTON DC 20510
+    address: 248 RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
     phone: 202-224-4254
     contact_form: http://www.toomey.senate.gov/?p=contact
-    office: 502 Hart Senate Office Building
+    office: 248 Russell Senate Office Building
     state_rank: junior
 - id:
     bioguide: T000465
@@ -29757,7 +29779,7 @@
     state: OH
     party: Republican
     district: 10
-    url: http://www.house.gov/miketurner
+    url: http://turner.house.gov/
     address: 2239 Rayburn HOB; Washington DC 20515-3503
     phone: 202-225-6465
     fax: 202-225-6754
@@ -29775,6 +29797,7 @@
     - H6MI04113
     cspan: 12127
     house_history: 20868
+    wikipedia: Fred Upton
   name:
     first: Fred
     middle: Stephen
@@ -29896,6 +29919,7 @@
     - H2MD08126
     cspan: 20756
     house_history: 21032
+    wikipedia: Chris Van Hollen
   name:
     first: Chris
     last: Van Hollen
@@ -30727,6 +30751,7 @@
     fec:
     - H6CA24048
     cspan: 8319
+    wikipedia: Henry Waxman
   name:
     first: Henry
     middle: A.
@@ -30883,6 +30908,7 @@
     fec:
     - H0FL08208
     cspan: 30504
+    wikipedia: Daniel Webster (Florida politician)
   name:
     first: Daniel
     last: Webster
@@ -31028,7 +31054,7 @@
     state: GA
     party: Republican
     district: 3
-    url: http://www.house.gov/westmoreland
+    url: http://westmoreland.house.gov/
     address: 2433 Rayburn HOB; Washington DC 20515-1008
     phone: 202-225-5901
     fax: 202-225-2515
@@ -31645,6 +31671,7 @@
     - H6KY03124
     cspan: 1021662
     house_history: 21106
+    wikipedia: John Yarmuth
   name:
     first: John
     middle: A.
@@ -32173,10 +32200,10 @@
     party: Republican
     class: 1
     url: http://www.heller.senate.gov
-    address: 361A RUSSELL SENATE OFFICE BUILDING WASHINGTON DC 20510
+    address: 324 HART SENATE OFFICE BUILDING WASHINGTON DC 20510
     phone: 202-224-6244
     contact_form: http://www.heller.senate.gov/public/index.cfm/contact-form
-    office: 361a Russell Senate Office Building
+    office: 324 Hart Senate Office Building
     state_rank: junior
     rss_url: http://heller.senate.gov/public/index.cfm/rss/feed
 - id:
@@ -32361,6 +32388,8 @@
     thomas: '02096'
     cspan: 1033929
     wikipedia: Suzan DelBene
+    fec:
+    - H0WA08046
   name:
     first: Suzan
     middle: K.
@@ -32399,6 +32428,8 @@
     thomas: '02094'
     cspan: 79951
     wikipedia: Thomas Massie
+    fec:
+    - H2KY04121
   name:
     first: Thomas
     last: Massie
@@ -32436,6 +32467,8 @@
     thomas: '02097'
     cspan: 65639
     wikipedia: Donald Payne, Jr.
+    fec:
+    - H2NJ10154
   name:
     first: Donald
     middle: M.
@@ -32502,6 +32535,8 @@
     thomas: '01009'
     govtrack: 400606
     wikipedia: Matt Salmon
+    fec:
+    - H4AZ01038
   name:
     first: Matt
     last: Salmon
@@ -32545,6 +32580,8 @@
     govtrack: 410396
     cspan: 3626
     wikipedia: Steve Stockman
+    fec:
+    - H6TX22143
   name:
     first: Steve
     last: Stockman
@@ -32811,6 +32848,8 @@
     thomas: '02098'
     cspan: 63928
     wikipedia: Tom Cotton
+    fec:
+    - H2AR04083
   name:
     first: Tom
     last: Cotton
@@ -32838,6 +32877,8 @@
     opensecrets: N00033983
     votesmart: 28338
     wikipedia: Kyrsten Sinema
+    fec:
+    - H2AZ09019
   name:
     first: Kyrsten
     last: Sinema
@@ -32864,6 +32905,8 @@
     cspan: 68493
     votesmart: 29713
     wikipedia: Doug LaMalfa
+    fec:
+    - H2CA02142
   name:
     first: Doug
     last: LaMalfa
@@ -32889,6 +32932,8 @@
     thomas: '02101'
     cspan: 622431
     wikipedia: Jared Huffman
+    fec:
+    - H2CA06259
   name:
     first: Jared
     last: Huffman
@@ -32913,6 +32958,9 @@
     bioguide: B001287
     thomas: '02102'
     cspan: 1033636
+    fec:
+    - H0CA03078
+    wikipedia: Ami Bera
   name:
     first: Ami
     last: Bera
@@ -32940,6 +32988,8 @@
     opensecrets: N00034224
     votesmart: 58121
     wikipedia: Paul Cook (politician)
+    fec:
+    - H2CA08164
   name:
     first: Paul
     last: Cook
@@ -32967,6 +33017,8 @@
     opensecrets: N00033508
     votesmart: 129529
     wikipedia: Eric Swalwell
+    fec:
+    - H2CA15094
   name:
     first: Eric
     last: Swalwell
@@ -32992,6 +33044,8 @@
     thomas: '02105'
     cspan: 623702
     wikipedia: David Valadao
+    fec:
+    - H2CA20094
   name:
     first: David
     last: Valadao
@@ -33019,6 +33073,8 @@
     cspan: 79783
     votesmart: 59904
     wikipedia: Julia Brownley
+    fec:
+    - H2CA00120
   name:
     first: Julia
     last: Brownley
@@ -33044,6 +33100,8 @@
     thomas: '02107'
     cspan: 63934
     wikipedia: Tony Cardenas
+    fec:
+    - H2CA28113
   name:
     first: Tony
     last: Cárdenas
@@ -33071,6 +33129,8 @@
     opensecrets: N00033509
     votesmart: 16492
     wikipedia: Gloria Negrete McLeod
+    fec:
+    - H2CA35118
   name:
     first: Gloria
     last: Negrete McLeod
@@ -33096,6 +33156,8 @@
     thomas: '02109'
     cspan: 79727
     wikipedia: Raul Ruiz (politician)
+    fec:
+    - H2CA36439
   name:
     first: Raul
     last: Ruiz
@@ -33121,6 +33183,8 @@
     thomas: '02110'
     cspan: 2737
     wikipedia: Mark Takano
+    fec:
+    - H2CA43245
   name:
     first: Mark
     last: Takano
@@ -33146,6 +33210,8 @@
     thomas: '02111'
     cspan: 93815
     wikipedia: Alan Lowenthal
+    fec:
+    - H2CA00104
   name:
     first: Alan
     last: Lowenthal
@@ -33172,6 +33238,8 @@
     thomas: '02112'
     cspan: 8297
     wikipedia: Juan Vargas
+    fec:
+    - H2CA50026
   name:
     first: Juan
     last: Vargas
@@ -33198,6 +33266,8 @@
     cspan: 79661
     votesmart: 70351
     wikipedia: Scott Peters (politician)
+    fec:
+    - H2CA52089
   name:
     first: Scott
     last: Peters
@@ -33225,6 +33295,8 @@
     cspan: 1020906
     votesmart: 72826
     wikipedia: Elizabeth Esty
+    fec:
+    - H2CT05131
   name:
     first: Elizabeth
     last: Esty
@@ -33252,6 +33324,8 @@
     cspan: 63943
     votesmart: 137622
     wikipedia: Ted Yoho
+    fec:
+    - H2FL06109
   name:
     first: Ted
     last: Yoho
@@ -33278,6 +33352,8 @@
     thomas: '02116'
     cspan: 79744
     wikipedia: Ron DeSantis
+    fec:
+    - H2FL00292
   name:
     first: Ron
     last: DeSantis
@@ -33305,6 +33381,8 @@
     opensecrets: N00033091
     votesmart: 137652
     wikipedia: Patrick Murphy (Florida politician)
+    fec:
+    - H2FL22072
   name:
     first: Patrick
     last: Murphy
@@ -33331,6 +33409,8 @@
     cspan: 79974
     votesmart: 137658
     wikipedia: Trey Radel
+    fec:
+    - H2FL14194
   name:
     first: Trey
     last: Radel
@@ -33357,6 +33437,8 @@
     cspan: 623714
     votesmart: 8102
     wikipedia: Lois Frankel
+    fec:
+    - H2FL14053
   name:
     first: Lois
     last: Frankel
@@ -33383,6 +33465,8 @@
     cspan: 623086
     votesmart: 124355
     wikipedia: Joe Garcia
+    fec:
+    - H8FL25015
   name:
     first: Joe
     last: Garcia
@@ -33408,6 +33492,8 @@
     thomas: '02121'
     cspan: 79719
     wikipedia: Doug Collins (politician)
+    fec:
+    - H2GA09150
   name:
     first: Doug
     last: Collins
@@ -33435,6 +33521,8 @@
     opensecrets: N00033281
     votesmart: 129306
     wikipedia: Tulsi Gabbard
+    fec:
+    - H2HI02508
   name:
     first: Tulsi
     last: Gabbard
@@ -33462,6 +33550,8 @@
     opensecrets: N00027860
     votesmart: 57442
     wikipedia: Tammy Duckworth
+    fec:
+    - H6IL06141
   name:
     first: Tammy
     last: Duckworth
@@ -33489,6 +33579,8 @@
     opensecrets: N00033101
     votesmart: 134948
     wikipedia: Brad Schneider
+    fec:
+    - H2IL10068
   name:
     first: Bradley
     last: Schneider
@@ -33517,6 +33609,8 @@
     opensecrets: N00034884
     votesmart: 110744
     wikipedia: William Enyart
+    fec:
+    - H2IL12122
   name:
     first: William
     last: Enyart
@@ -33545,6 +33639,8 @@
     opensecrets: N00034784
     votesmart: 9622
     wikipedia: Rodney L. Davis
+    fec:
+    - H2IL13120
   name:
     first: Rodney
     last: Davis
@@ -33572,6 +33668,8 @@
     opensecrets: N00033390
     votesmart: 134964
     wikipedia: Cheri Bustos
+    fec:
+    - H2IL17071
   name:
     first: Cheri
     last: Bustos
@@ -33596,6 +33694,9 @@
     bioguide: W000813
     thomas: '02128'
     cspan: 95005
+    fec:
+    - H0IN02190
+    wikipedia: Jackie Walorski
   name:
     first: Jackie
     last: Walorski
@@ -33621,6 +33722,8 @@
     thomas: '02129'
     cspan: 623720
     wikipedia: Susan Brooks
+    fec:
+    - H2IN05082
   name:
     first: Susan
     last: Brooks
@@ -33647,6 +33750,8 @@
     thomas: '02130'
     cspan: 11245
     wikipedia: Luke Messer
+    fec:
+    - H0IN02125
   name:
     first: Luke
     last: Messer
@@ -33672,6 +33777,8 @@
     thomas: '02131'
     cspan: 61848
     wikipedia: Andy Barr (U.S. politician)
+    fec:
+    - H0KY06104
   name:
     first: Garland
     last: Barr
@@ -33698,6 +33805,7 @@
     lis: S366
     govtrack: 412542
     cspan: 1023023
+    wikipedia: Elizabeth Warren
   name:
     first: Elizabeth
     last: Warren
@@ -33725,6 +33833,8 @@
     cspan: 79948
     votesmart: 141275
     wikipedia: Joseph P. Kennedy III
+    fec:
+    - H2MA04073
   name:
     first: Joseph
     last: Kennedy
@@ -33752,6 +33862,8 @@
     thomas: '02133'
     cspan: 68432
     wikipedia: John Delaney (Maryland politician)
+    fec:
+    - H2MD06195
   name:
     first: John
     last: Delaney
@@ -33778,6 +33890,7 @@
     lis: S363
     govtrack: 412545
     cspan: 37413
+    wikipedia: Angus King
   name:
     first: Angus
     last: King
@@ -33804,6 +33917,8 @@
     thomas: '02134'
     cspan: 623723
     wikipedia: Dan Kildee
+    fec:
+    - H2MI05119
   name:
     first: Daniel
     last: Kildee
@@ -33831,6 +33946,8 @@
     cspan: 79627
     votesmart: 123059
     wikipedia: Kerry Bentivolio
+    fec:
+    - H2MI11133
   name:
     first: Kerry
     last: Bentivolio
@@ -33860,6 +33977,8 @@
     votesmart: 138505
     wikipedia: Rick Nolan
     house_history: 18988
+    fec:
+    - H2MN08111
   name:
     first: Richard
     middle: M.
@@ -33903,6 +34022,9 @@
     bioguide: W000812
     thomas: '02137'
     cspan: 82702
+    fec:
+    - H2MO02102
+    wikipedia: Ann Wagner
   name:
     first: Ann
     last: Wagner
@@ -33928,6 +34050,8 @@
     thomas: '02138'
     cspan: 1034037
     wikipedia: Steve Daines
+    fec:
+    - H2MT01060
   name:
     first: Steve
     last: Daines
@@ -33953,6 +34077,8 @@
     thomas: '02140'
     cspan: 79622
     wikipedia: Richard Hudson (U.S. politician)
+    fec:
+    - H2NC08185
   name:
     first: Richard
     last: Hudson
@@ -33979,6 +34105,8 @@
     cspan: 9265861
     votesmart: 41272
     wikipedia: Robert Pittenger
+    fec:
+    - H2NC09134
   name:
     first: Robert
     last: Pittenger
@@ -34004,6 +34132,8 @@
     thomas: '02142'
     cspan: 79621
     wikipedia: Mark Meadows (North Carolina politician)
+    fec:
+    - H2NC11080
   name:
     first: Mark
     last: Meadows
@@ -34030,6 +34160,8 @@
     cspan: 623728
     votesmart: 136462
     wikipedia: George Holding
+    fec:
+    - H2NC13110
   name:
     first: George
     last: Holding
@@ -34055,6 +34187,7 @@
     lis: S360
     govtrack: 412554
     cspan: 95414
+    wikipedia: Heidi Heitkamp
   name:
     first: Heidi
     last: Heitkamp
@@ -34081,6 +34214,8 @@
     thomas: '02144'
     cspan: 7600
     wikipedia: Kevin Cramer
+    fec:
+    - H0ND01026
   name:
     first: Kevin
     last: Cramer
@@ -34106,6 +34241,7 @@
     lis: S357
     govtrack: 412556
     cspan: 1034067
+    wikipedia: Sen. Deb Fischer
   name:
     first: Deb
     last: Fischer
@@ -34135,6 +34271,8 @@
     opensecrets: N00030875
     votesmart: 122256
     wikipedia: Ann McLane Kuster
+    fec:
+    - H0NH02181
   name:
     first: Ann
     last: Kuster
@@ -34160,6 +34298,9 @@
     bioguide: L000580
     thomas: '02146'
     cspan: 94791
+    fec:
+    - H8NM01257
+    wikipedia: Michelle Lujan Grisham
   name:
     first: Michelle
     last: Lujan Grisham
@@ -34186,6 +34327,8 @@
     cspan: 79614
     votesmart: 44064
     wikipedia: Steven Horsford
+    fec:
+    - H2NV04011
   name:
     first: Steven
     last: Horsford
@@ -34212,6 +34355,8 @@
     thomas: '02148'
     cspan: 68411
     wikipedia: Grace Meng
+    fec:
+    - H2NY06116
   name:
     first: Grace
     last: Meng
@@ -34236,6 +34381,9 @@
     bioguide: J000294
     thomas: '02149'
     cspan: 79612
+    fec:
+    - H2NY10092
+    wikipedia: Hakeem Jeffries
   name:
     first: Hakeem
     last: Jeffries
@@ -34264,6 +34412,8 @@
     opensecrets: N00034277
     votesmart: 139760
     wikipedia: Sean Patrick Maloney
+    fec:
+    - H2NY22139
   name:
     first: Sean
     last: Maloney
@@ -34289,6 +34439,9 @@
     bioguide: C001092
     thomas: '02151'
     cspan: 94144
+    fec:
+    - H8NY29032
+    wikipedia: Chris Collins (American politician)
   name:
     first: Chris
     last: Collins
@@ -34313,6 +34466,9 @@
     bioguide: W000815
     thomas: '02152'
     cspan: 1034044
+    fec:
+    - H2OH02085
+    wikipedia: Brad Wenstrup
   name:
     first: Brad
     last: Wenstrup
@@ -34339,6 +34495,8 @@
     cspan: 67294
     votesmart: 2427
     wikipedia: Joyce Beatty
+    fec:
+    - H2OH03125
   name:
     first: Joyce
     last: Beatty
@@ -34365,6 +34523,8 @@
     cspan: 68561
     votesmart: 143052
     wikipedia: David Joyce (politician)
+    fec:
+    - H2OH14064
   name:
     first: David
     last: Joyce
@@ -34392,6 +34552,8 @@
     cspan: 79705
     votesmart: 135894
     wikipedia: Jim Bridenstine
+    fec:
+    - H2OK01143
   name:
     first: Jim
     last: Bridenstine
@@ -34417,6 +34579,8 @@
     thomas: '02156'
     cspan: 1034045
     wikipedia: Markwayne Mullin
+    fec:
+    - H2OK02083
   name:
     first: Markwayne
     last: Mullin
@@ -34443,6 +34607,8 @@
     cspan: 79873
     votesmart: 59980
     wikipedia: Scott Perry (politician)
+    fec:
+    - H2PA04135
   name:
     first: Scott
     last: Perry
@@ -34469,6 +34635,8 @@
     cspan: 61949
     votesmart: 119466
     wikipedia: Keith Rothfus
+    fec:
+    - H0PA04220
   name:
     first: Keith
     last: Rothfus
@@ -34494,6 +34662,9 @@
     bioguide: C001090
     thomas: '02159'
     cspan: 79865
+    fec:
+    - H2PA17079
+    wikipedia: Matt Cartwright
   name:
     first: Matthew
     last: Cartwright
@@ -34522,6 +34693,8 @@
     opensecrets: N00033832
     votesmart: 132382
     wikipedia: Tom Rice
+    fec:
+    - H2SC07066
   name:
     first: Tom
     last: Rice
@@ -34547,6 +34720,7 @@
     lis: S355
     govtrack: 412573
     cspan: 1019953
+    wikipedia: Ted Cruz
   name:
     first: Ted
     last: Cruz
@@ -34572,6 +34746,9 @@
     bioguide: W000814
     thomas: '02161'
     cspan: 79698
+    fec:
+    - H2TX14149
+    wikipedia: Randy Weber
   name:
     first: Randy
     last: Weber
@@ -34599,6 +34776,8 @@
     cspan: 79697
     votesmart: 78533
     wikipedia: Beto O'Rourke
+    fec:
+    - H2TX16185
   name:
     first: Beto
     last: O'Rourke
@@ -34623,6 +34802,9 @@
     bioguide: C001091
     thomas: '02163'
     cspan: 63974
+    fec:
+    - H2TX35011
+    wikipedia: Joaquín Castro
   name:
     first: Joaquin
     last: Castro
@@ -34649,6 +34831,8 @@
     cspan: 79696
     votesmart: 5505
     wikipedia: Pete Gallego
+    fec:
+    - H2TX23124
   name:
     first: Pete
     last: Gallego
@@ -34674,6 +34858,9 @@
     bioguide: W000816
     thomas: '02165'
     cspan: 623742
+    fec:
+    - H2TX33040
+    wikipedia: Roger Williams (U.S. politician)
   name:
     first: Roger
     last: Williams
@@ -34698,6 +34885,9 @@
     bioguide: V000131
     thomas: '02166'
     cspan: 79466
+    fec:
+    - H2TX33073
+    wikipedia: Marc Veasey
   name:
     first: Marc
     last: Veasey
@@ -34723,6 +34913,9 @@
     bioguide: V000132
     thomas: '02167'
     cspan: 95434
+    fec:
+    - H2TX27190
+    wikipedia: Filemon Vela, Jr.
   name:
     first: Filemon
     last: Vela
@@ -34748,6 +34941,8 @@
     thomas: '02168'
     cspan: 68466
     wikipedia: Chris Stewart (politician)
+    fec:
+    - H2UT02324
   name:
     first: Chris
     last: Stewart
@@ -34773,6 +34968,7 @@
     lis: S362
     govtrack: 412582
     cspan: 49219
+    wikipedia: Tim Kaine
   name:
     first: Timothy
     last: Kaine
@@ -34800,6 +34996,8 @@
     cspan: 68310
     votesmart: 51516
     wikipedia: Derek Kilmer
+    fec:
+    - H2WA06129
   name:
     first: Derek
     last: Kilmer
@@ -34827,6 +35025,8 @@
     opensecrets: N00031557
     votesmart: 126058
     wikipedia: Dennis Heck
+    fec:
+    - H0WA03161
   name:
     first: Denny
     last: Heck
@@ -34853,6 +35053,8 @@
     cspan: 79688
     votesmart: 26238
     wikipedia: Mark Pocan
+    fec:
+    - H2WI02124
   name:
     first: Mark
     last: Pocan
@@ -34901,12 +35103,16 @@
     contact_form: http://www.cowan.senate.gov/contact
 - id:
     bioguide: K000385
+    thomas: '02190'
     govtrack: 412595
     votesmart: 33384
     wikipedia: Robin Kelly
+    fec:
+    - H2IL02172
   name:
     first: Robin
     last: Kelly
+    official_full: Robin L. Kelly
   bio:
     gender: F
     birthday: '1956-04-30'
@@ -34917,3 +35123,43 @@
     state: IL
     district: 2
     party: Democrat
+    address: 2419 Rayburn HOB; Washington DC 20515-1302
+    office: 2419 Rayburn House Office Building
+    phone: 202-225-0773
+    url: http://robinkelly.house.gov
+- id:
+    bioguide: S000051
+    thomas: '01012'
+    govtrack: 400607
+  name:
+    first: Marshall
+    last: Sanford
+    nickname: Mark
+  bio:
+    birthday: '1960-05-28'
+    gender: M
+  terms:
+  - type: rep
+    start: '1995-01-04'
+    end: '1996-10-04'
+    state: SC
+    district: 1
+    party: Republican
+  - type: rep
+    start: '1997-01-07'
+    end: '1998-12-19'
+    state: SC
+    district: 1
+    party: Republican
+  - type: rep
+    start: '1999-01-06'
+    end: '2000-12-15'
+    state: SC
+    district: 1
+    party: Republican
+  - type: rep
+    start: '2013-05-15'
+    end: '2015-01-03'
+    state: SC
+    district: 1
+    party: Republican

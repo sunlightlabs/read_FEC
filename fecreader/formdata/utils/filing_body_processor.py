@@ -12,7 +12,7 @@ from form_mappers import *
 
 from write_csv_to_db import CSV_dumper
 
-fp = form_parser()
+
 
 def get_connection():
     dbname = DATABASES['default']['NAME']
@@ -73,9 +73,11 @@ def process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id):
         otherline_from_line(linedict, filingnum, header_id, is_amended, cd, filer_id)
 
 
-def process_filing_body(filingnum, fp):
-    
-    
+def process_filing_body(filingnum, fp=None):
+    # It's useful to pass the form parser in when running in bulk so we don't have to keep creating new ones. 
+    if not fp:
+      fp = form_parser()
+      
     connection = get_connection()
     cursor = connection.cursor()
     cmd = "select id, is_superceded from formdata_filing_header where filing_number=%s" % (filingnum)

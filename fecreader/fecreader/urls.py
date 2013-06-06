@@ -18,5 +18,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^base/$', TemplateView.as_view(template_name="test_templates/base.html")),
     url(r'^styletest/$', TemplateView.as_view(template_name="test_templates/styletest.html")),
-#    url(r'', include('sfapp.urls')),    
+    url(r'', include('public_views.datapages.urls')),    
 )
