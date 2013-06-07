@@ -1,5 +1,5 @@
 Inspired by NYT's ruby FEC parser: https://github.com/NYTimes/Fech
-
+ 
 Parse a subset of FEC forms by using the handy csv descriptors put together in NYT's Fech (which is pronounced 'Feck'); they are included in the sources/ directory. There may be slight differences in these files; an additional SchA3L.csv was added to handle SA3L lines in F3L reports. The csv generation routines have not been ported.
 
 Separates file retrieval and parsing into separate steps; allows retrieval from (and saving to) the local filesystem. Includes a util (download_old_fec_filings.py) to download and unzip .fec files en mass from the FEC's archives into the file cache directory.
