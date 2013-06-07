@@ -57,7 +57,6 @@ senate_crosswalk = [
 {'bioguide':'J000291', 'fec_id':'S8NE00117'},
 {'bioguide':'J000177', 'fec_id':'S6SD00051'},
 {'bioguide':'L000550', 'fec_id':'S6LA00227'},
-{'bioguide':'L000123', 'fec_id':'S2NJ00080'},
 {'bioguide':'L000261', 'fec_id':'S8MI00158'},
 {'bioguide':'M000355', 'fec_id':'S2KY00012'},
 {'bioguide':'M001176', 'fec_id':'S8OR00207'},

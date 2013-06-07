@@ -119,7 +119,6 @@ def get_house_challengers():
                         
                     Candidate_Overlay.objects.create(
                         district=this_district,
-                        candidate=thiscandidate,
                         cycle=cycle,
                         fec_id=fec_id,
                         name=thiscandidate.cand_name,
@@ -231,7 +230,6 @@ def get_senate_challengers():
 
                     Candidate_Overlay.objects.create(
                         district=this_district,
-                        candidate=thiscandidate,
                         cycle=cycle,
                         fec_id=fec_id,
                         name=thiscandidate.cand_name,
