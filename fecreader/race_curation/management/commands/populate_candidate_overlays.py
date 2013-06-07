@@ -60,7 +60,7 @@ def get_house_incumbents():
         this_district = District.objects.get(cycle=cycle,state=state, office='H', office_district=district)
 
 
-        this_overlay, created = Candidate_Overlay.objects.get_or_create(fec_id=fec_id, cycle=cycle, district=this_district, candidate = thiscandidate)
+        this_overlay, created = Candidate_Overlay.objects.get_or_create(fec_id=fec_id, cycle=cycle, district=this_district)
         this_overlay.name = thiscandidate.cand_name
         this_overlay.pty = thiscandidate.cand_pty_affiliation
         this_overlay.party = get_party_from_pty(thiscandidate.cand_pty_affiliation)
