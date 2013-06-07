@@ -237,7 +237,7 @@ def get_senate_challengers():
                         name=thiscandidate.cand_name,
                         pty=thiscandidate.cand_pty_affiliation,
                         party = get_party_from_pty(thiscandidate.cand_pty_affiliation),
-                        pcc=thiscandidate.cand_pcc,
+                        #pcc=thiscandidate.cand_pcc,
                         term_class=term_class,
                         election_year=thiscandidate.cand_election_year,
                         state=thiscandidate.cand_office_st,
