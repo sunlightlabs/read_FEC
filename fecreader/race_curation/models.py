@@ -61,7 +61,8 @@ class Candidate_Overlay(models.Model):
     # foreignkeytoUScongressifthereisone = models.ForeignKey(some_model)
     # foreign key to district
     district = models.ForeignKey('District')
-    candidate = models.ForeignKey(Candidate, null=True)
+    # drop the foreign key to Candidate_Overlay -- these tables are dropped and recreated regularly.
+    #candidate = models.ForeignKey(Candidate, null=True)
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     transparency_id = models.CharField(max_length=31, blank=True, null=True, help_text="Crosswalk to influence explorer etc.")
     is_minor_candidate = models.BooleanField(default=False,help_text="Should we hide this name because they're not a serious candidate")
