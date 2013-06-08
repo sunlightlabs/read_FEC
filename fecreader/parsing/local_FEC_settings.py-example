@@ -1,0 +1,24 @@
+ARCHIVE_DIR = '/path/to/archive/dir'
+
+# where can we save local files? THIS MUST ALREADY EXIST
+FILECACHE_DIRECTORY = ARCHIVE_DIR + '/data/fec_filings'
+
+# where can we save raw zip files downloaded from the FEC before unzipping
+ZIP_DIRECTORY = ARCHIVE_DIR + '/data/zipped_fec_filings'
+
+# alternate source directory with massaged names. See read_source_column_names
+CSV_FILE_DIRECTORY = 'path/to/fecreader/parsing/sourcesalt'
+
+FTP_DATA_DIR =  '/path/to/fecreader/ftpdata/data'
+
+LOG_DIRECTORY = BASE_DIR + "/log"
+
+# ASSUMES THAT FILECACHE_DIRECTORY AND ZIP_DIRECTORY EXIST AND ARE WRITEABLE!
+
+BASE_DIR = '/path/to/fecreader/parsing'
+
+# where can we save raw zip files downloaded from the FEC before unzipping
+ZIP_DIRECTORY = ARCHIVE_DIR + '/data/zipped_fec_filings'
+
+# where are NYT's csv definitional files? These are generally swiped from here, and fixed up (some of them need tweaking): https://github.com/NYTimes/Fech/tree/master/sources -- or maybe bycoffe's branch: https://github.com/NYTimes/Fech/tree/huffingtonpost/sources
+CSV_FILE_DIRECTORY = BASE_DIR + '/sources'
