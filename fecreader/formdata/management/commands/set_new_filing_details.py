@@ -35,7 +35,7 @@ class Command(BaseCommand):
             form_type = this_filing.form_type
             parsed_data = {'coh_start':None, 'coh_end':None, 'new_loans':None,'tot_raised':None,'tot_spent':None}
             
-            if form_type in ['F3XA', 'F3XN', 'F3XT', 'F3A', 'F3N', 'F3T','F3PA', 'F3PN', 'F3PT']:
+            if form_type in ['F3XA', 'F3XN', 'F3XT', 'F3A', 'F3N', 'F3T','F3PA', 'F3PN', 'F3PT', 'F3', 'F3X']:
                 parsed_data = process_f3_header(header_data)
                 #print "got data %s" % (parsed_data)
                 
