@@ -195,7 +195,7 @@ def skede_from_skededict(data_dict, filing_number, header_row_id, is_amended, cd
     data_dict['expenditure_amount'] = validate_decimal(data_dict['expenditure_amount'])
     data_dict['calendar_y_t_d_per_election_office'] = validate_decimal(data_dict['calendar_y_t_d_per_election_office'])
 
-    model_instance = SkedE()
+    #model_instance = SkedE()
     
     cd.writerow('E', data_dict)
     

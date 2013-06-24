@@ -61,8 +61,12 @@ class new_filing(models.Model):
     # processing status notes
     filing_is_downloaded = models.NullBooleanField(default=False)
     header_is_processed = models.NullBooleanField(default=False)
-    data_is_processed = models.NullBooleanField(default=False)
     previous_amendments_processed = models.NullBooleanField(default=False)
+    data_is_processed = models.NullBooleanField(default=False)
+    
+    ## New # Have the body rows in superceded filings been marked as amendments? 
+    ## alter table fec_alerts_new_filing add column "body_rows_superceded" boolean;
+    body_rows_superceded = models.NullBooleanField(default=False)
     
     ## summary data only available after form is parsed:
     

@@ -16,9 +16,6 @@ def dict_to_hstore(python_dict):
             hstore.write(",")
         else:
             first_row=False
-        #dictstring = "\"%s\"=>\"%s\"" % (key, python_dict[key])
         hstore.write("\"%s\"=>\"%s\"" % (key, python_dict[key]))
-    #print "\n\n\n\nvalue is: %s" % hstore.getvalue()
-    #assert False
     return hstore.getvalue()
     

@@ -12,8 +12,16 @@ from form_mappers import *
 
 from write_csv_to_db import CSV_dumper
 
+from fec_import_logging import fec_logger
+from hstore_helpers import dict_to_hstore
 
 
+class FilingHeaderDoesNotExist(Exception):
+    pass
+    
+class FilingHeaderAlreadyProcessed(Exception):
+    pass
+    
 def get_connection():
     dbname = DATABASES['default']['NAME']
     pw = DATABASES['default']['PASSWORD']
@@ -72,11 +80,18 @@ def process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id):
     else:
         otherline_from_line(linedict, filingnum, header_id, is_amended, cd, filer_id)
 
-
-def process_filing_body(filingnum, fp=None):
-    # It's useful to pass the form parser in when running in bulk so we don't have to keep creating new ones. 
+def process_filing_body(filingnum, fp=None, logger=None):
+    
+    
+    #It's useful to pass the form parser in when running in bulk so we don't have to keep creating new ones. 
     if not fp:
       fp = form_parser()
+      
+    if not logger:
+        logger=fec_logger()
+    msg = "process_filing_body: Starting # %s" % (filingnum)
+    #print msg
+    logger.info(msg)
       
     connection = get_connection()
     cursor = connection.cursor()
@@ -87,13 +102,22 @@ def process_filing_body(filingnum, fp=None):
     
     result = cursor.fetchone()
     if not result:
-        print "couldn't find header!!!"
-        # raise something here
-        return None
-    
+        msg = 'process_filing_body: Couldn\'t find a filing header for this'
+        logger.error(msg)
+        raise FilingHeaderDoesNotExist(msg)
+        
     # will throw a TypeError if it's missing.
     header_id = result[0]
     is_amended = result[1]
+    
+    cmd = "select data_is_processed from fec_alerts_new_filing where filing_number=%s" % (filingnum)
+    cursor.execute(cmd)
+    result = cursor.fetchone()
+    is_already_processed = result[0]
+    if is_already_processed:
+        msg = 'process_filing_body: This filing has already been entered.'
+        logger.error(msg)
+        raise FilingHeaderAlreadyProcessed(msg)
     
     #print "Processing filing %s" % (filingnum)
     f1 = filing(filingnum)
@@ -101,13 +125,13 @@ def process_filing_body(filingnum, fp=None):
     version = f1.get_version()
     filer_id = f1.get_filer_id()
     
-    
-
     # only parse forms that we're set up to read
     
     if not fp.is_allowed_form(form):
         if verbose:
-            print "Not a parseable form: %s - %s" % (form, filingnum)
+            msg = "process_filing_body: Not a parseable form: %s - %s" % (form, filingnum)
+            # print msg
+            logger.error(msg)
         return None
     
     while True:
@@ -130,14 +154,33 @@ def process_filing_body(filingnum, fp=None):
     for i in counter:
         total_rows += counter[i]
         
-    print "Total rows: %s Tally is: %s" % (total_rows, counter)
+    msg = "process_filing_body: Filing # %s Total rows: %s Tally is: %s" % (filingnum, total_rows, counter)
+    # print msg
+    logger.info(msg)
+    
+    # save the line number count -- which is counter in the above -- as an hstore in the original 
+    header_data = dict_to_hstore(counter)
+    cmd = "update formdata_filing_header set header_data='%s'::hstore where filing_number=%s" % (header_data, filingnum)
+    cursor.execute(cmd)
+    
+    # mark file as having been entered. 
+    cmd = "update fec_alerts_new_filing set data_is_processed = True where filing_number=%s" % (filingnum)
+    cursor.execute(cmd)
+    
+    # flag this filer as one who has changed. 
+    cmd = "insert into formdata_committee_changed (committee_id, time) values ('%s', current_timestamp)" % (filer_id)
+    cursor.execute(cmd)
     
 
+
+
+
+"""
 t0 = time.time()
-#process_filing_body(824988, fp)
+process_filing_body(864353)
 # 869853, 869866
-for fn in [869888]:
-    process_filing_body(fn, fp)
+#for fn in [869888]:
+#    process_filing_body(fn, fp)
 t1 = time.time()
 print "total time = " + str(t1-t0)
 # long one: 767168
@@ -150,6 +193,6 @@ print "total time = " + str(t1-t0)
 # 827978 - 119 mb
 # 754317 - 118 mb
 
-
+"""
 
 

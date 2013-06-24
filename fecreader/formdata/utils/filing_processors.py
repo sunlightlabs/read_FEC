@@ -61,31 +61,11 @@ def mark_superceded_amendment_header_rows(header_row):
         # 
         mark_superceded_body_rows(earlier_amendment)
         
-def mark_superceded_F24s(new_f3x_filing_header):
-    print "marking superceded F24 body rows"
-    
-    # we only mark the child rows as superceded--the filing itself isn't, because it's possible, in theory, that it's *half* superceded. 
-    coverage_from_date = new_f3x_filing_header.coverage_from_date
-    coverage_through_date = new_f3x_filing_header.coverage_through_date
-    raw_filer_id = new_f3x_filing_header.raw_filer_id
-    
-    SkedE.objects.filter(form_type__istartswith='F24', filer_committee_id_number=raw_filer_id, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_from_date).update(superceded_by_amendment=True)
-    
-        
-def mark_superceded_F65s(new_f3_filing_header):
-    print "marking superceded F65s"
-    
-    coverage_from_date = new_f3_filing_header.coverage_from_date
-    coverage_through_date = new_f3_filing_header.coverage_through_date
-    raw_filer_id = new_f3_filing_header.raw_filer_id
-    
-    SkedA.objects.filter(form_type__istartswith='F56', filer_committee_id_number=raw_filer_id, superceded_by_amendment=False, contribution_date__gte=coverage_from_date, contribution_date__lte=coverage_from_date).update(superceded_by_amendment=True)
-    
 
 
 
 def process_filing_header(filingnum, fp=None, filing_time=None, filing_time_is_exact=False):
-    """ Enter the file header if needed. Post processing is still needed once it's complete. """
+    """ Enter the file header if needed.  """
     
     header_needs_entry = True
     this_filing_header = None
@@ -160,38 +140,24 @@ def process_filing_header(filingnum, fp=None, filing_time=None, filing_time_is_e
         filing_time_is_exact=filing_time_is_exact)
     
     this_filing_header.save(force_insert=True)
-    return True
 
-def post_process_filing(filing_number, linedict):
     
-    this_filing_header = Filing_Header.objects.get(filing_number=filingnum)
+    """ Don't do this here--the new data--which is superceding the old data--is only queued for entry at this point
+    The new data isn't necessarily loaded yet, so don't knock the old data out. If the old data gets knocked out before
+    the new is loaded we may get a wrong sum. 
     
-    this_filing_header.lines_present = line_dict
-    this_filing_header.entry_complete = True
-    this_filing_header.save()
-
-
-    # if this is an amended file, mark that the originals were superceded.
-    if amended_filing:
-        mark_superceded_amendment_header_rows(this_filing_header)
-
+    This is now performed in mark_superceded_body_rows.py 
+    
     # if it's got sked E's and it's an F3X, overwrite 24-hr reports
     if this_filing_header.form=='F3X':
-        try:
-            this_filing_header.lines_present['SchE']
             mark_superceded_F24s(this_filing_header)
-        except KeyError:
-            pass
 
 
     # if it's a F3 remove F65's        
-    if this_filing_header.form=='F3':
-        try:
-            this_filing_header.lines_present['SchA']
-            mark_superceded_F65s(this_filing_header)
-        except KeyError:
-            pass
+    if this_filing_header.form=='F3':        
+        mark_superceded_F65s(this_filing_header)
+    """
 
-    # NOT YET SURE: if it's a quarterly F5 ignore it, we think, maybe
-    
-        
+
+    return True
+

@@ -16,6 +16,10 @@ class Command(BaseCommand):
         for new_amended_filing in all_new_amendment_headers:
             print "processing %s " % (new_amended_filing.filing_number)
             
+            
+            
+            
+            
             this_filing_type = new_amended_filing.form_type.upper()
             # only run it if its a form we parse. 
             if this_filing_type.endswith('A') and not (this_filing_type in ['F1A', 'F2A']):

@@ -20,8 +20,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        #new_filings_to_process = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')
-        new_filings_to_process = new_filing.objects.filter(form_type__startswith='F3').order_by('filing_number')
+        new_filings_to_process = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')
+        #new_filings_to_process = new_filing.objects.filter(form_type__startswith='F3').order_by('filing_number')
         for this_filing in new_filings_to_process:
             #print "processing %s " % (this_filing.filing_number)
             

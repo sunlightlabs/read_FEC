@@ -5,7 +5,7 @@ from time import sleep
 from datetime import datetime
 from formdata.utils.filing_body_processor import process_filing_body
 
-    
+
 @celery.task
 def printfile(sleeptime):
     print "Running printfile -- sleeping for %s seconds\n" % (sleeptime)
@@ -19,5 +19,5 @@ def printfile(sleeptime):
 
 
 @celery.task
-def process_filing_body_celery(filingnum)
+def process_filing_body_celery(filingnum):
     process_filing_body(filingnum)
