@@ -33,24 +33,26 @@ def exec_command(cmd):
     
 
 start_date =  date(2013,1,1)
-end_date = date.today()
+end_date = date(2013,6,19)
+#end_date = date.today()
 
 one_day = timedelta(days=1)
 
-fileline = re.compile(r'\s+(\d+)\s+(\d\d-\d\d-\d\d)\s+(\d\d:\d\d)\s+(\d+).fec\n')
+fileline = re.compile(r'\s+(\d+)\s+(\d\d\d\d-\d\d-\d\d)\s+(\d\d:\d\d)\s+(\d+).fec\n')
 
 
 this_date = start_date
 result_hash = {}
 while (this_date < end_date):
     datestring = this_date.strftime("%Y%m%d")
-    downloaded_zip_file = ZIP_DIRECTORY + "/" + datestring + ".zip"
+    downloaded_zip_file = ZIP_DIRECTORY + datestring + ".zip"
     cmd = "unzip -l %s" % (downloaded_zip_file)
-    print "datestring %s" % (datestring)
+    print "datestring %s: cmd: %s" % (datestring, cmd)
     this_date += one_day
     if not path.isfile(downloaded_zip_file):
         # a few days are missing--just ignore them
-        continue
+        print "missing dir: %s" % (downloaded_zip_file)
+	continue
     result = exec_command(cmd)
     #print result
 
@@ -58,12 +60,14 @@ while (this_date < end_date):
     lines = re.findall(fileline, result)
     numfiles = len(lines)
     if numfiles == 0:
-        continue
+        print "no files found; skipping";
+
+	continue
     firstfile = lines[0][3]
     lastfile = lines[numfiles-1][3]
     
     thisresult = {'first':firstfile, 'last':lastfile, 'length':numfiles}
-    #print datestring, thisresult
+    print datestring, thisresult
     result_hash[datestring] = thisresult
     
 outfile = open("filerange.py", "w")
