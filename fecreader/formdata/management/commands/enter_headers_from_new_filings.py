@@ -25,7 +25,12 @@ class Command(BaseCommand):
         for filing in downloaded_filings:
             print "need to enter filing %s, entry_time %s" % (filing.filing_number, filing.process_time)
             result_header = None
-            result_header = process_filing_header(filing.filing_number, fp=fp, filing_time=filing.process_time, filing_time_is_exact=True)
+            try: 
+                result_header = process_filing_header(filing.filing_number, fp=fp, filing_time=filing.process_time, filing_time_is_exact=True)
+            except IOError:
+                # if the file's missing, keep running. 
+                print "MISSING FILING: %s" % (filing.filing_number)  
+                continue
             if result_header:
                 filing.header_is_processed=True
                 filing.save()
