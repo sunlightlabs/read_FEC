@@ -91,5 +91,5 @@ class Command(BaseCommand):
                     pass
             if this_filing_header.form=='F3':        
                 mark_superceded_F65s(this_filing_header)
-            this_filing_header.body_rows_superceded = True
-            this_filing_header.save()
+            this_filing.body_rows_superceded = True
+            this_filing.save()
