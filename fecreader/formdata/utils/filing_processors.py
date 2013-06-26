@@ -112,7 +112,7 @@ def process_filing_header(filingnum, fp=None, filing_time=None, filing_time_is_e
 
     try:
         Committee_Changed.objects.get_or_create(committee_id=f1.headers['fec_id'])
-    except MultipleObjectsReturned:
+    except Committee_Changed.MultipleObjectsReturned:
         pass
     
     from_date = None
