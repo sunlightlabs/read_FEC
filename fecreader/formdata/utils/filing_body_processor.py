@@ -2,8 +2,8 @@
 
 import psycopg2, sys, time
 
-sys.path.append('/Users/jfenton/github-whitelabel/read_FEC/fecreader/fecreader/')
-sys.path.append('/Users/jfenton/github-whitelabel/read_FEC/fecreader/')
+sys.path.append('/projects/realtimefec/src/realtimefec/fecreader/fecreader')
+sys.path.append('/projects/realtimefec/src/realtimefec/fecreader/')
 
 from parsing.filing import filing
 from parsing.form_parser import form_parser

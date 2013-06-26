@@ -1,7 +1,7 @@
 import logging
 
 # should go in some non-django file; we'd then have to 
-LOG_DIRECTORY="/Users/jfenton/github-whitelabel/read_FEC/fecreader/logs/"
+LOG_DIRECTORY="/projects/realtimefec/log/"
 LOG_NAME="fec_import"
 
 """ Set up a logger with settings from the settings file. Will log info and anything higher. 

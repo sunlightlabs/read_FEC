@@ -27,8 +27,8 @@ class Command(BaseCommand):
     requires_model_validation = False
 
     def handle(self, *args, **options):
-        start_date = date(2013,4,14)
-        end_date = date(2013,4,23)
+        start_date = date(2013,6,16)
+        end_date = date(2013,6,18)
         one_day = timedelta(days=1)
         
         
