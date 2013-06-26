@@ -14,7 +14,7 @@ class Command(BaseCommand):
     requires_model_validation = False
     
     def handle(self, *args, **options):
-        new_filings = new_filing.objects.filter(filing_is_downloaded=False, header_is_processed=False).order_by('filing_number')
+        new_filings = new_filing.objects.all().order_by('filing_number')
         for filing in new_filings:
             local_location = FILECACHE_DIRECTORY + "/" + str(filing.filing_number) + ".fec"
             
@@ -24,3 +24,5 @@ class Command(BaseCommand):
                 print "Found file %s" % filing.filing_number
             else:
                 print "Couldn't find file %s" % filing.filing_number
+                filing.filing_is_downloaded=False
+                filing.save()
