@@ -110,8 +110,10 @@ def process_filing_header(filingnum, fp=None, filing_time=None, filing_time_is_e
         amended_filing = f1.headers['filing_amended']
 
 
-        
-    Committee_Changed.objects.get_or_create(committee_id=f1.headers['fec_id'])
+    try:
+        Committee_Changed.objects.get_or_create(committee_id=f1.headers['fec_id'])
+    except MultipleObjectsReturned:
+        pass
     
     from_date = None
     through_date = None
