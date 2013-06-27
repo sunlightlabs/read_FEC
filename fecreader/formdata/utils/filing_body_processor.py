@@ -6,7 +6,7 @@ sys.path.append('/projects/realtimefec/src/realtimefec/fecreader/fecreader')
 sys.path.append('/projects/realtimefec/src/realtimefec/fecreader/')
 
 from parsing.filing import filing
-from parsing.form_parser import form_parser
+from parsing.form_parser import form_parser, ParserMissingError
 from local_settings import DATABASES
 from form_mappers import *
 
@@ -14,7 +14,6 @@ from write_csv_to_db import CSV_dumper
 
 from fec_import_logging import fec_logger
 from hstore_helpers import dict_to_hstore
-from form_parser import ParserMissingError
 
 
 class FilingHeaderDoesNotExist(Exception):
@@ -135,8 +134,10 @@ def process_filing_body(filingnum, fp=None, logger=None):
             # print msg
             logger.error(msg)
         return None
-    
+        
+    linenum = 0
     while True:
+        linenum += 1
         row = f1.get_body_row()
         if not row:
             break
@@ -148,7 +149,7 @@ def process_filing_body(filingnum, fp=None, logger=None):
             #print "\n\n\nform is %s" % form
             process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
         except ParserMissingError:
-            msg = 'process_filing_body: Unknown line type in filing %s. Skipping.' % (filingnum)
+            msg = 'process_filing_body: Unknown line type in filing %s line %s: type=%s Skipping.' % (filingnum, linenum, row[0])
             logger.warn(msg)
             continue
         
