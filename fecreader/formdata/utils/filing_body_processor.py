@@ -14,6 +14,7 @@ from write_csv_to_db import CSV_dumper
 
 from fec_import_logging import fec_logger
 from hstore_helpers import dict_to_hstore
+from form_parser import ParserMissingError
 
 
 class FilingHeaderDoesNotExist(Exception):
