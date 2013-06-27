@@ -75,7 +75,8 @@ def process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id):
     # IE's disclosed by non-committees. Note that they use this for * both * quarterly and 24- hour notices. There's not much consistency with this--be careful with superceding stuff. 
     elif form=='F57':
         skede_from_f57(linedict, filingnum, header_id, is_amended, cd)
-
+        
+        
     # Its another kind of line. Just dump it in Other lines.
     else:
         otherline_from_line(linedict, filingnum, header_id, is_amended, cd, filer_id)
@@ -141,11 +142,15 @@ def process_filing_body(filingnum, fp=None, logger=None):
         
         #print "row is %s" % (row)
         #print "\n\n\nForm is %s" % form
+        try:
+            linedict = fp.parse_form_line(row, version)
+            #print "\n\n\nform is %s" % form
+            process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
+        except ParserMissingError:
+            msg = 'process_filing_body: Unknown line type in filing %s. Skipping.' % (filingnum)
+            logger.warn(msg)
+            continue
         
-        linedict = fp.parse_form_line(row, version)
-        #print "\n\n\nform is %s" % form
-        process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
-    
     # commit all the leftovers
     cd.commit_all()
     cd.close()
