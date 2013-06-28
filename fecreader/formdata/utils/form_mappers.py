@@ -28,6 +28,7 @@ def clean_form_type(formtype):
 def skeda_from_skedadict(data_dict, filing_number, header_row_id, is_amended, cd):
     """ We can either pass the header row in or not; if not, look it up."""
     
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['header_id'] = header_row_id
     data_dict['superceded_by_amendment'] = is_amended        
     data_dict['filing_number'] = filing_number
@@ -49,7 +50,7 @@ def skeda_from_skedadict(data_dict, filing_number, header_row_id, is_amended, cd
 
 def skeda_from_f65(data_dict, filing_number, header_row_id, is_amended, cd):
     """ Enter 48-hour contributions to candidate as if it were a sked A. Will later be superceded by periodic F3 report.This is almost to skeda_from_skedadict b/c I modified the F65.csv to match, but"""
-    
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['header_id'] = header_row_id
 
     data_dict['superceded_by_amendment'] = is_amended
@@ -71,6 +72,7 @@ def skeda_from_f65(data_dict, filing_number, header_row_id, is_amended, cd):
     
 # see 847857
 def skeda_from_f56(data_dict, filing_number, header_row_id, is_amended, cd):
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['header_id'] = header_row_id
     
@@ -93,6 +95,7 @@ def skeda_from_f56(data_dict, filing_number, header_row_id, is_amended, cd):
 # skeda_from_f92 -- electioneering communication contribs
 
 def skeda_from_f92(data_dict, filing_number, header_row_id, is_amended, cd):
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['header_id'] = header_row_id
     data_dict['filing_number'] = filing_number
@@ -112,6 +115,7 @@ def skeda_from_f92(data_dict, filing_number, header_row_id, is_amended, cd):
 
 # inaugural donors
 def skeda_from_f132(data_dict, filing_number, header_row_id, is_amended, cd):
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['header_id'] = header_row_id
     data_dict['filing_number'] = filing_number
@@ -129,6 +133,7 @@ def skeda_from_f132(data_dict, filing_number, header_row_id, is_amended, cd):
 
 # inaugural donor refunds. Make sure amounts are ! negative
 def skeda_from_f133(data_dict, filing_number, header_row_id, is_amended, cd):
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['header_id'] = header_row_id
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['filing_number'] = filing_number
@@ -158,6 +163,7 @@ def skeda_from_f133(data_dict, filing_number, header_row_id, is_amended, cd):
     
 
 def skedb_from_skedbdict(data_dict, filing_number, header_row_id, is_amended, cd):
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['header_id'] = header_row_id
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['filing_number'] = filing_number
@@ -180,6 +186,7 @@ def skedb_from_skedbdict(data_dict, filing_number, header_row_id, is_amended, cd
     
     
 def skede_from_skededict(data_dict, filing_number, header_row_id, is_amended, cd):
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['header_id'] = header_row_id
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['filing_number'] = filing_number
@@ -201,6 +208,7 @@ def skede_from_skededict(data_dict, filing_number, header_row_id, is_amended, cd
     
     
 def skede_from_f57(data_dict, filing_number, header_row_id, is_amended, cd):
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['header_id'] = header_row_id
     data_dict['filing_number'] = filing_number
@@ -220,7 +228,7 @@ def skede_from_f57(data_dict, filing_number, header_row_id, is_amended, cd):
     
 
 def otherline_from_line(data_dict, filing_number, header_row_id, is_amended, cd, filer_id):
-    
+    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['line_data'] = dict_to_hstore(data_dict)
     data_dict['header_id'] = header_row_id

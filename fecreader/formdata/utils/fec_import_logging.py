@@ -28,5 +28,5 @@ def fec_logger():
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     hdlr.setFormatter(formatter)
     logger.addHandler(hdlr) 
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.ERROR)
     return logger

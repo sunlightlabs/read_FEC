@@ -23,7 +23,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         downloaded_filings = new_filing.objects.filter(filing_is_downloaded=True, header_is_processed=False).order_by('filing_number')
         for filing in downloaded_filings:
-            print "need to enter filing %s, entry_time %s" % (filing.filing_number, filing.process_time)
+            #print "need to enter filing %s, entry_time %s" % (filing.filing_number, filing.process_time)
             result_header = None
             try: 
                 result_header = process_filing_header(filing.filing_number, fp=fp, filing_time=filing.process_time, filing_time_is_exact=True)
