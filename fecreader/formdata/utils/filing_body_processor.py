@@ -103,7 +103,7 @@ def process_filing_body(filingnum, fp=None, logger=None):
     
     result = cursor.fetchone()
     if not result:
-        msg = 'process_filing_body: Couldn\'t find a filing header for this'
+        msg = 'process_filing_body: Couldn\'t find a filing header for filing %s' % (filingnum)
         logger.error(msg)
         raise FilingHeaderDoesNotExist(msg)
         
