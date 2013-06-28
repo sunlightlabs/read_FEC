@@ -4,12 +4,15 @@ from fec_alerts.models import new_filing
 
 from formdata.utils.fec_import_logging import fec_logger
 
+excluded_filings_list = ['F99', 'F1A', 'F1N', 'F2A', 'F2N', 'F1MN', 'F1MA']
+
 class Command(BaseCommand):
     help = "Queue filing body row entry for execution by celery processes"
     requires_model_validation = False
+    
     def handle(self, *args, **options):
         logger=fec_logger()
-        filings_to_queue = new_filing.objects.filter(filing_is_downloaded=True, header_is_processed=True, data_is_processed=False, previous_amendments_processed=True).order_by('filing_number')
+        filings_to_queue = new_filing.objects.filter(filing_is_downloaded=True, header_is_processed=True, data_is_processed=False, previous_amendments_processed=True).order_by('filing_number').exclude(form_type__in=excluded_filings_list)
         for filing in filings_to_queue:
             msg = "send_body_row_jobs: Adding filing %s to entry queue" % (filing.filing_number)
             # print msg
