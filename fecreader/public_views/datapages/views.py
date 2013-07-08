@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.db import connection
 
 from race_curation.utils.senate_crosswalk import senate_crosswalk
+from fec_alerts.models import new_filing, newCommittee
 
 # get not null senate ids. 
 senate_ids =  [ senator['fec_id'] for senator in senate_crosswalk if senator['fec_id'] ]
@@ -17,7 +18,6 @@ def current_senators(request):
     cursor = connection.cursor()
 
     subquery = """(select fec_id from race_curation_candidate_overlay where cand_ici = 'I' and office = 'S';)"""
-    
     cursor.execute("SELECT foo FROM bar WHERE baz = %s", [self.baz])
     row = cursor.fetchone()
     
@@ -27,3 +27,19 @@ def current_senators(request):
         'explanatory_text':explanatory_text,
         }
     )
+
+def newest_filings(request):
+    
+    filings = new_filing.objects.all().order_by('-filing_number')[:50]
+    title="Newest filings"
+    explanatory_text="Text explainer"
+    
+    return render_to_response('datapages/filing_list.html',
+        {
+        'title':title,
+        'explanatory_text':explanatory_text,
+        'object_list':filings,
+        }
+    )
+    
+    

@@ -18,14 +18,14 @@ admin.site.register(District, DistrictAdmin)
     
     
 class Candidate_OverlayAdmin(admin.ModelAdmin):
-    readonly_fields = ('candidate','fec_id', 'pcc')
+    readonly_fields = ('fec_id', 'pcc')
     fieldsets = (
         ("Human-verified data", {
             'fields': ('is_minor_candidate','not_seeking_reelection', 'bio_blurb'),
             
         }),
         ("Mostly autopopulated", {
-            'fields': ('cycle','district', 'candidate', 'party', 'fec_id', 'pcc', 'election_year', 'state','office', 'office_district', 'cand_ici', 'candidate_status'),
+            'fields': ('cycle','district', 'party', 'fec_id', 'pcc', 'election_year', 'state','office', 'office_district', 'cand_ici', 'candidate_status'),
                    
         }),
         

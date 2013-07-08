@@ -71,5 +71,24 @@ class Term(models.Model):
         else:
             return self.term_type
             
+class Committee(models.Model):
+    # This is only used for current committees; also, ignore subcommittees
+    committee_type= models.CharField(max_length=15, blank=True, null=True, help_text="house, senate, joint")
+    name = models.CharField(max_length=655, blank=True, null=True)
+    url = models.CharField(max_length=655, blank=True, null=True)
+    thomas_id = models.CharField(max_length=15, blank=True, null=True)
+    house_committee_id = models.CharField(max_length=15, blank=True, null=True)
+    
+    def __unicode__(self):
+        return self.name
 
-        
+class CurrentCommitteeMembership(models.Model):
+    committee = models.ForeignKey(Committee)
+    member = models.ForeignKey(Legislator)
+    rank = models.IntegerField(max_length=655, blank=True, null=True)
+    party = models.CharField(max_length=15, blank=True, null=True)
+    title = models.CharField(max_length=31, blank=True, null=True)
+    
+    def __unicode__(self):
+        return "%s: %s" % (self.member.last_name, self.committee.name)
+    

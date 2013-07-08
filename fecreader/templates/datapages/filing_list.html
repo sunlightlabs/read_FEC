@@ -1,0 +1,52 @@
+{# list of filings #}
+{% extends "test_templates/search_base.html" %}
+{% load humanize %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }}{% endblock %}
+
+ {% block main %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>{{ explanatory_text }}</p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Filing ID</th>
+                <th>Committee - Form</th>
+                <th>Coverage Date</th>
+                <th>Raised</th>
+                <th>Spent</th>
+                <th>Cash on hand</th>
+                <th>Filing Time</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in object_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}">
+                          <td><a href="{{object.get_fec_url}}">{{ object.filing_number }} [{{ object.form_type}}]</a></td>
+                          <td><a href="{{object.fec_all_filings}}">{{ object.committee_name}}: {{ object.get_form_name }}</td>
+                          <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
+                          <td>{% if object.tot_raised %}${{ object.tot_raised|intcomma }}{% endif %}</td>
+                          <td>{% if object.spent %}${{ object.spent|intcomma }}{% endif %}</td>
+                          <td>{% if object.coh_end %}${{ object.coh_end|intcomma }}{% endif %}</td>
+                          
+                                                        
+                          <td>{{ object.process_time|date:"N j, P"  }}</td>
+                      </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+</div>
+  {% endblock %}
+  
+
+{# override get satisfaction #}  
+{% block gsfn %}{% endblock %}
