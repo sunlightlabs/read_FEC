@@ -228,7 +228,13 @@ def skede_from_f57(data_dict, filing_number, header_row_id, is_amended, cd):
     
 
 def otherline_from_line(data_dict, filing_number, header_row_id, is_amended, cd, filer_id):
-    data_dict['transaction_id'] = data_dict['transaction_id'][:20]
+    
+    ## Somehow some lines have illegal transaction ids -- longer than 20 characters. Truncate those. 
+    try:
+        data_dict['transaction_id'] = data_dict['transaction_id'][:20]
+    ## Some lines are actually summary lines (F3S) and have no transaction ids, so don't freak out about this. 
+    except KeyError:
+        pass
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['line_data'] = dict_to_hstore(data_dict)
     data_dict['header_id'] = header_row_id
