@@ -1,0 +1,21 @@
+{# list of new committees #}
+{% extends "test_templates/search_base.html" %}
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }}{% endblock %}
+
+ {% block main %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>These are downloadable files.</p>
+
+</div>
+  {% endblock %}
+  
+
+{# override get satisfaction #}  
+  {% block gsfn %}{% endblock %}

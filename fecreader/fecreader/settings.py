@@ -134,7 +134,14 @@ INSTALLED_APPS = (
     'fec_alerts',
     'legislators',
     'race_curation',
+    'summary_data',
 )
+
+
+## Timestamp keys
+
+FILING_SCRAPE_KEY = 'scrape_electronic_filings'
+COMMITTEES_SCRAPE_KEY = 'committee_scrape'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

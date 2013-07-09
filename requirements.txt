@@ -7,6 +7,8 @@ git+git://github.com/niwibe/djorm-ext-hstore.git
 python-dateutil
 pytz
 lxml
+requests
+cssselect
 # for parsing legislators -- don't care about performance...
 pyyaml
 

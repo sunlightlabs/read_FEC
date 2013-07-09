@@ -9,25 +9,18 @@ from StringIO import StringIO
 
 from urllib import urlencode
 from optparse import make_option
-
 from dateutil.parser import parse as dateparse
 
 from django.core.management.base import BaseCommand, CommandError
 
-
-
 from fec_alerts.models import new_filing,  Filing_Scrape_Time
-
-# no model overlays yet
-#from outside_spending_2014.models import Committee_Overlay, Committee
-
-
 from parsing.read_FEC_settings import FILECACHE_DIRECTORY, USER_AGENT, FEC_DOWNLOAD, DELAY_TIME, CYCLE
 from fec_alerts.utils.fec_logging import fec_logger
+from summary_data.utils.update_utils import set_update
+from django.conf import settings
 
-
+FILING_SCRAPE_KEY = settings.FILING_SCRAPE_KEY
 my_logger=fec_logger()
-
 date_re = "<dc:date>(.*?)</dc:date>"
 data_re = "\*\*CommitteeId:\s*([C\d]*)\s*\|\s*FilingId:\s*(\d*)\s*\|\s*FormType:\s*([\d\w]*)\s*\|\s*CoverageFrom:\s*([\d\-]*?)\s\|\s*CoverageThrough:\s*([\d\-]*?)\s\|"
 name_re = "<title>New filing by\s*(.*?)\s*</title>"
@@ -48,20 +41,6 @@ def enter_filing(data_hash):
     except new_filing.DoesNotExist:
         print "entering %s %s" % (data_hash['filing_number'], data_hash['committee_id'])
         is_superpac=False
-        # try:
-        #             related_committee = Committee_Overlay.objects.get(fec_id=data_hash['committee_id'], cycle=CYCLE)
-        #             is_superpac=related_committee.is_superpac
-        #         except Committee_Overlay.DoesNotExist:
-        #             
-        #             try:
-        #                 raw_committee = Committee.objects.get(fec_id=data_hash['committee_id'], cycle=CYCLE)                
-        #                 if raw_committee.ctype in ('O', 'U'):
-        #                     is_superpac=True
-        #                     
-        #             except Committee.DoesNotExist:
-        #                 pass
-
-
         
         thisobj = new_filing.objects.create(
             is_superpac = is_superpac,
@@ -158,5 +137,6 @@ class Command(BaseCommand):
         
         now = Filing_Scrape_Time.objects.create()
         my_logger.info("SCRAPE_DAILY_FILINGS - completing regular run--created %s new filings" % new_filings)
+        set_update('scrape_electronic_filings')
         
         

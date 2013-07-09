@@ -1,0 +1,45 @@
+{# list of new committees #}
+{% extends "test_templates/search_base.html" %}
+{% load timestamp %}
+
+{% block timestamp %}{% timestamp_committees %}{% endblock %}
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }}{% endblock %}
+
+ {% block main %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>{{ explanatory_text|safe }}</p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                    <th class="sort">Date</th>
+                    <th class="sort">Type</th>
+                    <th class="sort">Committee</th>
+                    <th></th>
+
+                  </tr>
+              </thead>
+              <tbody>
+                {% for object in object_list %}    
+                    <tr class="{% cycle 'odd' 'even' %}">
+                        <td>{{ object.date_filed|date:"Y-m-d" }}</td>
+                        <td>{{ object.ctype }}</td> 
+                        <td>{{ object.name }}</td> 
+                        <td><a href="http://images.nictusa.com/cgi-bin/fecimg/?{{ object.fec_id }}">FEC filings</a></td>                               
+                    </tr>
+                {% endfor %}
+              
+              </tbody>
+    </table>
+</div>
+  {% endblock %}
+  
+
+{# override get satisfaction #}  
+  {% block gsfn %}{% endblock %}

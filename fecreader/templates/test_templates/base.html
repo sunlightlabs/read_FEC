@@ -1,8 +1,9 @@
 {% load static from staticfiles %}
+{% load timestamp %}
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" >
     <head>
-        <title>{% block pagetitle %}{% endblock %}Influence Explorer{% block pagetopics %}{% endblock %}</title>
+        <title>{% block pagetitle %}{% endblock %} - Influence Explorer{% block pagetopics %}{% endblock %}</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="keywords" content="campaign contributions, sunlight foundation, influence explorer, politics, government, influence" />
@@ -113,13 +114,11 @@
                     {% block subnavitems %}
                     <ul>
                         <li class="last"><a href="/downloads/">Downloads</a></li>
-                        <li><a href="/">Newest Filings</a></li>
+                        <li><a href="/newest-filings/">Newest Filings</a></li>
                         <li><a href="/">Filing Alerts</a></li>
-                        <li><a href="/">New Committees</a></li>
-                        <li><a href="/">Latest Spending</a></li>
-                        <li><a href="/">Super PACs</a></li>
-                        <li><a href="/">Races</a></li>
-                        <li><a href="/">States</a></li>
+                        <li><a href="/new-committees/">New Committees</a></li>
+                        <li><a href="/">Outside Spending</a></li>
+                        <li><a href="/">PACs</a></li>
                         <li><a href="/">Candidates</a></li>
                         <li><a href="/">Overview</a></li>
                         
@@ -128,6 +127,8 @@
                     {% endblock %}
                     <div class="clear"></div>
                 </nav>
+                <div style="float:right; margin-right: 30px;">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div>
+                <div class="clear"></div>
                   {% block main %}
                   {% endblock %}
                   <div class="clear"></div>

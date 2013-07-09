@@ -1,3 +1,4 @@
+import datetime
 
 from django.shortcuts import get_object_or_404, render_to_response
 from django.db import connection
@@ -32,7 +33,7 @@ def newest_filings(request):
     
     filings = new_filing.objects.all().order_by('-filing_number')[:50]
     title="Newest filings"
-    explanatory_text="Text explainer"
+    explanatory_text="These are the most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper."
     
     return render_to_response('datapages/filing_list.html',
         {
@@ -42,4 +43,23 @@ def newest_filings(request):
         }
     )
     
+def new_committees(request):
+    today = datetime.datetime.today()
+    month_ago = today - datetime.timedelta(days=30)
+    committees=newCommittee.objects.filter(date_filed__gte=month_ago).order_by('-date_filed')
+    return render_to_response('datapages/new_committees.html', {
+                'object_list':committees,
+                'explanatory_text':'These are committees formed within the last 30 days. It may take several days after a PAC is formed for details to be posted.',
+                'title':'New Committees'
+                })
+
+def downloads(request):
+    
+    return render_to_response('datapages/downloads.html', {
+        'title':'Downloads'
+                })
+
+
+
+
     

@@ -9,7 +9,10 @@ from dateutil.parser import parse as dateparse
 from django.core.management.base import BaseCommand
 
 from fec_alerts.models import newCommittee
+from summary_data.utils.update_utils import set_update
+from django.conf import settings
 
+COMMITTEES_SCRAPE_KEY  = settings.COMMITTEES_SCRAPE_KEY
 # url is: http://www.fec.gov/press/press2011/new_form1dt.shtml
 # local copy saved as http://www.fec.gov/press/press2011/new_form1dt.shtml
 
@@ -56,3 +59,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print "Scraping the FEC press offices new committee page"
         scrape_page()
+        set_update(COMMITTEES_SCRAPE_KEY)
