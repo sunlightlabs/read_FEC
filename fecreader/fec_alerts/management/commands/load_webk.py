@@ -9,9 +9,9 @@ from parsing.read_FEC_settings import FTP_DATA_DIR, CYCLE
 from fec_alerts.models import WebK
 
 
-two_digit_cycle = "12"
+two_digit_cycle = "14"
 #override
-CYCLE = 2012
+CYCLE = 2014
 
 def currency_to_decimal(currency_string):
     if currency_string:
