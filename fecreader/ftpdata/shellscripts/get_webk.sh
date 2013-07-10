@@ -2,7 +2,7 @@
 
 # This doesn't actually get the webk file but the campaign and committee report by report summary file. 
 
-datadir=/Users/jfenton/github-whitelabel/read_FEC/fecreader/ftpdata/data
+datadir=/projects/realtimefec/src/realtimefec/fecreader/ftpdata/data/
 
 for year in  '14'
 do
