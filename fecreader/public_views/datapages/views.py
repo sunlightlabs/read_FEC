@@ -29,19 +29,48 @@ def current_senators(request):
         }
     )
 
+
+def newest_filings_template(request, filings, explanatory_text, title):
+        explanatory_text = explanatory_text + "<br>See also:&nbsp; <a href=\"/newest-filings/ies/\">independent expenditure filings</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidates/\">declaration of candidacy</a>&nbsp;|&nbsp;<a href=\"/newest-filings/\">newest filings</a>"
+        return render_to_response('datapages/filing_list.html',
+            {
+            'title':title,
+            'explanatory_text':explanatory_text,
+            'object_list':filings,
+            }
+        )
+            
+
+
 def newest_filings(request):
-    
-    filings = new_filing.objects.all().order_by('-filing_number')[:50]
+    filings = new_filing.objects.all().order_by('-filing_number')[:100]
     title="Newest filings"
-    explanatory_text="These are the most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper."
-    
-    return render_to_response('datapages/filing_list.html',
-        {
-        'title':title,
-        'explanatory_text':explanatory_text,
-        'object_list':filings,
-        }
-    )
+    explanatory_text="These are the 100 most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper."
+    return newest_filings_template(request, filings, explanatory_text, title)
+"""
+Haven't started setting this flag yet... 
+
+def newest_filings_superpacs(request):
+    filings = new_filing.objects.filter(is_superpac=True).order_by('-filing_number')[:100]
+    title="Newest filings"
+    explanatory_text="These are the 100 most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper."
+    return newest_filings_template(request, filings, explanatory_text, title)
+"""
+
+def newest_filings_ies(request):
+    filings = new_filing.objects.filter(form_type__in=['F5A', 'F5N', 'F24A', 'F24N']).order_by('-filing_number')[:100]
+    title="Newest Independent Expenditure filings"
+    explanatory_text="These are the 100 most recent independent expenditure electronic filings received."
+    return newest_filings_template(request, filings, explanatory_text, title)
+
+def newest_filings_candidates(request):
+    filings = new_filing.objects.filter(form_type__in=['F2N']).order_by('-filing_number')[:100]
+    title="Newest candidate declaration filings"
+    explanatory_text="These are the 100 most recent new electronic statement of candidacy filings received. Note that candidates do not have to file these statements electonically, though many do."
+    return newest_filings_template(request, filings, explanatory_text, title)
+
+
+
     
 def new_committees(request):
     today = datetime.datetime.today()
