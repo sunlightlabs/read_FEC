@@ -93,12 +93,14 @@ class new_filing(models.Model):
         return url
         
     def get_form_name(self):
-        amended = ""
+        report_extra = ""
         if re.search('A', self.form_type):
-            amended="AMENDED "
+            report_extra=" (AMENDED)"
+        if re.search('A', self.form_type):
+            report_extra=" (TERMINATION REPORT)"
         for f in form_types:
             if (re.match(f[0], self.form_type)):
-                return amended + f[1]
+                return f[1] + report_extra
         return ''
     
     class Meta:
