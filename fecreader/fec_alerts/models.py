@@ -96,7 +96,7 @@ class new_filing(models.Model):
         report_extra = ""
         if re.search('A', self.form_type):
             report_extra=" (AMENDED)"
-        if re.search('A', self.form_type):
+        if re.search('T', self.form_type):
             report_extra=" (TERMINATION REPORT)"
         for f in form_types:
             if (re.match(f[0], self.form_type)):
