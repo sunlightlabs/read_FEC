@@ -121,4 +121,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         
         process_file(current)
-        #process_file(historic)
+        process_file(historic)

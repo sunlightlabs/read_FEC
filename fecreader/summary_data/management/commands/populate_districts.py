@@ -2,13 +2,13 @@
 
 from django.core.management.base import BaseCommand
 
-from race_curation.models import *
-from race_curation.utils.term_reference import get_election_year_from_term_class
+from summary_data.models import *
+from summary_data.utils.term_reference import get_election_year_from_term_class
 from legislators.models import Legislator, Term
 from legislators.congresses import congress_dates
 from datetime import date
-from race_curation.utils.party_reference import get_party_from_pty, get_party_from_term_party
-from race_curation.utils.session_data import senate_special_elections, house_special_elections
+from summary_data.utils.party_reference import get_party_from_pty, get_party_from_term_party
+from summary_data.utils.session_data import senate_special_elections, house_special_elections
 
 today = date.today()
 cycle = '2014'

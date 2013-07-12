@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import District, Candidate_Overlay, Election, Election_Candidate
+from models import District, Candidate_Overlay, Election, Election_Candidate, SubElection
 
 class DistrictAdmin(admin.ModelAdmin):
     
@@ -39,11 +39,11 @@ class ElectionAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ("Human-verified data", {
-            'fields': ('election_date','election_voting_start_date', 'election_voting_end_date', 'open_seat'),
+            'fields': ('open_seat',),
             
         }),
         ("Mostly autopopulated", {
-            'fields': ('primary_contested', 'election_code', 'incumbent_name','incumbent_party', 'election_year', 'state', 'term_class', 'primary_party','office', 'office_district'),
+            'fields': ('election_code', 'incumbent_name','incumbent_party', 'election_year', 'state', 'term_class','office', 'office_district'),
                    
         }),
         
@@ -51,6 +51,26 @@ class ElectionAdmin(admin.ModelAdmin):
     search_fields=['incumbent_name', 'state']
     
 admin.site.register(Election, ElectionAdmin)
+
+# For SubElectionAdmin class, if needed
+# 'primary_party', 'primary_contested', 'election_date','election_voting_start_date', 'election_voting_end_date',
+
+class SubElectionAdmin(admin.ModelAdmin):
+    
+    fieldsets = (
+        ("Human-verified data", {
+            'fields': ('election_date','election_voting_start_date', 'election_voting_end_date'),
+            
+        }),
+        ("Mostly autopopulated", {
+            'fields': ('subelection_code', 'primary_party', 'is_contested'),
+                   
+        }),
+        
+    )
+    search_fields=['incumbent_name', 'state']
+    
+admin.site.register(SubElection, SubElectionAdmin)
 
 
 class Election_CandidateAdmin(admin.ModelAdmin):

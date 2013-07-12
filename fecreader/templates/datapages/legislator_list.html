@@ -1,5 +1,6 @@
 {# list of current legislators, either house or senate or something #}
 {% extends "test_templates/search_base.html" %}
+{% load humanize %}
 
 
 
@@ -13,43 +14,35 @@
  <div id="contentHeader">
        <h2>{{ title }}</h2>
 </div>
-<p>{{ explanatory_text }}</p>
-<span class="tip">This is the italicized advice we sometimes give.</span>
+<p>{{ explanatory_text|safe }}</p>
 <table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
                       <th class="sort">Legislator</th>
+                      <th class="sort">Party</th>
+                      <th class="sort">District</th>
                       <th class="sort">Report Date</th>
                       <th class="sort">Cash on hand</th>
-                      <th class="sort">Raised (quarter)</th>
-                      <th class="sort">Spent (quarter)</th>
-                      <th class="sort">New debts (quarter)</th>
+                      <th class="sort">Raised </th>
+                      <th class="sort">Spent</th>
+                      <th class="sort">Debts</th>
 
                   </tr>
               </thead>
               <tbody>
-                  
-                  <tr class="even">
+                {% for object in object_list %}
+                  <tr class="{% cycle 'odd' 'even' %}">
                       <td class="lawmakerName">
-                          <a href="/politician/mitt-romney/d2d1b6f4ea644455b8845be3b4c8116c?cycle=2012">Mitt Romney</a>
-                      </td>
-                      <td>President</td>
-                      <td>R</td>
-                      <td></td>
-                      <td></td>
-                      <td>$356,911,898</td>
-                  </tr>
-                  
-                  <tr class="odd">
-                      <td class="lawmakerName">
-                          <a href="/politician/barack-obama/4148b26f6f1c437cb50ea9ca4699417a?cycle=2012">Barack Obama</a>
-                      </td>
-                      <td>President</td>
-                      <td>D</td>
-                      <td></td>
-                      <td></td>
-                      <td>$315,000,730</td>
-                  </tr>
+                        {{object.name}}</td>
+                      <td>{{object.pty}}</td>
+                      <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
+                      <td>{{ object.cand_report_date|date:"Y-M-d" }}</td>
+                      <td>${{ object.cand_ending_cash|intcomma }}</td>
+                      <td>${{ object.cand_ttl_receipts|intcomma }}</td>
+                      <td>${{ object.cand_total_disbursements|intcomma }}</td>
+                      <td>${{ object.cand_debts_owed_by|intcomma }}</td>                  </tr>
+                {% endfor %}
+                 
 </tbody>
 </table>
 </div>

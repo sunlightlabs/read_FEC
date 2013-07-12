@@ -25,7 +25,21 @@ senate_exclusions_2014 = [
 
 # not sure how we're gonna handle this 
 house_casualties_2014 = [
-{'name':'MARKEY, EDWARD JOHN' , 'fec_id':'H6MA07101'},
+{'name':'MARKEY, EDWARD JOHN' , 'fec_id':'H6MA07101', 'seeking_other_office':'Senate'},
+{'name':'BRALEY, BRUCE L' , 'fec_id':'H6IA01098', 'seeking_other_office':'Senate'},
+{'name':'PETERS, GARY' , 'fec_id':'H8MI09068', 'seeking_other_office':'Senate'}, 
+{'name':'SCHWARTZ, ALLYSON Y.' , 'fec_id':'H4PA13124', 'seeking_other_office':'Governor'}, 
+{'name':'HANABUSA, COLLEEN WAKAKO' , 'fec_id':'H2HI02110', 'seeking_other_office':'Senate'},
+{'name':'PALLONE, FRANK JR' , 'fec_id':'H8NJ03073', 'seeking_other_office':'Senate'}, 
+{'name':'HOLT, RUSH D.' , 'fec_id':'H6NJ12144', 'seeking_other_office':'Senate'}, 
+{'name':'CAPITO, SHELLEY MOORE MS.' , 'fec_id':'H0WV02138', 'seeking_other_office':'Senate'}, 
+{'name':'BROUN, PAUL COLLINS' , 'fec_id':'H8GA10049', 'seeking_other_office':'Senate'}, 
+{'name':'CASSIDY, WILLIAM' , 'fec_id':'H8LA00017', 'seeking_other_office':'Senate'}, 
+{'name':'GINGREY, PHIL' , 'fec_id':'H2GA11149', 'seeking_other_office':'Senate'}, 
+{'name':'KINGSTON, JACK' , 'fec_id':'H2GA01157', 'seeking_other_office':'Senate'}, 
+# RETIRING:
+{'name':'BACHMANN, MICHELE' , 'fec_id':'H6MN06074'}, 
+{'name':'CAMPBELL, JOHN BT III' , 'fec_id':'H6CA48039'}, 
 ]
 
 ## More notes:

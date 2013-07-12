@@ -75,8 +75,7 @@ def process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id):
     # IE's disclosed by non-committees. Note that they use this for * both * quarterly and 24- hour notices. There's not much consistency with this--be careful with superceding stuff. 
     elif form=='F57':
         skede_from_f57(linedict, filingnum, header_id, is_amended, cd)
-        
-        
+
     # Its another kind of line. Just dump it in Other lines.
     else:
         otherline_from_line(linedict, filingnum, header_id, is_amended, cd, filer_id)

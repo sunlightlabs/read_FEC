@@ -57,6 +57,14 @@ class new_filing(models.Model):
     process_time = models.DateTimeField()
     is_superpac = models.NullBooleanField()
     
+    # more flags:
+    # is_house_candidate
+    # is_senate_candidate
+    # is_incumbent
+    
+    # foreign key to committee.
+    
+    
     
     # processing status notes
     filing_is_downloaded = models.NullBooleanField(default=False)

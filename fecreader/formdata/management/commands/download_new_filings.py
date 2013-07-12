@@ -1,4 +1,6 @@
 import subprocess
+from time import sleep
+from os import path
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -7,8 +9,7 @@ from parsing.filing import filing
 from parsing.read_FEC_settings import FILECACHE_DIRECTORY, FEC_DOWNLOAD
 
 from fec_alerts.models import new_filing
-from time import sleep
-from os import path
+
 
 
 

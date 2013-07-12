@@ -106,7 +106,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'fecreader.urls'
 
-IE_MEDIA_URL = 'https://s3.amazonaws.com/assets.sunlightfoundation.com/brisket/1.0/'
+IE_MEDIA_URL = 'http://s3.amazonaws.com/assets.sunlightfoundation.com/brisket/1.0/'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'fecreader.wsgi.application'
@@ -133,7 +133,6 @@ INSTALLED_APPS = (
     'ftpdata',
     'fec_alerts',
     'legislators',
-    'race_curation',
     'summary_data',
 )
 

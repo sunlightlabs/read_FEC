@@ -5,19 +5,19 @@ from django.core.management.base import BaseCommand, CommandError
 
 # start with the list of known incumbents from the senate crosswalk. 
 
-from race_curation.utils.senate_crosswalk import senate_crosswalk
-from race_curation.utils.house_crosswalk import house_crosswalk
-from race_curation.utils.party_reference import get_party_from_pty
+from summary_data.utils.senate_crosswalk import senate_crosswalk
+from summary_data.utils.house_crosswalk import house_crosswalk
+from summary_data.utils.party_reference import get_party_from_pty
 
 from legislators.models import Legislator, Term
 
 # retirement list
-from race_curation.utils.session_data import senate_casualties_2014, house_casualties_2014, senate_exclusions_2014
+from summary_data.utils.session_data import senate_casualties_2014, house_casualties_2014, senate_exclusions_2014
 
-from race_curation.utils.term_reference import get_election_year_from_term_class, get_term_class_from_election_year
+from summary_data.utils.term_reference import get_election_year_from_term_class, get_term_class_from_election_year
 
 from ftpdata.models import Candidate
-from race_curation.models import Candidate_Overlay, District
+from summary_data.models import Candidate_Overlay, District
 
 from datetime import datetime
 
@@ -50,7 +50,9 @@ def get_house_incumbents():
         fec_id = member['fec_id']
 
         thiscandidate = Candidate.objects.get(cand_id=fec_id, cycle=cycle)
-        office = thiscandidate.cand_office
+        
+        #office = thiscandidate.cand_office
+        office = 'H'
         district = None
 
         district = thiscandidate.cand_office_district.zfill(2)
@@ -66,6 +68,7 @@ def get_house_incumbents():
         this_overlay.party = get_party_from_pty(thiscandidate.cand_pty_affiliation)
         this_overlay.pcc = thiscandidate.cand_pcc
         this_overlay.cand_ici = 'I'
+        this_overlay.office = office
         this_overlay.election_year = 2014
         this_overlay.save()
         
@@ -249,16 +252,30 @@ def get_senate_challengers():
 
                 #print "Entering %s with status %s" % (thiscandidate.cand_name, thiscandidate.cand_ici)
 
+def flatten_districts():
+    for c in Candidate_Overlay.objects.all():
+        d = c.district
+        c.office_district = d.office_district
+        c.office = d.office
+        c.state = d.state
+        c.save()
+        
+"""
+Nice to have: set open seats. But possibly best if this is manually curated... 
+"""
+        
 def run_house():
     get_house_incumbents()
     get_house_challengers()
     
 def run_senate():
     get_senate_incumbents()
-    get_senate_challengers()    
+    get_senate_challengers()  
 
 class Command(BaseCommand):
  
     def handle(self, *args, **options): 
         run_house()
         run_senate()
+        flatten_districts()
+        

@@ -1,0 +1,93 @@
+{# list districts #}
+{% extends "test_templates/search_base.html" %}
+{% load humanize %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }}{% endblock %}
+
+ {% block main %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>{{ explanatory_text|safe }}</p>
+
+<h3>Senate</h3>
+<p class="tip">For house districts see <a href="#house">here</a></p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                      <th class="sort">State</th>
+                      <th class="sort">Incumbent</th>
+                      <th class="sort">Open Seat?</th>
+                      <th class="sort">Election Year</th>
+                      <th class="sort">Candidate Fundraising</th>
+                      <th class="sort">Candidate Spending</th>
+                      <th class="sort">Coordinated Spending</th>
+                      <th class="sort">Outside Spending</th>
+                      <th class="sort">Total Spending</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for object in senate_districts %}
+                  <tr class="{% cycle 'odd' 'even' %}">
+                      <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
+                      <td>{{object.incumbent_name}} ({{object.incumbent_party}})</td>
+                      <td>{% if open_seat %}Y{% else %}N{% endif %}</td>
+                      <td>{{ object.election_year }}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>                      
+                      <td></td>
+                      <td></td>                  
+                      </tr>
+                {% endfor %}
+                 
+</tbody>
+</table>
+
+<h3 id="house">House</h3>
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                      <th class="sort">District</th>
+                      <th class="sort">Incumbent</th>
+                      <th class="sort">Open Seat?</th>
+                      <th class="sort">Election Year</th>
+                      <th class="sort">Candidate Fundraising</th>
+                      <th class="sort">Candidate Spending</th>
+                      <th class="sort">Coordinated Spending</th>
+                      <th class="sort">Outside Spending</th>
+                      <th class="sort">Total Spending</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for object in house_districts %}
+                  <tr class="{% cycle 'odd' 'even' %}">
+                      <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
+                      <td>{{object.incumbent_name}} ({{object.incumbent_party}})</td>
+                      <td>{% if open_seat %}Y{% else %}N{% endif %}</td>
+                      <td>{{ object.election_year }}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>                      
+                      <td></td>
+                      <td></td>                  
+                      </tr>
+                {% endfor %}
+                 
+</tbody>
+
+</table>
+
+
+</div>
+  {% endblock %}
+  
+
+{# override get satisfaction #}  
+  {% block gsfn %}{% endblock %}
