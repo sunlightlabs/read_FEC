@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 #from django_localflavor_us.us_states import STATE_CHOICES
