@@ -102,8 +102,8 @@ def newest_filings_candidacy(request):
 
 def newest_filings_candidate_filings(request):
     filings = new_filing.objects.filter(form_type__in=['F3N']).order_by('-filing_number')[:100]
-    title="Newest candidate declaration filings"
-    explanatory_text="These are the 100 most recent new electronic statements from authorized commit."
+    title="New candidate committee reports"
+    explanatory_text="These are the 100 most recent new electronic statements from authorized committees supporting a congressional candidate."
     return newest_filings_template(request, filings, explanatory_text, title)
 
     
