@@ -62,7 +62,7 @@ def districts(request):
     )
 
 def newest_filings_template(request, filings, explanatory_text, title):
-        explanatory_text = explanatory_text + "<br>See also:&nbsp; <a href=\"/newest-filings/ies/\">independent expenditure filings</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidacy/\">declarations of candidacy</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidate_filings/\">new candidate committee reports</a>&nbsp;|&nbsp;<a href=\"/newest-filings/\">all new filings</a>"
+        explanatory_text = explanatory_text + "<br>See also:&nbsp; <a href=\"/newest-filings/ies/\">independent expenditure filings</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidacy/\">declarations of candidacy</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidate-filings/\">new candidate committee reports</a>&nbsp;|&nbsp;<a href=\"/newest-filings/\">all new filings</a>"
         return render_to_response('datapages/filing_list.html',
             {
             'title':title,
