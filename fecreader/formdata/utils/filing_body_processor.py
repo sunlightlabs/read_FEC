@@ -168,7 +168,7 @@ def process_filing_body(filingnum, fp=None, logger=None):
     
     # save the line number count -- which is counter in the above -- as an hstore in the original 
     header_data = dict_to_hstore(counter)
-    cmd = "update formdata_filing_header set header_data='%s'::hstore where filing_number=%s" % (header_data, filingnum)
+    cmd = "update formdata_filing_header set lines_present='%s'::hstore where filing_number=%s" % (header_data, filingnum)
     cursor.execute(cmd)
     
     # mark file as having been entered. 
