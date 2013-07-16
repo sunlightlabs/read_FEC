@@ -62,7 +62,7 @@ def districts(request):
     )
 
 def newest_filings_template(request, filings, explanatory_text, title):
-        explanatory_text = explanatory_text + "<br>See also:&nbsp; <a href=\"/newest-filings/ies/\">independent expenditure filings</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidates/\">declaration of candidacy</a>&nbsp;|&nbsp;<a href=\"/newest-filings/\">newest filings</a>"
+        explanatory_text = explanatory_text + "<br>See also:&nbsp; <a href=\"/newest-filings/ies/\">independent expenditure filings</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidacy/\">declarations of candidacy</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidate_filings/\">new candidate committee reports</a>&nbsp;|&nbsp;<a href=\"/newest-filings/\">all new filings</a>"
         return render_to_response('datapages/filing_list.html',
             {
             'title':title,
@@ -94,13 +94,17 @@ def newest_filings_ies(request):
     explanatory_text="These are the 100 most recent independent expenditure electronic filings received."
     return newest_filings_template(request, filings, explanatory_text, title)
 
-def newest_filings_candidates(request):
+def newest_filings_candidacy(request):
     filings = new_filing.objects.filter(form_type__in=['F2N']).order_by('-filing_number')[:100]
     title="Newest candidate declaration filings"
     explanatory_text="These are the 100 most recent new electronic statement of candidacy filings received. Note that candidates do not have to file these statements electonically, though many do."
     return newest_filings_template(request, filings, explanatory_text, title)
 
-
+def newest_filings_candidate_filings(request):
+    filings = new_filing.objects.filter(form_type__in=['F3N']).order_by('-filing_number')[:100]
+    title="Newest candidate declaration filings"
+    explanatory_text="These are the 100 most recent new electronic statements from authorized commit."
+    return newest_filings_template(request, filings, explanatory_text, title)
 
     
 def new_committees(request):
