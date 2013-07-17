@@ -9,7 +9,7 @@ def set_fec_id(this_fec_id):
     try:
         
         ftpcandidate = Candidate.objects.filter(cand_id = this_fec_id).order_by('-cycle')[0]
-    except Candidate.DoesNotExist:
+    except IndexError:
         print "No candidate found in master file for id=%s" % (this_fec_id)
         return
     print "Got cycle: %s" % (ftpcandidate.cycle)
@@ -28,9 +28,10 @@ def set_fec_id(this_fec_id):
         this_co = Candidate_Overlay.objects.get(fec_id=this_fec_id)
         this_co.is_incumbent = True
         this_co.save()
+        print "set incumbent %s, %s" % (ftpcandidate.cand_name, this_fec_id)
     except Candidate_Overlay.DoesNotExist:
         pass
-        print "Missing candidate: %s" % ftpcandidate.cand_name
+        print "Missing candidate: %s, %s" % (ftpcandidate.cand_name, this_fec_id)
     
     
     
