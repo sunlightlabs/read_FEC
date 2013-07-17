@@ -28,7 +28,7 @@ def set_fec_id(this_fec_id):
         this_co = Candidate_Overlay.objects.get(fec_id=this_fec_id)
         this_co.is_incumbent = True
         this_co.save()
-        print "set incumbent %s, %s" % (ftpcandidate.cand_name, this_fec_id)
+        #print "set incumbent %s, %s" % (ftpcandidate.cand_name, this_fec_id)
     except Candidate_Overlay.DoesNotExist:
         pass
         print "Missing candidate: %s, %s" % (ftpcandidate.cand_name, this_fec_id)
