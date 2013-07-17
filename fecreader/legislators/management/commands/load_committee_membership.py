@@ -25,6 +25,7 @@ def process_file(filename):
             print "Processing committee %s" % (committee)
             for member in membership_records[membership]:
                 bioguide = member['bioguide']
+                
                 legislator = Legislator.objects.get(bioguide=bioguide)
                 print "Adding %s" % (legislator.last_name)
                 try:

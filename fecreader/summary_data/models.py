@@ -38,6 +38,23 @@ class Update_Time(models.Model):
       self.update_time = datetime.datetime.today()
       super(Update_Time, self).save(*args, **kwargs)
 
+## The US congress repo doesn't do a good job handling fec ids, so distill what we need into this model.
+## Incumbents are populated from US Congress, and challengers from fec master file. The determination of 
+## who is and who isn't a challenger is solely based on US congress, though this can be flipped through the admin. 
+class Incumbent(models.Model):
+  is_incumbent = models.BooleanField(default=False,help_text="Are they an incumbent? If not, they are a challenger")
+  cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
+  name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
+  fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="FEC candidate id")
+  state = models.CharField(max_length=2, blank=True, null=True, help_text="US for president")
+  office = models.CharField(max_length=1, null=True,
+                            choices=(('H', 'House'), ('S', 'Senate'), ('P', 'President'))
+                            )
+  office_district = models.CharField(max_length=2, blank=True, null=True, help_text="'00' for at-large congress; null for senate, president")
+  
+  def __unicode__(self):
+      return self.name
+
 class Committee_Overlay(models.Model):
 
 
@@ -265,10 +282,9 @@ class District(models.Model):
         else:
             return '%s-%s (House)' % (self.state, self.office_district)
 
-# Create your models here.
 class Candidate_Overlay(models.Model):
-    #foreign key to full fec data = models.ForeignKey(some_model)
-    # foreignkeytoUScongressifthereisone = models.ForeignKey(some_model)
+    ## This is the human verified field -- see legislators.models.incumbent_challenger
+    is_incumbent = models.BooleanField(default=False,help_text="Are they an incumbent? If not, they are a challenger")
     # foreign key to district
     district = models.ForeignKey('District')
     # drop the foreign key to Candidate_Overlay -- these tables are dropped and recreated regularly.

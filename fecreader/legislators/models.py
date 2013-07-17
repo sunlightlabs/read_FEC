@@ -3,6 +3,7 @@ import unicodedata
 # Create your models here.
 
 
+
 class Legislator(models.Model):
     
     bioguide = models.CharField(max_length=15, blank=True, null=True, unique=True)

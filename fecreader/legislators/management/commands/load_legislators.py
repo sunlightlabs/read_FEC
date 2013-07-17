@@ -68,12 +68,14 @@ def process_file(filename):
                 #print "Added %s" % (this_legislator)
                 
             # fec id list:
-            fecs = getmultidict(legislator_yaml, ('id','fec')),
+            fecs = getmultidict(legislator_yaml, ('id','fec'))
+            print "Got fecs: %s, %s" % (fecs, type(fecs))
+            
             if fecs:    
                 for this_fec in fecs:
-                    if this_fec:
-                        this_id = this_fec[0]
-                        (this_fec, created) = fec.objects.get_or_create(legislator=this_legislator, fec_id=this_id)
+                    print "processing fec id: %s" % (this_fec)
+                    this_id = this_fec
+                    (this_fec, created) = fec.objects.get_or_create(legislator=this_legislator, fec_id=this_id)
 
             # terms
             terms = legislator_yaml.get('terms')
@@ -121,4 +123,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         
         process_file(current)
-        process_file(historic)
+        #process_file(historic)
