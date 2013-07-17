@@ -6,8 +6,13 @@ from summary_data.models import Candidate_Overlay
 from datetime import date
 
 def set_fec_id(this_fec_id):
-    ftpcandidate = Candidate.objects.filter(cand_id = this_fec_id).order_by('-cycle')[0]
-    #print "Got cycle: %s" % (ftpcandidate.cycle)
+    try:
+        
+        ftpcandidate = Candidate.objects.filter(cand_id = this_fec_id).order_by('-cycle')[0]
+    except Candidate.DoesNotExist:
+        print "No candidate found in master file for id=%s" % (this_fec_id)
+        return
+    print "Got cycle: %s" % (ftpcandidate.cycle)
     this_incumbent, created = Incumbent.objects.get_or_create(fec_id=this_fec_id)
     this_incumbent.cycle='2014'
     this_incumbent.name = ftpcandidate.cand_name
@@ -25,7 +30,7 @@ def set_fec_id(this_fec_id):
         this_co.save()
     except Candidate_Overlay.DoesNotExist:
         pass
-        #print "Missing candidate: %s" % ftpcandidate.cand_name
+        print "Missing candidate: %s" % ftpcandidate.cand_name
     
     
     
