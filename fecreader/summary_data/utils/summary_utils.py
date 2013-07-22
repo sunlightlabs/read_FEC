@@ -25,7 +25,7 @@ def write_webk_csv(webk_list, file_name):
     field_list = ['can_id','com_id','com_nam','fil_fre','fec_ele_yea','com_typ','com_des','coverage_from_date','coverage_through_date','tot_dis','tot_loa','tot_rec','cas_on_han_clo_of_per','par_com_con','oth_com_con','tra_fro_oth_aut_com','ind_ite_con','ind_uni_con','can_con','can_loa','oth_loa']
     human_readable_field_list = ['candidate id (if applicable)','committee id','committee name','filing frequency','Election year (if applicable)','committee type','committee designation','filing start date','filing end date','total disbursements','tot al loans','total receipts','cash on hand close of period','contributions from party committees','contributions from other committees','Transfers received from other affiliated or authorized committees','Individual Itemized Contribution','Individual Unitemized Contribution','Contributions from the candidate (candidate committees only)','Sum of loans from the candidate','Sum of loans from other sources']
     header = ",".join(field_list)
-    human_header = ",".join(field_list)
+    human_header = ",".join(human_readable_field_list)
     outfile.write(human_header + "\n")
     outfile.write(header + "\n")
     csvwriter = csv.DictWriter(outfile, field_list, restval='', extrasaction='ignore')
