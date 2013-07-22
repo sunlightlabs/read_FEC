@@ -12,20 +12,31 @@ STATE_CHOICES_DICT = dict(STATE_CHOICES)
 
 ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('R', 'Runoff'), ('SP', 'Special Primary'), ('SR', 'Special Runoff'), ('SG', 'Special General'), ('O', 'Other'))
 
-type_hash={'C':'Communication Cost',
-          'D':'Delegate',
-          'H':'House',
+type_hash={'C': 'Communication Cost',
+          'D': 'Delegate',
+          'E': 'Electioneering Communication',
+          'H': 'House',
           'I': 'Not a Committee',
           'N': 'Non-Party, Non-Qualified',
+          'O': 'Super PAC',
           'P': 'Presidential',
           'Q': 'Qualified, Non-Party',
           'S': 'Senate',
+          'U': 'Single candidate independent expenditure',
+          'V': 'PAC with Non-Contribution Account - Nonqualified',
+          'W': 'PAC with Non-Contribution Account - Qualified',
           'X': 'Non-Qualified Party',
           'Y': 'Qualified Party',
           'Z': 'National Party Organization',
-          'E': 'Electioneering Communication',
-          'O': 'Super PAC'
           }
+
+committee_designation_hash = {'A':'Authorized by Candidate',
+                            'J': 'Joint Fund Raiser',
+                            'P': 'Principal Committee of Candidate',
+                            'U': 'Unauthorized',
+                            'B': 'Lobbyist/Registrant PAC',
+                            'D': 'Leadership PAC'
+                            }
 
 # There are many different data sets that are updated. Keep track of them here.
 # options are "scrape_electronic_filings", "scrape_new_committees",...
@@ -152,18 +163,21 @@ class Committee_Overlay(models.Model):
                           blank=False,
                           null=True,
                           choices=[('C', 'Communication Cost'),
-                                   ('D', 'Delegate'),
-                                   ('H', 'House'),
-                                   ('I', 'Independent Expenditure (Not a Committee'),
-                                   ('N', 'Non-Party, Non-Qualified'),
-                                   ('P', 'Presidential'),
-                                   ('Q', 'Qualified, Non-Party'),
-                                   ('S', 'Senate'),
-                                   ('X', 'Non-Qualified Party'),
-                                   ('Y', 'Qualified Party'),
-                                   ('Z', 'National Party Organization'),
-                                   ('E', 'Electioneering Communication'),
-                                   ('O', 'Super PAC') ])    
+                                     ('D', 'Delegate'),
+                                     ('E', 'Electioneering Communication'),
+                                     ('H', 'House'),
+                                     ('I', 'Independent Expenditure (Not a Committee'),
+                                     ('N', 'Non-Party, Non-Qualified'),
+                                     ('O', 'Super PAC'),
+                                     ('P', 'Presidential'),
+                                     ('Q', 'Qualified, Non-Party'),
+                                     ('S', 'Senate'),
+                                     ('U', 'Single candidate independent expenditure'),
+                                     ('V', 'PAC with Non-Contribution Account - Nonqualified'),
+                                     ('W', 'PAC with Non-Contribution Account - Qualified'),
+                                     ('X', 'Non-Qualified Party'),
+                                     ('Y', 'Qualified Party'),
+                                     ('Z', 'National Party Organization') ])  
 
 
   class Meta:
@@ -453,3 +467,26 @@ class SubElection_Candidate(models.Model):
 
     def __unicode__(self):
         return "CANDIDATE: %s RACE:%s" % (self.candidate, self.race)
+
+
+## summary helpers:
+"""
+class Committee_Time_Summary(models.Model):
+    com_id = 
+    filing_number = 
+    tot_receipts =
+    tot_contrib = 
+    tot_ite_contrib = 
+    tot_non_ite_contrib = 
+    tot_disburse =
+    tot_loans =
+    cash_on_hand_end = 
+    outstanding_loans =  
+    coverage_from_date = models.DateField(null=True)
+    coverage_through_date = models.DateField(null=True)
+    data_source =  # periodic filing; webk ; 
+    
+class Big_IE_Spending(models.Model):  
+  
+"""  
+    
