@@ -9,7 +9,7 @@ class yamlChunker(object):
         self.file_name = file_name
         self.fh = open(file_name, 'r')
         # it's a top level identifier, so don't allow leading space
-        self.line_regex = re.compile(r'\-\s+' + token + '\s*:\s*\n')
+        self.line_regex = re.compile(r'\-\s+' + token + '\s*:')
         self.next_line = self.fh.readline()
     
     def next(self):

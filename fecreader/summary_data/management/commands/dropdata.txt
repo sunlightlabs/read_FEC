@@ -1,4 +1,46 @@
-delete from race_curation_election_candidate;
-delete from race_curation_election;
-delete from race_curation_candidate_overlay;
-delete from race_curation_district;
+delete from summary_data_election_candidate;
+delete from summary_data_election;
+delete from summary_data_candidate_overlay;
+delete from summary_data_district;
+delete from summary_data_subelection;
+
+
+drop table summary_data_election_candidate;
+drop table summary_data_election;
+drop table summary_data_candidate_overlay;
+drop table summary_data_district;
+drop table summary_data_subelection;
+
+==
+!! Not-yet-entered House candidate SCOTT, TIMOTHY 01 SC claims incumbency. Perhaps they've retired?
+!!Missing district!! None H4GA01047
+!!Missing district!! IMHOLT, TIMOTHY JAMES H4MA03089
+!! Invalid district for PURCELL, ROBIN 00 NC
+!! Invalid district for STILES, LARRY 00 PA
+!! Invalid district for HAYS, ELAINE 00 TX
+!! Invalid district for HINZ, JANET 00 WI
+!! Not-yet-entered House candidate JACKSON, JESSE L JR 02 IL claims incumbency. Perhaps they've retired?
+!! Not-yet-entered House candidate EMERSON, JOANN 08 MO claims incumbency. Perhaps they've retired?
+!! Invalid senate district for SULLIVAN, MICHAEL J None 2013 MA
+!! Invalid senate district for LYNCH, STEPHEN F None 2013 MA
+!! Not-yet-entered Senate candidate LAUTENBERG, FRANK R 2014 NJ claims incumbency. Perhaps they've retired?
+!! Invalid senate district for RULLO, JOSEPH R 2 2014 NJ
+!! Invalid senate district for LAFLEY, STEPHEN PATRICK None 2013 CO
+!! Not-yet-entered Senate candidate INOUYE, DANIEL K 2016 HI claims incumbency. Perhaps they've retired?
+!! Invalid senate district for HANABUSA, COLLEEN WAKAKO 2 2014 HI
+!! Not-yet-entered Senate candidate BRALEY, BRUCE L 2014 IA claims incumbency. Perhaps they've retired?
+!! Not-yet-entered Senate candidate MARKEY, EDWARD J 2013 MA claims incumbency. Perhaps they've retired?
+!! Not-yet-entered Senate candidate KERRY, JOHN F 2014 MA claims incumbency. Perhaps they've retired?
+!! Invalid senate district for GOMEZ, GABRIEL None 2013 MA
+!! Invalid senate district for WINSLOW, DAN None 2013 MA
+!! Invalid senate district for INMAN, J MARK None 2013 MA
+!! Invalid senate district for HEOS, RICHARD ALFRED None 2013 MA
+!! Invalid senate district for BOOKER, CORY A None 2013 NJ
+!! Invalid senate district for SWEENEY, STEVE M 2 2014 NJ
+!! Invalid senate district for HOLT, RUSH None 2013 NJ
+!! Invalid senate district for LONEGAN, STEVEN M None 2013 NJ
+!! Invalid senate district for OLIVER, SHEILA Y None 2013 NJ
+!! Invalid senate district for ECK, ALIETA None 2013 NJ
+!! Invalid senate district for JEROBOAN, KINS 2 2014 NY
+!! Not-yet-entered Senate candidate DEMINT, JAMES W 2016 SC claims incumbency. Perhaps they've retired?
+!! Invalid senate district for PALLONE, FRANK JR None 2013 NJ
