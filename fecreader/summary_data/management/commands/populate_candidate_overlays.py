@@ -127,7 +127,7 @@ def get_house_challengers():
                         cycle=cycle,
                         fec_id=fec_id,
                         name=thiscandidate.cand_name,
-                        slug = slugify(thiscandidate.cand_name)
+                        slug = slugify(thiscandidate.cand_name),
                         pty=thiscandidate.cand_pty_affiliation,
                         party = get_party_from_pty(thiscandidate.cand_pty_affiliation),
                         pcc=thiscandidate.cand_pcc,
@@ -240,7 +240,7 @@ def get_senate_challengers():
                         cycle=cycle,
                         fec_id=fec_id,
                         name=thiscandidate.cand_name,
-                        slug = slugify(thiscandidate.cand_name)
+                        slug = slugify(thiscandidate.cand_name),
                         pty=thiscandidate.cand_pty_affiliation,
                         party = get_party_from_pty(thiscandidate.cand_pty_affiliation),
                         #pcc=thiscandidate.cand_pcc,
