@@ -8,6 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 from summary_data.utils.senate_crosswalk import senate_crosswalk
 from summary_data.utils.house_crosswalk import house_crosswalk
 from summary_data.utils.party_reference import get_party_from_pty
+from django.template.defaultfilters import slugify
 
 from legislators.models import Legislator, Term
 
@@ -64,6 +65,7 @@ def get_house_incumbents():
 
         this_overlay, created = Candidate_Overlay.objects.get_or_create(fec_id=fec_id, cycle=cycle, district=this_district)
         this_overlay.name = thiscandidate.cand_name
+        this_overlay.slug = slugify(thiscandidate.cand_name)
         this_overlay.pty = thiscandidate.cand_pty_affiliation
         this_overlay.party = get_party_from_pty(thiscandidate.cand_pty_affiliation)
         this_overlay.pcc = thiscandidate.cand_pcc
@@ -125,6 +127,7 @@ def get_house_challengers():
                         cycle=cycle,
                         fec_id=fec_id,
                         name=thiscandidate.cand_name,
+                        slug = slugify(thiscandidate.cand_name)
                         pty=thiscandidate.cand_pty_affiliation,
                         party = get_party_from_pty(thiscandidate.cand_pty_affiliation),
                         pcc=thiscandidate.cand_pcc,
@@ -170,6 +173,7 @@ def get_senate_incumbents():
 
         this_overlay, created = Candidate_Overlay.objects.get_or_create(fec_id=fec_id, cycle=senate_cycle, district=this_district)
         this_overlay.name = thiscandidate.cand_name
+        this_overlay.slug = slugify(thiscandidate.cand_name)
         this_overlay.candidate = thiscandidate
         this_overlay.office='S'
         this_overlay.state = thiscandidate.cand_office_st
@@ -236,6 +240,7 @@ def get_senate_challengers():
                         cycle=cycle,
                         fec_id=fec_id,
                         name=thiscandidate.cand_name,
+                        slug = slugify(thiscandidate.cand_name)
                         pty=thiscandidate.cand_pty_affiliation,
                         party = get_party_from_pty(thiscandidate.cand_pty_affiliation),
                         #pcc=thiscandidate.cand_pcc,

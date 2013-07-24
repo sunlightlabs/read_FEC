@@ -78,30 +78,34 @@ class Committee_Overlay(models.Model):
   name = models.CharField(max_length=255)
   display_name = models.CharField(max_length=255, null=True)
   fec_id = models.CharField(max_length=9, blank=True)
-  slug = models.SlugField(max_length=100)
-  party = models.CharField(max_length=3, blank=True)
+  slug = models.SlugField(max_length=255)
+  party = models.CharField(max_length=3, blank=True, null=True)
   treasurer = models.CharField(max_length=200, blank=True, null=True)
   street_1 = models.CharField(max_length=34, blank=True, null=True)
   street_2 = models.CharField(max_length=34, blank=True, null=True)
   city =models.CharField(max_length=30, blank=True, null=True)
   zip_code = models.CharField(max_length=9, blank=True, null=True)
   state = models.CharField(max_length=2, blank=True, null=True, help_text='the state where the pac mailing address is')
-  connected_org_name=models.CharField(max_length=200, blank=True)
-  filing_frequency = models.CharField(max_length=1, blank=True)
+  connected_org_name=models.CharField(max_length=200, blank=True, null=True)
+  filing_frequency = models.CharField(max_length=1, blank=True, null=True)
 
-  candidate_id = models.CharField(max_length=9,blank=True)
-  candidate_office = models.CharField(max_length=1, blank=True)    
+  candidate_id = models.CharField(max_length=9,blank=True, null=True)
+  candidate_office = models.CharField(max_length=1, blank=True, null=True)    
 
 
   has_contributions = models.NullBooleanField(null=True, default=False)
   # total receipts
+  total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True)
   total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True)
   total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True)
   
+  outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
 
   # total unitemized receipts
   total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True)
 
+  cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+  cash_on_hand_date = models.DateField(null=True)
   
   # independent expenditures
   has_independent_expenditures = models.NullBooleanField(null=True, default=False)
@@ -118,9 +122,8 @@ class Committee_Overlay(models.Model):
 
   has_electioneering = models.NullBooleanField(null=True, default=False)
   total_electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-
-  cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-  cash_on_hand_date = models.DateField(null=True)
+  
+  ## new
 
   # what kinda pac is it? 
   is_superpac = models.NullBooleanField(null=True, default=False)    
@@ -300,7 +303,7 @@ class Candidate_Overlay(models.Model):
     ## This is the human verified field -- see legislators.models.incumbent_challenger
     is_incumbent = models.BooleanField(default=False,help_text="Are they an incumbent? If not, they are a challenger")
     # foreign key to district
-    district = models.ForeignKey('District')
+    district = models.ForeignKey('District', null=True, help_text="Presidents have no district")
     # drop the foreign key to Candidate_Overlay -- these tables are dropped and recreated regularly.
     #candidate = models.ForeignKey(Candidate, null=True)
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
@@ -345,15 +348,26 @@ class Candidate_Overlay(models.Model):
 
     # Are they in the general election ? 
     is_general_candidate = models.NullBooleanField(null=True)
-    ### data from the candidates own committees. Can be outta date for senate. From weball. 
-    cand_ttl_receipts= models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    cand_total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    cand_ending_cash = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    cand_ttl_ind_contribs = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    cand_cand_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    cand_cand_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    cand_debts_owed_by = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    cand_report_date = models.DateField(null=True)
+    ### data from the candidates own committees. 
+    
+    has_contributions = models.NullBooleanField(null=True, default=False)
+    # total receipts
+    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+
+    # total unitemized receipts
+    total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    cash_on_hand_date = models.DateField(null=True)
+    
+    ## these two are currently not populated
+    cand_cand_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, help_text="contributions from the candidate herself")
+    cand_cand_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, help_text="loans from the candidate herself")
+    
 
     class Meta:
         unique_together = ('fec_id', 'cycle')
@@ -470,23 +484,57 @@ class SubElection_Candidate(models.Model):
 
 
 ## summary helpers:
-"""
+
 class Committee_Time_Summary(models.Model):
-    com_id = 
-    filing_number = 
-    tot_receipts =
-    tot_contrib = 
-    tot_ite_contrib = 
-    tot_non_ite_contrib = 
-    tot_disburse =
-    tot_loans =
-    cash_on_hand_end = 
-    outstanding_loans =  
+    com_id = models.CharField(max_length=9, blank=True)
+    filing_number = models.IntegerField(null=True, blank=True, help_text="Not applicable for webk")
+    tot_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_ite_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_non_ite_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_disburse =models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+
+    ind_exp_mad = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="independent expenditures made")
+    coo_exp_par = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="coordinated expenditures made (party committees only)")
+    new_loans =models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="in webk this is deb_owe_by_com")
+    electioneering_made = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="not in webk")
+    cash_on_hand_end = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
     coverage_from_date = models.DateField(null=True)
     coverage_through_date = models.DateField(null=True)
-    data_source =  # periodic filing; webk ; 
-    
+    data_source = models.CharField(max_length=10, help_text="webk|electronic")
+
+
+class Authorized_Candidate_Committees(models.Model):
+    candidate_id = models.CharField(max_length=9, blank=True)
+    committee_id = models.CharField(max_length=9, blank=True)
+    committee_name = models.CharField(max_length=255)
+    is_pcc = models.NullBooleanField(null=True) 
+    com_type = models.CharField(max_length=1, help_text="committee type")
+    ignore = models.BooleanField(default=False, help_text="Make this true if this isn't actually authorized.")
+     
+
+
+## Aggregate fundraising from all the authorized committees into this, on the basis of the CCL data. 
+class Candidate_Time_Summary(models.Model):
+    candidate_id = models.CharField(max_length=9, blank=True)
+    filing_number = models.IntegerField(null=True, blank=True, help_text="Not applicable for webk")
+    tot_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_ite_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_non_ite_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    tot_disburse =models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    new_loans =models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="in webk this is deb_owe_by_com")
+    electioneering_made = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="not in webk")
+    cash_on_hand_end = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    coverage_from_date = models.DateField(null=True)
+    coverage_through_date = models.DateField(null=True)
+    data_source = models.CharField(max_length=10, help_text="webk|electronic")
+"""  
 class Big_IE_Spending(models.Model):  
+
+class Big_Contrib(models.Model):  
   
 """  
     

@@ -6,7 +6,7 @@ from datetime import timedelta,date
 
 from fec_alerts.models import WebK
 from formdata.models import Filing_Header
-from summary_data.models import Candidate_Overlay, type_hash, committee_designation_hash
+from summary_data.models import Candidate_Overlay, type_hash, Committee_Time_Summary, committee_designation_hash
 #from summary_data.models import Committee_Time_Summary
 
 
@@ -48,7 +48,7 @@ def write_webk_csv(webk_list, file_name):
             pass
         csvwriter.writerow(this_webk)
 
-"""
+
 
 def summarize_committee_periodic_webk(committee_id, force_update=False):
     # Populate the Committee_Time_Summary with webk data. Only do this for the senate. 
@@ -61,7 +61,7 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
     last_end_date = None
     gap_list = []
     for i, wk in enumerate(relevant_webks):
-        print i, wk.coverage_from_date, wk.coverage_through_date
+        #print i, wk.coverage_from_date, wk.coverage_through_date
         
         if i==0:
             if wk.coverage_from_date - this_cycle_start > one_day:
@@ -101,7 +101,7 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
                 tot_ite_contrib = wk.ind_ite_con,
                 tot_non_ite_contrib = wk.ind_uni_con,
                 tot_disburse = wk.tot_dis,
-                tot_loans = wk.tot_loa,
+                new_loans = wk.tot_loa,
                 outstanding_loans = wk.deb_owe_by_com,
                 ind_exp_mad = wk.ind_exp_mad,
                 coo_exp_par = wk.coo_exp_par,
@@ -134,7 +134,7 @@ def map_f3x_to_cts(f3p_dict):
         'coo_exp_par':f3p_dict.get('col_a_coordinated_expenditures_by_party_committees'), # na for form 3
         'new_loans':f3p_dict.get('col_a_total_loans'),
         'outstanding_loans':f3p_dict.get('col_a_debts_by'),
-        'electioneering_made':f3p_dict.get(''), # NA
+        'electioneering_made':0, # NA
         'cash_on_hand_end':f3p_dict.get('col_a_cash_on_hand_close_of_period'),
     }
     return cts_dict
@@ -149,7 +149,7 @@ def map_f3_to_cts(f3p_dict):
         'coo_exp_par':0, # na for form 3
         'new_loans':f3p_dict.get('col_a_total_loans'),
         'outstanding_loans':f3p_dict.get('col_a_debts_by'),
-        'electioneering_made':f3p_dict.get(''), # NA
+        'electioneering_made':0, # NA
         'cash_on_hand_end':f3p_dict.get('col_a_cash_on_hand_close_of_period'),
     }
     return cts_dict
@@ -164,34 +164,35 @@ def map_f3p_to_cts(f3p_dict):
         'coo_exp_par':0, # na for form 3
         'new_loans':f3p_dict.get('col_a_total_loans'),
         'outstanding_loans':f3p_dict.get('col_a_debts_by'),
-        'electioneering_made':f3p_dict.get(''), # NA
+        'electioneering_made':0, # NA
         'cash_on_hand_end':f3p_dict.get('col_a_cash_on_hand_close_of_period'),
     }
     return cts_dict
 
 def summarize_committee_periodic_electronic(committee_id, force_update=False):
     relevant_filings = Filing_Header.objects.filter(raw_filer_id=committee_id, is_superceded=False, form__in=['F3P', 'F3', 'F3X'])
+    #print "processing %s" % committee_id
     if not relevant_filings:
-        print "No filings found for %s" % (committee_id)
+        #print "No filings found for %s" % (committee_id)
         return None
     
     # check gaps
     last_end_date = None
     gap_list = []
     for i, this_filing in enumerate(relevant_filings):
-        
+        #print i, this_filing.coverage_from_date, this_filing.coverage_through_date
         if i==0:
             if this_filing.coverage_from_date - this_cycle_start > one_day:
-                print "Missing coverage from start of cycle!!"
+                #print "Missing coverage from start of cycle!!"
                 gap_list.append({"gap_start":this_cycle_start, "gap_end":this_filing.coverage_from_date})
         
         if i>0:
             difference = this_filing.coverage_from_date - last_end_date
             if difference > one_day:
-                print "gap found!"
+                #print "gap found!"
                 gap_list.append({"gap_start":last_end_date, "gap_end":this_filing.coverage_from_date})
 
-        print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
+        #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
         
         last_end_date = this_filing.coverage_through_date
         form = this_filing.form
@@ -209,6 +210,11 @@ def summarize_committee_periodic_electronic(committee_id, force_update=False):
         cts_dict['coverage_from_date'] = this_filing.coverage_from_date
         cts_dict['data_source'] = 'electronic'
         cts_dict['com_id'] = committee_id
+        
+        for i in cts_dict:
+            if cts_dict[i] == '':
+                cts_dict[i] = None
+            
         
         try:
             this_summary = Committee_Time_Summary.objects.get(com_id=committee_id, coverage_from_date=this_filing.coverage_from_date, coverage_through_date=this_filing.coverage_through_date)
@@ -232,8 +238,12 @@ def summarize_committee_periodic_electronic(committee_id, force_update=False):
             cts = Committee_Time_Summary(**cts_dict)
             cts.save()
 
+    if gap_list:
+        print "\n\nFound gap in %s" % committee_id
+    for gap in gap_list:
+        print gap
 
 # from summary_data.utils.summary_utils import summarize_committee_periodic_electronic
 # summarize_committee_periodic_electronic('C00003251')
 
-"""
+
