@@ -170,7 +170,7 @@ def map_f3p_to_cts(f3p_dict):
     return cts_dict
 
 def summarize_committee_periodic_electronic(committee_id, force_update=False):
-    relevant_filings = Filing_Header.objects.filter(raw_filer_id=committee_id, is_superceded=False, form__in=['F3P', 'F3', 'F3X'])
+    relevant_filings = Filing_Header.objects.filter(raw_filer_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form__in=['F3P', 'F3', 'F3X']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
