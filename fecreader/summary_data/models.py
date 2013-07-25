@@ -432,17 +432,7 @@ class Election(models.Model):
         return_value += " Incumbent: %s" % (self.incumbent_name)
         return return_value
 
-"""
-primary_party = models.CharField(max_length=1, blank=True, null=True, help_text="What party is this a primary for ? ")
- primary_contested = models.NullBooleanField(default=False,help_text="Is there at least one candidate running?")
- election_code = models.CharField(max_length=2, blank=True, null=True, choices=ELECTION_TYPE_CHOICES) # General, Primary, PR=Primary runoff, GR=general runoff, SP=special primary, SR=special primary runoff, SG=special general, VR=Special general runoff, Caucus, Other
- election_other_description = models.CharField(max_length=20, blank=True, null=True, help_text="FEC field; required if election code is 'O' for other")
- 
- election_date = models.DateField(null=True, help_text="The 'main' day that polls are open; this is what determines the 20-day pre election report, for example.")
- election_voting_start_date = models.DateField(null=True, help_text="The day that voting starts, be it by mail or whatever. Not sure we really care about this. ")
- election_voting_end_date = models.DateField(null=True, help_text="The day that voting ends--this is probably the election date")
 
-"""
 # a specific election--that is, either a general or a primary. 
 class SubElection(models.Model):
     parentElection = models.ForeignKey('Election')
@@ -531,6 +521,20 @@ class Candidate_Time_Summary(models.Model):
     coverage_from_date = models.DateField(null=True)
     coverage_through_date = models.DateField(null=True)
     data_source = models.CharField(max_length=10, help_text="webk|electronic")
+
+class Filing_Gap(models.Model):
+    # record-keeping for what filings are missing. 
+    # Will attempt to backfill with webk data to handle case of 
+    # pac that's switched from paper to electronic, or otherwise
+    # done something weird. 
+    
+    committee_id = models.CharField(max_length=9, blank=True)
+    gap_start = models.DateField(null=True)
+    gap_end = models.DateField(null=True)
+
+
+
+
 """  
 class Big_IE_Spending(models.Model):  
 

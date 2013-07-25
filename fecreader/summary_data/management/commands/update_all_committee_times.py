@@ -36,7 +36,6 @@ class Command(BaseCommand):
                 committee.outstanding_loans = most_recent_report.outstanding_loans
                 
                 sums = all_summaries.aggregate(tot_contrib=Sum('tot_contrib'), tot_disburse=Sum('tot_disburse'), tot_non_ite_contrib=Sum('tot_non_ite_contrib'), tot_receipts=Sum('tot_receipts'), coo_exp_par=Sum('coo_exp_par'))
-                
                 committee.total_contributions = sums['tot_contrib']
                 committee.total_disbursements = sums['tot_disburse']
                 committee.total_unitemized = sums['tot_non_ite_contrib']
