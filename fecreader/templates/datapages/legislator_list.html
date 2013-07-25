@@ -36,11 +36,11 @@
                         {{object.name}}</td>
                       <td>{{object.pty}}</td>
                       <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
-                      <td>{{ object.cand_report_date|date:"Y-M-d" }}</td>
-                      <td>${{ object.cand_ending_cash|intcomma }}</td>
-                      <td>${{ object.cand_ttl_receipts|intcomma }}</td>
-                      <td>${{ object.cand_total_disbursements|intcomma }}</td>
-                      <td>${{ object.cand_debts_owed_by|intcomma }}</td>                  </tr>
+                      <td>{{ object.cash_on_hand_date|date:"Y-M-d" }}</td>
+                      <td>${{ object.cash_on_hand|intcomma }}</td>
+                      <td>${{ object.total_receipts|intcomma }}</td>
+                      <td>${{ object.total_disbursements|intcomma }}</td>
+                      <td>${{ object.outstanding_loans|intcomma }}</td>                  </tr>
                 {% endfor %}
                  
 </tbody>
