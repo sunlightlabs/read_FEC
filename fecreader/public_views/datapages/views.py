@@ -15,7 +15,7 @@ def house(request):
     explanatory_text="This page shows the fundraising totals for the entire cycle for current house members. For cyclewide totals for challengers, see the <a href=\"/candidates/\">candidates</a> page. For fundraising totals for just a single reporting period, see the <a href=\"/reports\">reports</a> page."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
     
-    legislators = Candidate_Overlay.objects.filter(cycle=this_cycle, office='H', is_incumbent=True)
+    legislators = Candidate_Overlay.objects.filter(office='H', is_incumbent=True)
     
     return render_to_response('datapages/legislator_list.html',
         {
@@ -32,7 +32,7 @@ def senate(request):
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(cycle=this_cycle, office='S', is_incumbent=True)
+    legislators = Candidate_Overlay.objects.filter(office='S', is_incumbent=True)
 
     return render_to_response('datapages/legislator_list.html',
         {
