@@ -22,19 +22,24 @@ class Command(BaseCommand):
             
             all_summaries = Committee_Time_Summary.objects.filter(com_id=candidate_pcc, coverage_from_date__gte=(date(2012,12,31))).order_by('-coverage_from_date')
             
+            
             if all_summaries:
                 most_recent_report = all_summaries[0]
                 
                 # Independent expenditures are summarized separately. 
-                candidate.cand_report_date = most_recent_report.coverage_through_date
-                candidate.cand_ending_cash = most_recent_report.cash_on_hand_end
-                candidate.cand_debts_owed_by = most_recent_report.outstanding_loans
+                candidate.cash_on_hand_date = most_recent_report.coverage_through_date
+                candidate.cash_on_hand = most_recent_report.cash_on_hand_end
+                candidate.outstanding_loans = most_recent_report.outstanding_loans
                 
-                sums = all_summaries.aggregate(tot_contrib=Sum('tot_contrib'), tot_disburse=Sum('tot_disburse'), tot_receipts=Sum('tot_receipts'))
+                sums = all_summaries.aggregate(tot_contrib=Sum('tot_contrib'), tot_disburse=Sum('tot_disburse'), tot_receipts=Sum('tot_receipts'), tot_non_ite_contrib=Sum('tot_non_ite_contrib'))
                 
-                candidate.cand_ttl_ind_contribs = sums['tot_contrib']
-                candidate.cand_total_disbursements = sums['tot_disburse']
-                candidate.cand_ttl_receipts = sums['tot_receipts']
+                candidate.total_contributions = sums['tot_contrib']
+                candidate.total_unitemized = sums['tot_non_ite_contrib']
+                candidate.total_disbursements = sums['tot_disburse']
+                candidate.total_receipts = sums['tot_receipts']
+                
+                if not candidate.has_contributions and candidate.total_contributions > 0:
+                    candidate.has_contributions = True
                 
 
                 candidate.save()
