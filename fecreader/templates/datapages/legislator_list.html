@@ -1,14 +1,14 @@
 {# list of current legislators, either house or senate or something #}
-{% extends "test_templates/search_base.html" %}
+{% extends "datapages/realtime_base.html" %}
 {% load humanize %}
 
 
 
 {% block body_class %}{% endblock %}
 
-{% block pagetitle %}{{ title }}{% endblock %}
+{% block pagetitle %}{{ title }} {% endblock %}
 
- {% block main %}
+ {% block rtmain %}
 
 <div class="module">
  <div id="contentHeader">
@@ -21,6 +21,7 @@
                       <th class="sort">Legislator</th>
                       <th class="sort">Party</th>
                       <th class="sort">District</th>
+                      <th class="sort">Election Year</th>
                       <th class="sort">Report Date</th>
                       <th class="sort">Cash on hand</th>
                       <th class="sort">Raised </th>
@@ -36,11 +37,12 @@
                         {{object.name}}</td>
                       <td>{{object.pty}}</td>
                       <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
-                      <td>{{ object.cash_on_hand_date|date:"Y-M-d" }}</td>
+                      <td>{{ object.election_year }}</td>
+                      <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
                       <td>${{ object.cash_on_hand|intcomma }}</td>
                       <td>${{ object.total_receipts|intcomma }}</td>
                       <td>${{ object.total_disbursements|intcomma }}</td>
-                      <td>${{ object.outstanding_loans|intcomma }}</td>                  </tr>
+                      <td>{% if object.outstanding_loans %}${{ object.outstanding_loans|intcomma }}{% else %}$0{% endif %}</td>                  </tr>
                 {% endfor %}
                  
 </tbody>
@@ -48,6 +50,3 @@
 </div>
   {% endblock %}
   
-
-{# override get satisfaction #}  
-  {% block gsfn %}{% endblock %}

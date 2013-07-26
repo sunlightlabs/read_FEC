@@ -317,6 +317,8 @@ class Candidate_Overlay(models.Model):
     party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party")
     fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="FEC candidate id")
     pcc = models.CharField(max_length=9, blank=True, null=True, help_text="FEC id for primary campaign committee")
+    
+    # This is displayed--this needs to be maintained.
     election_year = models.PositiveIntegerField(blank=True, null=True, help_text="year of general election")
     state = models.CharField(max_length=2, blank=True, null=True, help_text="US for president")
     office = models.CharField(max_length=1, null=True,
@@ -505,7 +507,7 @@ class Authorized_Candidate_Committees(models.Model):
      
 
 
-## Aggregate fundraising from all the authorized committees into this, on the basis of the CCL data. 
+## Aggregate fundraising from all the authorized committees into this, on the basis of the CCL data. Not used yet -- Authorized Candidate Committees needs to be cleaned up. 
 class Candidate_Time_Summary(models.Model):
     candidate_id = models.CharField(max_length=9, blank=True)
     filing_number = models.IntegerField(null=True, blank=True, help_text="Not applicable for webk")

@@ -2,6 +2,7 @@ import datetime
 
 from django.shortcuts import get_object_or_404, render_to_response
 from django.db import connection
+from django.template import RequestContext
 
 from fec_alerts.models import new_filing, newCommittee
 from summary_data.models import Candidate_Overlay, District
@@ -9,6 +10,10 @@ this_cycle = '2014'
 # get not null senate ids. 
 #senate_ids =  [ senator['fec_id'] for senator in senate_crosswalk if senator['fec_id'] ]
 
+
+def newbase(request):
+    return render_to_response('datapages/realtime_base.html', {}, context_instance=RequestContext(request))
+    
 def house(request):
 
     title="House Members - Cycle Summary"
@@ -22,7 +27,8 @@ def house(request):
         'object_list':legislators,
         'title':title,
         'explanatory_text':explanatory_text,
-        }
+        }, 
+        context_instance=RequestContext(request)
     )
     
 def senate(request):
@@ -39,15 +45,14 @@ def senate(request):
         'object_list':legislators,
         'title':title,
         'explanatory_text':explanatory_text,
-        }
+        }, 
+        context_instance=RequestContext(request)
     )
 
-def districts(request):
+def races(request):
 
-    title="District Spending Comparison"
+    title="Race Spending Comparison"
     explanatory_text="District totals are based on the most recent information available, but different political groups report this differently. Super PACs must reported independent expenditures within 48- or 24-hours, but candidate committees typically report this quarterly."
-
-    # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
     senate_districts = District.objects.filter(office='S').order_by('state')
     house_districts = District.objects.filter(office='H').order_by('state', 'office_district')
@@ -58,7 +63,8 @@ def districts(request):
         'explanatory_text':explanatory_text,
         'senate_districts':senate_districts,
         'house_districts':house_districts,
-        }
+        }, 
+        context_instance=RequestContext(request)
     )
 
 def newest_filings_template(request, filings, explanatory_text, title):
@@ -68,7 +74,8 @@ def newest_filings_template(request, filings, explanatory_text, title):
             'title':title,
             'explanatory_text':explanatory_text,
             'object_list':filings,
-            }
+            }, 
+            context_instance=RequestContext(request)
         )
             
 
@@ -115,30 +122,34 @@ def new_committees(request):
                 'object_list':committees,
                 'explanatory_text':'These are committees formed within the last 30 days. It may take several days after a PAC is formed for details to be posted.',
                 'title':'New Committees'
-                })
+                }, 
+                context_instance=RequestContext(request)
+                )
 
 ### Placeholder pages
 
-def render_blank_page(title, explanatory_text):
+def render_blank_page(title, explanatory_text, request):
     return render_to_response('datapages/blank_page.html', {
         'title':title,
         'explanatory_text':explanatory_text,
-                })
+                }, 
+                context_instance=RequestContext(request)
+                )
                 
 def downloads(request):
-    return render_blank_page('Downloads','Downloadable files will go here.')
+    return render_blank_page('Downloads','Downloadable files will go here.', request)
 
 def pacs(request):
-    return render_blank_page('PACs','This page is a searchable, sortable, filterable paginated list of all pacs and their cycle-to-date fundraising numbers. Filters are for things like super-pacs, candidate pacs, leadership pacs (maybe), and maybe a category for NRCC/DSCC etc.')
+    return render_blank_page('PACs','This page is a searchable, sortable, filterable paginated list of all pacs and their cycle-to-date fundraising numbers. Filters are for things like super-pacs, candidate pacs, leadership pacs (maybe), and maybe a category for NRCC/DSCC etc.', request)
 
 def candidates(request):
-    return render_blank_page('Candidates','This page is a searchable, sortable, filterable paginated list of all pacs and their cycle-to-date fundraising numbers. Filter by race or by chamber, I think.')
+    return render_blank_page('Candidates','This page is a searchable, sortable, filterable paginated list of all pacs and their cycle-to-date fundraising numbers. Filter by race or by chamber, I think.', request)
 
 def reports(request):
-    return render_blank_page('Reports','This page is a searchable, sortable, filterable paginated list of summary reports for pacs. Instead of showing cycle-to-date numbers, like on most other pages, this one will show just the fundraising totals for a single filing period.')        
+    return render_blank_page('Reports','This page is a searchable, sortable, filterable paginated list of summary reports for pacs. Instead of showing cycle-to-date numbers, like on most other pages, this one will show just the fundraising totals for a single filing period.', request)        
 
 def alerts(request):
-    return render_blank_page('Alerts','This is where you sign up to receive alerts. This time we should make alerts for a specific race too. New filing alerts should include summary details--so the amount raised in the newly-filed filing.')
+    return render_blank_page('Alerts','This is where you sign up to receive alerts. This time we should make alerts for a specific race too. New filing alerts should include summary details--so the amount raised in the newly-filed filing.', request)
 
 def outside_spending(request):
-    return render_blank_page('Outside Spending','This is a page on outside spending. Maybe include links to subpages on electioneering, and coordinated spending? I dunno.')
+    return render_blank_page('Outside Spending','This is a page on outside spending. Maybe include links to subpages on electioneering, and coordinated spending? I dunno.', request)

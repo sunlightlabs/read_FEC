@@ -1,5 +1,5 @@
 {# list of new committees #}
-{% extends "test_templates/search_base.html" %}
+{% extends "datapages/realtime_base.html" %}
 {% load timestamp %}
 
 {% block timestamp %}{% timestamp_committees %}{% endblock %}
@@ -8,7 +8,7 @@
 
 {% block pagetitle %}{{ title }}{% endblock %}
 
- {% block main %}
+ {% block rtmain %}
 
 <div class="module">
  <div id="contentHeader">
@@ -40,6 +40,3 @@
 </div>
   {% endblock %}
   
-
-{# override get satisfaction #}  
-  {% block gsfn %}{% endblock %}

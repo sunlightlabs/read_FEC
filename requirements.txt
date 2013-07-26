@@ -16,3 +16,7 @@ pyyaml
 supervisor
 redis
 celery
+
+# brisket stuff
+django_compressor
+

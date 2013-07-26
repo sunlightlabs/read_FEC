@@ -1,14 +1,14 @@
 {# list districts #}
-{% extends "test_templates/search_base.html" %}
+{% extends "datapages/realtime_base.html" %}
 {% load humanize %}
 
 
 
 {% block body_class %}{% endblock %}
 
-{% block pagetitle %}{{ title }}{% endblock %}
+{% block pagetitle %}{{ title }} {% endblock %}
 
- {% block main %}
+{% block rtmain %}
 
 <div class="module">
  <div id="contentHeader">
@@ -88,6 +88,3 @@
 </div>
   {% endblock %}
   
-
-{# override get satisfaction #}  
-  {% block gsfn %}{% endblock %}

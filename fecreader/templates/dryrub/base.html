@@ -1,9 +1,9 @@
-{% load static from staticfiles %}
-{% load timestamp %}
 <!doctype html>
+{% load compress %}
+{% load staticfiles %}
 <html xmlns="http://www.w3.org/1999/xhtml" >
     <head>
-        <title>{% block pagetitle %}{% endblock %} - Influence Explorer{% block pagetopics %}{% endblock %}</title>
+        <title>{% block pagetitle %}{% endblock %}Influence Explorer{% block pagetopics %}{% endblock %}</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="keywords" content="campaign contributions, sunlight foundation, influence explorer, politics, government, influence" />
@@ -12,43 +12,21 @@
 	
         <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
 	
-        <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+        <link rel="icon" href="{% static "dryrub/images/favicon.ico" %}" type="image/x-icon">
+        <link rel="canonical" rel="{% block canonicalurl %}{{ request.path }}{% if request.META.QUERY_STRING %}?{{ request.META.QUERY_STRING }}{% endif %}{% endblock %}" />
 
-        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
-        <!--[if IE 6]><link rel="stylesheet" type="text/css" href="{% static 'css/buggy.css' %}" /><![endif]-->
-        <!--[if IE 7]><link rel="stylesheet" type="text/css" href="{% static 'css/buggy7.css' %}" /><![endif]-->
+        {% compress css %}
+        <link rel="stylesheet" href="{% static "dryrub/css/main.css" %}" />
+        {% block sitecss %}{% endblock %}
+        {% endcompress %}
+
+        <!--[if IE 7]><link rel="stylesheet" href="{% static "dryrub/css/buggy7.css" %}" /><![endif]-->
         <!--[if lt IE 9]>
             <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        
-        <!-- temporary overrides to ease the pain -->
-        <style type="text/css">
-        /* reduce bulky whitespace at top of page; reduce eyesore during development */
-        h1 { padding-top: 20px; }
-        h5 { margin-bottom: 0px; padding-bottom:0px;}
-        #contentHeader { margin-bottom: 5px; padding: 0 40px 10px; }
-        #search { padding-top: 10px; width: 370px;}
-
-        /* slim down subnav */
-        #td_nav { background: url(../images/bg_tdNav.png) right top no-repeat; margin-top: -32px; padding: 14px 0 0 0; height: 42px; margin-bottom: 0px;}
-        #td_nav ul { margin-right: 25px;}
-        #td_nav li { float: right; border-right: 1px solid #cacdce; padding: 0 9px; line-height: 15px; text-align: center;}
-        #td_nav li.last { border-right: none;}
-        #td_nav li:hover, .documentation #td_nav #documentation, .downloads #td_nav #downloads, .api #td_nav #api, .flexwidth #td_nav #searchTD, .searchTD #td_nav #searchTD{ font-weight: normal;}
-        
-        
-        /* Need some sorta style for the summary boxes. This is not gonna do it */
-        .numeric_summary { border-top: 1px solid #999; border-bottom: 1px solid #999; margin-bottom: 5px; margin-top:5px; padding-bottom: 5px; padding-top:5px; width: 400px; }
-        
-        /* For the love of meatballs, don't make this lowercase! WTF! */
-        .tip { margin-bottom:0px; margin-top:0px; padding: 0px; text-transform: none;}
-        
-        /* Use colors, size from existing span.amount */
-        .amount_description { text-transform: uppercase; font-size: 140%;}
-        .amount_dollars {  font-color: #797070; text-transform: uppercase; font-size: 140%;}
-        </style>
-        <script type="text/javascript" src="{% static 'js/jquery-1.4.2.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/jquery-placehold.min.js' %}"></script>
+        <script src="{% static "dryrub/js/jquery-1.10.2.min.js" %}"></script>
+        <script src="{% static "dryrub/js/jquery-migrate-1.2.1.min.js" %}"></script>
+        <script src="{% static "dryrub/js/jquery-placehold.min.js" %}"></script>
         
         {% block js %}{% endblock %}
 	    {% block og %}
@@ -56,6 +34,7 @@
     	    <meta name="og:description" content="Influence Explorer connects the dots of political contributions on the federal and state level allowing you to track influence by lawmaker, company or prominent individual.">
     	    <meta name="og:type" content="cause">
     	    <meta name="og:image" content="http://s3.amazonaws.com/assets.sunlightfoundation.com/brisket/1.0/images/projects_icon_influencexplorer.png">
+    	    <meta name="og:url" content="http://influenceexplorer.com{{ request.path }}">
     	    <meta name="og:site_name" content="Influence Explorer">
     	    <meta name="fb:admins" content="7812952,5308565">
 	    {% endblock %}
@@ -74,65 +53,88 @@
         </script>
     </head>
 
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="{% block body_class %}search{% endblock %}">
         <div id="wrapper">
             <div id="pageMain">
                 <header>
                     {% block search %}
-                    
-                    <div id="search">
-                      <form id="searchForm" action="http://influenceexplorer.com/search" method="get">
-                        <input data-initial="SEARCH" name="query" value="SEARCH" maxlength="200" type="text" id="id_query" />
-                        <input type="hidden" name="from_form" value="1" />
-                        <button class="searchBtn_sm" type="submit">
-                          <span>Go</span>
-                        </button>
-                      </form>
-                      <div class="clear"></div>
-                      <span class="tip">Enter a politician, company or individual donor</span>
-                    </div>
-                    
+                        <div id="search">
+                            <form id="searchForm" action="{{ IE_BASE_URL }}search" method="get">
+                                {% if search_form %}
+                                    {{ search_form.query }}
+                                {% else %}
+                                    <input data-initial="SEARCH" name="query" value="SEARCH" maxlength="200" type="text" id="id_query">
+                                {% endif %}
+                                <input type="hidden" name="from_form" value="1" />
+                                <button class="searchBtn_sm" type="submit">
+                                <span>Go</span>
+                                </button>
+                            </form>
+                            <div class="clear"></div>
+                            <span class="tip">Enter a politician, company or individual donor</span>
+                        </div>
                     {% endblock %}
-                    <h1><a id="logo" href="http://influenceexplorer.com/">Influence Explorer</a></h1>
-                    <div id="share-buttons" class="clear"></div>
+                    <h1><a id="logo" href="{{ IE_BASE_URL }}">Influence Explorer</a></h1>
+                    <div id="share-buttons" class="clear">
+                        <a class="socialite facebook-share" href="http://facebook.com/sharer/sharer.php?">Facebook</a>
+                        <a class="socialite twitter-simple" href="http://twitter.com/share">Twitter</a>
+                    </div>
                     <nav class="clear">
                         <ul>
-                            <li id="people"><a href="http://influenceexplorer.com/people">People</a></li>
-                            <li id="orgs"><a href="http://influenceexplorer.com/organizations">Organizations</a></li>
-                            <li id="politicians"><a href="http://influenceexplorer.com/politicians">Politicians</a></li>
-	                        <li id="industries"><a href="http://influenceexplorer.com/industries">Industries</a></li>
-	                        <li id="data"><a href="http://data.influenceexplorer.com/">Data</a></li>
+                            <li id="groups">
+                                <a href="#">Groups</a>
+                                <ul>
+                                    <li><a href="{{ IE_BASE_URL }}industries">Industries</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}organizations">Organizations</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}political-groups">Political Groups</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}lobbying-firms">Lobbying Firms</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li id="places">
+                                <a href="#">Places</a>
+                                <ul>
+                                    <li><a href="{{ IE_BASE_URL }}cities">Cities</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}states">States</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li id="people">
+                                <a href="#">People</a>
+                                <ul>
+                                    <li><a href="{{ IE_BASE_URL }}contributors">Contributors</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}lobbyists">Lobbyists</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}politicians">Politicians</a></li>
+                                </ul>
+                            </li>
+
+                            <li id="collections">
+                                <a href="#">Collections</a>
+                                <ul>
+                                    <li><a href="{{ IE_BASE_URL }}collections/campaign-finance">Campaign Finance</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}collections/lobbying">Lobbying</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}collections/regulations">Regulations</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}collections/federal-spending">Federal Spending</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}collections/contractor-misconduct">Contractor Misconduct</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}collections/epa-violations">EPA Violations</a></li>
+                                    <li><a href="{{ IE_BASE_URL }}collections/advisory-committees">Advisory Committees</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li id="realtime">
+                                <a href="#">Real Time</a>
+                                <ul>
+                                    <li><a href="#">Real-time FEC</a></li>
+                                </ul>
+                            </li>
+
+	                        <li id="data"><a href="{{ DATA_BASE_URL }}">Data</a></li>
                         </ul>
                     </nav>
                 </header>
                 <div id="mainContent_top"></div>
 
                 <div id="mainContent">
-                <!-- wrap the whole page in an unidentified module -->
-                
-                
-                <nav id="td_nav">
-                    {% block subnavitems %}
-                    <ul>
-                        <li class="last"><a href="/download-index/">Downloads</a></li>
-                        <li><a href="/newest-filings/">Newest Filings</a></li>
-                        <li><a href="/alerts/">Alerts</a></li>
-                        <li><a href="/new-committees/">New Committees</a></li>
-                        <li><a href="/outside-spending/">Outside Spending</a></li>
-                        <li><a href="/pacs/">PACs</a></li>
-                        <li><a href="/candidates/">Candidates</a></li>
-                        <li><a href="/house/">House</a></li>
-                        <li><a href="/senate/">Senate</a></li>
-                        <li><a href="/districts/">Districts</a></li>                                                
-                        <li><a href="/reports/">Reports</a></li>                         
-                        
-                    </ul>
-                    {% endblock %}
-                    <div class="clear"></div>
-                    <div class="development-disclaimer" style="margin-left: 200px; color:red; font-size: 18px;">IN DEVELOPMENT: THE DATA ON THIS SITE MAY NOT BE ACCURATE</div>
-                </nav>
-                <div style="float:right; margin-right: 30px;">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div>
-                <div class="clear"></div>
                   {% block main %}
                   {% endblock %}
                   <div class="clear"></div>
@@ -146,8 +148,9 @@
                 <div id="footerLinks">
                     <nav>
                         <ul>
-                            <li id="aboutLink"><a href="http://influenceexplorer.com/about/">About</a></li>
-                            <li><a href="http://influenceexplorer.com/contact/">Contact</a></li>
+                            <li id="aboutLink"><a href="{{ IE_BASE_URL }}about/">About</a></li>
+                            <li><a href="{{ DATA_BASE_URL }}docs/changelog"</a>Changelog</li>
+                            <li><a href="{{ IE_BASE_URL }}contact/">Contact</a></li>
                         </ul>
                     </nav>
                     <div id="sunlightRequests">
@@ -191,8 +194,21 @@
         </div>
     
     	<img height="1" border="0" width="1" alt="" src="http://ad.doubleclick.net/activity;src=1379696;dcnet=4155;boom=41134;sz=1x1;ord=1?" />
-    	<script type="text/javascript" src="{% static 'js/brisket-all.js.gz' %}"></script>
-        <script type="text/javascript">BrisketFallback.PATH = "/chart/";</script>
+        
+        {% compress js %}
+        <script type="text/javascript" src="{% static "dryrub/js/jquery.tablesorter.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "dryrub/js/jquery.json-2.3.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "dryrub/js/underscore-min.js" %}"></script>
+        <script type="text/javascript" src="{% static "dryrub/js/brisket.js" %}"></script>
+
+        <script type="text/javascript" src="{% static 'dryrub/js/social/socialite.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'dryrub/js/social/socialite.twitter-simple.js' %}"></script>
+        <script type="text/javascript" src="{% static 'dryrub/js/social/socialite.facebook-share.js' %}"></script>
+        
+        {% block sitejs %}{% endblock %}
+        {% endcompress %}
+
+        <script type="text/javascript">BrisketFallback.PATH = "{{ CHART_FALLBACK_URL }}";</script>
 	
     	{% block gsfn %}
         <script type="text/javascript" charset="utf-8">
@@ -211,6 +227,10 @@
           feedback_widget_options.style = "question";
 
           var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+
+          var shareButtons = $('#share-buttons');
+          shareButtons.find('a').attr('data-url', $('meta[name="og:url"]').attr('content'));
+          Socialite.load($('#share-buttons'));
         </script>
     	{% endblock %}
 	
@@ -249,47 +269,6 @@
     	qacct:"p-c3mmNWXstPmj6"
     	});
     	</script>
-
-        <script>
-            (function() {
-                var insertScript = function(url) {
-                    var elem = document.createElement('script');
-                    elem.src = (document.location.protocol == "https:" ? "https://cdns" : "http://cdn") + ".gigya.com/js/" + url;
-                    elem.async = true;
-                    elem.type = "text/javascript";
-                    $('script').eq(0).before(elem);
-                }
-                window.onGigyaServiceReady = function(type) {
-                    if (type !== "socialize") return;
-                    insertScript("gigyaGAIntegration.js")
-
-                    var ua = new gigya.socialize.UserAction();
-                    var head = $('head');
-                    var url = head.find('meta[name=og:url]').attr('content');
-                    ua.setLinkBack(url);
-                    ua.setTitle(head.find('meta[name=og:title]').attr('content'));
-                    ua.setDescription(head.find('meta[name=og:description]').attr('content'));
-                    ua.addMediaItem({
-                        type: 'image',
-                        href: url,
-                        src: head.find('meta[name=og:image]').attr('content')
-                    });
-
-                    var params = {
-                        containerID: 'share-buttons',
-                        iconsOnly: true,
-                        layout: 'horizontal',
-                        noButtonBorders: true,
-                        shareButtons: 'facebook,twitter',
-                        shortURLs: 'never',
-                        showCounts: 'none',
-                        userAction: ua
-                    };
-                    gigya.socialize.showShareBarUI(params);
-                }
-                insertScript("socialize.js?apiKey=3_BLRB_2LlQJZDUW1wb9_ZOps-sOnnzA_e6xxNSwJBBGoB-SavmPAKHkaVVZPE5Kx8")
-            })();
-        </script>
 	
     	<noscript>
     	<div style="display:none;">
