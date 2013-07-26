@@ -14,7 +14,7 @@
  <div id="contentHeader">
        <h2>{{ title }}</h2>
 </div>
-<p>Covering {{ filing_header.coverage_from_date|date:"N j,Y"}} through {{ filing_header.coverage_from_date|date:"N j,Y" }}. Originally filed {{ filing_data.process_time}}.
+<p>Covering {{ filing_header.coverage_from_date|date:"N j, Y"}} through {{ filing_header.coverage_through_date|date:"N j, Y" }}. Originally filed {{ filing_data.process_time}}.
   <br>Total receipts of ${{ filing_dict.tot_receipts|intcomma }} include {{  filing_header.lines_present.A|intcomma }} itemized contributions totaling ${{ filing_dict.tot_ite_contrib|intcomma  }}.
   </p>
 <table id="mainPageTable" class="sortable">
