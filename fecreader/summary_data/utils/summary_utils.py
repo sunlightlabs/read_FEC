@@ -176,7 +176,18 @@ def string_to_float(the_string):
         return float(s)
     else:
         return 0
-        
+
+def map_summary_form_to_dict(form, header_data):
+    cts_dict = None
+    if form == 'F3':
+        cts_dict = map_f3_to_cts(header_data)
+    elif form == 'F3P':
+        cts_dict = map_f3p_to_cts(header_data)
+    elif form == 'F3X':
+        cts_dict = map_f3x_to_cts(header_data)
+    return cts_dict
+    
+
 def summarize_committee_periodic_electronic(committee_id, force_update=False):
     relevant_filings = Filing_Header.objects.filter(raw_filer_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form__in=['F3P', 'F3', 'F3X']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
@@ -205,13 +216,8 @@ def summarize_committee_periodic_electronic(committee_id, force_update=False):
         last_end_date = this_filing.coverage_through_date
         form = this_filing.form
         header_data = this_filing.header_data
-        cts_dict = {}
-        if form == 'F3':
-            cts_dict = map_f3_to_cts(header_data)
-        elif form == 'F3P':
-            cts_dict = map_f3p_to_cts(header_data)
-        elif form == 'F3X':
-            cts_dict = map_f3x_to_cts(header_data)
+        
+        cts_dict = map_summary_form_to_dict(form, header_data)
         
         
         tot_contribs = string_to_float(cts_dict['tot_ite_contrib']) + string_to_float(cts_dict['tot_non_ite_contrib'])
