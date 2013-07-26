@@ -137,14 +137,10 @@ class SkedA(models.Model):
     
     def donor_name(self):
         if self.contributor_organization_name:
-            return self.contributor_organization_name
-        else:
-            if self.donor_candidate_middle_name:    
-                return "%s, %s %s %s" % (self.donor_candidate_last_name, self.donor_candidate_first_name, self.donor_candidate_middle_name, self.donor_candidate_suffix or "")
-            else:
-                if self.donor_candidate_middle_name:    
-                    return "%s, %s %s" % (self.donor_candidate_last_name, self.donor_candidate_first_name, self.donor_candidate_middle_name, self.donor_candidate_suffix or "")
-
+           return self.contributor_organization_name
+          
+        return "%s, %s %s %s" % (self.contributor_last_name, self.contributor_first_name, self.contributor_middle_name or "", self.contributor_suffix or "")
+        
 
 class SkedB(models.Model):
     # additional fields 
