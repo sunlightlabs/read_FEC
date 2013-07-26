@@ -1,0 +1,52 @@
+{# list of filings #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }} {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>Covering {{ filing_header.coverage_from_date|date:"N j,Y"}} through {{ filing_header.coverage_from_date|date:"N j,Y" }}. Originally filed {{ filing_data.process_time}}.
+  <br>Total receipts of ${{ filing_dict.tot_receipts|intcomma }} include {{  filing_header.lines_present.A|intcomma }} itemized contributions totaling ${{ filing_dict.tot_ite_contrib|intcomma  }}.
+  </p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Line</th>
+                <th class="sort">Donor</th>
+                <th>City, State, ZIP</th>
+                <th class="sort">Amount</th>
+                <th class="sort">Date</th>
+                <th class="sort">Employer</th>
+                <th class="sort" >Occupation</th>
+                <th>Memo</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in object_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}" id="{{ object.transaction_id }}">
+                          <td><a href="#{{ object.transaction_id }}">{{ object.form_type }}</a></td>
+                          <td>{{ object.donor_name }}</td>
+                          <td>{{ object.contributor_city}}, {{ object.contributor_state}} {{ object.contributor_zip}} </td>
+                          <td>${{ object.contribution_amount|intcomma}}</td>
+                          <td>{{ object.contribution_date_formatted|date:"Y-m-d"}}</td>
+                          <td>{% if object.contributor_employer %}{{ object.contributor_employer}}{% endif %}</td>
+                          <td>{% if object.contributor_occupation %}{{ object.contributor_occupation}}{% endif %}</td>
+                          <td>{% if object.memo_text_description %}{{ object.memo_text_description}}{% endif %}</td>
+                      </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+</div>
+  {% endblock %}
+  
+

@@ -4,9 +4,12 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.db import connection
 from django.template import RequestContext
 
+
 from fec_alerts.models import new_filing, newCommittee
 from summary_data.models import Candidate_Overlay, District
 this_cycle = '2014'
+from formdata.models import Filing_Header, SkedA, SkedB
+from summary_data.utils.summary_utils import map_summary_form_to_dict
 # get not null senate ids. 
 #senate_ids =  [ senator['fec_id'] for senator in senate_crosswalk if senator['fec_id'] ]
 
@@ -153,3 +156,26 @@ def alerts(request):
 
 def outside_spending(request):
     return render_blank_page('Outside Spending','This is a page on outside spending. Maybe include links to subpages on electioneering, and coordinated spending? I dunno.', request)
+    
+def filings_skeda(request, filing_num):
+    filing_header = get_object_or_404(Filing_Header, filing_number=filing_num)
+    filing_data = get_object_or_404(new_filing, filing_number=filing_num)
+    filing_dict = map_summary_form_to_dict(filing_header.form, filing_header.header_data)
+    title="Contributions, %s filing # %s" % (filing_data.committee_name, filing_num)
+    
+    filings = SkedA.objects.filter(filing_number=filing_num)
+    
+    #explanatory_text="explanatory_text"
+    return render_to_response('datapages/filing_skeda.html',
+        {
+        'title':title,
+        'object_list':filings,
+        'filing_header':filing_header,
+        'filing_dict':filing_dict,
+        'new_filing':new_filing,
+        'filing_data':filing_data,
+        }, 
+        context_instance=RequestContext(request)
+    )
+    
+    

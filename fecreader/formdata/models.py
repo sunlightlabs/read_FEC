@@ -134,6 +134,17 @@ class SkedA(models.Model):
     memo_code = models.CharField(max_length=1, blank=True, null=True)
     memo_text_description = models.CharField(max_length=100, blank=True, null=True)
     reference_code = models.CharField(max_length=9, blank=True, null=True)
+    
+    def donor_name(self):
+        if self.contributor_organization_name:
+            return self.contributor_organization_name
+        else:
+            if self.donor_candidate_middle_name:    
+                return "%s, %s %s %s" % (self.donor_candidate_last_name, self.donor_candidate_first_name, self.donor_candidate_middle_name, self.donor_candidate_suffix or "")
+            else:
+                if self.donor_candidate_middle_name:    
+                    return "%s, %s %s" % (self.donor_candidate_last_name, self.donor_candidate_first_name, self.donor_candidate_middle_name, self.donor_candidate_suffix or "")
+
 
 class SkedB(models.Model):
     # additional fields 
