@@ -106,6 +106,10 @@ class new_filing(models.Model):
         url = "/filings/%s/SA/" % (self.filing_number)
         return url
         
+    def get_skedb_url(self):
+        url = "/filings/%s/SB/" % (self.filing_number)
+        return url
+                    
     def get_absolute_url(self):
         url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
         return url

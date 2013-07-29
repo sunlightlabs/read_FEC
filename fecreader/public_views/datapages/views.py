@@ -158,9 +158,7 @@ def outside_spending(request):
     return render_blank_page('Outside Spending','This is a page on outside spending. Maybe include links to subpages on electioneering, and coordinated spending? I dunno.', request)
     
 def filings_skeda(request, filing_num):
-    #filing_header = get_object_or_404(Filing_Header, filing_number=filing_num)
     filing_data = get_object_or_404(new_filing, filing_number=filing_num)
-    #filing_dict = map_summary_form_to_dict(filing_header.form, filing_header.header_data)
     title="Contributions, %s filing # %s" % (filing_data.committee_name, filing_num)
     
     filings = None
@@ -168,11 +166,10 @@ def filings_skeda(request, filing_num):
     if filing_data.lines_present:
         lines_present = filing_data.lines_present.get('A')
         if int(lines_present) <= 1000:
-            filings = SkedA.objects.filter(filing_number=filing_num)
+            filings = SkedA.objects.filter(filing_number=filing_num).order_by('-contribution_amount')
         else:
             too_many_to_display = True
     
-    #explanatory_text="explanatory_text"
     return render_to_response('datapages/filing_skeda.html',
         {
         'title':title,
@@ -182,5 +179,30 @@ def filings_skeda(request, filing_num):
         }, 
         context_instance=RequestContext(request)
     )
-    
+
+def filings_skedb(request, filing_num):
+    filing_data = get_object_or_404(new_filing, filing_number=filing_num)
+    title="Disbursements, %s filing # %s" % (filing_data.committee_name, filing_num)
+
+    filings = None
+    too_many_to_display = False
+    if filing_data.lines_present:
+        lines_present = filing_data.lines_present.get('B')
+        if int(lines_present) <= 1000:
+            filings = SkedB.objects.filter(filing_number=filing_num).order_by('-expenditure_amount')
+        else:
+            too_many_to_display = True
+
+    return render_to_response('datapages/filing_skedb.html',
+        {
+        'title':title,
+        'object_list':filings,
+        'too_many_to_display':too_many_to_display,
+        'filing_data':filing_data,
+        }, 
+        context_instance=RequestContext(request)
+    )
+
+
+
     

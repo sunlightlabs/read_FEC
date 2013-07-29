@@ -19,4 +19,5 @@ urlpatterns = patterns('',
         url(r'^outside-spending/$', 'public_views.datapages.views.outside_spending'),
         url(r'^newbase/$', 'public_views.datapages.views.newbase'),
         url(r'^filings/(\d+)/SA/$', 'public_views.datapages.views.filings_skeda'),
+        url(r'^filings/(\d+)/SB/$', 'public_views.datapages.views.filings_skedb'),
 )

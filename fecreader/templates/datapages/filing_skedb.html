@@ -1,0 +1,55 @@
+{# list of filings #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }} {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. Originally filed {{ filing_data.process_time}}
+  <br>Total receipts of ${{ filing_data.tot_raised|intcomma }} include  {% if  filing_data.lines_present.A %}{{  filing_data.lines_present.A|intcomma }}{% else %}0{% endif %} itemized disbursements. Total spending for this period amounted to: ${{ filing_data.tot_spent|intcomma }}
+  </p>
+
+{% if too_many_to_display %}
+<p>There are more than 1,000 disbursements itemized on this report; see the full report at <a href="{{ filing_data.FEC_url }}">the FEC</a></p>
+{% else %}
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Line</th>
+                <th class="sort">Payee</th>
+                <th>City, State, ZIP</th>
+                <th class="sort">Amount</th>
+                <th class="sort">Date</th>
+                <th class="sort">Purpose</th>
+                <th>Memo</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in object_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}" id="{{ object.transaction_id }}">
+                          <td><a href="#{{ object.transaction_id }}">{{ object.form_type }}</a></td>
+                          <td>{{ object.payee_name_simplified }}</td>
+                          <td>{{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
+                          <td>${{ object.expenditure_amount|intcomma}}</td>
+                          <td>{{ object.expenditure_date_formatted|date:"Y-m-d"}}</td>
+                          <td>{% if object.expenditure_purpose_descrip %}{{ object.expenditure_purpose_descrip}}{% endif %}</td>
+                          <td>{% if object.memo_text_description %}{{ object.memo_text_description}}{% endif %}</td>
+                      </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+{% endif %}
+</div>
+  {% endblock %}
+  
+

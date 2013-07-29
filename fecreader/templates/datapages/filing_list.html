@@ -34,7 +34,7 @@
                           <td><a href="{{object.fec_all_filings}}">{{ object.committee_name}}: {{ object.get_form_name }}</td>
                           <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_raised %}<a href="{{object.get_skeda_url}}">${{ object.tot_raised|intcomma }}</a>{% endif %}</td>
-                          <td>{% if object.tot_spent %}${{ object.tot_spent|intcomma }}{% endif %}</td>
+                          <td>{% if object.tot_spent %}<a href="{{object.get_skedb_url}}">${{ object.tot_spent|intcomma }}</a>{% endif %}</td>
                           <td>{% if object.coh_end %}${{ object.coh_end|intcomma }}{% endif %}</td>
                           
                                                         

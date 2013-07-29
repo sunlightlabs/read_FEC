@@ -6,7 +6,6 @@
 
 
 from django.db import models
-from parsing.read_FEC_settings import FEC_DOWNLOAD
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
@@ -74,9 +73,7 @@ class Filing_Header(models.Model):
     def __unicode__(self):
         return str(self.filing_number)
     
-    def FEC_url(self):
-        fec_download_url = FEC_DOWNLOAD % (self.filing_number)
-        return fec_download_url
+
         
 # field sizes are based on v8.0 specs, generally
 class SkedA(models.Model):
@@ -206,6 +203,12 @@ class SkedB(models.Model):
     refund_or_disposal_of_excess = models.CharField(max_length=20, blank=True, null=True, help_text="deprecated")
     communication_date = models.CharField(max_length=9, blank=True, null=True, help_text="deprecated")
 
+
+def payee_name(self):
+    if self.payee_organization_name:
+       return self.payee_organization_name
+      
+    return "%s, %s %s %s" % (self.payee_last_name, self.payee_first_name, self.payee_middle_name or "", self.payee_suffix or "")
 
 class SkedE(models.Model):
     # additional fields 
