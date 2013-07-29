@@ -204,7 +204,7 @@ class SkedB(models.Model):
     communication_date = models.CharField(max_length=9, blank=True, null=True, help_text="deprecated")
 
 
-    def payee_name(self):
+    def payee_name_simplified(self):
         if self.payee_organization_name:
            return self.payee_organization_name
       
