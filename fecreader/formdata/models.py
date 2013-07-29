@@ -204,11 +204,11 @@ class SkedB(models.Model):
     communication_date = models.CharField(max_length=9, blank=True, null=True, help_text="deprecated")
 
 
-def payee_name(self):
-    if self.payee_organization_name:
-       return self.payee_organization_name
+    def payee_name(self):
+        if self.payee_organization_name:
+           return self.payee_organization_name
       
-    return "%s, %s %s %s" % (self.payee_last_name, self.payee_first_name, self.payee_middle_name or "", self.payee_suffix or "")
+        return "%s, %s %s %s" % (self.payee_last_name, self.payee_first_name, self.payee_middle_name or "", self.payee_suffix or "")
 
 class SkedE(models.Model):
     # additional fields 
