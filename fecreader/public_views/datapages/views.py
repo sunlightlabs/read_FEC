@@ -167,7 +167,7 @@ def filings_skeda(request, filing_num):
     too_many_to_display = False
     if filing_data.lines_present:
         lines_present = filing_data.lines_present.get('A')
-        if lines_present <= 1000:
+        if int(lines_present) <= 1000:
             filings = SkedA.objects.filter(filing_number=filing_num)
         else:
             too_many_to_display = True

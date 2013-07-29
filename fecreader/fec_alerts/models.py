@@ -4,6 +4,8 @@ import re
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
+from parsing.read_FEC_settings import FEC_DOWNLOAD
+
 
 # SHOULD GO SOMEWHERE
 CURRENT_CYCLE = '2014'
@@ -123,6 +125,10 @@ class new_filing(models.Model):
                 return f[1] + report_extra
         return ''
     
+    def FEC_url(self):
+        fec_download_url = FEC_DOWNLOAD % (self.filing_number)
+        return fec_download_url
+            
     class Meta:
         ordering = ('-filing_number', )
 

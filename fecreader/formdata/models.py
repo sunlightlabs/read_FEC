@@ -6,6 +6,7 @@
 
 
 from django.db import models
+from parsing.read_FEC_settings import FEC_DOWNLOAD
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
@@ -72,8 +73,11 @@ class Filing_Header(models.Model):
     
     def __unicode__(self):
         return str(self.filing_number)
-
-
+    
+    def FEC_url(self):
+        fec_download_url = FEC_DOWNLOAD % (self.filing_number)
+        return fec_download_url
+        
 # field sizes are based on v8.0 specs, generally
 class SkedA(models.Model):
     # additional fields 
