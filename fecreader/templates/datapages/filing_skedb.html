@@ -15,7 +15,7 @@
        <h2>{{ title }}</h2>
 </div>
 <p>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. Originally filed {{ filing_data.process_time}}
-  <br>Total receipts of ${{ filing_data.tot_raised|intcomma }} include  {% if  filing_data.lines_present.B %}{{  filing_data.lines_present.B|intcomma }}{% else %}0{% endif %} itemized disbursements. Total spending for this period amounted to: ${{ filing_data.tot_spent|intcomma }}
+  <br>Total spending for this period amounted to: ${{ filing_data.tot_spent|intcomma }}, which includes  {% if  filing_data.lines_present.B %}{{  filing_data.lines_present.B|intcomma }}{% else %}0{% endif %} itemized disbursements. Total receipts of ${{ filing_data.tot_raised|intcomma }}. 
   </p>
 
 {% if too_many_to_display %}

@@ -136,7 +136,7 @@ class SkedA(models.Model):
     memo_text_description = models.CharField(max_length=100, blank=True, null=True)
     reference_code = models.CharField(max_length=9, blank=True, null=True)
     
-    def donor_name(self):
+    def payee_name_simplified(self):
         if self.contributor_organization_name:
            return self.contributor_organization_name
           
