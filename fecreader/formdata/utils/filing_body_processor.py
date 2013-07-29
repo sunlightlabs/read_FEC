@@ -171,6 +171,11 @@ def process_filing_body(filingnum, fp=None, logger=None):
     cmd = "update formdata_filing_header set lines_present='%s'::hstore where filing_number=%s" % (header_data, filingnum)
     cursor.execute(cmd)
     
+    # this data has been moved here. At some point we should pick a single location for this data. 
+    header_data = dict_to_hstore(counter)
+    cmd = "update fec_alerts_new_filing set lines_present='%s'::hstore where filing_number=%s" % (header_data, filingnum)
+    cursor.execute(cmd)
+    
     # mark file as having been entered. 
     cmd = "update fec_alerts_new_filing set data_is_processed = True where filing_number=%s" % (filingnum)
     cursor.execute(cmd)

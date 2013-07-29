@@ -2,6 +2,9 @@ from django.core.management.base import BaseCommand, CommandError
 from dateutil.parser import parse as dateparse
 from formdata.models import Filing_Header
 from fec_alerts.models import new_filing
+from summary_data.utils.party_reference import get_party_from_pty
+from ftpdata.models import Committee
+from summary_data.models import Committee_Overlay
 
 
 # have standardized F3, F3X, F3P in sourcesalt directory. 
@@ -23,7 +26,25 @@ class Command(BaseCommand):
         new_filings_to_process = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')
         #new_filings_to_process = new_filing.objects.filter(form_type__startswith='F3').order_by('filing_number')
         for this_filing in new_filings_to_process:
-            #print "processing %s " % (this_filing.filing_number)
+            print "processing %s " % (this_filing.filing_number)
+            
+            try:
+                co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id)
+                this_filing.committee_designation = co.designation
+                this_filing.committee_type = co.ctype
+                this_filing.committee_slug = co.slug
+                this_filing.party = co.party
+                
+            except Committee_Overlay.DoesNotExist:
+                try:
+                    co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=2014)
+                    this_filing.committee_designation = co.cmte_dsgn
+                    this_filing.committee_type = co.cmte_tp
+                    this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
+                
+                except Committee.DoesNotExist:
+                    pass
+                    
             
             try:
                 header = Filing_Header.objects.get(filing_number = this_filing.filing_number)

@@ -1,6 +1,10 @@
 from django.db import models
 import re
 
+
+from djorm_hstore.fields import DictionaryField
+from djorm_hstore.models import HStoreManager
+
 # SHOULD GO SOMEWHERE
 CURRENT_CYCLE = '2014'
 
@@ -57,12 +61,11 @@ class new_filing(models.Model):
     process_time = models.DateTimeField()
     is_superpac = models.NullBooleanField()
     
-    # more flags:
-    # is_house_candidate
-    # is_senate_candidate
-    # is_incumbent
-    
-    # foreign key to committee.
+    # populate from committee_overlay file. 
+    committee_designation = models.CharField(max_length=1, null=True, blank=True)
+    committee_type = models.CharField(max_length=1, null=True, blank=True)
+    committee_slug = models.SlugField(max_length=255, null=True, blank=True)
+    party = models.CharField(max_length=3, blank=True, null=True)
     
     
     
@@ -87,6 +90,11 @@ class new_filing(models.Model):
     # if applicable:
     tot_raised = models.DecimalField(max_digits=14, decimal_places=2, null=True)
     tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True)
+    
+    # which filing types are contained? Store as a dict:
+    lines_present =  DictionaryField(db_index=True, null=True)
+    
+    objects = HStoreManager()
     
     def get_fec_url(self):
         url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
