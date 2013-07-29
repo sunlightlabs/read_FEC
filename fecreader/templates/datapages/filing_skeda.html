@@ -14,9 +14,13 @@
  <div id="contentHeader">
        <h2>{{ title }}</h2>
 </div>
-<p>Covering {{ filing_header.coverage_from_date|date:"N j, Y"}} through {{ filing_header.coverage_through_date|date:"N j, Y" }}. Originally filed {{ filing_data.process_time}}.
-  <br>Total receipts of ${{ filing_dict.tot_receipts|intcomma }} include {{  filing_header.lines_present.A|intcomma }} itemized contributions totaling ${{ filing_dict.tot_ite_contrib|intcomma  }}.
+<p>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. Originally filed {{ filing_data.process_time}}
+  <br>Total receipts of ${{ filing_data.tot_raised|intcomma }} include  {% if  filing_data.lines_present.A %}{{  filing_data.lines_present.A|intcomma }}{% else %}0{% endif %} itemized contributions. Total spending for this period amounted to: ${{ filing_data.tot_spent|intcomma }}
   </p>
+
+{% if too_many_to_display %}
+<p>There are more than 1,000 contributors itemized on this report; see the full report at <a href="{{ filing_data.FEC_url }}">the FEC</a></p>
+{% else %}
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
@@ -46,6 +50,7 @@
                   
 </tbody>
 </table>
+{% endif %}
 </div>
   {% endblock %}
   

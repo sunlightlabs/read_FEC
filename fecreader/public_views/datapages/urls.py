@@ -18,5 +18,5 @@ urlpatterns = patterns('',
         url(r'^pacs/$', 'public_views.datapages.views.pacs'),         
         url(r'^outside-spending/$', 'public_views.datapages.views.outside_spending'),
         url(r'^newbase/$', 'public_views.datapages.views.newbase'),
-        url(r'^filings/(?P<filing_num>\d+)/SA/$', 'public_views.datapages.views.filings_skeda'),
+        url(r'^filings/(\d+)/SA/$', 'public_views.datapages.views.filings_skeda'),
 )
