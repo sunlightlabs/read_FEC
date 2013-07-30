@@ -4,7 +4,7 @@ import re
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
-from parsing.read_FEC_settings import FEC_DOWNLOAD
+from parsing.read_FEC_settings import FEC_HTML_LOCATION
 
 
 # SHOULD GO SOMEWHERE

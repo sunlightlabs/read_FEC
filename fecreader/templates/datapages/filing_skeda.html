@@ -19,8 +19,9 @@
   </p>
 
 {% if too_many_to_display %}
-<p>There are more than 1,000 contributors itemized on this report; see the full report at <a href="{{ filing_data.FEC_url }}">the FEC</a></p>
+<p>There are more than 1,000 contributors itemized on this report; read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 {% else %}
+<p>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
