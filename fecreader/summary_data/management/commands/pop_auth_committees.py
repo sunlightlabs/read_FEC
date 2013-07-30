@@ -11,7 +11,7 @@ class Command(BaseCommand):
     requires_model_validation = False
     
     def handle(self, *args, **options):
-        ccls = CandComLink.objects.filter(cycle=election_year, cmte_dsgn__in=['A', 'P'])
+        ccls = CandComLink.objects.filter(cycle=election_year, cmte_dsgn__in=['A', 'P'], fec_election_yr=election_year)
         
         for ccl in ccls:
             try:
