@@ -507,7 +507,7 @@ class Authorized_Candidate_Committees(models.Model):
      
 
 
-## Aggregate fundraising from all the authorized committees into this, on the basis of the CCL data. Not used yet -- Authorized Candidate Committees needs to be cleaned up. 
+## This is untenable, I think; mismatched filing periods make this a total pain. 
 class Candidate_Time_Summary(models.Model):
     candidate_id = models.CharField(max_length=9, blank=True)
     filing_number = models.IntegerField(null=True, blank=True, help_text="Not applicable for webk")
@@ -518,7 +518,7 @@ class Candidate_Time_Summary(models.Model):
     tot_disburse =models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
     new_loans =models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
     outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="in webk this is deb_owe_by_com")
-    electioneering_made = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="not in webk")
+#    electioneering_made = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, help_text="not in webk")
     cash_on_hand_end = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
     coverage_from_date = models.DateField(null=True)
     coverage_through_date = models.DateField(null=True)
