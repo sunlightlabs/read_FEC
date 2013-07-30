@@ -6,6 +6,8 @@ FEC_FILE_LOCATION = "ftp://ftp.fec.gov/FEC/electronic/%s.zip"
 # where are the raw .fec files located? 
 FEC_DOWNLOAD = "http://query.nictusa.com/dcdev/posted/%s.fec"
 
+FEC_HTML_LOCATION = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/"
+
 # How should our requests be signed? 
 USER_AGENT = "FEC READER 0.1; [ YOUR CONTACT INFO HERE ]"
 

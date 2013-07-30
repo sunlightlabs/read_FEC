@@ -130,7 +130,7 @@ class new_filing(models.Model):
         return ''
     
     def FEC_url(self):
-        fec_download_url = FEC_DOWNLOAD % (self.filing_number)
+        fec_download_url = FEC_HTML_LOCATION % (self.fec_id, self.filing_number)
         return fec_download_url
             
     class Meta:
