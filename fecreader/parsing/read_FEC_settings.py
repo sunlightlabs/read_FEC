@@ -8,6 +8,8 @@ FEC_DOWNLOAD = "http://query.nictusa.com/dcdev/posted/%s.fec"
 
 FEC_HTML_LOCATION = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/"
 
+FEC_CANDIDATE_SUMMARY = "http://www.fec.gov/fecviewer/CommitteeDetailCurrentSummary.do?tabIndex=1&candidateCommitteeId=%s&electionYr=2014" # candidate_id being used
+
 # How should our requests be signed? 
 USER_AGENT = "FEC READER 0.1; [ YOUR CONTACT INFO HERE ]"
 
