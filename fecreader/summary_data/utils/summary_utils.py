@@ -24,6 +24,20 @@ def set_gap_list(gap_start, gap_end, committee_id):
     filing_gap, created = Filing_Gap.objects.get_or_create(committee_id=committee_id, gap_start=gap_start, gap_end=gap_end)
 
 
+def write_new_committee(new_committee_queryset, file_name):
+    outfile = open(file_name, 'w')
+    field_list = ['fec_id', 'ctype', 'name', 'date_filed']
+    header = ",".join(field_list)
+    outfile.write(header + "\n")
+    csvwriter = csv.DictWriter(outfile, field_list, restval='', extrasaction='ignore')
+    for new_committee in new_committee_queryset.values():
+        try:
+            new_committee['ctype'] = type_hash[new_committee['ctype']]
+        except KeyError:
+            pass
+        csvwriter.writerow(new_committee)
+        
+    
 def write_webk_csv(webk_list, file_name):
     """Given a queryset of webks, write a csv file"""
     outfile = open(file_name, 'w')
