@@ -87,7 +87,7 @@ NEWEST_FILINGS_DISPLAY_SIZE = 500
 def newest_filings(request):
     filings = new_filing.objects.all().order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
     title="Newest filings"
-    explanatory_text="These are the 100 most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper."
+    explanatory_text="These are the %s most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper." % NEWEST_FILINGS_DISPLAY_SIZE
     return newest_filings_template(request, filings, explanatory_text, title)
 """
 Haven't started setting this flag yet... 
@@ -95,32 +95,32 @@ Haven't started setting this flag yet...
 def newest_filings_superpacs(request):
     filings = new_filing.objects.filter(is_superpac=True).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
     title="Newest filings"
-    explanatory_text="These are the 100 most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper."
+    explanatory_text="These are the %s most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper." % NEWEST_FILINGS_DISPLAY_SIZE
     return newest_filings_template(request, filings, explanatory_text, title)
 """
 
 def newest_filings_ies(request):
     filings = new_filing.objects.filter(form_type__in=['F5A', 'F5N', 'F24A', 'F24N']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
     title="Newest Independent Expenditure filings"
-    explanatory_text="These are the 100 most recent independent expenditure electronic filings received."
+    explanatory_text="These are the %s most recent independent expenditure electronic filings received." % NEWEST_FILINGS_DISPLAY_SIZE
     return newest_filings_template(request, filings, explanatory_text, title)
 
 def newest_filings_candidacy(request):
     filings = new_filing.objects.filter(form_type__in=['F2N']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
     title="Newest candidate declaration filings"
-    explanatory_text="These are the 100 most recent new electronic statement of candidacy filings received. Note that candidates do not have to file these statements electonically, though many do."
+    explanatory_text="These are the %s most recent new electronic statement of candidacy filings received. Note that candidates do not have to file these statements electonically, though many do." % NEWEST_FILINGS_DISPLAY_SIZE
     return newest_filings_template(request, filings, explanatory_text, title)
 
 def newest_filings_candidate_filings(request):
     filings = new_filing.objects.filter(form_type__in=['F3N']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
     title="New candidate committee reports"
-    explanatory_text="These are the 100 most recent new electronic statements from authorized committees supporting a congressional candidate."
+    explanatory_text="These are the %s most recent new electronic statements from authorized committees supporting a congressional candidate." % NEWEST_FILINGS_DISPLAY_SIZE
     return newest_filings_template(request, filings, explanatory_text, title)
 
 def newest_filings_superpacs(request):
     filings = new_filing.objects.filter(committee_type__in=['U', 'O', 'V', 'W']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
     title="New super PAC / hybrid super PAC reports"
-    explanatory_text="These are the 100 most recent new electronic statements from superpacs--including hybrid superpacs"
+    explanatory_text="These are the %s most recent new electronic statements from superpacs--including hybrid superpacs" % NEWEST_FILINGS_DISPLAY_SIZE
     return newest_filings_template(request, filings, explanatory_text, title)
     
 def new_committees(request):
