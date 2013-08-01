@@ -14,7 +14,14 @@
  <div id="contentHeader">
        <h2>{{ title }}</h2>
 </div>
-<p></p>
+<div class="numeric_summary">
+<span class="amount_description">Total receipts:</span>&nbsp;<span class="amount_dollars">{% if committee.total_receipts %}{{committee.total_receipts|intcomma}}{% else %}$0{% endif %}</span>
+
+<br><span class="amount_description">Total disbursements:</span>&nbsp;<span class="amount_dollars">{% if committee.total_disbursements %}{{committee.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
+
+<br><span class="amount_description">Cash on hand (as of {{ committee.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if committee.cash_on_hand %}{{committee.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
+
+</div>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
