@@ -31,7 +31,7 @@
                   {% for object in object_list %}    
                       <tr class="{% cycle 'odd' 'even' %}">
                           <td><a href="{{object.get_fec_url}}">{{ object.filing_number }} [{{ object.form_type}}]</a> {{ object.committee_type }}</td>
-                          <td><a href="{{object.fec_all_filings}}">{{ object.committee_name}}: {{ object.get_form_name }}</td>
+                          <td><a href="{{object.get_committee_url}}">{{ object.committee_name}}</a> <a href="{{object.fec_all_filings}}">{{ object.get_form_name }}</td>
                           <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_raised %}<a href="{{object.get_skeda_url}}">${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
                           <td>{% if object.tot_spent %}<a href="{{object.get_skedb_url}}">${{ object.tot_spent|intcomma }}</a>{% else %}$0{% endif %}</td>

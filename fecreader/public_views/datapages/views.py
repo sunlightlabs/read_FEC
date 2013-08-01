@@ -6,7 +6,7 @@ from django.template import RequestContext
 
 
 from fec_alerts.models import new_filing, newCommittee
-from summary_data.models import Candidate_Overlay, District
+from summary_data.models import Candidate_Overlay, District, Committee_Overlay
 this_cycle = '2014'
 from formdata.models import Filing_Header, SkedA, SkedB
 from summary_data.utils.summary_utils import map_summary_form_to_dict
@@ -208,6 +208,20 @@ def filings_skedb(request, filing_num):
         }, 
         context_instance=RequestContext(request)
     )
+
+def committee(request, committee_id):
+    committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id)
+    title = committee_overlay.name
+    report_list = None
+    return render_to_response('datapages/committee.html',
+        {
+        'title':title,
+        'report_list':report_list,
+        'committee':committee_overlay,
+        }, 
+        context_instance=RequestContext(request)
+    )
+    
 
 
 

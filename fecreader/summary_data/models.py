@@ -188,7 +188,7 @@ class Committee_Overlay(models.Model):
       ordering = ('-total_indy_expenditures', )
 
   def get_absolute_url(self):  
-      return ("/outside-spenders/2014/committee/%s/%s/" % (self.slug, self.fec_id))
+      return ("/committee/%s/%s/" % (self.slug, self.fec_id))
 
   def is_not_a_committee(self):
       if self.committee_master_record.ctype=='I':
@@ -496,6 +496,25 @@ class Committee_Time_Summary(models.Model):
     coverage_through_date = models.DateField(null=True)
     data_source = models.CharField(max_length=10, help_text="webk|electronic")
 
+    # also appears in the newfiling model--normalize this. 
+    def get_fec_url(self):
+        if self.filing_number:
+            return "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.com_id, self.filing_number)
+        else:
+            return None
+            # maybe return link to committee page? 
+        
+    def get_skeda_url(self):
+        if self.filing_number:
+            return "/filings/%s/SA/" % (self.filing_number)
+        else:
+            return None
+
+    def get_skedb_url(self):
+        if self.filing_number:
+            return "/filings/%s/SB/" % (self.filing_number)
+        else:
+            return None
 
 class Authorized_Candidate_Committees(models.Model):
     candidate_id = models.CharField(max_length=9, blank=True)

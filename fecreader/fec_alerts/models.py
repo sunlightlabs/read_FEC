@@ -97,7 +97,8 @@ class new_filing(models.Model):
     lines_present =  DictionaryField(db_index=True, null=True)
     
     objects = HStoreManager()
-    
+
+    # also appears in the committee_time_summary model--normalize this.     
     def get_fec_url(self):
         url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
         return url
@@ -132,6 +133,10 @@ class new_filing(models.Model):
     def FEC_url(self):
         fec_download_url = FEC_HTML_LOCATION % (self.fec_id, self.filing_number)
         return fec_download_url
+    
+    def get_committee_url(self):    
+        return ("/committee/%s/%s/" % (self.committee_slug, self.fec_id))
+    
             
     class Meta:
         ordering = ('-filing_number', )
