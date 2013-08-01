@@ -72,7 +72,7 @@ col_a_total_disbursements,57,22. Total Disbursements,64,22. Total Disbursements,
 col_a_cash_on_hand_beginning_period,58,23. Cash Beginning Reporting Period,65,23. Cash Beginning Reporting Period,56,23. Cash Beginning Reporting Period,56,23. Cash Beginning Reporting Period
 col_a_refunds_to_party_committees,59,24. Total Receipts this Period,66,24. Total Receipts this Period,57,24. Total Receipts this Period,57,24. Total Receipts this Period
 col_a_refunds_to_other_committees,60,25. Subtotals,67,25. Subtotals,58,25. SubTotal,58,25. SubTotal
-col_a_total_receipts,61,26. Total Disbursements this Period,68,26. Total Disbursements this Period,59,26. Total Disbursements this Period,59,26. Total Disbursements this Period
+col_a_total_disbursements_period,61,26. Total Disbursements this Period,68,26. Total Disbursements this Period,59,26. Total Disbursements this Period,59,26. Total Disbursements this Period
 col_a_cash_on_hand_close_of_period,62,27. Cash on hand at Close Period,69,27. Cash on hand at Close Period,60,27. Cash on hand at Close Period,60,27. Cash on hand at Close Period
 col_b_total_contributions_no_loans,63,(6a) Total Contributions (No Loans),70,(6a) Total Contributions (No Loans),61,(6a) Total Contributions (No Loans),61,(6a) Total Contributions (No Loans)
 col_b_total_contributions_refunds,64,(6b) Total Contribution Refunds,71,(6b) Total Contribution Refunds,62,(6b) Total Contribution Refunds,62,(6b) Total Contribution Refunds
