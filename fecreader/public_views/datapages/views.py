@@ -8,7 +8,7 @@ from django.template import RequestContext
 from fec_alerts.models import new_filing, newCommittee
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees
 this_cycle = '2014'
-this_cycle_start = date(2013,1,1)
+this_cycle_start = datetime.date(2013,1,1)
 from formdata.models import Filing_Header, SkedA, SkedB
 from summary_data.utils.summary_utils import map_summary_form_to_dict
 # get not null senate ids. 
