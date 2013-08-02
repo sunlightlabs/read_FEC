@@ -1,0 +1,54 @@
+{# list of current legislators, either house or senate or something #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }} {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>{{ explanatory_text|safe }}</p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                      <th class="sort">Legislator</th>
+                      <th class="sort">Party</th>
+                      <th class="sort">Incumbent</th>
+                      <th class="sort">District</th>
+                      <th class="sort">Election Year</th>
+                      <th class="sort">Report Date</th>
+                      <th class="sort">Cash on hand</th>
+                      <th class="sort">Raised </th>
+                      <th class="sort">Spent</th>
+                      <th class="sort">Debts</th>
+
+                  </tr>
+              </thead>
+              <tbody>
+                {% for object in object_list %}
+                  <tr class="{% cycle 'odd' 'even' %}">
+                      <td class="lawmakerName">
+                      <a href="{{object.get_absolute_url}}">{{object.name}}</a></td>
+                      <td>{{object.pty}}</td>
+                      <td>{{object.incumbency_status }}</td>
+                      <td>({{object.office}}) {{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
+                      <td>{{ object.election_year }}</td>
+                      <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
+                      <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
+                      <td>${% if object.total_receipts %}{{ object.total_receipts|intcomma }}{% else %}0{% endif %}</td>
+                      <td>${% if object.total_disbursements %}{{ object.total_disbursements|intcomma }}{% else %}0{% endif %}</td>
+                      <td>{% if object.outstanding_loans %}${{ object.outstanding_loans|intcomma }}{% else %}$0{% endif %}</td>                  </tr>
+                {% endfor %}
+                 
+</tbody>
+</table>
+</div>
+  {% endblock %}
+  
