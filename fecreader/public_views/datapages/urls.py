@@ -22,4 +22,5 @@ urlpatterns = patterns('',
         url(r'^filings/(\d+)/SA/$', 'public_views.datapages.views.filings_skeda'),
         url(r'^filings/(\d+)/SB/$', 'public_views.datapages.views.filings_skedb'),
         url(r'^committee/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee'),
+        url(r'^candidate/[\w-]+\/(?P<candidate_id>[\w\d]+)\/?$', 'public_views.datapages.views.candidate'),
 )

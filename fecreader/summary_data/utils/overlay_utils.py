@@ -59,6 +59,7 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014
             pcc=thiscandidate.cand_pcc,
             term_class=term_class,
             election_year=thiscandidate.cand_election_year,
+            curated_election_year=thiscandidate.cand_election_year,
             state=thiscandidate.cand_office_st,
             office=thiscandidate.cand_office,
             cand_ici=thiscandidate.cand_ici,

@@ -49,225 +49,6 @@ class Update_Time(models.Model):
       self.update_time = datetime.datetime.today()
       super(Update_Time, self).save(*args, **kwargs)
 
-## The US congress repo doesn't do a good job handling fec ids, so distill what we need into this model.
-## Incumbents are populated from US Congress, and challengers from fec master file. The determination of 
-## who is and who isn't a challenger is solely based on US congress, though this can be flipped through the admin. 
-class Incumbent(models.Model):
-  is_incumbent = models.BooleanField(default=False,help_text="Are they an incumbent? If not, they are a challenger")
-  cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
-  name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
-  fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="FEC candidate id")
-  state = models.CharField(max_length=2, blank=True, null=True, help_text="US for president")
-  office = models.CharField(max_length=1, null=True,
-                            choices=(('H', 'House'), ('S', 'Senate'), ('P', 'President'))
-                            )
-  office_district = models.CharField(max_length=2, blank=True, null=True, help_text="'00' for at-large congress; null for senate, president")
-  
-  def __unicode__(self):
-      return self.name
-
-class Committee_Overlay(models.Model):
-
-
-  cycle = models.CharField(max_length=4)
-  term_class = models.IntegerField(blank=True, null=True, help_text="1,2 or 3. Pulled from US Congress repo. Only applies to PCC of senators.")
-  is_paper_filer = models.NullBooleanField(null=True, default=False, help_text="True for most senate committees, also NRSC/DSCC, some others.")    
-  
-
-  # direct from the raw fec table
-  name = models.CharField(max_length=255)
-  display_name = models.CharField(max_length=255, null=True)
-  fec_id = models.CharField(max_length=9, blank=True)
-  slug = models.SlugField(max_length=255)
-  party = models.CharField(max_length=3, blank=True, null=True)
-  treasurer = models.CharField(max_length=200, blank=True, null=True)
-  street_1 = models.CharField(max_length=34, blank=True, null=True)
-  street_2 = models.CharField(max_length=34, blank=True, null=True)
-  city =models.CharField(max_length=30, blank=True, null=True)
-  zip_code = models.CharField(max_length=9, blank=True, null=True)
-  state = models.CharField(max_length=2, blank=True, null=True, help_text='the state where the pac mailing address is')
-  connected_org_name=models.CharField(max_length=200, blank=True, null=True)
-  filing_frequency = models.CharField(max_length=1, blank=True, null=True)
-
-  candidate_id = models.CharField(max_length=9,blank=True, null=True)
-  candidate_office = models.CharField(max_length=1, blank=True, null=True)    
-
-
-  has_contributions = models.NullBooleanField(null=True, default=False)
-  # total receipts
-  total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-  total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-  total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-  
-  outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
-
-  # total unitemized receipts
-  total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-
-  cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-  cash_on_hand_date = models.DateField(null=True)
-  
-  # independent expenditures
-  has_independent_expenditures = models.NullBooleanField(null=True, default=False)
-  total_indy_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-  ie_support_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-  ie_oppose_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-  ie_support_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-  ie_oppose_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-  total_presidential_indy_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-
-  # Typically only party committees make coordinated expenditures
-  has_coordinated_expenditures = models.NullBooleanField(null=True, default=False)
-  total_coordinated_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-
-  has_electioneering = models.NullBooleanField(null=True, default=False)
-  total_electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-  
-  ## new
-
-  # what kinda pac is it? 
-  is_superpac = models.NullBooleanField(null=True, default=False)    
-  is_hybrid = models.NullBooleanField(null=True, default=False)  
-  is_noncommittee = models.NullBooleanField(null=True, default=False)
-
-
-  org_status = models.CharField(max_length=31,
-          choices=(('501(c)(4)', '501(c)(4)'),
-                   ('501(c)(5)', '501(c)(5)'),
-                   ('501(c)(6)', '501(c)(6)'),
-                   ('527', '527'),
-                   ('Private business', 'Private business'),
-                   ('Public business', 'Public business'),
-                   ('Individual', 'individual'),
-          ),
-          blank=True, null=True, help_text="We're only tracking these for non-committees")
-
-  # what's their orientation
-  political_orientation = models.CharField(max_length=1,null=True, choices=[
-                          ('R', 'backs Republicans'),
-                          ('D', 'backs Democrats'),
-                          ('U', 'unknown'),
-                          ('C', 'opposes incumbents--supports Tea Party'),
-                        ])
-  political_orientation_verified = models.BooleanField(default=False, help_text="Check this box if the political orientation is correct")
-
-  designation = models.CharField(max_length=1,
-                                    blank=False,
-                                    null=True,
-                                    choices=[('A', 'Authorized by Candidate'),
-                                             ('J', 'Joint Fund Raiser'),
-                                             ('P', 'Principal Committee of Candidate'),
-                                             ('U', 'Unauthorized'),
-                                             ('B', 'Lobbyist/Registrant PAC'),
-                                             ('D', 'Leadership PAC')]
-  )
-
-  ctype = models.CharField(max_length=1,
-                          blank=False,
-                          null=True,
-                          choices=[('C', 'Communication Cost'),
-                                     ('D', 'Delegate'),
-                                     ('E', 'Electioneering Communication'),
-                                     ('H', 'House'),
-                                     ('I', 'Independent Expenditure (Not a Committee'),
-                                     ('N', 'Non-Party, Non-Qualified'),
-                                     ('O', 'Super PAC'),
-                                     ('P', 'Presidential'),
-                                     ('Q', 'Qualified, Non-Party'),
-                                     ('S', 'Senate'),
-                                     ('U', 'Single candidate independent expenditure'),
-                                     ('V', 'PAC with Non-Contribution Account - Nonqualified'),
-                                     ('W', 'PAC with Non-Contribution Account - Qualified'),
-                                     ('X', 'Non-Qualified Party'),
-                                     ('Y', 'Qualified Party'),
-                                     ('Z', 'National Party Organization') ])  
-
-
-  class Meta:
-      unique_together = (("cycle", "fec_id"),)
-      ordering = ('-total_indy_expenditures', )
-
-  def get_absolute_url(self):  
-      return ("/committee/%s/%s/" % (self.slug, self.fec_id))
-
-  def is_not_a_committee(self):
-      if self.committee_master_record.ctype=='I':
-          return True
-      return False
-
-  def neg_percent(self):
-      if self.total_indy_expenditures == 0:
-          return 0
-      else:
-          return 100*(self.ie_oppose_reps + self.ie_oppose_dems ) / self.total_indy_expenditures
-
-  def pos_percent(self):
-      if self.total_indy_expenditures == 0:
-          return 0
-      else:
-          return 100*(self.ie_support_reps + self.ie_support_dems ) / self.total_indy_expenditures
-
-
-  def __unicode__(self):
-      return self.name        
-
-  def has_linkable_url(self):
-      """Don't display a url if someone adds a space there... """
-      if (len(self.profile_url.strip()) > 4):
-          return True
-      return False    
-
-  def superpac_status(self):
-      if (self.is_superpac):
-          return 'Y'
-      else:
-          return 'N'    
-
-  def hybrid_status(self):
-      if (self.is_hybrid):
-          return 'Y'
-      else:
-          return 'N'
-
-  def superpachackcsv(self):
-      return "/outside-spenders/2014/csv/committee/%s/%s/" % (self.slug, self.fec_id) 
-
-  def superpachackdonorscsv(self):
-      return "/outside-spenders/2014/csv/contributions/%s/%s/" % (self.slug, self.fec_id)
-
-  def filing_frequency_text(self):
-      if (self.filing_frequency.upper()=='M'):
-          return "Monthly"
-      if (self.filing_frequency.upper()=='Q'):
-          return "Quarterly"
-      if (self.filing_frequency.upper()=='T'):
-          return "Terminated"
-      if (self.filing_frequency.upper()=='W'):
-          return "Waived"
-      if (self.filing_frequency.upper()=='A'):
-          return "Administratively Terminated"            
-
-
-
-  def display_type(self):
-      key = self.ctype
-      try:
-          return type_hash[key]
-      except KeyError:
-          return ''
-
-
-  def display_political_orientation(self):
-      p = self.political_orientation
-      if p=='D':
-          return "Backs Democrats"
-      if p=='R':
-          return "Backs Republicans"
-      else:
-          return "Unassigned"
-
-
-
 
 # because this is defined by cycle, not every state has a senator; others are represented twice, if there's a special senate election.
 class District(models.Model):
@@ -302,6 +83,7 @@ class District(models.Model):
 class Candidate_Overlay(models.Model):
     ## This is the human verified field -- see legislators.models.incumbent_challenger
     is_incumbent = models.BooleanField(default=False,help_text="Are they an incumbent? If not, they are a challenger")
+    curated_election_year =  models.IntegerField(null=True, help_text="What year is their next election. Set this field--don't overwrite the fec's election year. ")
     # foreign key to district
     district = models.ForeignKey('District', null=True, help_text="Presidents have no district")
     # drop the foreign key to Candidate_Overlay -- these tables are dropped and recreated regularly.
@@ -373,13 +155,23 @@ class Candidate_Overlay(models.Model):
 
     class Meta:
         unique_together = ('fec_id', 'cycle')
-        
+    
     def __unicode__(self):
         if self.office == 'S':
             return '%s %s (Senate) %s-%s' % (self.name, self.state, self.term_class, self.election_year)
         else:
             return '%s %s (House) %s-%s' % (self.name, self.state, self.office_district, self.election_year)
-            
+        
+        
+    def detailed_office(self):
+        if self.office == 'S':
+            return 'US Sen. (%s); next election is in %s' % (self.state, self.curated_election_year)
+        else:
+            return 'US Rep. (%s-%s); next election is in %s' % (self.state, self.office_district, self.curated_election_year)        
+
+    def get_absolute_url(self):
+        return "/candidate/%s/%s/" % (self.slug, self.fec_id)
+
 
     def display_party(self):
         try:
@@ -398,6 +190,224 @@ class Candidate_Overlay(models.Model):
             return None
         return 'http://influenceexplorer.com/politician/%s/%s' % (self.slug,
                                                                   self.transparencydata_id)
+
+
+  ## The US congress repo doesn't do a good job handling fec ids, so distill what we need into this model.
+  ## Incumbents are populated from US Congress, and challengers from fec master file. The determination of 
+  ## who is and who isn't a challenger is solely based on US congress, though this can be flipped through the admin. 
+class Incumbent(models.Model):
+    is_incumbent = models.BooleanField(default=False,help_text="Are they an incumbent? If not, they are a challenger")
+    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
+    name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
+    fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="FEC candidate id")
+    state = models.CharField(max_length=2, blank=True, null=True, help_text="US for president")
+    office = models.CharField(max_length=1, null=True,
+                              choices=(('H', 'House'), ('S', 'Senate'), ('P', 'President'))
+                              )
+    office_district = models.CharField(max_length=2, blank=True, null=True, help_text="'00' for at-large congress; null for senate, president")
+
+    def __unicode__(self):
+        return self.name
+
+class Committee_Overlay(models.Model):
+    cycle = models.CharField(max_length=4)
+    term_class = models.IntegerField(blank=True, null=True, help_text="1,2 or 3. Pulled from US Congress repo. Only applies to PCC of senators.")
+    is_paper_filer = models.NullBooleanField(null=True, default=False, help_text="True for most senate committees, also NRSC/DSCC, some others.")    
+    curated_candidate = models.ForeignKey('Candidate_Overlay', null=True, help_text="For house and senate: Only include if it's a P-primary campaign committee or A-authorized campaign committee with the current cycle as appears in the candidate-committee-linkage file. Check this by hand for presidential candidates though, because many committees claim to be authorized by aren't")
+    
+
+    # direct from the raw fec table
+    name = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=255, null=True)
+    fec_id = models.CharField(max_length=9, blank=True)
+    slug = models.SlugField(max_length=255)
+    party = models.CharField(max_length=3, blank=True, null=True)
+    treasurer = models.CharField(max_length=200, blank=True, null=True)
+    street_1 = models.CharField(max_length=34, blank=True, null=True)
+    street_2 = models.CharField(max_length=34, blank=True, null=True)
+    city =models.CharField(max_length=30, blank=True, null=True)
+    zip_code = models.CharField(max_length=9, blank=True, null=True)
+    state = models.CharField(max_length=2, blank=True, null=True, help_text='the state where the pac mailing address is')
+    connected_org_name=models.CharField(max_length=200, blank=True, null=True)
+    filing_frequency = models.CharField(max_length=1, blank=True, null=True)
+
+    candidate_id = models.CharField(max_length=9,blank=True, null=True)
+    candidate_office = models.CharField(max_length=1, blank=True, null=True)    
+
+
+    has_contributions = models.NullBooleanField(null=True, default=False)
+    # total receipts
+    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+
+    # total unitemized receipts
+    total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    cash_on_hand_date = models.DateField(null=True)
+
+    # independent expenditures
+    has_independent_expenditures = models.NullBooleanField(null=True, default=False)
+    total_indy_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    ie_support_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    ie_oppose_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    ie_support_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    ie_oppose_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_presidential_indy_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+    # Typically only party committees make coordinated expenditures
+    has_coordinated_expenditures = models.NullBooleanField(null=True, default=False)
+    total_coordinated_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+    has_electioneering = models.NullBooleanField(null=True, default=False)
+    total_electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+      ## new
+
+    # what kinda pac is it? 
+    is_superpac = models.NullBooleanField(null=True, default=False)    
+    is_hybrid = models.NullBooleanField(null=True, default=False)  
+    is_noncommittee = models.NullBooleanField(null=True, default=False)
+
+
+    org_status = models.CharField(max_length=31,
+        choices=(('501(c)(4)', '501(c)(4)'),
+                 ('501(c)(5)', '501(c)(5)'),
+                 ('501(c)(6)', '501(c)(6)'),
+                 ('527', '527'),
+                 ('Private business', 'Private business'),
+                 ('Public business', 'Public business'),
+                 ('Individual', 'individual'),
+        ),
+        blank=True, null=True, help_text="We're only tracking these for non-committees")
+
+    # what's their orientation
+    political_orientation = models.CharField(max_length=1,null=True, choices=[
+                        ('R', 'backs Republicans'),
+                        ('D', 'backs Democrats'),
+                        ('U', 'unknown'),
+                        ('C', 'opposes incumbents--supports Tea Party'),
+                      ])
+    political_orientation_verified = models.BooleanField(default=False, help_text="Check this box if the political orientation is correct")
+
+    designation = models.CharField(max_length=1,
+                                  blank=False,
+                                  null=True,
+                                  choices=[('A', 'Authorized by Candidate'),
+                                           ('J', 'Joint Fund Raiser'),
+                                           ('P', 'Principal Committee of Candidate'),
+                                           ('U', 'Unauthorized'),
+                                           ('B', 'Lobbyist/Registrant PAC'),
+                                           ('D', 'Leadership PAC')]
+    )
+
+    ctype = models.CharField(max_length=1,
+                        blank=False,
+                        null=True,
+                        choices=[('C', 'Communication Cost'),
+                                   ('D', 'Delegate'),
+                                   ('E', 'Electioneering Communication'),
+                                   ('H', 'House'),
+                                   ('I', 'Independent Expenditure (Not a Committee'),
+                                   ('N', 'Non-Party, Non-Qualified'),
+                                   ('O', 'Super PAC'),
+                                   ('P', 'Presidential'),
+                                   ('Q', 'Qualified, Non-Party'),
+                                   ('S', 'Senate'),
+                                   ('U', 'Single candidate independent expenditure'),
+                                   ('V', 'PAC with Non-Contribution Account - Nonqualified'),
+                                   ('W', 'PAC with Non-Contribution Account - Qualified'),
+                                   ('X', 'Non-Qualified Party'),
+                                   ('Y', 'Qualified Party'),
+                                   ('Z', 'National Party Organization') ])  
+
+
+    class Meta:
+        unique_together = (("cycle", "fec_id"),)
+        ordering = ('-total_indy_expenditures', )
+
+    def get_absolute_url(self):  
+        return ("/committee/%s/%s/" % (self.slug, self.fec_id))
+
+    def is_not_a_committee(self):
+        if self.ctype=='I':
+            return True
+            return False
+
+    def neg_percent(self):
+        if self.total_indy_expenditures == 0:
+            return 0
+        else:
+            return 100*(self.ie_oppose_reps + self.ie_oppose_dems ) / self.total_indy_expenditures
+
+    def pos_percent(self):
+        if self.total_indy_expenditures == 0:
+            return 0
+        else:
+            return 100*(self.ie_support_reps + self.ie_support_dems ) / self.total_indy_expenditures
+
+
+    def __unicode__(self):
+        return self.name
+
+    def superpac_status(self):
+        if (self.is_superpac):
+            return 'Y'
+        else:
+            return 'N'    
+
+    def hybrid_status(self):
+        if (self.is_hybrid):
+            return 'Y'
+        else:
+            return 'N'
+
+    def filing_frequency_text(self):
+        if (self.filing_frequency.upper()=='M'):
+            return "Monthly"
+        if (self.filing_frequency.upper()=='Q'):
+            return "Quarterly"
+        if (self.filing_frequency.upper()=='T'):
+            return "Terminated"
+        if (self.filing_frequency.upper()=='W'):
+            return "Waived"
+        if (self.filing_frequency.upper()=='A'):
+            return "Administratively Terminated"            
+
+
+
+    def display_type(self):
+        key = self.ctype
+        try:
+            return type_hash[key]
+        except KeyError:
+            return ''
+
+    def display_designation(self):
+        key = self.designation
+        try:
+            return committee_designation_hash[key]
+        except KeyError:
+            return ''
+
+
+    def display_political_orientation(self):
+        p = self.political_orientation
+        
+        if p=='D':
+            return "Backs Democrats"
+        elif p=='R':
+            return "Backs Republicans"
+        else:
+            return "Unassigned"
+
+
+
+
+
 
 
 # This represents either a regular or a special election -- see subelection below. 
@@ -516,6 +526,7 @@ class Committee_Time_Summary(models.Model):
         else:
             return None
 
+# reference table. Has these relationships for everyone. We're not building candidate overlays for other cycles.
 class Authorized_Candidate_Committees(models.Model):
     candidate_id = models.CharField(max_length=9, blank=True)
     committee_id = models.CharField(max_length=9, blank=True)
@@ -523,7 +534,8 @@ class Authorized_Candidate_Committees(models.Model):
     is_pcc = models.NullBooleanField(null=True) 
     com_type = models.CharField(max_length=1, help_text="committee type")
     ignore = models.BooleanField(default=False, help_text="Make this true if this isn't actually authorized.")
-     
+
+    
 
 
 ## This is untenable, I think; mismatched filing periods make this a total pain. 
