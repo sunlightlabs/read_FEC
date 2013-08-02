@@ -8,6 +8,7 @@ from django.template import RequestContext
 from fec_alerts.models import new_filing, newCommittee
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees
 this_cycle = '2014'
+this_cycle_start = date(2013,1,1)
 from formdata.models import Filing_Header, SkedA, SkedB
 from summary_data.utils.summary_utils import map_summary_form_to_dict
 # get not null senate ids. 
@@ -212,7 +213,7 @@ def filings_skedb(request, filing_num):
 def committee(request, committee_id):
     committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id)
     title = committee_overlay.name
-    report_list = Committee_Time_Summary.objects.filter(com_id=committee_id).order_by('coverage_through_date')
+    report_list = Committee_Time_Summary.objects.filter(com_id=committee_id, coverage_from_date__gte=this_cycle_start).order_by('coverage_through_date')
     return render_to_response('datapages/committee.html',
         {
         'title':title,
@@ -230,7 +231,7 @@ def candidate(request, candidate_id):
     authorized_committee_list = Authorized_Candidate_Committees.objects.filter(candidate_id=candidate_id)
     committee_list = [x.get('committee_id') for x in authorized_committee_list.values('committee_id')]
     
-    report_list = Committee_Time_Summary.objects.filter(com_id__in=committee_list).order_by('coverage_through_date')
+    report_list = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start).order_by('coverage_through_date')
     return render_to_response('datapages/candidate.html',
         {
         'title':title,
