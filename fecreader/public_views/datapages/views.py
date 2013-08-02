@@ -35,6 +35,23 @@ def house(request):
         context_instance=RequestContext(request)
     )
     
+
+def candidates(request):
+
+    title="Candidates - Cycle Summary"
+    explanatory_text="This page shows the fundraising totals for the entire cycle for current candidates. For fundraising totals for just a single reporting period, see the <a href=\"/reports\">reports</a> page."
+    # Give up on ORM for data; we're not willing to enforce all the relationships required for them
+
+    legislators = Candidate_Overlay.objects.all()
+
+    return render_to_response('datapages/candidate_list.html',
+        {
+        'object_list':legislators,
+        'title':title,
+        'explanatory_text':explanatory_text,
+        }, 
+        context_instance=RequestContext(request)
+    )
 def senate(request):
 
     title="Senators - Cycle Summary"
@@ -152,8 +169,6 @@ def downloads(request):
 def pacs(request):
     return render_blank_page('PACs','This page is a searchable, sortable, filterable paginated list of all pacs and their cycle-to-date fundraising numbers. Filters are for things like super-pacs, candidate pacs, leadership pacs (maybe), and maybe a category for NRCC/DSCC etc.', request)
 
-def candidates(request):
-    return render_blank_page('Candidates','This page is a searchable, sortable, filterable paginated list of all pacs and their cycle-to-date fundraising numbers. Filter by race or by chamber, I think.', request)
 
 def reports(request):
     return render_blank_page('Reports','This page is a searchable, sortable, filterable paginated list of summary reports for pacs. Instead of showing cycle-to-date numbers, like on most other pages, this one will show just the fundraising totals for a single filing period.', request)        

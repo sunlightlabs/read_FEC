@@ -162,7 +162,13 @@ class Candidate_Overlay(models.Model):
         else:
             return '%s %s (House) %s-%s' % (self.name, self.state, self.office_district, self.election_year)
         
-        
+    def incumbency_status(self):
+        if self.is_incumbent:
+            return "Y"
+        else:
+            return "N"
+    
+    
     def detailed_office(self):
         if self.office == 'S':
             return 'US Sen. (%s); next election is in %s' % (self.state, self.curated_election_year)

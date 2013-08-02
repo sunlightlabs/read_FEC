@@ -38,7 +38,7 @@
               <tbody>
                   {% for object in report_list %}    
                       <tr class="{% cycle 'odd' 'even' %}">
-                          <td>{% if object.filing_number %}<a href="{{object.get_fec_url}}">{{ object.filing_number }}</a>{% endif %}</td>
+                          <td>{% if object.filing_number %}<a href="{{object.get_fec_url}}">{{ object.filing_number }}</a>{% else %}<a href="http://query.nictusa.com/cgi-bin/fecimg/?{{ object.com_id}}">paper filing</a>{% endif %}</td>
                           <td>{{ object.committee_name }}</td>
                           <td>{% if object.coverage_through_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_through_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_receipts %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_receipts|intcomma }}</a>{% else %}$0{% endif %}</td>
