@@ -33,6 +33,8 @@
                 <th class="sort">Raised</th>
                 <th class="sort">Spent</th>
                 <th class="sort">Cash on hand</th>
+                <th class="sort">Debts</th>
+                
               </tr>
               </thead>
               <tbody>
@@ -44,6 +46,7 @@
                           <td>{% if object.tot_receipts %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_receipts|intcomma }}</a>{% else %}$0{% endif %}</td>
                           <td>{% if object.tot_disburse %}{% if object.filing_number %}<a href="{{object.get_skedb_url}}">{% endif %}${{ object.tot_disburse|intcomma }}{% if object.filing_number %}</a>{% endif %}{% else %}$0{% endif %}</td>
                           <td>{% if object.cash_on_hand_end %}${{ object.cash_on_hand_end|intcomma }}{% else %}$0{% endif %}</td>
+                          <td>{% if object.outstanding_loans %}${{ object.outstanding_loans|intcomma }}{% else %}$0{% endif %}</td> 
                           
                         </tr>
                   {% endfor %}
