@@ -495,6 +495,7 @@ class SubElection_Candidate(models.Model):
 
 class Committee_Time_Summary(models.Model):
     com_id = models.CharField(max_length=9, blank=True)
+    com_name = models.CharField(max_length=255, null=True, blank=True)
     filing_number = models.IntegerField(null=True, blank=True, help_text="Not applicable for webk")
     tot_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
     tot_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)

@@ -5,6 +5,7 @@ from datetime import timedelta,date
 
 
 from fec_alerts.models import WebK
+from ftpdata.models import Committee
 from formdata.models import Filing_Header
 from summary_data.models import Candidate_Overlay, type_hash, Committee_Time_Summary, committee_designation_hash, Filing_Gap
 #from summary_data.models import Committee_Time_Summary
@@ -94,6 +95,7 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
             this_summary = Committee_Time_Summary.objects.get(com_id=committee_id, coverage_from_date=wk.coverage_from_date, coverage_through_date=wk.coverage_through_date)
             if force_update:
                 this_summary.tot_receipts = wk.tot_rec
+                this_summary.com_name = wk.com_nam
                 this_summary.tot_contrib = wk.tot_con
                 this_summary.tot_ite_contrib = wk.ind_ite_con
                 this_summary.tot_non_ite_contrib = wk.ind_uni_con
@@ -113,6 +115,7 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
                 coverage_from_date=wk.coverage_from_date,
                 coverage_through_date=wk.coverage_through_date,
                 tot_receipts = wk.tot_rec,
+                com_name = wk.com_nam, 
                 tot_contrib = wk.tot_con,
                 tot_ite_contrib = wk.ind_ite_con,
                 tot_non_ite_contrib = wk.ind_uni_con,
@@ -202,7 +205,17 @@ def map_summary_form_to_dict(form, header_data):
     return cts_dict
     
 
-def summarize_committee_periodic_electronic(committee_id, force_update=False):
+def summarize_committee_periodic_electronic(committee_id, force_update=True):
+    # it's a pain, but we need the committee name in this model. 
+    committee_name = ""
+    try:
+        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
+        committee_name = this_committee.cmte_name
+    
+    except Committee.DoesNotExist:
+        print "Missing committee name"
+        pass
+        
     relevant_filings = Filing_Header.objects.filter(raw_filer_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form__in=['F3P', 'F3', 'F3X']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
@@ -242,6 +255,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=False):
         cts_dict['data_source'] = 'electronic'
         cts_dict['com_id'] = committee_id
         cts_dict['tot_contrib'] = tot_contribs 
+        cts_dict['com_name'] = committee_name
         
         for i in cts_dict:
             if cts_dict[i] == '':
@@ -251,12 +265,13 @@ def summarize_committee_periodic_electronic(committee_id, force_update=False):
         try:
             this_summary = Committee_Time_Summary.objects.get(com_id=committee_id, coverage_from_date=this_filing.coverage_from_date, coverage_through_date=this_filing.coverage_through_date)
             if force_update:
-
+                
                 this_summary.filing_number = this_filing.filing_number
                 this_summary.tot_receipts = cts_dict.get('tot_receipts')
                 this_summary.tot_ite_contrib = cts_dict.get('tot_ite_contrib')
                 this_summary.tot_non_ite_contrib = cts_dict.get('tot_non_ite_contrib')
                 this_summary.tot_contrib = cts_dict.get('tot_contrib')
+                this_summary.com_name = cts_dict.get('com_name')
                 this_summary.tot_disburse = cts_dict.get('tot_disburse')
                 this_summary.new_loans = cts_dict.get('new_loans')
                 this_summary.outstanding_loans = cts_dict.get('outstanding_loans')
