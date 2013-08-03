@@ -16,7 +16,7 @@
 </div>
 <p>{% if committee.curated_candidate %}Authorized committee for <a href="{{ committee.curated_candidate.get_absolute_url }}">{{ committee.curated_candidate.name }}</a><br>{% endif %}
   Committee Type: "{{ committee.ctype }}" - {{ committee.display_type}} 
-  
+  {% if committee.curated_candidate %}<br>Supports <a href="">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ committee.curated_candidate.detailed_office}}{% endif %}
   <br>Designation: "{{ committee.designation}}" - {{ committee.display_designation}}
   <br>Treasurer: {{ committee.treasurer }}
   <br>Location: {{ committee.city}}, {{ committee.state}} {{committee.zip}}
