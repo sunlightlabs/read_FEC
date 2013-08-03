@@ -16,7 +16,7 @@
 </div>
 
 <p>{% if candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ candidate.detailed_office}}
-<br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>&nbsp;{% endfor %}
+<br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>{% if not forloop.last %}&nbsp;|&nbsp;{% endif %}{% endfor %}
 <div class="numeric_summary">
 
 <br><span class="amount_description">Total disbursements:</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
