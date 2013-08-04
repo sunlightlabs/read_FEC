@@ -2,6 +2,8 @@
 
 # DFL is democratic farmer labor but is really just dem. 
 def get_party_from_pty(pty):
+    if not pty:
+        return None
     pty = pty.upper().strip()
     if pty == 'DEM':
         return 'D'
@@ -12,6 +14,8 @@ def get_party_from_pty(pty):
     return None
     
 def get_party_from_term_party(pty):
+    if not pty:
+        return None    
     pty = pty.upper().strip()
     if pty == 'DEMOCRAT':
         return 'D'
