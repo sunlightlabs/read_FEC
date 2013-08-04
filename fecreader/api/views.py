@@ -14,11 +14,10 @@ class NFFilter(django_filters.FilterSet):
     filed_before = django_filters.DateFilter(name='filed_date', lookup_type='lte') 
     filed_after = django_filters.DateFilter(name='filed_date', lookup_type='gte') 
     
-    ctype = django_filters.ChoiceFilter(name='committee_type') 
 
     class Meta:
         model = new_filing
-        fields = ['fec_id', 'committee_name', 'filing_number', 'form_type', 'filed_date', 'tot_raised', 'committee_type', 'committee_designation']
+        fields = ['fec_id', 'committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'coverage_to_date', 'is_superpac', 'committee_designation', 'committee_type', 'committee_slug', 'party', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent', 'lines_present']
         
 #generics.ListAPIView
 # viewsets.ModelViewSet
