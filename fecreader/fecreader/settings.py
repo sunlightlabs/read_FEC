@@ -148,8 +148,16 @@ INSTALLED_APPS = (
     'fec_alerts',
     'legislators',
     'summary_data',
+    'rest_framework',
 )
 
+REST_FRAMEWORK = {
+
+#    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
+    'PAGINATE_BY': 10,
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}
 
 
 ## Timestamp keys

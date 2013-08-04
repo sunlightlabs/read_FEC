@@ -41,7 +41,6 @@ class Command(BaseCommand):
                     this_filing.committee_designation = co.cmte_dsgn
                     this_filing.committee_type = co.cmte_tp
                     this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
-                
                 except Committee.DoesNotExist:
                     pass
                     
@@ -50,6 +49,8 @@ class Command(BaseCommand):
                 header = Filing_Header.objects.get(filing_number = this_filing.filing_number)
             except Filing_Header.DoesNotExist:
                 print "FILING_HEADER MISSING FOR %s" % (this_filing.filing_number)
+                # save what we've found though! 
+                this_filing.save()
                 continue
             header_data = header.header_data
             
@@ -64,5 +65,6 @@ class Command(BaseCommand):
                 this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else None
                 this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else None
                 this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else None
-                this_filing.save()
+            
+            this_filing.save()
             

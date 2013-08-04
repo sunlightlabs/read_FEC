@@ -65,7 +65,8 @@ class new_filing(models.Model):
     
     # populate from committee_overlay file. 
     committee_designation = models.CharField(max_length=1, null=True, blank=True)
-    committee_type = models.CharField(max_length=1, null=True, blank=True)
+    committee_type = models.CharField(max_length=1, null=True, blank=True, choices=[('C', 'C'),])
+               
     committee_slug = models.SlugField(max_length=255, null=True, blank=True)
     party = models.CharField(max_length=3, blank=True, null=True)
     
