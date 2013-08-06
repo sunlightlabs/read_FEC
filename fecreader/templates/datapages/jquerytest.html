@@ -30,16 +30,14 @@
 </div>
 
 <p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
-<div id="formdiv">
-  <b>Quick Links: </b><span class="form_spacer"><a href="">independent expenditures</a>&nbsp;|&nbsp;<a href="">declarations of candidacy</a>&nbsp;|&nbsp;<a href="">candidate committees</a>&nbsp;|&nbsp;<a href="">superpacs</a></span>
-  
-  <br><b>Or set custom filter options below</b><br>
+  <b>Show: </b><span><a href="">independent expenditures</a>&nbsp;|&nbsp;<a href="">declarations of candidacy</a>&nbsp;|&nbsp;<a href="">candidate committees</a>&nbsp;|&nbsp;<a href="">superpacs</a></span> <b>or set filter options below.</b><br>
+  <div id="formdiv">
   <span>
-  Filing date: <input type="text" class="date_field" name="date_start" id="filed_since_date"></input>
+  Filing date: <input type="text" class="date_field" name="date_start" id="filed_date"></input>
   </span>
   
 <span class="form_spacer">  
-Committee Type: <select name="committee_type" class="dropdown_field">
+Committee Type: <select name="committee_type" class="dropdown_field" id="committee_field">
   <option value=''>All</option>
   <option value='H'>House</option>
   <option value='S'>Senate</option>
@@ -54,10 +52,10 @@ Committee Type: <select name="committee_type" class="dropdown_field">
 </select>
 </span>
 <span class="form_spacer">  
-Filing: <select name="form_type" class="dropdown_field">
+Filing: <select name="form_type" class="dropdown_field" id="report_type">
   <option value=''>All</option>
   <option value='monthly'>Monthly/quarterly reports</option>
-  <option value='ies'>24/48 report of independent/coordinated expenditures</option>
+  <option value='ies'>Independent/coordinated expenditures</option>
   <option value='F6'>48-hour notice of contributions/loans received</option>
   <option value='F9'>24-hour notice of electioneering communications</option>
   <option value='F2'>Statement of candidacy</option>
@@ -65,7 +63,7 @@ Filing: <select name="form_type" class="dropdown_field">
 </span>
 
 <span class="form_spacer">
-Period covered: <select name="form_type" class="dropdown_field">
+Period covered: <select name="form_type" class="dropdown_field" id="period_type">
     <option value=''>All</option>
     <option value='Q1'>Quarterly: Q1</option>
     <option value='Q2'>Quarterly: Q2</option>
@@ -79,7 +77,7 @@ Period covered: <select name="form_type" class="dropdown_field">
     <option value='M4'>Monthly: Apr.</option>
     <option value='M5'>Monthly: May</option>
     <option value='M6'>Monthly: Jun.</option>
-    <option value='M7'>Monthly: July.</option>
+    <option value='M7'>Monthly: July</option>
     <option value='M8'>Monthly: Aug.</option>
     <option value='M9'>Monthly: Sept.</option>
     <option value='M10'>Monthly: Oct.</option>
@@ -101,12 +99,12 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 </span>
 
 <br>
-<span><b>Order by: </b><select name="order_field" class="dropdown_field">
+<span><b>Order by: </b><select name="order_field" class="dropdown_field" id="ordering_field">
   <option value='-filing_number'>newest-to-oldest</option>
   <option value='-coh_end'>cash on hand</option>
-  <option value='-total_receipts'>total receipts</option>
-  <option value='-outstanding_loans'>outstanding debt</option>
-  <option value='name'>committee name</option>
+  <option value='-tot_raised'>total raised</option>
+  <option value='-tot_spent'>total spent</option>
+  <option value='committee_name'>committee name</option>
 
 </select>
 </span>
@@ -115,16 +113,13 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 
 </div>
 
-
-<div>
-<div id="result_description"></div>
-<div id="display_info"></div>
+<span id="display_info"></span>
+<div class="pagination_container">
 <div class="load_next" style="float: right; width: 200px;"></div>
 <div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>  
-<div style="clear:both;"></div>
+<div class="clear"></div>
 </div>
 
-</p>
 <table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
@@ -149,7 +144,6 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 </div>
 {% verbatim %}
 <script id="row-template" type="text/x-handlebars-template" >
-// http://localhost:8000/filings/882072/SA/
    <tr class="{{ class }}">
         <td><a href="http://query.nictusa.com/cgi-bin/dcdev/forms/{{ fec_id }}/{{ filing_number}}/">{{ filing_number }}</a></td>
         <td><a href="/committee/{{ committee_slug }}/{{ fec_id }}/">{{ committee_name}}</a></td>
@@ -174,42 +168,78 @@ function is_valid_number(a) {
 }
 
 function clean_dollar_fields(str) {
-  str = str.replace(" ","");  
+  str = str.replace(/ /g,"");  
   str = str.replace("$","");
-  str = str.replace(",","");
+  str = str.replace(/,/g,"");
   return str;
 }
 
 function validate_fields() {
   
   // Clean up dollar fields if we can; if they seem not-numeric, set them to empty. 
+  $(".dollar_field").each(function( index ) {
+      this_amount = clean_dollar_fields($(this).val());
+      if (is_valid_number(this_amount) ) {
+        $(this).val(this_amount);
+      } else {
+        $(this).val("");
+      }
+  });
   
-  min_spent = clean_dollar_fields($( "#min_spent" ).val());
-  // set cleaned up value
-  if (is_valid_number(min_spent) ) {
-    $( "#min_spent" ).val(min_spent);
-  } else {
-    $( "#min_spent" ).val("");
-  }
-
-  min_coh = clean_dollar_fields($( "#min_coh" ).val());
-  // set cleaned up value
-  if (is_valid_number(min_coh) ) {
-    $( "#min_coh" ).val(min_coh);
-  } else {
-    $( "#min_coh" ).val("");
-  }
-
-  min_raised = clean_dollar_fields($( "#min_raised" ).val());
-  // set cleaned up value
-  if (is_valid_number(min_raised) ) {
-    $( "#min_raised" ).val(min_raised);
-  } else {
-    $( "#min_raised" ).val("");
-  }
-
+  // Check the date format is what we want.
+  $(".datepicker").each(function( index ) {
+    if (!/^\d\d\d\d-\d\d-\d\d$/.test($(this).val()) ) {
+      $(this).val("");
+    }
+  });
   
 }
+
+function get_json_url() {
+  query_string = "?ordering=" + $("#ordering_field").val();
+  
+  min_spent = $("#min_spent").val();
+  if (min_spent.length > 0) {
+    query_string += "&min_spent=" + min_spent
+  }
+  
+  min_raised = $("#min_raised").val();
+  if (min_raised.length > 0) {
+    query_string += "&min_raised=" + min_raised
+  }
+  
+  min_coh = $("#min_coh").val();
+  if (min_coh.length > 0) {
+    query_string += "&min_coh=" + min_coh
+  }
+  
+  committee_class =  $("#committee_field").val();
+  if (committee_class.length>0) {
+    query_string += "&committee_class=" + committee_class;
+  }
+
+  filed_date = $('#filed_date').val();
+  if (filed_date.length>0) {
+    query_string += "&filed_date=" + filed_date;
+  }
+
+  report_type = $('#report_type').val();
+  if (report_type.length>0) {
+    query_string += "&report_type=" + report_type;
+  }
+  
+  period_type = $('#period_type').val();
+  if (period_type.length>0) {
+    query_string += "&period_type=" + period_type;
+  }
+
+  url = "/api/new_filing/" + query_string
+  console.log("url is: " + url);
+  return url;
+  
+
+}
+
 
 // Some template functions. Should eventually live somewhere else. 
 
@@ -259,8 +289,9 @@ function remove_tablesorter() {
 }
 
 function button_load() {
+  validate_fields();
+  jsonurl = get_json_url();
   pagenumber = 1;
-  jsonurl = "/api/new_filing/";
   loadjson(jsonurl);
 }
 
@@ -276,7 +307,6 @@ function load_previous(jsonurl) {
 
 function loadjson(jsonurl) {
   console.log("loading json");
-  validate_fields();
   //jsonurl = "/api/new_filing/";
   $.getJSON(jsonurl, function(data_loaded) {
  
@@ -383,7 +413,7 @@ $(document).ready(function() {
     });
     
     // Is the jquery ui part of this brisket distillation?
-   $( ".date_field" ).datepicker(); 
+   $( ".date_field" ).datepicker({dateFormat: 'yy-mm-dd'}); 
    // load all filings initially
    button_load();
    
