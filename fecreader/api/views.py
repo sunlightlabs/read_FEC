@@ -49,7 +49,7 @@ def periodTypeFilter(queryset, querydict):
                 queryset = queryset.filter(Q(coverage_from_date=date(2013,4,1), coverage_to_date=date(2013,6,30))|Q(coverage_from_date=date(2014,4,1), coverage_to_date=date(2014,6,30)))
 
             elif period_type == 'Q3':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,7,1), coverage_to_date=date(2013,9,31))|Q(coverage_from_date=date(2014,7,1), coverage_to_date=date(2014,9,31)))
+                queryset = queryset.filter(Q(coverage_from_date=date(2013,7,1), coverage_to_date=date(2013,9,30))|Q(coverage_from_date=date(2014,7,1), coverage_to_date=date(2014,9,30)))
 
             elif period_type == 'Q4':
                 queryset = queryset.filter(Q(coverage_from_date=date(2013,10,1), coverage_to_date=date(2013,12,31))|Q(coverage_from_date=date(2014,10,1), coverage_to_date=date(2014,9,31)))

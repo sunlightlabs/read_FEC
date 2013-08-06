@@ -32,12 +32,13 @@
 <p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
   <b>Show: </b><span><a href="javascript:search_all();">all</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_f2s();">declarations of candidacy</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
   <div id="formdiv">
-  <span>
+    
+  <span style="display:none;">
   Filing date: <input type="text" class="date_field" name="date_start" id="filed_date"></input>
   </span>
   
-<span class="form_spacer">  
-Committee Type: <select name="committee_type" class="dropdown_field" id="committee_field">
+<span>  
+Committee Type: <select name="committee_type" class="dropdown_field" id="committee_class">
   <option value=''>All</option>
   <option value='H'>House</option>
   <option value='S'>Senate</option>
@@ -100,7 +101,7 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 </span>
 
 <br>
-<span><b>Order by: </b><select name="order_field" class="dropdown_field" id="ordering_field">
+<span><b>Order by: </b><select name="order_field" class="dropdown_field" id="ordering">
   <option value='-filing_number'>newest-to-oldest</option>
   <option value='-coh_end'>cash on hand</option>
   <option value='-tot_raised'>total raised</option>
@@ -197,7 +198,7 @@ function validate_fields() {
 }
 
 function get_json_url() {
-  query_string = "?ordering=" + $("#ordering_field").val();
+  query_string = "?ordering=" + $("#ordering").val();
   
   min_spent = $("#min_spent").val();
   if (min_spent.length > 0) {
@@ -214,7 +215,7 @@ function get_json_url() {
     query_string += "&min_coh=" + min_coh
   }
   
-  committee_class =  $("#committee_field").val();
+  committee_class =  $("#committee_class").val();
   if (committee_class.length>0) {
     query_string += "&committee_class=" + committee_class;
   }
@@ -233,7 +234,9 @@ function get_json_url() {
   if (period_type.length>0) {
     query_string += "&period_type=" + period_type;
   }
-
+  
+  window.location.hash = query_string;
+  
   url = "/api/new_filing/" + query_string
   console.log("url is: " + url);
   return url;
@@ -246,7 +249,7 @@ function reset_all_fields() {
     $(this).val("");
   });
   // default is filing order
-  $("#ordering_field").val('-filing_number');
+  $("#ordering").val('-filing_number');
 }
 
 function search_all() {
@@ -264,7 +267,7 @@ function search_ies() {
 
 function search_committees() {
   reset_all_fields();
-  $("#committee_field").val('HSP');
+  $("#committee_class").val('HSP');
   button_load();
 }
 
@@ -276,7 +279,7 @@ function search_f2s() {
 
 function search_superpacs() {
   reset_all_fields();
-  $("#committee_field").val('UOVW');
+  $("#committee_class").val('UOVW');
   button_load();
 }
 // Some template functions. Should eventually live somewhere else. 
@@ -452,6 +455,21 @@ $(document).ready(function() {
     
     // Is the jquery ui part of this brisket distillation?
    $( ".date_field" ).datepicker({dateFormat: 'yy-mm-dd'}); 
+   
+   
+   reset_all_fields();
+   
+   windowhash = window.location.hash;
+   var hashdict = {};
+   
+   $.each(windowhash.substr(2).split('&'), function(i, elem) {
+      var parts = elem.split('=');
+      console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
+      $("#" + parts[0]).val(parts[1]);
+   }); 
+   
+   console.log("hashdict is " + hashdict);
+   
    // load all filings initially
    button_load();
    
