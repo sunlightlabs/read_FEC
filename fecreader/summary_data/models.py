@@ -243,7 +243,7 @@ class Committee_Overlay(models.Model):
 
     has_contributions = models.NullBooleanField(null=True, default=False)
     # total receipts
-    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True)
     total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True)
 
@@ -252,7 +252,7 @@ class Committee_Overlay(models.Model):
     # total unitemized receipts
     total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True)
 
-    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     cash_on_hand_date = models.DateField(null=True)
 
     # independent expenditures

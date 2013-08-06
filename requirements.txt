@@ -27,3 +27,5 @@ django_compressor
 # api branch
 djangorestframework
 django-filter
+
+django-debug-toolbar

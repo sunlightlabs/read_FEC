@@ -23,4 +23,7 @@ urlpatterns = patterns('',
         url(r'^filings/(\d+)/SB/$', 'public_views.datapages.views.filings_skedb'),
         url(r'^committee/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee'),
         url(r'^candidate/[\w-]+\/(?P<candidate_id>[\w\d]+)\/?$', 'public_views.datapages.views.candidate'),
+        url(r'^jquerytest/$', TemplateView.as_view(template_name="datapages/jquerytest.html")),
+        url(r'^jquerytest2/$', TemplateView.as_view(template_name="datapages/jquerytest2.html")),
+        
 )
