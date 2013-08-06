@@ -30,7 +30,7 @@
 </div>
 
 <p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
-  <b>Show: </b><span><a href="">independent expenditures</a>&nbsp;|&nbsp;<a href="">declarations of candidacy</a>&nbsp;|&nbsp;<a href="">candidate committees</a>&nbsp;|&nbsp;<a href="">superpacs</a></span> <b>or set filter options below.</b><br>
+  <b>Show: </b><span><a href="javascript:search_all();">all</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_f2s();">declarations of candidacy</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
   <div id="formdiv">
   <span>
   Filing date: <input type="text" class="date_field" name="date_start" id="filed_date"></input>
@@ -41,6 +41,7 @@ Committee Type: <select name="committee_type" class="dropdown_field" id="committ
   <option value=''>All</option>
   <option value='H'>House</option>
   <option value='S'>Senate</option>
+  <option value='HSP'>Any Candidate</option>
   <option value='UOVW'>Super PACs (including hybrids)</option>
   <option value='UO'>Super PACs (NOT including hybrids)</option>
   <option value='P'>Presidential</option>
@@ -240,7 +241,44 @@ function get_json_url() {
 
 }
 
+function reset_all_fields() {
+  $(".date_field,  .dollar_field, .dropdown_field").each(function( index ) {
+    $(this).val("");
+  });
+  // default is filing order
+  $("#ordering_field").val('-filing_number');
+}
 
+function search_all() {
+  reset_all_fields();
+  button_load();
+  
+}
+
+function search_ies() {
+  reset_all_fields();
+  $("#report_type").val('ies');
+  button_load();
+  
+}
+
+function search_committees() {
+  reset_all_fields();
+  $("#committee_field").val('HSP');
+  button_load();
+}
+
+function search_f2s() {
+  reset_all_fields();
+  $("#report_type").val('F2');
+  button_load();
+}
+
+function search_superpacs() {
+  reset_all_fields();
+  $("#committee_field").val('UOVW');
+  button_load();
+}
 // Some template functions. Should eventually live somewhere else. 
 
 function roundwCommas(nStr) {
