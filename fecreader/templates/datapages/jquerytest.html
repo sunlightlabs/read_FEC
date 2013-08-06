@@ -1,0 +1,395 @@
+{# list of current legislators, either house or senate or something #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+
+
+{# For simplified templating #}
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'dryrub/css/jquery-ui-1.10.3.custom.min.css' %}" />
+
+{% endblock %}
+
+
+{% block sitejs %}
+<script type="text/javascript" src="{% static 'dryrub/js/handlebars.js' %}"></script>
+<script type="text/javascript" src="{% static 'dryrub/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+
+{% endblock %}
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}jquery test {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+ <div id="contentHeader" style="z-index:0;">
+       <h2>Newest Filings</h2>
+</div>
+
+<p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
+<div id="formdiv">
+  <b>Quick Links: </b><span class="form_spacer"><a href="">independent expenditures</a>&nbsp;|&nbsp;<a href="">declarations of candidacy</a>&nbsp;|&nbsp;<a href="">candidate committees</a>&nbsp;|&nbsp;<a href="">superpacs</a></span>
+  
+  <br><b>Or set custom filter options below</b><br>
+  <span>
+  Filing date: <input type="text" class="date_field" name="date_start" id="filed_since_date"></input>
+  </span>
+  
+<span class="form_spacer">  
+Committee Type: <select name="committee_type" class="dropdown_field">
+  <option value=''>All</option>
+  <option value='H'>House</option>
+  <option value='S'>Senate</option>
+  <option value='UOVW'>Super PACs (including hybrids)</option>
+  <option value='UO'>Super PACs (NOT including hybrids)</option>
+  <option value='P'>Presidential</option>
+  <option value='E'>Electioneering Communication</option>
+  <option value='Z'>National Party</option>
+  <option value='XYZ'>All Party</option>
+  <option value='I'>Non committees</option>
+  <option value='C'>Communication Cost</option>
+</select>
+</span>
+<span class="form_spacer">  
+Filing: <select name="form_type" class="dropdown_field">
+  <option value=''>All</option>
+  <option value='monthly'>Monthly/quarterly reports</option>
+  <option value='ies'>24/48 report of independent/coordinated expenditures</option>
+  <option value='F6'>48-hour notice of contributions/loans received</option>
+  <option value='F9'>24-hour notice of electioneering communications</option>
+  <option value='F2'>Statement of candidacy</option>
+</select>
+</span>
+
+<span class="form_spacer">
+Period covered: <select name="form_type" class="dropdown_field">
+    <option value=''>All</option>
+    <option value='Q1'>Quarterly: Q1</option>
+    <option value='Q2'>Quarterly: Q2</option>
+    <option value='Q3'>Quarterly: Q3</option>
+    <option value='Q4'>Quarterly: Q4</option>
+    <option value='S1'>Semiannual: Jan.-Jun.</option>
+    <option value='S2'>Semiannual: Jul.-Dec.</option>
+    <option value='M1'>Monthly: Jan.</option>
+    <option value='M2'>Monthly: Feb.</option>
+    <option value='M3'>Monthly: Mar.</option>
+    <option value='M4'>Monthly: Apr.</option>
+    <option value='M5'>Monthly: May</option>
+    <option value='M6'>Monthly: Jun.</option>
+    <option value='M7'>Monthly: July.</option>
+    <option value='M8'>Monthly: Aug.</option>
+    <option value='M9'>Monthly: Sept.</option>
+    <option value='M10'>Monthly: Oct.</option>
+    <option value='M11'>Monthly: Nov.</option>
+    <option value='M12'>Monthly: Dec.</option>    
+  </select>
+  
+</span>
+<br>
+<span>
+Minimum raised: <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
+</span>
+
+<span class="form_spacer">
+Minimum spent: <input type="text" class="dollar_field" id="min_spent" name="min_spent"></input>
+</span>
+<span class="form_spacer">
+Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name="min_coh"></input>
+</span>
+
+<br>
+<span><b>Order by: </b><select name="order_field" class="dropdown_field">
+  <option value='-filing_number'>newest-to-oldest</option>
+  <option value='-coh_end'>cash on hand</option>
+  <option value='-total_receipts'>total receipts</option>
+  <option value='-outstanding_loans'>outstanding debt</option>
+  <option value='name'>committee name</option>
+
+</select>
+</span>
+
+<input type="button" value="FILTER FILINGS" id="load_button" style="width:300px; margin-left: 20px;" />
+
+</div>
+
+
+<div>
+<div id="result_description"></div>
+<div id="display_info"></div>
+<div class="load_next" style="float: right; width: 200px;"></div>
+<div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>  
+<div style="clear:both;"></div>
+</div>
+
+</p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                      <th>Filing ID (Type)</th>
+                      <th>Committee - Form</th>
+                      <th>Coverage Date</th>
+                      <th class="sort">Raised</th>
+                      <th class="sort">Spent</th>
+                      <th class="sort">Cash on hand</th>
+                      <th class="sort">Filing Date</th>
+                    </tr>
+              </thead>
+              <tbody id="maintablebody">
+</tbody>
+</table>
+<div>
+<div class="load_next" style="float: right; width: 200px;"></div>
+<div class="load_previous" style="float: left; width: 200px;"></div>  
+<div style="clear:both;"></div>
+</div>
+
+</div>
+{% verbatim %}
+<script id="row-template" type="text/x-handlebars-template" >
+// http://localhost:8000/filings/882072/SA/
+   <tr class="{{ class }}">
+        <td><a href="http://query.nictusa.com/cgi-bin/dcdev/forms/{{ fec_id }}/{{ filing_number}}/">{{ filing_number }}</a></td>
+        <td><a href="/committee/{{ committee_slug }}/{{ fec_id }}/">{{ committee_name}}</a></td>
+        <td>{{{ mddyy coverage_from_date }}} - {{{ mddyy coverage_to_date }}}</td>
+        <td><a href="/filings/{{ filing_number}}/SA/">${{{ addcommas tot_raised }}}</a></td>
+        <td><a href="/filings/{{ filing_number}}/SB/">${{{ addcommas tot_spent }}}</a></td>
+        <td>${{{ addcommas coh_end }}}</td>
+        <td>{{ filed_date }}</td>
+    </tr>
+        
+</script>
+{% endverbatim %}
+
+<script type="text/javascript">
+// The api doesn't tell us the pagenumber
+pagenumber = 1;
+// set this dynamically 
+pagination_size = 100;
+
+function is_valid_number(a) {
+  return a.length > 0 && !isNaN(a);
+}
+
+function clean_dollar_fields(str) {
+  str = str.replace(" ","");  
+  str = str.replace("$","");
+  str = str.replace(",","");
+  return str;
+}
+
+function validate_fields() {
+  
+  // Clean up dollar fields if we can; if they seem not-numeric, set them to empty. 
+  
+  min_spent = clean_dollar_fields($( "#min_spent" ).val());
+  // set cleaned up value
+  if (is_valid_number(min_spent) ) {
+    $( "#min_spent" ).val(min_spent);
+  } else {
+    $( "#min_spent" ).val("");
+  }
+
+  min_coh = clean_dollar_fields($( "#min_coh" ).val());
+  // set cleaned up value
+  if (is_valid_number(min_coh) ) {
+    $( "#min_coh" ).val(min_coh);
+  } else {
+    $( "#min_coh" ).val("");
+  }
+
+  min_raised = clean_dollar_fields($( "#min_raised" ).val());
+  // set cleaned up value
+  if (is_valid_number(min_raised) ) {
+    $( "#min_raised" ).val(min_raised);
+  } else {
+    $( "#min_raised" ).val("");
+  }
+
+  
+}
+
+// Some template functions. Should eventually live somewhere else. 
+
+function roundwCommas(nStr) {
+    nStr = Math.round(nStr);
+    nStr += '';
+    x1 = nStr;
+    //x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1;
+}
+
+/* This date stuff is fucking terrible. There's gotta be a better approach */
+function getDate(datestring) {
+  // Why is this so annoying? 
+  date_components = datestring.split('-');
+  // Months are zero-indexed, but day numbers aren't. Nice work, guys. 
+  return_date = new Date(date_components[0], Math.round(date_components[1])-1, date_components[2]);
+  return return_date;
+}
+
+function format_mddyy(datestring) {
+  thisdate = getDate(datestring);
+  // Months are zero-indexed, but day numbers aren't. Again, nice work. 
+  month = Math.round(thisdate.getMonth()) + 1;
+  year = String(thisdate.getFullYear()).substring(2,4);
+  return_string =  month + "/" +   thisdate.getDate() + "/" +  year;
+  return return_string;
+}
+
+function remove_tablesorter() {
+  // apparently the best way to remove tablesorter altogether
+  // see http://stackoverflow.com/questions/8171530/remove-jquery-tablesorter-from-table/8177869#8177869
+  // if we don't remove and add it back the sort stops working in an odd, quiet way. (on FF, for instance, the first sort of a column works, but subsequent ones don't)
+    
+  console.log("trying to remove tablesorter");
+  
+  $('.sortable')
+   .unbind('appendCache applyWidgetId applyWidgets sorton update updateCell')
+   .removeClass('tablesorter')
+   .find('thead th')
+   .unbind('click mousedown')
+   .removeClass('header headerSortDown headerSortUp');
+}
+
+function button_load() {
+  pagenumber = 1;
+  jsonurl = "/api/new_filing/";
+  loadjson(jsonurl);
+}
+
+function load_next(jsonurl) {
+  pagenumber++;
+  loadjson(jsonurl);
+}
+
+function load_previous(jsonurl) {
+  pagenumber--;
+  loadjson(jsonurl);
+}
+
+function loadjson(jsonurl) {
+  console.log("loading json");
+  validate_fields();
+  //jsonurl = "/api/new_filing/";
+  $.getJSON(jsonurl, function(data_loaded) {
+ 
+               var source   = $("#row-template").html();
+               var template = Handlebars.compile(source);
+               
+               results = data_loaded.results;
+               numresults = results.length;
+               first_result = 100*(pagenumber-1)+1;
+               last_result = 100*(pagenumber-1) + numresults;
+               
+               result_string = "Total of " + roundwCommas(data_loaded.count) + " results found. Showing " + first_result + "-" + last_result + ".";
+               $( "#display_info" ).html(result_string);               
+               
+               next =  data_loaded.next;
+               previous = data_loaded.previous;
+               
+               $( "#result_description" ).html("<b>This is a text description of the results shown below</b>")
+               
+               
+               if (next != null) {
+                 $( ".load_next" ).html( "<a href=\"javascript:load_next('" + next + "');\">next page<\/a>");
+               } else {
+                 $( ".load_next" ).html("");
+               }
+
+
+               if (previous != null) {
+                 $( ".load_previous" ).html( "<a href=\"javascript:load_previous('" + previous + "');\">previous page<\/a>");
+               } else {
+                 $( ".load_previous" ).html("");
+               }
+               
+               
+               //console.log("count is: " + data_loaded.count + " num results: " + numresults);
+               first_result = 100*(pagenumber-1)+1;
+               last_result = 100*(pagenumber-1) + numresults;
+               
+               
+               resultrows = []
+               for (var i=0;i<results.length;i++) {
+                  var context = results[i];
+                  if (i%2==0) {
+                    context['class']='even';
+                  } else {
+                    context['class']='odd';
+                  }
+                  var html    = template(context);
+                  resultrows.push(html);
+               };
+               $( "#maintablebody" ).html( resultrows.join(""));
+               // rerun tablesorter 
+               remove_tablesorter();               
+               
+               // This doesn't work sometimes, and also isn't needed in others. wtf?
+               // addCommaParser() 
+               $(".sortable").tablesorter({ widgets: ['zebra']});
+               
+            });
+  
+}
+
+/* prob not needed. 
+
+function addCommaParser() {
+  $.tablesorter.addParser({ 
+    id: 'nocomma', 
+    is: function(s) { 
+      // return false so this parser is not auto detected 
+      return false; 
+    }, 
+    format: function(s) { 
+      return s.replace(/,/,'');
+    }, 
+    type: 'numeric' 
+  });
+}
+*/
+function addMustacheHelpers() {
+  
+  Handlebars.registerHelper('addcommas', function(object) {
+    return new Handlebars.SafeString(
+      roundwCommas(object)
+    );
+  });
+  
+  Handlebars.registerHelper('mddyy', function(object) {
+    if (object != null) {
+      return new Handlebars.SafeString(
+        format_mddyy(object)
+      );  
+    } else {
+      return new Handlebars.SafeString("");
+    }
+  });
+  
+}
+
+$(document).ready(function() {
+    addMustacheHelpers();
+
+    $( "#load_button" ).bind( "click", function() {
+      button_load();
+    });
+    
+    // Is the jquery ui part of this brisket distillation?
+   $( ".date_field" ).datepicker(); 
+   // load all filings initially
+   button_load();
+   
+});
+
+
+</script>
+  {% endblock %}
+  

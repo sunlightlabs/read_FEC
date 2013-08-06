@@ -9,6 +9,7 @@ pytz
 lxml
 requests
 cssselect
+
 # for parsing legislators -- don't care about performance...
 pyyaml
 
@@ -20,3 +21,11 @@ celery
 # brisket stuff
 django_compressor
 
+# may get versioning
+-e git+https://github.com/sunlightlabs/dryrub.git#egg=dryrub
+
+# api branch
+djangorestframework
+django-filter
+
+django-debug-toolbar

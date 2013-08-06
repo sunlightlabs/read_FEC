@@ -15,7 +15,7 @@ def get_party_from_pty(pty):
     
 def get_party_from_term_party(pty):
     if not pty:
-        return None    
+        return None
     pty = pty.upper().strip()
     if pty == 'DEMOCRAT':
         return 'D'

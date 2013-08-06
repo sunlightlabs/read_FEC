@@ -67,3 +67,4 @@ class Command(BaseCommand):
                 this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else None
             
             this_filing.save()
+

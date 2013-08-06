@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^base/$', TemplateView.as_view(template_name="dryrub/base.html")),
     url(r'^styletest/$', TemplateView.as_view(template_name="test_templates/styletest.html")),
     url(r'', include('public_views.datapages.urls')),
+    url(r'^api/', include('api.urls')),
 ) 
