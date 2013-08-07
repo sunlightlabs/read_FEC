@@ -7,15 +7,11 @@
 {# For simplified templating #}
 
 {% block sitecss %}
-<link rel="stylesheet" href="{% static 'dryrub/css/jquery-ui-1.10.3.custom.min.css' %}" />
-
 {% endblock %}
 
 
 {% block sitejs %}
-<script type="text/javascript" src="{% static 'dryrub/js/handlebars.js' %}"></script>
-<script type="text/javascript" src="{% static 'dryrub/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
-
+<script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
 {% endblock %}
 
 {% block body_class %}{% endblock %}
@@ -408,9 +404,7 @@ $(document).ready(function() {
     $( "#load_button" ).bind( "click", function() {
       button_load();
     });
-    
-   $( ".date_field" ).datepicker(); 
-   
+       
    
    reset_all_fields();
    

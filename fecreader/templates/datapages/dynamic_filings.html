@@ -10,7 +10,7 @@
 
 
 {% block sitejs %}
-<script type="text/javascript" src="{% static 'dryrub/js/handlebars.js' %}"></script>
+<script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
 
 {% endblock %}
 
@@ -447,10 +447,7 @@ $(document).ready(function() {
     $( "#load_button" ).bind( "click", function() {
       button_load();
     });
-    
-    // Is the jquery ui part of this brisket distillation?
-   $( ".date_field" ).datepicker({dateFormat: 'yy-mm-dd'}); 
-   
+      
    
    reset_all_fields();
    
