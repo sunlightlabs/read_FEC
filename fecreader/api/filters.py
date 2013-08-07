@@ -1,8 +1,11 @@
 import django_filters
 
-
+from datetime import date, timedelta
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay
+
+today = date.today()
+one_week_ago = today-timedelta(days=7)
 
 class NFFilter(django_filters.FilterSet):
     
@@ -135,6 +138,17 @@ def orderingFilter(queryset, querydict, fields):
     except KeyError:
         pass
     
+    return queryset
+    
+def filingTimeFilter(queryset, querydict):
+    try:
+        time_range=querydict['time_range']
+        if time_range == 'day':
+            queryset = queryset.filter(filed_date=today)
+        elif time_range == 'week':
+            queryset = queryset.filter(filed_date__gte=one_week_ago)
+    except KeyError:
+        pass
     return queryset
 
 # create a phony keyword committee class that is just a list of committee types allowed

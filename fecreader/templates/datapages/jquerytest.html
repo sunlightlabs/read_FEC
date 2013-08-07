@@ -30,14 +30,18 @@
 </div>
 
 <p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
-  <b>Show: </b><span><a href="javascript:search_all();">all</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_f2s();">declarations of candidacy</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
+  <b>Show: </b><span><a href="javascript:search_all();">all</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
   <div id="formdiv">
     
-  <span style="display:none;">
-  Filing date: <input type="text" class="date_field" name="date_start" id="filed_date"></input>
+  <span>
+  Date filed: <select name="time_range" class="dropdown_field_narrow" id="time_range">
+      <option value='day'>today</option>
+      <option value='week'>this week</option>
+      <option value='cycle'>entire cycle</option>
+    </select>
   </span>
   
-<span>  
+<span class="form_spacer">  
 Committee Type: <select name="committee_type" class="dropdown_field" id="committee_class">
   <option value=''>All</option>
   <option value='H'>House</option>
@@ -220,9 +224,9 @@ function get_json_url() {
     query_string += "&committee_class=" + committee_class;
   }
 
-  filed_date = $('#filed_date').val();
-  if (filed_date.length>0) {
-    query_string += "&filed_date=" + filed_date;
+  time_range = $('#time_range').val();
+  if (time_range.length>0) {
+    query_string += "&time_range=" + time_range;
   }
 
   report_type = $('#report_type').val();
@@ -250,6 +254,7 @@ function reset_all_fields() {
   });
   // default is filing order
   $("#ordering").val('-filing_number');
+  $("#time_range").val('day');  
 }
 
 function search_all() {
