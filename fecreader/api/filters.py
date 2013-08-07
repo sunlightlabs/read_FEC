@@ -3,6 +3,7 @@ import django_filters
 from datetime import date, timedelta
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay
+from django.db.models import Q
 
 today = date.today()
 one_week_ago = today-timedelta(days=7)
