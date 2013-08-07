@@ -86,13 +86,13 @@ class new_filing(models.Model):
     
     # periodic reports only
     coh_start = models.DecimalField(max_digits=14, decimal_places=2, null=True)
-    coh_end = models.DecimalField(max_digits=14, decimal_places=2, null=True)
+    coh_end = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     # Did they borrow *new* money this period ? 
-    new_loans = models.DecimalField(max_digits=14, decimal_places=2, null=True)
+    new_loans = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     
     # if applicable:
-    tot_raised = models.DecimalField(max_digits=14, decimal_places=2, null=True)
-    tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True)
+    tot_raised = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
+    tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     
     # which filing types are contained? Store as a dict:
     lines_present =  DictionaryField(db_index=True, null=True)
