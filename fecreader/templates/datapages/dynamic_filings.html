@@ -6,27 +6,23 @@
 
 {# For simplified templating #}
 
-{% block sitecss %}
-<link rel="stylesheet" href="{% static 'dryrub/css/jquery-ui-1.10.3.custom.min.css' %}" />
-
-{% endblock %}
+{% block sitecss %}{% endblock %}
 
 
 {% block sitejs %}
 <script type="text/javascript" src="{% static 'dryrub/js/handlebars.js' %}"></script>
-<script type="text/javascript" src="{% static 'dryrub/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
 
 {% endblock %}
 
 {% block body_class %}{% endblock %}
 
-{% block pagetitle %}jquery test {% endblock %}
+{% block pagetitle %}Latest Filings {% endblock %}
 
  {% block rtmain %}
 
 <div class="module">
  <div id="contentHeader" style="z-index:0;">
-       <h2>Newest Filings</h2>
+       <h2>Latest Filings </h2>
 </div>
 
 <p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>

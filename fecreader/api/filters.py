@@ -132,10 +132,8 @@ def orderingFilter(queryset, querydict, fields):
     """
     try:
         ordering=querydict['ordering']
-        print "ordering is %s" % ordering
         if ordering.lstrip('-') in fields:
             orderlist = [ordering]
-            print "order list is: %s" % orderlist
             queryset = queryset.order_by(*orderlist)
         
     except KeyError:
