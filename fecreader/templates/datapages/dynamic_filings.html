@@ -167,7 +167,7 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 // The api doesn't tell us the pagenumber
 pagenumber = 1;
 // set this dynamically 
-pagination_size = 100;
+pagination_size = {{ PAGINATE_BY }};
 
 function is_valid_number(a) {
   return a.length > 0 && !isNaN(a);

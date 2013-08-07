@@ -13,7 +13,13 @@ from formdata.models import Filing_Header, SkedA, SkedB
 from summary_data.utils.summary_utils import map_summary_form_to_dict
 # get not null senate ids. 
 #senate_ids =  [ senator['fec_id'] for senator in senate_crosswalk if senator['fec_id'] ]
+from django.conf import settings
 
+try:
+    PAGINATE_BY = settings.REST_FRAMEWORK['PAGINATE_BY']
+except KeyError:
+    print "Missing rest framework default pagination size. "
+    PAGINATE_BY = 100
 
 def newbase(request):
     return render_to_response('datapages/realtime_base.html', {}, context_instance=RequestContext(request))
@@ -88,59 +94,21 @@ def races(request):
         context_instance=RequestContext(request)
     )
 
-def newest_filings_template(request, filings, explanatory_text, title):
-        explanatory_text = explanatory_text + "<br>See also:&nbsp; <a href=\"/newest-filings/ies/\">independent expenditure</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidacy/\">declarations of candidacy</a>&nbsp;|&nbsp;<a href=\"/newest-filings/candidate-filings/\">candidate committee reports</a>&nbsp;|&nbsp;<a href=\"/newest-filings/\">all</a>&nbsp;|&nbsp;<a href=\"/newest-filings/superpacs/\">superpacs</a>"
-        return render_to_response('datapages/filing_list.html',
-            {
-            'title':title,
-            'explanatory_text':explanatory_text,
-            'object_list':filings,
-            }, 
-            context_instance=RequestContext(request)
-        )
-            
-
-NEWEST_FILINGS_DISPLAY_SIZE = 500
-
 def newest_filings(request):
-    filings = new_filing.objects.all().order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
-    title="Newest filings"
-    explanatory_text="These are the %s most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper." % NEWEST_FILINGS_DISPLAY_SIZE
-    return newest_filings_template(request, filings, explanatory_text, title)
-"""
-Haven't started setting this flag yet... 
-
-def newest_filings_superpacs(request):
-    filings = new_filing.objects.filter(is_superpac=True).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
-    title="Newest filings"
-    explanatory_text="These are the %s most recent electronic filings received. Senate candidates, and certain senate committees, are still allowed to file on paper." % NEWEST_FILINGS_DISPLAY_SIZE
-    return newest_filings_template(request, filings, explanatory_text, title)
-"""
-
-def newest_filings_ies(request):
-    filings = new_filing.objects.filter(form_type__in=['F5A', 'F5N', 'F24A', 'F24N']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
-    title="Newest Independent Expenditure filings"
-    explanatory_text="These are the %s most recent independent expenditure electronic filings received." % NEWEST_FILINGS_DISPLAY_SIZE
-    return newest_filings_template(request, filings, explanatory_text, title)
-
-def newest_filings_candidacy(request):
-    filings = new_filing.objects.filter(form_type__in=['F2N']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
-    title="Newest candidate declaration filings"
-    explanatory_text="These are the %s most recent new electronic statement of candidacy filings received. Note that candidates do not have to file these statements electonically, though many do." % NEWEST_FILINGS_DISPLAY_SIZE
-    return newest_filings_template(request, filings, explanatory_text, title)
-
-def newest_filings_candidate_filings(request):
-    filings = new_filing.objects.filter(form_type__in=['F3N']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
-    title="New candidate committee reports"
-    explanatory_text="These are the %s most recent new electronic statements from authorized committees supporting a congressional candidate." % NEWEST_FILINGS_DISPLAY_SIZE
-    return newest_filings_template(request, filings, explanatory_text, title)
-
-def newest_filings_superpacs(request):
-    filings = new_filing.objects.filter(committee_type__in=['U', 'O', 'V', 'W']).order_by('-filing_number')[:NEWEST_FILINGS_DISPLAY_SIZE]
-    title="New super PAC / hybrid super PAC reports"
-    explanatory_text="These are the %s most recent new electronic statements from superpacs--including hybrid superpacs" % NEWEST_FILINGS_DISPLAY_SIZE
-    return newest_filings_template(request, filings, explanatory_text, title)
-    
+    return render_to_response('datapages/dynamic_filings.html', 
+        {
+        'PAGINATE_BY':PAGINATE_BY,
+        },
+        context_instance=RequestContext(request)
+    )
+     
+def pacs(request):
+    return render_to_response('datapages/dynamic_pacs.html', 
+        {
+        'PAGINATE_BY':PAGINATE_BY,
+        },
+        context_instance=RequestContext(request)
+    )  
 def new_committees(request):
     today = datetime.datetime.today()
     month_ago = today - datetime.timedelta(days=30)
@@ -166,12 +134,6 @@ def render_blank_page(title, explanatory_text, request):
 def downloads(request):
     return render_blank_page('Downloads','Downloadable files will go here.', request)
 
-def pacs(request):
-    return render_blank_page('PACs','This page is a searchable, sortable, filterable paginated list of all pacs and their cycle-to-date fundraising numbers. Filters are for things like super-pacs, candidate pacs, leadership pacs (maybe), and maybe a category for NRCC/DSCC etc.', request)
-
-
-def reports(request):
-    return render_blank_page('Reports','This page is a searchable, sortable, filterable paginated list of summary reports for pacs. Instead of showing cycle-to-date numbers, like on most other pages, this one will show just the fundraising totals for a single filing period.', request)        
 
 def alerts(request):
     return render_blank_page('Alerts','This is where you sign up to receive alerts. This time we should make alerts for a specific race too. New filing alerts should include summary details--so the amount raised in the newly-filed filing.', request)

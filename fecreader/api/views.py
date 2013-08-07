@@ -10,7 +10,6 @@ from rest_framework import generics
 from api.serializers import NFSerializer, COSerializer
 from api.filters import NFFilter, COFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow
 
-PAGINATION_LENGTH = 100
 
 nf_orderable_fields = ['committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'committee_slug', 'party', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent']
 class NFViewSet(viewsets.ReadOnlyModelViewSet):
@@ -20,7 +19,6 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = new_filing.objects.all()
     serializer_class = NFSerializer
     filter_class = NFFilter
-    paginate_by = PAGINATION_LENGTH
     
     
     
@@ -47,7 +45,6 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Committee_Overlay.objects.all().select_related('curated_candidate')
     serializer_class = COSerializer
     filter_class = COFilter
-    paginate_by = PAGINATION_LENGTH
     
 
     def get_queryset(self):  

@@ -20,33 +20,27 @@
 
 {% block body_class %}{% endblock %}
 
-{% block pagetitle %}jquery test {% endblock %}
-
- {% block rtmain %}
+{% block pagetitle %}jquery test - committees {% endblock %}
+{% block rtmain %}
 
 <div class="module">
  <div id="contentHeader" style="z-index:0;">
-       <h2>Newest Filings</h2>
+       <h2>Find Committees</h2>
 </div>
+<p>Use this page to find committee summary information for the entire cycle.</p>
 
-<p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
-  <b>Show: </b><span><a href="javascript:search_all();">all today</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
-  <div id="formdiv">
-    
-  <span>
-  Date filed: <select name="time_range" class="dropdown_field_narrow" id="time_range">
-      <option value='day'>today</option>
-      <option value='week'>this week</option>
-      <option value='cycle'>entire cycle</option>
-    </select>
-  </span>
-  
-<span class="form_spacer">  
-Committee Type: <select name="committee_type" class="dropdown_field" id="committee_class">
+<b>Show: </b><span class="form_spacer"><a href="javascript:get_house();">House</a>&nbsp;|&nbsp;<a href="javascript:get_senate();">Senate</a>&nbsp;|&nbsp;<a href="javascript:get_superpacs();">
+Super Pacs</a>&nbsp;|&nbsp;<a href="javascript:get_npcmtes();">National Party Committees</a>&nbsp;|&nbsp;<a href="">
+  Super Pacs</a>&nbsp;<b>or set custom filter options below</b>
+<div id="formdiv">
+<span>Search by candidate or committee name: <input type="text" class="text_field" id="search_term" name="search_term"></input>
+</span>
+<br>
+<span>  
+Committee type: <select name="committee_type" class="dropdown_field" id="committee_class">
   <option value=''>All</option>
   <option value='H'>House</option>
   <option value='S'>Senate</option>
-  <option value='HSP'>Any Candidate</option>
   <option value='UOVW'>Super PACs (including hybrids)</option>
   <option value='UO'>Super PACs (NOT including hybrids)</option>
   <option value='P'>Presidential</option>
@@ -57,43 +51,7 @@ Committee Type: <select name="committee_type" class="dropdown_field" id="committ
   <option value='C'>Communication Cost</option>
 </select>
 </span>
-<span class="form_spacer">  
-Filing: <select name="form_type" class="dropdown_field" id="report_type">
-  <option value=''>All</option>
-  <option value='monthly'>Monthly/quarterly reports</option>
-  <option value='ies'>Independent/coordinated expenditures</option>
-  <option value='F6'>48-hour notice of contributions/loans received</option>
-  <option value='F9'>24-hour notice of electioneering communications</option>
-  <option value='F2'>Statement of candidacy</option>
-</select>
-</span>
-
 <span class="form_spacer">
-Period covered: <select name="form_type" class="dropdown_field" id="period_type">
-    <option value=''>All</option>
-    <option value='Q1'>Quarterly: Q1</option>
-    <option value='Q2'>Quarterly: Q2</option>
-    <option value='Q3'>Quarterly: Q3</option>
-    <option value='Q4'>Quarterly: Q4</option>
-    <option value='S1'>Semiannual: Jan.-Jun.</option>
-    <option value='S2'>Semiannual: Jul.-Dec.</option>
-    <option value='M1'>Monthly: Jan.</option>
-    <option value='M2'>Monthly: Feb.</option>
-    <option value='M3'>Monthly: Mar.</option>
-    <option value='M4'>Monthly: Apr.</option>
-    <option value='M5'>Monthly: May</option>
-    <option value='M6'>Monthly: Jun.</option>
-    <option value='M7'>Monthly: July</option>
-    <option value='M8'>Monthly: Aug.</option>
-    <option value='M9'>Monthly: Sept.</option>
-    <option value='M10'>Monthly: Oct.</option>
-    <option value='M11'>Monthly: Nov.</option>
-    <option value='M12'>Monthly: Dec.</option>    
-  </select>
-  
-</span>
-<br>
-<span>
 Minimum raised: <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
 </span>
 
@@ -105,40 +63,45 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 </span>
 
 <br>
-<span><b>Order by: </b><select name="order_field" class="dropdown_field" id="ordering">
-  <option value='-filing_number'>newest-to-oldest</option>
-  <option value='-coh_end'>cash on hand</option>
-  <option value='-tot_raised'>total raised</option>
-  <option value='-tot_spent'>total spent</option>
-  <option value='committee_name'>committee name</option>
+<span>  
+<b>Order by: </b><select name="order_field" class="dropdown_field" id="ordering">
+  <option value='-cash_on_hand'>cash on hand</option>
+  <option value='-total_receipts'>total raised</option>
+  <option value='-total_disbursements'>total spent</option>
+  <option value='-outstanding_loans'>outstanding debt</option>
+  <option value='name'>committee name</option>
 
 </select>
 </span>
 
-<input type="button" value="FILTER FILINGS" id="load_button" style="width:300px; margin-left: 20px;" />
+<input type="button" value="FILTER COMMITTEES" id="load_button" style="width:300px; margin-left: 20px;" />
 
 </div>
 
-<span id="display_info"></span>
-<div class="pagination_container">
+
+<div>
+<div id="result_description"><b></b></div>
+<div id="display_info"></div>
 <div class="load_next" style="float: right; width: 200px;"></div>
 <div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>  
-<div class="clear"></div>
+<div style="clear:both;"></div>
 </div>
 
-<table id="mainPageTable" class="">
+<table id="mainPageTable">
             <thead>
                   <tr id="titles">
-                      <th>Filing ID (Type)</th>
-                      <th>Committee - Form</th>
-                      <th>Coverage Date</th>
-                      <th class="sort">Raised</th>
-                      <th class="sort">Spent</th>
-                      <th class="sort">Cash on hand</th>
-                      <th class="sort">Filing Date</th>
+                    <th>Committee Name (Type)</th>
+                    <th>Candidate (Party) Office Sought</th>
+                    <th>Summary as of date</th>
+                    <th class="sort">Raised</th>
+                    <th class="sort">Spent</th>
+                    <th class="sort">Cash on hand</th>
+                    <th class="sort">Debts</th>
                     </tr>
               </thead>
               <tbody id="maintablebody">
+              
+                 
 </tbody>
 </table>
 <div>
@@ -149,15 +112,16 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 
 </div>
 {% verbatim %}
-<script id="row-template" type="text/x-handlebars-template" >
+<script id="committeerow-template" type="text/x-handlebars-template" >
+// http://localhost:8000/filings/882072/SA/
    <tr class="{{ class }}">
-        <td><a href="{{ absolute_url}}">{{ filing_number }}</a> {{ form_name }}</td>
-        <td><a href="{{ committee_url}}">{{ committee_name}}</a></td>
-        <td>{{{ mddyy coverage_from_date }}} - {{{ mddyy coverage_to_date }}}</td>
-        <td><a href="{{ skeda_url}}">${{{ addcommas tot_raised }}}</a></td>
-        <td><a href="{{ skedb_url}}">${{{ addcommas tot_spent }}}</a></td>
-        <td>${{{ addcommas coh_end }}}</td>
-        <td>{{ process_time_formatted }}</td>
+        <td><a href="{{ committee_url }}">{{ name}}</a> ( {{ display_type }} )</td>
+        <td>{{#if candidate_name }}<a href="{{ candidate_url }}">{{ candidate_name }}</a> {{ candidate_office }}{{/if}}</td>
+        <td>{{ cash_on_hand_date }}</td>
+        <td>${{{ addcommas total_receipts }}}</td>
+        <td>${{{ addcommas total_disbursements }}}</td>
+        <td>${{{ addcommas cash_on_hand }}}</td>
+        <td>${{{ addcommas outstanding_loans }}}</td>
     </tr>
         
 </script>
@@ -167,7 +131,7 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 // The api doesn't tell us the pagenumber
 pagenumber = 1;
 // set this dynamically 
-pagination_size = 100;
+pagination_size = {{ PAGINATE_BY }};
 
 function is_valid_number(a) {
   return a.length > 0 && !isNaN(a);
@@ -191,8 +155,27 @@ function validate_fields() {
         $(this).val("");
       }
   });
-
   
+  $(".text_field").each(function( index ) {
+      this_text = $(this).val();
+      this_text = $.trim(this_text);
+      $(this).val(this_text);
+  });
+
+}
+
+// Some template functions. Should eventually live somewhere else. 
+
+function roundwCommas(nStr) {
+    nStr = Math.round(nStr);
+    nStr += '';
+    x1 = nStr;
+    //x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1;
 }
 
 function get_json_url() {
@@ -201,6 +184,11 @@ function get_json_url() {
   min_spent = $("#min_spent").val();
   if (min_spent.length > 0) {
     query_string += "&min_spent=" + min_spent
+  }
+  
+  search_term = $("#search_term").val();
+  if (search_term.length > 0) {
+    query_string += "&search_term=" + search_term
   }
   
   min_raised = $("#min_raised").val();
@@ -217,38 +205,21 @@ function get_json_url() {
   if (committee_class.length>0) {
     query_string += "&committee_class=" + committee_class;
   }
-
-  time_range = $('#time_range').val();
-  if (time_range.length>0) {
-    query_string += "&time_range=" + time_range;
-  }
-
-  report_type = $('#report_type').val();
-  if (report_type.length>0) {
-    query_string += "&report_type=" + report_type;
-  }
-  
-  period_type = $('#period_type').val();
-  if (period_type.length>0) {
-    query_string += "&period_type=" + period_type;
-  }
   
   window.location.hash = query_string;
   
-  url = "/api/new_filing/" + query_string
+  url = "/api/committee/" + query_string
   console.log("url is: " + url);
   return url;
-  
 
 }
 
 function reset_all_fields() {
-  $(".date_field,  .dollar_field, .dropdown_field").each(function( index ) {
+  $(".date_field,  .dollar_field, .dropdown_field, .text_field").each(function( index ) {
     $(this).val("");
   });
   // default is filing order
-  $("#ordering").val('-filing_number');
-  $("#time_range").val('day');  
+  $("#ordering").val('-cash_on_hand');
 }
 
 function search_all() {
@@ -257,44 +228,32 @@ function search_all() {
   
 }
 
-function search_ies() {
+function get_npcmtes() {
   reset_all_fields();
-  $("#report_type").val('ies');
-  button_load();
-  
-}
-
-function search_committees() {
-  reset_all_fields();
-  $("#committee_class").val('HSP');
+  $("#committee_class").val('Z');  
   button_load();
 }
 
-function search_f2s() {
+
+function get_house() {
   reset_all_fields();
-  $("#report_type").val('F2');
+  $("#committee_class").val('H');
   button_load();
 }
 
-function search_superpacs() {
+
+function get_senate() {
+  reset_all_fields();
+  $("#committee_class").val('S');
+  button_load();
+}
+
+
+function get_superpacs() {
   reset_all_fields();
   $("#committee_class").val('UOVW');
   button_load();
 }
-// Some template functions. Should eventually live somewhere else. 
-
-function roundwCommas(nStr) {
-    nStr = Math.round(nStr);
-    nStr += '';
-    x1 = nStr;
-    //x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return x1;
-}
-
 /* This date stuff is fucking terrible. There's gotta be a better approach */
 function getDate(datestring) {
   // Why is this so annoying? 
@@ -329,9 +288,8 @@ function remove_tablesorter() {
 }
 
 function button_load() {
-  validate_fields();
-  jsonurl = get_json_url();
   pagenumber = 1;
+  jsonurl =  get_json_url();
   loadjson(jsonurl);
 }
 
@@ -347,10 +305,11 @@ function load_previous(jsonurl) {
 
 function loadjson(jsonurl) {
   console.log("loading json");
+  validate_fields();
   //jsonurl = "/api/new_filing/";
   $.getJSON(jsonurl, function(data_loaded) {
  
-               var source   = $("#row-template").html();
+               var source   = $("#committeerow-template").html();
                var template = Handlebars.compile(source);
                
                results = data_loaded.results;
@@ -364,15 +323,13 @@ function loadjson(jsonurl) {
                next =  data_loaded.next;
                previous = data_loaded.previous;
                
-               $( "#result_description" ).html("<b>This is a text description of the results shown below</b>")
-               
-               
                if (next != null) {
                  $( ".load_next" ).html( "<a href=\"javascript:load_next('" + next + "');\">next page<\/a>");
                } else {
                  $( ".load_next" ).html("");
                }
-
+               
+               $( "#result_description" ).html("<b>This is a text description of the results shown below.</b>")
 
                if (previous != null) {
                  $( ".load_previous" ).html( "<a href=\"javascript:load_previous('" + previous + "');\">previous page<\/a>");
@@ -452,8 +409,7 @@ $(document).ready(function() {
       button_load();
     });
     
-    // Is the jquery ui part of this brisket distillation?
-   $( ".date_field" ).datepicker({dateFormat: 'yy-mm-dd'}); 
+   $( ".date_field" ).datepicker(); 
    
    
    reset_all_fields();
@@ -468,7 +424,6 @@ $(document).ready(function() {
    }); 
    
    console.log("hashdict is " + hashdict);
-   
    button_load();
    
 });
