@@ -35,10 +35,10 @@ type_hash={'C': 'Communication Cost',
         'E': 'Electioneering',
         'H': 'House',
         'I': 'Expenditure Only',
-        'N': 'Non-Party PAC',
+        'N': 'PAC',
         'O': 'Super PAC',
         'P': 'Presidential',
-        'Q': 'Non-Party PAC',
+        'Q': 'PAC',
         'S': 'Senate',
         'U': 'Single candidate super PAC',
         'V': 'Hybrid super PAC',
@@ -426,10 +426,16 @@ class Committee_Overlay(models.Model):
 
     def display_type(self):
         key = self.ctype
+        returnval = ''
         try:
-            return type_hash[key]
+            returnval = type_hash[key]
         except KeyError:
-            return ''
+            pass
+        if self.designation == 'D':
+            returnval += " (Leadership PAC)"
+        elif self.designation == 'J':
+            returnval += " (Joint Fundraising PAC)"
+        return returnval
 
     def display_designation(self):
         key = self.designation

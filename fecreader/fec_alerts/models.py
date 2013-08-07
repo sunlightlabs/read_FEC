@@ -60,7 +60,7 @@ class new_filing(models.Model):
     filed_date = models.DateField(null=True, blank=True)
     coverage_from_date = models.DateField(null=True, blank=True)
     coverage_to_date = models.DateField(null=True, blank=True)
-    process_time = models.DateTimeField()
+    process_time = models.DateTimeField(help_text="This is the time that FEC processed the filing--not us")
     is_superpac = models.NullBooleanField()
     
     # populate from committee_overlay file. 
@@ -111,7 +111,8 @@ class new_filing(models.Model):
     def get_skedb_url(self):
         url = "/filings/%s/SB/" % (self.filing_number)
         return url
-                    
+    
+    # change this to be a local page once it is there. 
     def get_absolute_url(self):
         url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
         return url
@@ -137,7 +138,9 @@ class new_filing(models.Model):
     
     def get_committee_url(self):    
         return ("/committee/%s/%s/" % (self.committee_slug, self.fec_id))
-    
+        
+    def process_time_formatted(self):
+        return self.process_time.strftime("%m/%d %H:%M %p")
             
     class Meta:
         ordering = ('-filing_number', )
