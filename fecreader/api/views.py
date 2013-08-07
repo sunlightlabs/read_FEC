@@ -8,7 +8,7 @@ from summary_data.models import Committee_Overlay
 from rest_framework import viewsets
 from rest_framework import generics
 from api.serializers import NFSerializer, COSerializer
-from api.filters import NFFilter, COFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter
+from api.filters import NFFilter, COFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow
 
 PAGINATION_LENGTH = 100
 
@@ -44,7 +44,7 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows committee_overlays to be viewd.
     """
-    queryset = Committee_Overlay.objects.all()
+    queryset = Committee_Overlay.objects.all().select_related('curated_candidate')
     serializer_class = COSerializer
     filter_class = COFilter
     paginate_by = PAGINATION_LENGTH
@@ -54,4 +54,5 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
         # Again, this seems like a pretty weird way to do this.       
         self.queryset = orderingFilter(self.queryset, self.request.GET, co_orderable_fields)
         self.queryset =  multiCTypeFilter(self.queryset, self.request.GET)
+        self.queryset =  candidateCommitteeSearchSlow(self.queryset, self.request.GET)
         return self.queryset

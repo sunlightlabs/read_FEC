@@ -12,7 +12,7 @@ STATE_CHOICES_DICT = dict(STATE_CHOICES)
 
 ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('R', 'Runoff'), ('SP', 'Special Primary'), ('SR', 'Special Runoff'), ('SG', 'Special General'), ('O', 'Other'))
 
-type_hash={'C': 'Communication Cost',
+type_hash_full={'C': 'Communication Cost',
           'D': 'Delegate',
           'E': 'Electioneering Communication',
           'H': 'House',
@@ -29,6 +29,24 @@ type_hash={'C': 'Communication Cost',
           'Y': 'Qualified Party',
           'Z': 'National Party Organization',
           }
+          
+type_hash={'C': 'Communication Cost',
+        'D': 'Delegate',
+        'E': 'Electioneering',
+        'H': 'House',
+        'I': 'Expenditure Only',
+        'N': 'Non-Party PAC',
+        'O': 'Super PAC',
+        'P': 'Presidential',
+        'Q': 'Non-Party PAC',
+        'S': 'Senate',
+        'U': 'Single candidate super PAC',
+        'V': 'Hybrid super PAC',
+        'W': 'Hybrid super PAC',
+        'X': 'Party PAC',
+        'Y': 'Party PAC',
+        'Z': 'National Party PAC',
+        }
 
 committee_designation_hash = {'A':'Authorized by Candidate',
                             'J': 'Joint Fund Raiser',
@@ -158,9 +176,9 @@ class Candidate_Overlay(models.Model):
     
     def __unicode__(self):
         if self.office == 'S':
-            return '%s %s (Senate) %s-%s' % (self.name, self.state, self.term_class, self.election_year)
+            return '%s (%s) %s Sen.' % (self.name, self.party, self.state)
         else:
-            return '%s %s (House) %s-%s' % (self.name, self.state, self.office_district, self.election_year)
+            return '%s (%s) %s-%s' % (self.name, self.party, self.state, self.office_district)
         
     def incumbency_status(self):
         if self.is_incumbent:
@@ -219,7 +237,7 @@ class Committee_Overlay(models.Model):
     cycle = models.CharField(max_length=4)
     term_class = models.IntegerField(blank=True, null=True, help_text="1,2 or 3. Pulled from US Congress repo. Only applies to PCC of senators.")
     is_paper_filer = models.NullBooleanField(null=True, default=False, help_text="True for most senate committees, also NRSC/DSCC, some others.")    
-    curated_candidate = models.ForeignKey('Candidate_Overlay', null=True, help_text="For house and senate: Only include if it's a P-primary campaign committee or A-authorized campaign committee with the current cycle as appears in the candidate-committee-linkage file. Check this by hand for presidential candidates though, because many committees claim to be authorized by aren't")
+    curated_candidate = models.ForeignKey('Candidate_Overlay', related_name='related_candidate', null=True, help_text="For house and senate: Only include if it's a P-primary campaign committee or A-authorized campaign committee with the current cycle as appears in the candidate-committee-linkage file. Check this by hand for presidential candidates though, because many committees claim to be authorized by aren't")
     
 
     # direct from the raw fec table
@@ -334,6 +352,27 @@ class Committee_Overlay(models.Model):
     class Meta:
         unique_together = (("cycle", "fec_id"),)
         ordering = ('-total_indy_expenditures', )
+        
+    def candidate_url(self):
+        if self.curated_candidate:
+            return self.curated_candidate.get_absolute_url()
+        else:
+            return None
+
+    def curated_candidate_name(self):
+        if self.curated_candidate:
+            return '%s (%s)' % (self.curated_candidate.name, self.curated_candidate.party)
+        else:
+            return None
+    
+    def curated_candidate_office(self):
+        if self.curated_candidate:
+            if self.curated_candidate.office == 'S':
+                return '%s (Senate)' % (self.curated_candidate.state)
+            else:
+                return '%s-%s' % (self.curated_candidate.state, self.curated_candidate.office_district)
+        else:
+            return None
 
     def get_absolute_url(self):  
         return ("/committee/%s/%s/" % (self.slug, self.fec_id))

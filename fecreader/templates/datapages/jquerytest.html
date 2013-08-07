@@ -30,7 +30,7 @@
 </div>
 
 <p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
-  <b>Show: </b><span><a href="javascript:search_all();">all</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
+  <b>Show: </b><span><a href="javascript:search_all();">all today</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
   <div id="formdiv">
     
   <span>
@@ -126,7 +126,7 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 <div class="clear"></div>
 </div>
 
-<table id="mainPageTable" class="sortable">
+<table id="mainPageTable" class="">
             <thead>
                   <tr id="titles">
                       <th>Filing ID (Type)</th>
@@ -151,13 +151,13 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 {% verbatim %}
 <script id="row-template" type="text/x-handlebars-template" >
    <tr class="{{ class }}">
-        <td><a href="http://query.nictusa.com/cgi-bin/dcdev/forms/{{ fec_id }}/{{ filing_number}}/">{{ filing_number }}</a></td>
-        <td><a href="/committee/{{ committee_slug }}/{{ fec_id }}/">{{ committee_name}}</a></td>
+        <td><a href="{{ absolute_url}}">{{ filing_number }}</a> {{ form_name }}</td>
+        <td><a href="{{ committee_url}}">{{ committee_name}}</a></td>
         <td>{{{ mddyy coverage_from_date }}} - {{{ mddyy coverage_to_date }}}</td>
-        <td><a href="/filings/{{ filing_number}}/SA/">${{{ addcommas tot_raised }}}</a></td>
-        <td><a href="/filings/{{ filing_number}}/SB/">${{{ addcommas tot_spent }}}</a></td>
+        <td><a href="{{ skeda_url}}">${{{ addcommas tot_raised }}}</a></td>
+        <td><a href="{{ skedb_url}}">${{{ addcommas tot_spent }}}</a></td>
         <td>${{{ addcommas coh_end }}}</td>
-        <td>{{ filed_date }}</td>
+        <td>{{ process_time_formatted }}</td>
     </tr>
         
 </script>
@@ -191,13 +191,7 @@ function validate_fields() {
         $(this).val("");
       }
   });
-  
-  // Check the date format is what we want.
-  $(".datepicker").each(function( index ) {
-    if (!/^\d\d\d\d-\d\d-\d\d$/.test($(this).val()) ) {
-      $(this).val("");
-    }
-  });
+
   
 }
 

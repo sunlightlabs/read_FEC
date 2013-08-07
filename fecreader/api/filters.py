@@ -29,6 +29,8 @@ class COFilter(django_filters.FilterSet):
 
     # can create both ends of a range like this: 
     min_raised = django_filters.NumberFilter(name='total_receipts', lookup_type='gte')
+    min_spent = django_filters.NumberFilter(name='total_disbursements', lookup_type='gte')
+    min_coh = django_filters.NumberFilter(name='cash_on_hand', lookup_type='gte')
 
     class Meta:
         model = Committee_Overlay
@@ -177,4 +179,16 @@ def multiCTypeFilter(queryset, querydict):
     except KeyError:
         pass
 
+    return queryset
+    
+def candidateCommitteeSearchSlow(queryset, querydict):
+    """
+    Table scan--maybe some sorta dropdown in front of this? 
+    """
+    try:
+        search_term = querydict['search_term']
+        queryset = queryset.filter(Q(name__icontains=search_term)|Q(curated_candidate__name__icontains=search_term))
+        
+    except KeyError:
+        pass
     return queryset
