@@ -1,11 +1,13 @@
 from django.db import models
 import re
 
+from pytz import timezone
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
 from parsing.read_FEC_settings import FEC_HTML_LOCATION
 
+eastern = timezone('US/Eastern')
 
 # SHOULD GO SOMEWHERE
 CURRENT_CYCLE = '2014'
@@ -140,7 +142,7 @@ class new_filing(models.Model):
         return ("/committee/%s/%s/" % (self.committee_slug, self.fec_id))
         
     def process_time_formatted(self):
-        return self.process_time.strftime("%m/%d %H:%M %p")
+        return self.process_time.astimezone(eastern).strftime("%m/%d %I:%M %p")
             
     class Meta:
         ordering = ('-filing_number', )
