@@ -1,0 +1,33 @@
+{# list of filings #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title|striptags }} {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title|safe }}</h2>
+</div>
+Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ filing.FEC_url }}">original electronic report</a>.
+
+
+{% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ committee.curated_candidate.detailed_office}}{% endif %}
+
+{% if filing.coverage_from_date %}<br>Covering {{ filing.coverage_from_date|date:"N j, Y"}} through {{ filing.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ filing.process_time}}
+
+<br>Total receipts of ${{ filing.tot_raised|intcomma }} include  {% if  filing.lines_present.A %}<a href="{{ filing.get_skeda_url }}">{{  filing.lines_present.A|intcomma }} itemized contributions</a>{% else %}0 itemized contributions{% endif %}.
+
+<br> Total spending for this period amounted to: ${{ filing.tot_spent|intcomma }} include  {% if  filing.lines_present.B %}<a href="{{ filing.get_skedb_url }}">{{  filing.lines_present.B|intcomma }} itemized contributions</a>{% else %}0 itemized contributions{% endif %}.
+
+<br>This filing also includes {% if  filing.lines_present.E %}{{  filing.lines_present.E|intcomma }}{% else %}0{% endif %} itemized independent expenditures, and {% if  filing.lines_present.O %}{{  filing.lines_present.O|intcomma }}{% else %}0{% endif %} other itemized lines. 
+
+</div>
+  {% endblock %}
+  
+
