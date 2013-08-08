@@ -1,50 +1,14 @@
 {% extends "dryrub/base.html" %}
 {% load timestamp %}
+{% load staticfiles %}
 
-{% block js %}
-<!-- temporary overrides; need better more permanent fix -->
-<style type="text/css">
-
-/* slim down subnav; adapted from td_nav */
-#rt_nav { background: url(../images/bg_tdNav.png) right top no-repeat; margin-top: -15px; padding: 14px 0 0 0; height: 42px; margin-bottom: 0px;}
-#rt_nav ul { margin-right: 25px;}
-#rt_nav li { float: right; border-right: 1px solid #cacdce; padding: 0 9px; line-height: 15px; text-align: center;}
-#rt_nav li.last { border-right: none;}
-#rt_nav li:hover, .documentation #rt_nav #documentation, .downloads #tr_nav #downloads, .api #rt_nav #api, .flexwidth #rt_nav #searchTD, .searchTD #rt_nav #searchTD{ font-weight: normal;}
-
-
-/* Need some sorta style for the summary boxes. This is not gonna do it */
-.numeric_summary { border-top: 1px solid #999; border-bottom: 1px solid #999; margin-bottom: 5px; margin-top:5px; padding-bottom: 5px; padding-top:5px; width: 550px; }
-
-/* For the love of meatballs, don't break English grammar! WTF! WTF WTF WTF! */
-.tip { margin-bottom:0px; margin-top:0px; padding: 0px; text-transform: none;}
-
-/* Use colors, size from existing span.amount */
-.amount_description { text-transform: uppercase; font-size: 140%;}
-.amount_dollars {  font-color: #797070; text-transform: uppercase; font-size: 140%;}
-
-/* kill some whitespace */
-#mainPageTable td { padding:3px; line-height:18px; margin:3px;}
-#mainPageTable { padding-top:0px; margin-top:0px;}
-
-/* forms */
-.dropdown_field { width: 125px;}
-.dropdown_field_narrow { width: 90px;}
-.dollar_field { width:70px; margin:0px; padding:0px;}
-.date_field { width:70px; margin:0px; padding:0px;}
-.form_spacer { margin-left:10px;}
-#formdiv { border-top: 1px solid #aaa; border-bottom: 1px solid #aaa; padding-top: 5px; padding-bottom: 5px;}
-.pagination_container { margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px;}
-.clear { clear:both; margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px; height:0px;}
-.sortable { margin-top: 0px; padding-top: 0px;}
-
-</style>
-
-{% endblock %}
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/realtimefec_main.css' %}" />
+{% endblock sitecss %}
 
 {% block main %}
 {% block subnavitems %}
-<div style="float:right; margin-right: 30px; margin-top:-25px; padding-top:0px;">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div><div class="clear"></div>
+<div id="timestamp">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div><div class="clear"></div>
 <nav id="rt_nav" class="realtimesubnav">
 <ul>
     <li class="last"><a href="/download-index/">Downloads</a></li>

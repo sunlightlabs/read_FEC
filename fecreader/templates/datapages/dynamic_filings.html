@@ -3,16 +3,17 @@
 {% load humanize %}
 {% load staticfiles %}
 
-
-{# For simplified templating #}
-
-{% block sitecss %}{% endblock %}
-
-
 {% block sitejs %}
 <script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
+{# <script type="text/javascript" src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script> #}
 
 {% endblock %}
+
+{% block sitecss %}
+{{ block.super }}
+{# <link rel="stylesheet" href="{% static 'realtimefec/css/jquery-ui-1.10.3.custom.min.css' %}" /> #}
+{% endblock sitecss %}
+
 
 {% block body_class %}{% endblock %}
 
@@ -444,9 +445,11 @@ function addMustacheHelpers() {
 $(document).ready(function() {
     addMustacheHelpers();
 
-    $( "#load_button" ).bind( "click", function() {
+    $( "#load_button" )
+    .bind( "click", function() {
       button_load();
     });
+    
       
    
    reset_all_fields();
