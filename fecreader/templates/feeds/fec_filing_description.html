@@ -1,9 +1,9 @@
 {% load humanize %}
 {% if obj.tot_raised %}
   {% if obj.lines_present.A %}<a href="{{ obj.get_skeda_url }}">{% endif %}Total receipts{% if  obj.lines_present.A %}</a>{% endif %} of <b>${{ obj.tot_raised|intcomma }}</b>. 
-{% if obj.lines_present.B %}<a href="{{ obj.get_skedb_url }}">{% endif %}Total spending{% if obj.lines_present.B %}</a>{% endif %} of <b>${{ obj.tot_spent|intcomma }}</b>. Cash on hand was ${{ obj.coh_end|intcomma }}.
+{% if obj.lines_present.B %}<a href="{{ obj.get_skedb_url }}">{% endif %}Total spending{% if obj.lines_present.B %}</a>{% endif %} of <b>${{ obj.tot_spent|intcomma }}</b>. Cash on hand was <b>${{ obj.coh_end|intcomma }}</b>.
 {% endif %}
 
-{% if obj.coverage_from_date %}<br>Covering {{ obj.coverage_from_date|date:"N j, Y"}} through {{ obj.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ obj.process_time}}
+{% if obj.coverage_from_date %}<br>Covering <b>{{ obj.coverage_from_date|date:"N j, Y"}} through {{ obj.coverage_to_date|date:"N j, Y" }}</b>. {% endif %}Originally filed {{ obj.process_time}}
 <br>
 <a href="{{obj.get_absolute_url}}">Filing {{ obj.filing_number }}</a>: {{ obj.get_form_name }} filed by <a href="{{obj.get_committee_url}}">{{ obj.committee_name}}</a><br>
