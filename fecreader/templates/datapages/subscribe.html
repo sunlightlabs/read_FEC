@@ -114,22 +114,22 @@ function get_feed_url() {
 	var needs_hyphen = false;
 	
 	if ($("#monthly").is(":checked")) {
-		form_list += "F3N-F3A-F3T-F3XN-F3XA-F3XT-F3PN-F3PA-F3PA";
+		form_list += "F3-F3X-F3P-F3N-F3A-F3T-F3XN-F3XA-F3XT-F3PN-F3PA-F3PA";
 		needs_hyphen = true;
 	}
 	if ($("#ie").is(":checked")) {
 		form_list = hyphenate(form_list, needs_hyphen);
-		form_list += "F24N-F24A-F5N-F5A";
+		form_list += "F24N-F24A-F5N-F5A-F24-F5";
 		needs_hyphen = true;
 	}
 	if ($("#ec").is(":checked")) {
 		form_list = hyphenate(form_list, needs_hyphen);
-		form_list += "F9N-F9A";
+		form_list += "F9N-F9A-F9";
 		needs_hyphen = true;
 	}
 	if ($("#F6").is(":checked")) {
 		form_list = hyphenate(form_list, needs_hyphen);
-		form_list += "F6N-F6A";
+		form_list += "F6N-F6A-F6";
 		needs_hyphen = true;
 	} 
 	
