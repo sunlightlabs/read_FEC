@@ -116,9 +116,9 @@ class new_filing(models.Model):
     
     # change this to be a local page once it is there. 
     def get_absolute_url(self):
-        url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
+        url = "/filings/%s/" % (self.filing_number)
         return url
-            
+        
     def fec_all_filings(self):
         url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
         return url

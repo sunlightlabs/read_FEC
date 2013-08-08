@@ -140,6 +140,20 @@ def alerts(request):
 
 def outside_spending(request):
     return render_blank_page('Outside Spending','This is a page on outside spending. Maybe include links to subpages on electioneering, and coordinated spending? I dunno.', request)
+
+def filing(request, filing_num):
+    filing = get_object_or_404(new_filing, filing_number=filing_num)
+    committee = get_object_or_404(Committee_Overlay, fec_id = filing.fec_id)
+    title="<a href=\"%s\">%s</a>:details of filing #%s" % (committee.get_absolute_url(), filing.committee_name, filing_num)
+    
+    return render_to_response('datapages/filing.html',
+        {
+        'title':title,
+        'filing':filing,
+        'committee':committee,
+        }, 
+        context_instance=RequestContext(request)
+    )
     
 def filings_skeda(request, filing_num):
     filing_data = get_object_or_404(new_filing, filing_number=filing_num)
