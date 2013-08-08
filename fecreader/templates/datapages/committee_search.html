@@ -1,0 +1,20 @@
+{% if committees %}
+    <h4>Search results</h4>
+	<p>Click on the yellow plus sign to add a committee to your alert list</p>
+        <ul class="module">
+            {% for committee in committees %}
+                <li>
+	                <a data-fecid="{{ committee.fec_id }}" href="" class="subscribe_to_committee" name="{{ committee.name }}">Select</a>
+	                <span class="searchCommitteeName">
+                        {{ committee.name }}  
+                        {% if committee.curated_candidate %}( supports {{ committee.curated_candidate.name }}){% endif %}
+                        
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+        <p class="tip">* Only non-independent committees must disclose who they are supporting. Independent committees--which include all Super PACs--are not required to list a specific candidate (and may support multiple candidates).</p>
+
+{% else %}
+    <span class="tip">No results found. Try another search.</span>
+{% endif %}
