@@ -157,7 +157,7 @@ def filing(request, filing_num):
     
 def filings_skeda(request, filing_num):
     filing_data = get_object_or_404(new_filing, filing_number=filing_num)
-    title="Contributions, %s filing # %s" % (filing_data.committee_name, filing_num)
+    title="Contributions, <a href=\"%s\">%s</a> filing #<a href=\"%s\">%s</a>" % (filing_data.get_committee_url(), filing_data.committee_name, filing_data.get_absolute_url(), filing_num)
     
     filings = None
     too_many_to_display = False
@@ -180,7 +180,7 @@ def filings_skeda(request, filing_num):
 
 def filings_skedb(request, filing_num):
     filing_data = get_object_or_404(new_filing, filing_number=filing_num)
-    title="Disbursements, %s filing # %s" % (filing_data.committee_name, filing_num)
+    title="Disbursements, <a href=\"%s\">%s</a> filing #<a href=\"%s\">%s</a>" % (filing_data.get_committee_url(), filing_data.committee_name, filing_data.get_absolute_url(), filing_num)
 
     filings = None
     too_many_to_display = False

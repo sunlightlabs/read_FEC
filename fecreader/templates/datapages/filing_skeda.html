@@ -6,22 +6,29 @@
 
 {% block body_class %}{% endblock %}
 
-{% block pagetitle %}{{ title }} {% endblock %}
+{% block pagetitle %}{{ title|striptags }} {% endblock %}
 
  {% block rtmain %}
 
 <div class="module">
  <div id="contentHeader">
-       <h2>{{ title }}</h2>
+       <h2>{{ title|safe }}</h2>
 </div>
-<p>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. Originally filed {{ filing_data.process_time}}
-  <br>Total receipts of ${{ filing_data.tot_raised|intcomma }} include  {% if  filing_data.lines_present.A %}{{  filing_data.lines_present.A|intcomma }}{% else %}0{% endif %} itemized contributions. Total spending for this period amounted to: ${{ filing_data.tot_spent|intcomma }}
-  </p>
+Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
+
+{% if filing_data.coverage_from_date %}<br>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ filing_data.process_time}}.
+
+<br>Total receipts of ${{ filing_data.tot_raised|intcomma }} include  {% if  filing_data.lines_present.A %}<a href="{{ filing_data.get_skeda_url }}">{{  filing_data.lines_present.A|intcomma }} itemized contributions</a>{% else %}0 itemized contributions{% endif %}.
+
+<br> Total spending for this period amounted to ${{ filing_data.tot_spent|intcomma }} and include  {% if  filing_data.lines_present.B %}<a href="{{ filing_data.get_skedb_url }}">{{  filing_data.lines_present.B|intcomma }} itemized contributions</a>{% else %}0 itemized contributions{% endif %}.
 
 {% if too_many_to_display %}
 <p>There are more than 1,000 contributors itemized on this report; read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 {% else %}
 <p>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
+{% endif %}
+{% if object_list %}
+<h2>Contributions</h2>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>

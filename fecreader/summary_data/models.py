@@ -561,7 +561,7 @@ class Committee_Time_Summary(models.Model):
     # also appears in the newfiling model--normalize this. 
     def get_fec_url(self):
         if self.filing_number:
-            return "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.com_id, self.filing_number)
+            return "/filings/%s/" % (self.filing_number)
         else:
             return None
             # maybe return link to committee page? 
