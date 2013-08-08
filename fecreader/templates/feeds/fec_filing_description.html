@@ -1,0 +1,1 @@
+{{ obj.form_type }} <a href={{obj.get_absolute_url}}>{{obj.filing_number}}</a> FILED BY <a href="{{obj.fec_all_filings}}">{{ obj.committee_name}}</a>{% if obj.coverage_to_date %} COVERING {{ obj.coverage_from_date|date:"n/j/y" }} - {{ obj.coverage_to_date|date:"n/j/y" }}{% endif %}<br><br>

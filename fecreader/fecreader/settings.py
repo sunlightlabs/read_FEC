@@ -114,6 +114,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
+    # 
     'summary_data.brisket_context_processors.custom_context'
 )
 

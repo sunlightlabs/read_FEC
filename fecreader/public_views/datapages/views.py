@@ -2,6 +2,7 @@ import datetime
 
 from django.shortcuts import get_object_or_404, render_to_response
 from django.db import connection
+from django.db.models import Q
 from django.template import RequestContext
 
 
@@ -232,6 +233,35 @@ def candidate(request, candidate_id):
         'authorized_committee_list':authorized_committee_list,
         }, 
         context_instance=RequestContext(request)
+    )
+
+def subscribe(request):
+    return render_to_response('datapages/subscribe.html',
+        {
+        }, 
+        context_instance=RequestContext(request)
+    )
+
+def committee_search_html(request): 
+    params = request.GET
+    committees = None
+
+    try:
+        committee_name_fragment =  params['name']
+        if len(committee_name_fragment) > 3:
+            print committee_name_fragment
+
+
+            committees = Committee_Overlay.objects.filter(Q(name__icontains=committee_name_fragment) | Q(curated_candidate__name__icontains=committee_name_fragment)).select_related('curated_candidate')
+        else:
+            committees = None
+    except KeyError:
+        committees = None
+
+    return render_to_response('datapages/committee_search.html',
+        {
+        'committees':committees,
+        }
     )
 
 
