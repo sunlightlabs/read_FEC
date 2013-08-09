@@ -69,7 +69,12 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014
     
     
 def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014, cycle_to_copy_to=2014, verify_does_not_exist=True):
-    c = Committee.objects.get(cmte_id=committee_id, cycle=cycle_to_copy_from)
+    c = None
+    try:
+        c = Committee.objects.get(cmte_id=committee_id, cycle=cycle_to_copy_from)
+    except Committee.MultipleObjectsReturned:
+        print "Multiple committees found with id=%s cycle=%s!" % (committee_id, cycle_to_copy_from)
+        return None
     
     if verify_does_not_exist:
         try:
