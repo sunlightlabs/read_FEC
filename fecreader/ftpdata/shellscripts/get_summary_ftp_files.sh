@@ -1,6 +1,6 @@
 #!/bin/bash
 
-datadir=/Users/jfenton/github-whitelabel/read_FEC/fecreader/ftpdata/data
+datadir=/projects/realtimefec/src/realtimefec/fecreader/ftpdata/data
 
 for year in  '14' 
 do
