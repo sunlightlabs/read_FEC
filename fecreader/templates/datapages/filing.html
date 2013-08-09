@@ -16,8 +16,11 @@
 </div>
 Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ filing.FEC_url }}">original electronic report</a>.
 
+{% if committee %}
 <br>
 {% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ committee.curated_candidate.detailed_office}}{% endif %}
+{% endif %}
+
 
 {% if filing.coverage_from_date %}<br>Covering {{ filing.coverage_from_date|date:"N j, Y"}} through {{ filing.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ filing.process_time}}
 
