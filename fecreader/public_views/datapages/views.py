@@ -145,11 +145,14 @@ def outside_spending(request):
 def filing(request, filing_num):
     filing = get_object_or_404(new_filing, filing_number=filing_num)
     committee = None
+    title="%s:details of filing #%s" % ( filing.committee_name, filing_num)
+    
     try:
         committee = Committee_Overlay.objects.get(fec_id = filing.fec_id)
+        title="<a href=\"%s\">%s</a>:details of filing #%s" % (committee.get_absolute_url(), filing.committee_name, filing_num)
+        
     except:
         pass
-    title="<a href=\"%s\">%s</a>:details of filing #%s" % (committee.get_absolute_url(), filing.committee_name, filing_num)
     
     return render_to_response('datapages/filing.html',
         {
