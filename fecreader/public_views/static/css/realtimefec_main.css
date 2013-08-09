@@ -1,0 +1,66 @@
+/* FIX HEADER. THIS PROBLEM IMPACTS ALL LIVE IE PAGES, AND NEEDS A MORE PERMANENT FIX THAN THIS. */
+
+h1 { padding-top: 20px; }
+h5 { margin-bottom: 0px; padding-bottom:0px;}
+#contentHeader { margin-bottom: 5px; padding: 0 40px 10px; }
+#search { padding-top: 10px; width: 370px;}
+
+/* BETTER: #search { display:None; }
+
+/* END HEADER FIX */
+
+/* slim down subnav; adapted from td_nav.  */
+#rt_nav { background: url(../images/bg_tdNav.png) right top no-repeat; margin-top: -15px; padding: 14px 0 0 0; height: 42px; margin-bottom: 0px;}
+#rt_nav ul { margin-right: 25px;}
+#rt_nav li { float: right; border-right: 1px solid #cacdce; padding: 0 9px; line-height: 15px; text-align: center;}
+#rt_nav li.last { border-right: none;}
+#rt_nav li:hover, .documentation #rt_nav #documentation, .downloads #tr_nav #downloads, .api #rt_nav #api, .flexwidth #rt_nav #searchTD, .searchTD #rt_nav #searchTD{ font-weight: normal;}
+
+/* last update time. Appears on most pages. */
+#timestamp { float:right; margin-right: 30px; margin-top:-25px; padding-top:0px; }
+
+/* Need some sorta style for the summary boxes. This is not gonna do it */
+.numeric_summary { border-top: 1px solid #999; border-bottom: 1px solid #999; margin-bottom: 5px; margin-top:5px; padding-bottom: 5px; padding-top:5px; width: 550px; }
+
+/* For the love of meatballs, don't break English grammar! WTF! WTF WTF WTF! */
+.tip { margin-bottom:0px; margin-top:0px; padding: 0px; text-transform: none;}
+
+/* Use colors, size from existing span.amount */
+.amount_description { text-transform: uppercase; font-size: 140%;}
+.amount_dollars {  font-color: #797070; text-transform: uppercase; font-size: 140%;}
+
+/* make tables more usable - the font should be a bit bigger and there should be greater visual distinction between columns cells.  */
+#mainPageTable td { padding:3px; line-height:18px; margin:3px;}
+#mainPageTable { padding-top:0px; margin-top:0px;}
+
+/* forms */
+.dropdown_field { width: 125px;}
+.dropdown_field_narrow { width: 90px;}
+.dollar_field { width:70px; margin:0px; padding:0px;}
+.date_field { width:70px; margin:0px; padding:0px;}
+.text_field { width:140px; margin:0px; padding:0px;}
+.form_spacer { margin-left:10px;}
+#formdiv { border-top: 1px solid #aaa; border-bottom: 1px solid #aaa; padding-top: 5px; padding-bottom: 5px;}
+.pagination_container { margin-top:0px; margin-bottom:0px; padding-top:0px; padding-bottom:0px;}
+.sortable { margin-top: 0px; padding-top: 0px;}
+
+/* The buttons are all jacked up. */
+#load_button { width: 150px; height:25px; margin-left:20px; padding: 2px; font-size: 14px;}
+
+/* subscribe form */
+#form_filings { float: left; width: 500px; margin-right: 25px;}
+
+
+.subscribe_to_committee { display: block; text-indent: -9999em; float: left; margin-right: 10px; background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_add.png) left top no-repeat; width: 16px; height: 14px; padding-bottom: 3px; margin-top: 2px;}
+.subscribe_to_committee:hover { background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_add.png) left -17px no-repeat; height: 15px; padding-bottom: 1px; }
+
+.selected_committee_display { display: block; text-indent: -9999em; float: left; margin-right: 10px; background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_subtract.png) left top no-repeat; width: 16px; height: 14px; padding-bottom: 3px; margin-top: 2px;}
+.selected_committee_display:hover { background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_subtract.png) left -17px no-repeat; height: 15px; padding-bottom: 1px; }
+
+#alertSet { float: right; width: 272px; margin-right: 25px; background-color: #fafaf8; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 15px;}
+.module { margin-bottom: 30px;}
+
+#gotoscout { background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_getAlert.png) left top no-repeat;  display: block; text-indent: -9999em; width: 118px; height: 39px; margin-top: 20px; }
+#gotoscout:hover { background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_getAlert.png) left bottom no-repeat;  }
+
+#alertSettings { padding-left: 20px;}
