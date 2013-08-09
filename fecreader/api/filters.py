@@ -5,8 +5,7 @@ from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay
 from django.db.models import Q
 
-today = date.today()
-one_week_ago = today-timedelta(days=7)
+
 
 class NFFilter(django_filters.FilterSet):
     
@@ -145,8 +144,11 @@ def filingTimeFilter(queryset, querydict):
     try:
         time_range=querydict['time_range']
         if time_range == 'day':
+            today = date.today()
             queryset = queryset.filter(filed_date=today)
         elif time_range == 'week':
+            today = date.today()
+            one_week_ago = today-timedelta(days=7)
             queryset = queryset.filter(filed_date__gte=one_week_ago)
     except KeyError:
         pass
