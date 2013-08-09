@@ -86,7 +86,7 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
             pass
             # It's a new committee, so mark it as dirty--in need of totalling! 
             try:
-                Committee_Changed.objects.get_or_create(committee_id=f1.headers['fec_id'])
+                Committee_Changed.objects.get_or_create(committee_id=committee_id)
             except Committee_Changed.MultipleObjectsReturned:
                 pass
                 
