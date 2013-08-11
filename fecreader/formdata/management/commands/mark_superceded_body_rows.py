@@ -1,8 +1,14 @@
-from django.core.management.base import BaseCommand, CommandError
 from dateutil.parser import parse as dateparse
+
+
+from django.core.management.base import BaseCommand, CommandError
+from django.db.models import Sum, Max, Min
+
+
 from formdata.models import Filing_Header, SkedA, SkedE, Committee_Changed
 from fec_alerts.models import new_filing
 from formdata.utils.fec_import_logging import fec_logger
+
 
 # for debugging
 from django.db import connection
@@ -24,10 +30,9 @@ def mark_superceded_F24s(new_f3x_filing_header):
     SkedE.objects.filter(form_type__istartswith='F24', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_from_date).update(superceded_by_amendment=True)
    
     
-    #print connection.queries
-    
+    ## This isn't necessary b/c the dirty flag will be set by the workers entering the new filing. 
     # mark the committee as being dirty;
-    Committee_Changed.objects.get_or_create(committee_id=raw_filer_id)
+    #Committee_Changed.objects.get_or_create(committee_id=raw_filer_id)
     
         
 def mark_superceded_F65s(new_f3_filing_header):
@@ -47,9 +52,31 @@ def mark_superceded_F65s(new_f3_filing_header):
     
     # mark the committee as being dirty;
     # Committee_Changed.objects.get_or_create(committee_id=raw_filer_id)
+    
+def summarize_f24(new_filing):
+    filing_ies = SkedE.objects.filter(filing_number=new_filing.filing_number)
+    
+    results = filing_ies.aggregate(tot_spent=Sum('expenditure_amount'), start_date=Min('expenditure_date_formatted'), end_date=Max('expenditure_date_formatted'))
+    if results:
+        new_filing.tot_spent = results['tot_spent']
+        new_filing.coverage_from_date = results['start_date']
+        new_filing.coverage_to_date = results['end_date']
+        new_filing.save()
+    
+def summarize_f6(new_filing):
+    filing_skeda = SkedA.objects.filter(filing_number=new_filing.filing_number)
+
+    results = filing_skeda.aggregate(tot_raised=Sum('contribution_amount'), start_date=Min('contribution_date_formatted'), end_date=Max('contribution_date_formatted'))
+    if results:
+        new_filing.tot_raised = results['tot_raised']
+        new_filing.coverage_from_date = results['start_date']
+        new_filing.coverage_to_date = results['end_date']
+        new_filing.save()
+    
+    
 
 class Command(BaseCommand):
-    help = "Mark the body rows as being superceded as appropriate."
+    help = "Mark the body rows as being superceded as appropriate; also set the new_filing data for stuff that can only be calculated after body rows have run."
     requires_model_validation = False
     
 
