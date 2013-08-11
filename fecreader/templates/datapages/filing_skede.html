@@ -22,7 +22,7 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 
 <br> Total spending for this period amounted to ${{ filing_data.tot_spent|intcomma }} and include  {% if  filing_data.lines_present.B %}<a href="{{ filing_data.get_skedb_url }}">{{  filing_data.lines_present.B|intcomma }} itemized disbursements</a>{% else %}0 itemized disbursements{% endif %}.
 
-{% if  filing.lines_present.E %}<br>This filing also includes {% if  filing.lines_present.E %}{{  filing.lines_present.E|intcomma }}{% else %}0{% endif %} itemized independent expenditures.{% endif %}
+{% if  filing_data.lines_present.E %}<br>This filing also includes {% if  filing.lines_present.E %}{{  filing.lines_present.E|intcomma }}{% else %}0{% endif %} itemized independent expenditures.{% endif %}
 
 {% if too_many_to_display %}
 <p>There are more than 1,000 disbursements itemized on this report; read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
@@ -30,13 +30,13 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 <p>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 {% endif %}
 {% if object_list %}
-<h2>Disbursements</h2>
+<h2>Independent Expenditures</h2>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
                 <th>Line</th>
+                <th>Supports/Opposes</th>
                 <th>Candidate</th>
-                <th>Supports or Opposes</th>
                 <th class="sort">Payee</th>
                 <th>City, State, ZIP</th>
                 <th class="sort">Amount</th>
@@ -49,7 +49,7 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
                   {% for object in object_list %}    
                       <tr class="{% cycle 'odd' 'even' %}" id="{{ object.transaction_id }}">
                           <td><a href="#{{ object.transaction_id }}">{{ object.form_type }}</a></td>
-                          <td> {{ object.support_oppse }}</td>
+                          <td> {{ object.support_oppose }}</td>
                           <td>{{ object.candidate_name_raw }}</td>
                           <td>{{ object.payee_name_simplified }}</td>
                           <td>{{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>

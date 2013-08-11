@@ -22,7 +22,7 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 
 <br> Total spending for this period amounted to ${{ filing_data.tot_spent|intcomma }} and include  {% if  filing_data.lines_present.B %}<a href="{{ filing_data.get_skedb_url }}">{{  filing_data.lines_present.B|intcomma }} itemized disbursements</a>{% else %}0 itemized disbursements{% endif %}.
 
-{% if  filing.lines_present.E %}<br>This filing also includes {% if  filing.lines_present.E %}{{  filing.lines_present.E|intcomma }}{% else %}0{% endif %} itemized independent expenditures.{% endif %}
+{% if  filing_data.lines_present.E %}<br>This filing also includes {% if  filing.lines_present.E %}{{  filing.lines_present.E|intcomma }}{% else %}0{% endif %} itemized independent expenditures.{% endif %}
 
 {% if too_many_to_display %}
 <p>There are more than 1,000 disbursements itemized on this report; read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>

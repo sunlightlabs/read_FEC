@@ -283,7 +283,7 @@ class SkedE(models.Model):
         return ""
     
     def candidate_name_raw(self):
-        return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name)
+        return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name or "")
     
         
 class OtherLine(models.Model):
