@@ -16,6 +16,121 @@ def process_f3_header(header_data):
     return_dict['new_loans'] = header_data.get('col_a_total_loans')
     return return_dict
     
+def process_f5_header(header_data):
+    return_dict= {}
+    return_dict['tot_raised'] = header_data.get('total_contribution')
+    return_dict['tot_spent'] = header_data.get('total_independent_expenditure')    
+    return_dict['coverage_from_date'] = dateparse(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse(header_data.get('coverage_through_date'))
+    return return_dict
+    
+def process_f7_header(header_data):
+    return_dict= {}
+    return_dict['tot_spent'] = header_data.get('total_costs')    
+    return_dict['coverage_from_date'] = dateparse(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse(header_data.get('coverage_through_date'))
+    return return_dict
+
+def process_f9_header(header_data):
+    return_dict= {}
+    return_dict['tot_raised'] = header_data.get('total_donations')
+    return_dict['tot_spent'] = header_data.get('total_disbursements')    
+    return_dict['coverage_from_date'] = dateparse(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse(header_data.get('coverage_through_date'))
+    return return_dict
+    
+
+def process_f13_header(header_data):
+    return_dict= {}
+    return_dict['tot_raised'] = header_data.get('net_donations')
+    return_dict['coverage_from_date'] = dateparse(header_data.get('coverage_from_date'))
+    return_dict['coverage_to_date'] =dateparse(header_data.get('coverage_through_date'))
+    return return_dict    
+    
+    net_donations
+    
+
+def handle_filing(this_filing):
+    
+    try:
+        co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id)
+        this_filing.committee_designation = co.designation
+        this_filing.committee_type = co.ctype
+        this_filing.committee_slug = co.slug
+        this_filing.party = co.party
+        
+    except Committee_Overlay.DoesNotExist:
+        try:
+            co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=2014)
+            this_filing.committee_designation = co.cmte_dsgn
+            this_filing.committee_type = co.cmte_tp
+            this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
+        except Committee.DoesNotExist:
+            pass
+            
+    
+    try:
+        header = Filing_Header.objects.get(filing_number = this_filing.filing_number)
+    except Filing_Header.DoesNotExist:
+        print "FILING_HEADER MISSING FOR %s" % (this_filing.filing_number)
+        # save what we've found though! 
+        this_filing.save()
+        return
+        
+    header_data = header.header_data
+    
+    form_type = this_filing.form_type
+    parsed_data = {'coh_start':None, 'coh_end':None, 'new_loans':None,'tot_raised':None,'tot_spent':None}
+    
+    if form_type in ['F3XA', 'F3XN', 'F3XT', 'F3A', 'F3N', 'F3T','F3PA', 'F3PN', 'F3PT', 'F3', 'F3X', 'F3P']:
+        parsed_data = process_f3_header(header_data)
+        #print "got data %s" % (parsed_data)
+        
+        this_filing.coh_end =  parsed_data['coh_end'] if parsed_data['coh_end'] else 0
+        this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
+        this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
+        this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else 0
+    
+    elif form_type in ['F5', 'F5A', 'F5N']:
+        parsed_data = process_f5_header(header_data)
+                
+        #print "got data %s" % (parsed_data)
+        
+        this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
+        this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
+        this_filing.coverage_from_date = parsed_data.get('coverage_from_date')
+        this_filing.coverage_to_date = parsed_data.get('coverage_from_date')
+    
+    elif form_type in ['F7', 'F7A', 'F7N']:
+        parsed_data = process_f7_header(header_data)
+        #print "got data %s" % (parsed_data)
+        this_filnig.tot_raised = 0
+        this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
+        this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else 0
+        this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else 0
+
+    elif form_type in ['F9', 'F9A', 'F9N']:
+        parsed_data = process_f9_header(header_data)
+        #print "got data %s" % (parsed_data)
+        
+        this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
+        this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
+        this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else 0
+        this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else 0
+    
+    elif form_type in ['F13', 'F13A', 'F13N']:
+        parsed_data = process_f13_header(header_data)
+        #print "got data %s" % (parsed_data)
+        
+        this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
+        this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else 0
+        this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else 0
+    
+    
+    this_filing.save() 
+    
+    
+
 class Command(BaseCommand):
     help = "Set data fields in the new filing from the parsed Filing_Header"
     requires_model_validation = False
@@ -27,44 +142,4 @@ class Command(BaseCommand):
         #new_filings_to_process = new_filing.objects.filter(form_type__startswith='F3').order_by('filing_number')
         for this_filing in new_filings_to_process:
             print "processing %s " % (this_filing.filing_number)
-            
-            try:
-                co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id)
-                this_filing.committee_designation = co.designation
-                this_filing.committee_type = co.ctype
-                this_filing.committee_slug = co.slug
-                this_filing.party = co.party
-                
-            except Committee_Overlay.DoesNotExist:
-                try:
-                    co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=2014)
-                    this_filing.committee_designation = co.cmte_dsgn
-                    this_filing.committee_type = co.cmte_tp
-                    this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
-                except Committee.DoesNotExist:
-                    pass
-                    
-            
-            try:
-                header = Filing_Header.objects.get(filing_number = this_filing.filing_number)
-            except Filing_Header.DoesNotExist:
-                print "FILING_HEADER MISSING FOR %s" % (this_filing.filing_number)
-                # save what we've found though! 
-                this_filing.save()
-                continue
-            header_data = header.header_data
-            
-            form_type = this_filing.form_type
-            parsed_data = {'coh_start':None, 'coh_end':None, 'new_loans':None,'tot_raised':None,'tot_spent':None}
-            
-            if form_type in ['F3XA', 'F3XN', 'F3XT', 'F3A', 'F3N', 'F3T','F3PA', 'F3PN', 'F3PT', 'F3', 'F3X']:
-                parsed_data = process_f3_header(header_data)
-                #print "got data %s" % (parsed_data)
-                
-                this_filing.coh_end =  parsed_data['coh_end'] if parsed_data['coh_end'] else None
-                this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else None
-                this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else None
-                this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else None
-            
-            this_filing.save()
-
+            handle_filing(this_filing)
