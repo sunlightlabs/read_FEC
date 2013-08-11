@@ -28,7 +28,7 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
 
 <br> Total spending for this period amounted to ${{ filing.tot_spent|intcomma }} and include  {% if  filing.lines_present.B %}<a href="{{ filing.get_skedb_url }}">{{  filing.lines_present.B|intcomma }} itemized disbursements</a>{% else %}0 itemized disbursements{% endif %}.
 
-{% if  filing.lines_present.E %}<br>This filing also includes {% if  filing.lines_present.E %}{{  filing.lines_present.E|intcomma }}{% else %}0{% endif %} itemized independent expenditures.{% endif %}
+{% if  filing.lines_present.E %}<br>This filing also includes <a href="{{ filing.get_skede_url }}">{{  filinglines_present.E|intcomma }} itemized independent expenditures</a>.{% endif %}
 
 </div>
 {% endblock %}

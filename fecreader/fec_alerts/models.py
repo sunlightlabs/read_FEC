@@ -113,6 +113,10 @@ class new_filing(models.Model):
     def get_skedb_url(self):
         url = "/filings/%s/SB/" % (self.filing_number)
         return url
+
+    def get_skede_url(self):
+        url = "/filings/%s/SE/" % (self.filing_number)
+        return url    
     
     # change this to be a local page once it is there. 
     def get_absolute_url(self):
