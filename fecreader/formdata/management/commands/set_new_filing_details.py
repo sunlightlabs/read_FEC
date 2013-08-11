@@ -99,7 +99,7 @@ def handle_filing(this_filing):
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
         this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
         this_filing.coverage_from_date = parsed_data.get('coverage_from_date')
-        this_filing.coverage_to_date = parsed_data.get('coverage_from_date')
+        this_filing.coverage_to_date = parsed_data.get('coverage_to_date')
     
     elif form_type in ['F7', 'F7A', 'F7N']:
         parsed_data = process_f7_header(header_data)
