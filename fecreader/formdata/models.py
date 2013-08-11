@@ -267,7 +267,24 @@ class SkedE(models.Model):
     date_signed_formatted = models.DateField(null=True, help_text="Populated from parsing raw field")
     memo_code = models.CharField(max_length=1, blank=True, null=True)
     memo_text_description = models.CharField(max_length=100, blank=True, null=True)
-        
+
+
+    def payee_name_simplified(self):
+        if self.payee_organization_name:
+           return self.payee_organization_name
+      
+        return "%s, %s %s %s" % (self.payee_last_name, self.payee_first_name, self.payee_middle_name or "", self.payee_suffix or "")
+    
+    def support_oppose(self):
+        if self.support_oppose_code.upper() == 'S':
+            return "Support"
+        elif self.support_oppose_code.upper() == 'O':
+            return "Oppose"
+        return ""
+    
+    def candidate_name_raw(self):
+        return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name)
+    
         
 class OtherLine(models.Model):
     # additional fields 

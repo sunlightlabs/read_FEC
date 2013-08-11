@@ -209,6 +209,30 @@ def filings_skedb(request, filing_num):
         context_instance=RequestContext(request)
     )
 
+def filings_skede(request, filing_num):
+    filing_data = get_object_or_404(new_filing, filing_number=filing_num)
+    title="Independent Expenditures, <a href=\"%s\">%s</a> filing #<a href=\"%s\">%s</a>" % (filing_data.get_committee_url(), filing_data.committee_name, filing_data.get_absolute_url(), filing_num)
+
+    filings = None
+    too_many_to_display = False
+    if filing_data.lines_present:
+        lines_present = filing_data.lines_present.get('E')
+        if int(lines_present) <= 1000:
+            filings = SkedE.objects.filter(filing_number=filing_num).order_by('-expenditure_amount')
+        else:
+            too_many_to_display = True
+
+    return render_to_response('datapages/filing_skede.html',
+        {
+        'title':title,
+        'object_list':filings,
+        'too_many_to_display':too_many_to_display,
+        'filing_data':filing_data,
+        }, 
+        context_instance=RequestContext(request)
+    )
+
+
 def committee(request, committee_id):
     committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id)
         

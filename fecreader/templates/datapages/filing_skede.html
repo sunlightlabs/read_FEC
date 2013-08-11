@@ -16,7 +16,7 @@
 </div>
 Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 
-{% if filing_data.coverage_from_date %}<br>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ filing_data.process_time}}.
+{% if filing_data.coverage_from_date %}<br>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ filing_data.process_time}}. 
 
 <br>Total receipts of ${{ filing_data.tot_raised|intcomma }} include  {% if  filing_data.lines_present.A %}<a href="{{ filing_data.get_skeda_url }}">{{  filing_data.lines_present.A|intcomma }} itemized contributions</a>{% else %}0 itemized contributions{% endif %}.
 
@@ -25,22 +25,23 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 {% if  filing.lines_present.E %}<br>This filing also includes {% if  filing.lines_present.E %}{{  filing.lines_present.E|intcomma }}{% else %}0{% endif %} itemized independent expenditures.{% endif %}
 
 {% if too_many_to_display %}
-<p>There are more than 1,000 contributors itemized on this report; read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
+<p>There are more than 1,000 disbursements itemized on this report; read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 {% else %}
 <p>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 {% endif %}
 {% if object_list %}
-<h2>Contributions</h2>
+<h2>Disbursements</h2>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
                 <th>Line</th>
-                <th class="sort">Donor</th>
+                <th>Candidate</th>
+                <th>Supports or Opposes</th>
+                <th class="sort">Payee</th>
                 <th>City, State, ZIP</th>
                 <th class="sort">Amount</th>
                 <th class="sort">Date</th>
-                <th class="sort">Employer</th>
-                <th class="sort" >Occupation</th>
+                <th class="sort">Purpose</th>
                 <th>Memo</th>
               </tr>
               </thead>
@@ -48,12 +49,13 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
                   {% for object in object_list %}    
                       <tr class="{% cycle 'odd' 'even' %}" id="{{ object.transaction_id }}">
                           <td><a href="#{{ object.transaction_id }}">{{ object.form_type }}</a></td>
-                          <td>{{ object.donor_name }}</td>
-                          <td>{{ object.contributor_city}}, {{ object.contributor_state}} {{ object.contributor_zip}} </td>
-                          <td>${{ object.contribution_amount|intcomma}}</td>
-                          <td>{{ object.contribution_date_formatted|date:"Y-m-d"}}</td>
-                          <td>{% if object.contributor_employer %}{{ object.contributor_employer}}{% endif %}</td>
-                          <td>{% if object.contributor_occupation %}{{ object.contributor_occupation}}{% endif %}</td>
+                          <td> {{ object.support_oppse }}</td>
+                          <td>{{ object.candidate_name_raw }}</td>
+                          <td>{{ object.payee_name_simplified }}</td>
+                          <td>{{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
+                          <td>${{ object.expenditure_amount|intcomma}}</td>
+                          <td>{{ object.expenditure_date_formatted|date:"Y-m-d"}}</td>
+                          <td>{% if object.expenditure_purpose_descrip %}{{ object.expenditure_purpose_descrip}}{% endif %}</td>
                           <td>{% if object.memo_text_description %}{{ object.memo_text_description}}{% endif %}</td>
                       </tr>
                   {% endfor %}
