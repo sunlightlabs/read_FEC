@@ -87,6 +87,13 @@ class Command(BaseCommand):
         for this_filing in filings_to_process:
             print "processing %s " % (this_filing.filing_number)
             
+            
+            # Create summary data for some forms that don't have it in the header. This script only runs after all the body rows of these filings have been entered; most other summary data is entered earlier in the process. 
+            if this_filing.form_type.upper() in ['F24', 'F24A', 'F24N']:
+                summarize_f24(this_filing)
+            elif this_filing.form_type.upper() in ['F6', 'F6A', 'F6N']:
+                summarize_f6(this_filing)
+            
             # get the corresponding filing header
             this_filing_header = None
             try:
