@@ -1,6 +1,6 @@
 import logging, sys
 
-sys.path.append('../../fecreader/')
+sys.path.append('../../')
 
 from fecreader.settings import FEC_IMPORT_LOG_DIRECTORY
 
