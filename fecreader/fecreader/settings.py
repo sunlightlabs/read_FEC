@@ -165,6 +165,7 @@ INSTALLED_APPS = (
     'summary_data',
     'rest_framework',
     'debug_toolbar',
+    'south',
 )
 
 REST_FRAMEWORK = {
