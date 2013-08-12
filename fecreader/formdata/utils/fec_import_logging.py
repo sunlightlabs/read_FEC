@@ -1,10 +1,14 @@
-import logging
+import logging, sys
 
-# should go in some non-django file; we'd then have to 
-LOG_DIRECTORY="/projects/realtimefec/log/"
+sys.path.append('../../fecreader/')
+
+from settings import FEC_IMPORT_LOG_DIRECTORY
+
+LOG_DIRECTORY= FEC_IMPORT_LOG_DIRECTORY
+
 LOG_NAME="fec_import"
 
-""" Set up a logger with settings from the settings file. Will log info and anything higher. 
+""" Set up a logger.
 
 from utils.fec_logging import fec_logger
 

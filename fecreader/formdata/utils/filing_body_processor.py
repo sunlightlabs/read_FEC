@@ -1,13 +1,11 @@
 # django independent entry process; no db abstraction; this is built for postgresql
 
-import psycopg2, sys, time
+import sys, time
 
-sys.path.append('/projects/realtimefec/src/realtimefec/fecreader/fecreader')
-sys.path.append('/projects/realtimefec/src/realtimefec/fecreader/')
+sys.path.append('../../')
 
 from parsing.filing import filing
 from parsing.form_parser import form_parser, ParserMissingError
-from local_settings import DATABASES
 from form_mappers import *
 
 from write_csv_to_db import CSV_dumper
@@ -15,27 +13,13 @@ from write_csv_to_db import CSV_dumper
 from fec_import_logging import fec_logger
 from hstore_helpers import dict_to_hstore
 
+from db_utils import get_connection
 
 class FilingHeaderDoesNotExist(Exception):
     pass
     
 class FilingHeaderAlreadyProcessed(Exception):
     pass
-    
-def get_connection():
-    dbname = DATABASES['default']['NAME']
-    pw = DATABASES['default']['PASSWORD']
-    user = DATABASES['default']['USER']
-    host = DATABASES['default']['HOST']
-    port = DATABASES['default']['PORT']
-    if not host:
-        host = 'localhost'
-    if not port:
-        port = 5432
-        
-    conn_string = "host='%s' dbname='%s' user='%s' password='%s' port='%s'" % (host, dbname, user, pw, port)
-    conn = psycopg2.connect(conn_string)
-    return conn
 
 
 def process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id):
