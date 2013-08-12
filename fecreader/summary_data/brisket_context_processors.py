@@ -1,8 +1,7 @@
 from django.conf import settings
+## need to point at installed context processor, not this one. 
 
-def custom_context(request):
-    print "Brisket!"
-    
+def custom_context(request):    
     out = {}
     
     dryrub_url_mode = getattr(request, 'dryrub_url_mode', 'all_absolute')

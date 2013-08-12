@@ -25,8 +25,10 @@ django_compressor
 # The base template lives here, and needs to be inherited from
 -e git+https://github.com/sunlightlabs/dryrub.git#egg=dryrub
 
-# api branch
+# api
 djangorestframework
 django-filter
 
 django-debug-toolbar
+
+south
