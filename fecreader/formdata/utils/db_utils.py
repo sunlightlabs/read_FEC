@@ -1,9 +1,9 @@
 # For parts that don't depend on django, we still need a way to get a db connection. 
 import psycopg2, sys
 
-sys.path.append('../../fecreader/')
+sys.path.append('../../')
 
-from settings import DATABASES
+from fecreader.settings import DATABASES
 
 def get_connection():
     dbname = DATABASES['default']['NAME']
