@@ -12,7 +12,7 @@ class Command(BaseCommand):
     requires_model_validation = False
     
     def handle(self, *args, **options):
-        candidates = Candidate.objects.filter(cycle=cycle, cand_election_year=election_year)
+        candidates = Candidate.objects.filter(cycle=cycle, cand_election_year__in=[2013,2014])
         # We'll miss folks who put the wrong election year in their filing, but... 
         
         for candidate in candidates:
