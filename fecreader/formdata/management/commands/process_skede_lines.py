@@ -75,19 +75,21 @@ def attach_ie_target(skedeline):
             if result:
                 return True
     
-    else:
-        # don't care about these.
-        return False
+        else:
     
-    # if we're still here, try a fuzzy match
+            # if we're still here, try a fuzzy match
     
-    fuzzy_match_result = fuzzy_match_candidate(skedeline)
-    if fuzzy_match_result:
-        return True
+            fuzzy_match_result = fuzzy_match_candidate(skedeline)
+            if fuzzy_match_result:
+                return True
         
-    # fall back on data that's already there. 
-    set_data_from_self(skedeline)
-    return False
+            # fall back on data that's already there. 
+            set_data_from_self(skedeline)
+            return False
+    
+    else:
+        # don't care about the out of cycle stuff.
+        return False
 
 
     
