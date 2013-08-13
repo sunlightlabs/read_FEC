@@ -289,14 +289,25 @@ class SkedE(models.Model):
         return "%s, %s %s %s" % (self.payee_last_name, self.payee_first_name, self.payee_middle_name or "", self.payee_suffix or "")
     
     def support_oppose(self):
-        if self.support_oppose_checked.upper() == 'S':
+        # fall back on original code if new one isn't processed.
+        if self.support_oppose_checked:
+            if self.support_oppose_checked.upper() == 'S':
+                return "Support"
+            elif self.support_oppose_checked.upper() == 'O':
+                return "Oppose"
+            
+        elif self.support_oppose_code.upper() == 'S':
             return "Support"
-        elif self.support_oppose_checked.upper() == 'O':
-            return "Oppose"
+        elif self.support_oppose_code.upper() == 'O':
+            return "Oppose"            
+            
         return ""
     
     def candidate_name_raw(self):
-        return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name or "")
+        if candidate_name_checked:
+            return candidate_name_checked
+        else:
+            return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name or "")
     
         
 class OtherLine(models.Model):

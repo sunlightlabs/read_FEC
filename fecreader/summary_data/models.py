@@ -113,7 +113,7 @@ class Candidate_Overlay(models.Model):
     is_minor_candidate = models.BooleanField(default=False,help_text="Should we hide this name because they're not a serious candidate")
     not_seeking_reelection = models.BooleanField(default=False,help_text="It's confusing if we remove incumbents, so keep them here, but note that they are retiring. ")
     other_office_sought = models.CharField(max_length=127, blank=True, null=True, help_text="E.g. are they running for senate?")
-    other_fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="If they've declared for another federal position, what is it? ")
+    other_fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="If they've declared for another federal position, what is it? This should be the *candidate id* not a committee id. ")
     name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
     pty = models.CharField(max_length=3, blank=True, null=True, help_text="What party is the incumbent?")
     party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party")
@@ -128,7 +128,7 @@ class Candidate_Overlay(models.Model):
                               )
     office_district = models.CharField(max_length=2, blank=True, null=True, help_text="'00' for at-large congress; null for senate, president")
     term_class = models.IntegerField(blank=True, null=True, help_text="1,2 or 3. Pulled from US Congress repo. Only applies to senators.")
-    bio_blurb = models.TextField(null=True, blank=True, help_text="Very short; mainly intended for non-incumbents who no one's heard of.")
+    bio_blurb = models.TextField(null=True, blank=True, help_text="Very short; mainly intended for non-incumbents who no one's heard of. If someone is running for senate who previosly served in the house, note it here.")
     cand_ici = models.CharField(max_length=1, null=True, choices=(('I','Incumbent'), ('C', 'Challenger'), ('O', 'Open Seat')))
     candidate_status = models.CharField(max_length=2, blank=True, null=True, help_text="D=declared, U=undeclared, but has a committee raising money for the race. If they have neither a committee nor a statement of candidacy, probably shouldn't be in here. Apparently one can do the committee as a 527 org with the IRS--haven't seen this yet. ")
     
@@ -191,9 +191,16 @@ class Candidate_Overlay(models.Model):
     
     def detailed_office(self):
         if self.office == 'S':
-            return 'US Sen. (%s); next election is in %s' % (self.state, self.curated_election_year)
+            return 'US Sen. (%s)' % (self.state)
         else:
-            return 'US Rep. (%s-%s); next election is in %s' % (self.state, self.office_district, self.curated_election_year)        
+            return 'US Rep. (%s-%s)' % (self.state, self.office_district) 
+            
+        
+    def next_election(self):
+        if self.not_seeking_reelection:
+            return ''
+        else:
+            return 'Next election is in %s' % (self.curated_election_year) 
 
     def get_absolute_url(self):
         return "/candidate/%s/%s/" % (self.slug, self.fec_id)

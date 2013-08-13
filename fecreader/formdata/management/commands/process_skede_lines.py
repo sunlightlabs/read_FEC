@@ -30,7 +30,7 @@ def attach_ie_target(skedeline):
         
         
             try: 
-                this_candidate = Candidate_Overlay.objects.get(fec_id=candidate_id)
+                this_candidate = Candidate_Overlay.objects.get(fec_id=candidate_id, cycle=('2014'))
                 skedeline.candidate_id_checked = this_candidate.candidate_id_number
                 skedeline.candidate_checked  = this_candidate
                 skedeline.candidate_district_checked = this_candidate.office_district
@@ -92,3 +92,6 @@ class Command(BaseCommand):
                 
                 for skede in skedelines:
                     attach_ie_target(skede)
+            # mark that we've been processed. 
+            this_filing.ie_rows_processed=True
+            this_filing.save()

@@ -34,7 +34,7 @@
                 {% for object in object_list %}
                   <tr class="{% cycle 'odd' 'even' %}">
                       <td class="lawmakerName">
-                      <a href="{{object.get_absolute_url}}">{{object.name}}</a></td>
+                      <a href="{{object.get_absolute_url}}">{{object.name}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
                       <td>{{object.pty}}</td>
                       <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
                       <td>{{ object.election_year }}</td>
@@ -47,6 +47,7 @@
                  
 </tbody>
 </table>
+<p id="notseekingreelection">* Not seeking reelection to this office</p>
 </div>
   {% endblock %}
   
