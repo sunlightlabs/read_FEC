@@ -17,7 +17,7 @@ class Command(BaseCommand):
         
         for candidate in candidates:
             # will doublecheck that it doesn't already exist before creating it
-            make_candidate_overlay_from_masterfile(candidate.cand_id, cand_election_year=candidate.cand_election_year)
+            make_candidate_overlay_from_masterfile(candidate.cand_id, election_year=candidate.cand_election_year)
             
         
         
