@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.db import connection
 from django.db.models import Q
 from django.template import RequestContext
+from django.shortcuts import redirect
 
 
 from fec_alerts.models import new_filing, newCommittee
@@ -25,10 +26,14 @@ except KeyError:
 def newbase(request):
     return render_to_response('datapages/realtime_base.html', {}, context_instance=RequestContext(request))
     
+def home_page(request):
+    # should eventually have a home page, or straighten out urls
+    return redirect('/newest-filings/')
+    
 def house(request):
 
     title="House Members - Cycle Summary"
-    explanatory_text="This page shows the fundraising totals for the entire cycle for current house members. For cyclewide totals for challengers, see the <a href=\"/candidates/\">candidates</a> page. For fundraising totals for just a single reporting period, see the <a href=\"/reports\">reports</a> page."
+    explanatory_text="This page shows the fundraising totals for the entire cycle for current house members. For cyclewide totals for challengers, see the <a href=\"/candidates/\">candidates</a> page."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
     
     legislators = Candidate_Overlay.objects.filter(office='H', is_incumbent=True)
@@ -46,7 +51,7 @@ def house(request):
 def candidates(request):
 
     title="Candidates - Cycle Summary"
-    explanatory_text="This page shows the fundraising totals for the entire cycle for current candidates. For fundraising totals for just a single reporting period, see the <a href=\"/reports\">reports</a> page."
+    explanatory_text="This page shows the fundraising totals for the entire cycle for current candidates."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
     legislators = Candidate_Overlay.objects.all()
