@@ -37,7 +37,7 @@ def attach_ie_target(skedeline):
                 skedeline.candidate_district = this_candidate.district
                 skedeline.candidate_office_checked = this_candidate.office
                 skedeline.candidate_party_checked = this_candidate.party
-                skedeline.candidate_state_checked = this_candidate.state
+                skedeline.candidate_state_checked = this_candidate.state[:2]
                 skedeline.candidate_name_checked = this_candidate.name
                 
                 skedeline.support_oppose_checked = skedeline.support_oppose_code
