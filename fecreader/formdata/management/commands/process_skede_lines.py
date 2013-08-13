@@ -3,8 +3,10 @@ from datetime import date
 from fec_alerts.models import new_filing
 from formdata.models import SkedE
 from summary_data.models import Candidate_Overlay
+from reconciliation.fec_reconciler import match_by_name
 
 cycle_start = date(2013,1,1)
+THIS_CYCLE = '2014'
 
 def set_data_from_self(skedeline):
     name = None
@@ -20,6 +22,47 @@ def set_data_from_self(skedeline):
     skedeline.support_oppose_checked = skedeline.support_oppose_code
     skedeline.save()
 
+
+    
+def set_data_from_candidate_id(skedeline, candidate_id):
+    
+    try: 
+        this_candidate = Candidate_Overlay.objects.get(fec_id=candidate_id, cycle=(THIS_CYCLE))
+        skedeline.candidate_id_checked = this_candidate.fec_id
+        skedeline.candidate_checked  = this_candidate
+        skedeline.candidate_district_checked = this_candidate.office_district
+        skedeline.district_checked = this_candidate.district
+        skedeline.candidate_office_checked = this_candidate.office
+        skedeline.candidate_party_checked = this_candidate.party
+        skedeline.candidate_state_checked = this_candidate.state
+        skedeline.candidate_name_checked = this_candidate.name
+        skedeline.support_oppose_checked = skedeline.support_oppose_code
+        skedeline.save()
+        return True
+
+    except Candidate_Overlay.DoesNotExist:
+        return False
+        
+
+
+
+def fuzzy_match_candidate(skedeline):
+    state = skedeline.candidate_state
+    name_to_check = "%s, %s" % (skedeline.candidate_last_name, skedeline.candidate_first_name)
+    office = skedeline.candidate_office
+    
+    result = match_by_name(name_to_check, state=None, office=None, cycle=THIS_CYCLE, reverse_name_order=False)
+    if result:
+        if result[0]['match']:
+            print "Fuzzy matching matched %s to %s with id %s" % (name_to_check, result[0]['name'], result[0]['id'])
+        
+            return set_data_from_candidate_id(skedeline, result[0]['id'])
+    
+    print "Fuzzy matching couldn't match %s" % name_to_check
+    return False
+    
+
+
 def attach_ie_target(skedeline):
     candidate_id = skedeline.candidate_id_number    
     
@@ -27,41 +70,24 @@ def attach_ie_target(skedeline):
     if skedeline.expenditure_date_formatted >= cycle_start:
         
         if candidate_id:
-        
-        
-            try: 
-                this_candidate = Candidate_Overlay.objects.get(fec_id=candidate_id, cycle=('2014'))
-                skedeline.candidate_id_checked = this_candidate.fec_id
-                skedeline.candidate_checked  = this_candidate
-                skedeline.candidate_district_checked = this_candidate.office_district
-                skedeline.district_checked = this_candidate.district
-                skedeline.candidate_office_checked = this_candidate.office
-                skedeline.candidate_party_checked = this_candidate.party
-                skedeline.candidate_state_checked = this_candidate.state
-                skedeline.candidate_name_checked = this_candidate.name
-                
-                skedeline.support_oppose_checked = skedeline.support_oppose_code
-                
-                skedeline.save()
+            result = set_data_from_candidate_id(skedeline, candidate_id)
             
-                return 1
-        
-            except Candidate_Overlay.DoesNotExist:
-                print "Missing overlay for %s %s %s == %s" % (skedeline.candidate_last_name, skedeline.candidate_first_name, skedeline.expenditure_date_formatted, candidate_id)
-                pass
-        else:
-            pass
-            #print "Missing candidate id %s %s %s" % (skedeline.candidate_last_name, skedeline.candidate_first_name, skedeline.expenditure_date_formatted)
+            if result:
+                return True
     
     else:
-        # outta cycle expenditure
-        pass
+        # don't care about these.
+        return False
     
-    ## TODO -- LOOKUP VIA RECONCILIATION TYPE ROUTINES HERE AND ONLY FALLBACK IF IT'S NOT FOUND THEN. 
+    # if we're still here, try a fuzzy match
     
+    fuzzy_match_result = fuzzy_match_candidate(skedeline)
+    if fuzzy_match_result:
+        return True
+        
     # fall back on data that's already there. 
     set_data_from_self(skedeline)
-    return 0
+    return False
 
 
     
@@ -85,8 +111,8 @@ class Command(BaseCommand):
                 continue
             
             if has_sked_E:
-                print "processing %s " % (this_filing.filing_number)
-                print lines_present, lines_present['E']
+                #print "processing %s " % (this_filing.filing_number)
+                #print lines_present, lines_present['E']
                 
                 skedelines = SkedE.objects.filter(filing_number=this_filing.filing_number)
                 

@@ -21,5 +21,7 @@ urlpatterns = patterns('',
     url(r'^styletest/$', TemplateView.as_view(template_name="test_templates/styletest.html")),
     url(r'', include('public_views.datapages.urls')),
     url(r'^api/', include('api.urls')),
-    url(r'^feeds/', include('feeds.urls'))
+    url(r'^feeds/', include('feeds.urls')), 
+    url(r'^reconcile/', include('reconciliation.urls'))
+    
 ) 

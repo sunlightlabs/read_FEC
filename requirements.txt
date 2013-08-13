@@ -28,7 +28,10 @@ django_compressor
 # api
 djangorestframework
 django-filter
-
 django-debug-toolbar
-
 south
+
+# fuzzy matching etc
+-e git+git://github.com/seatgeek/fuzzywuzzy.git#egg=fuzzywuzzy
+jellyfish
+nameparser
