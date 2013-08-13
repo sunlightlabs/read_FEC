@@ -102,6 +102,8 @@ class Candidate_Overlay(models.Model):
     ## This is the human verified field -- see legislators.models.incumbent_challenger
     is_incumbent = models.BooleanField(default=False,help_text="Are they an incumbent? If not, they are a challenger")
     curated_election_year =  models.IntegerField(null=True, help_text="What year is their next election. Set this field--don't overwrite the fec's election year. ")
+    display = models.BooleanField(default=False,help_text="Should they be displayed. Use this = False for off cycle candidates.")
+    
     # foreign key to district
     district = models.ForeignKey('District', null=True, help_text="Presidents have no district")
     # drop the foreign key to Candidate_Overlay -- these tables are dropped and recreated regularly.

@@ -7,7 +7,7 @@ from formdata.models import Committee_Changed
 
 
 
-def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014, election_year=2014, cycle_to_copy_to=2014, verify_does_not_exist=True):
+def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014, election_year=2014, cycle_to_copy_to=2014, verify_does_not_exist=True, display_candidate=False):
     ## Returns overlay if created, None if not. 
     
 
@@ -47,7 +47,9 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014
             pass
     except District.DoesNotExist:
         print "!! Invalid district for %s %s %s %s" % (thiscandidate.cand_name, term_class, thiscandidate.cand_election_year, state)
-        return None
+        
+        # If we can't find a district, override the display setting--just don't display it. 
+        display_candidate = False
     
     co = Candidate_Overlay.objects.create(
             district=this_district,
@@ -65,7 +67,8 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014
             state=thiscandidate.cand_office_st,
             office=thiscandidate.cand_office,
             cand_ici=thiscandidate.cand_ici,
-            candidate_status='D'
+            candidate_status='D',
+            display = display_candidate,
     )
     return co
     

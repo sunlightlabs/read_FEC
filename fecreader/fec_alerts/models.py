@@ -83,6 +83,8 @@ class new_filing(models.Model):
     ## New # Have the body rows in superceded filings been marked as amendments? 
     ## alter table fec_alerts_new_filing add column "body_rows_superceded" boolean;
     body_rows_superceded = models.NullBooleanField(default=False)
+    # Have we added data to skede stuff ? 
+    ie_rows_processed = models.NullBooleanField(default=False)
     
     ## summary data only available after form is parsed:
     
@@ -95,6 +97,8 @@ class new_filing(models.Model):
     # if applicable:
     tot_raised = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
+    
+    tot_ies = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     
     # which filing types are contained? Store as a dict:
     lines_present =  DictionaryField(db_index=True, null=True)

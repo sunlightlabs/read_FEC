@@ -10,6 +10,8 @@ from django.db import models
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
 
+from summary_data.models import District, Candidate_Overlay
+
 
 # This is a flag for when we need to update summary stats on a committee. If we touch a committee, mark it here. Remove it when fixed. Hourly(ish) scripts will do the recalculating...
 class Committee_Changed(models.Model):
@@ -216,6 +218,17 @@ class SkedE(models.Model):
     filing_number = models.IntegerField()
     # can be superceded by amendment or by later filing
     superceded_by_amendment = models.BooleanField(default=False)
+    
+    ## Data added fields. Party isn't part of the original data, so...
+    candidate_checked = models.ForeignKey(Candidate_Overlay, null=True)
+    candidate_id_checked = models.CharField(max_length=9, blank=True, null=True)
+    district_checked = models.ForeignKey(District, null=True)
+    candidate_party_checked = models.CharField(max_length=3, blank=True, null=True)
+    candidate_name_checked = models.CharField(max_length=255, blank=True, null=True)
+    candidate_office_checked = models.CharField(max_length=255, blank=True, null=True)
+    candidate_state_checked = models.CharField(max_length=2, blank=True, null=True)
+    candidate_district_checked = models.CharField(max_length=2, blank=True, null=True)
+    support_oppose_checked = models.CharField(max_length=1, blank=True, null=True)
 
     # from the model
     form_type = models.CharField(max_length=8, blank=True)
@@ -276,9 +289,9 @@ class SkedE(models.Model):
         return "%s, %s %s %s" % (self.payee_last_name, self.payee_first_name, self.payee_middle_name or "", self.payee_suffix or "")
     
     def support_oppose(self):
-        if self.support_oppose_code.upper() == 'S':
+        if self.support_oppose_checked.upper() == 'S':
             return "Support"
-        elif self.support_oppose_code.upper() == 'O':
+        elif self.support_oppose_checked.upper() == 'O':
             return "Oppose"
         return ""
     
