@@ -141,6 +141,8 @@ class Candidate_Overlay(models.Model):
     #
 
     slug = models.SlugField()
+    
+    # independent expenditures data
     total_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
     expenditures_supporting = models.DecimalField(max_digits=19, decimal_places=2, null=True)
     expenditures_opposing = models.DecimalField(max_digits=19, decimal_places=2, null=True)
@@ -629,10 +631,56 @@ class Filing_Gap(models.Model):
 
 
 
-"""  
-class Big_IE_Spending(models.Model):  
+""" outside spending tables. Doesn't include communication cost.  """
 
-class Big_Contrib(models.Model):  
-  
-"""  
+
+# pac_candidate -- indicates a pac's total support or opposition towards a particular candidate. If a particular pac *both* supports and opposes a candidate, this should go in two separate entries. 
+class Pac_Candidate(models.Model):
+    cycle = models.CharField(max_length=4, null=True, blank=True)
+    committee = models.ForeignKey('Committee_Overlay')
+    candidate = models.ForeignKey('Candidate_Overlay')
+    support_oppose = models.CharField(max_length=1, 
+                                       choices=(('S', 'Support'), ('O', 'Oppose'))
+                                       )
+    total_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True) 
+    total_ec = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_coord_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True) 
+
+    class Meta:
+        ordering = ('-total_ind_exp', )
+
+    def __unicode__(self):
+        return self.committee, self.candidate
+
+    def support_or_oppose(self):
+        if (self.support_oppose.upper() == 'O'):
+            return 'Oppose'
+        elif (self.support_oppose.upper() == 'S'): 
+            return 'Support'
+        return ''
+
+class State_Aggregate(models.Model):    
+    cycle = models.CharField(max_length=4, null=True, blank=True)
+    state = models.CharField(max_length=2, blank=True, null=True)
+    expenditures_supporting_president = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    expenditures_opposing_president = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_pres_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    expenditures_supporting_house = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    expenditures_opposing_house = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_house_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True)   
+    expenditures_supporting_senate = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    expenditures_opposing_senate = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_senate_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True)     
+    total_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    # last 10 days is recent
+    recent_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    recent_pres_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_ec = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_coord = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+
+    def __unicode__(self):
+        return STATE_CHOICES[self.state]
+
+    def get_absolute_url(self):
+        return "/state/%s/" % (self.state)
     
