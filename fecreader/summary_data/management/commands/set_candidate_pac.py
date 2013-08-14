@@ -18,6 +18,6 @@ class Command(BaseCommand):
         for summary_line in summary:
             print "Candidate: %s s/o: %s amt: %s committee_id %s" % (summary_line['candidate_checked'], summary_line['support_oppose_checked'], summary_line['total'], summary_line['filer_committee_id_number'])
             pc, created = Pac_Candidate.objects.get_or_create(candidate__pk=summary_line['candidate_checked'], committee__pk=summary_line['filer_committee_id_number'], support_oppose=summary_line['support_oppose_checked'])
-            pc.total_ind_exp = summary_line['expenditure_amount']
+            pc.total_ind_exp = int(round(summary_line['expenditure_amount']))
             pc.save()
         
