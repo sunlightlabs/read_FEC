@@ -50,15 +50,17 @@ def fuzzy_match_candidate(skedeline):
     state = skedeline.candidate_state
     name_to_check = "%s, %s" % (skedeline.candidate_last_name, skedeline.candidate_first_name)
     office = skedeline.candidate_office
+    state = skedeline.candidate_state
     
-    result = match_by_name(name_to_check, state=None, office=None, cycle=THIS_CYCLE, reverse_name_order=False)
+    
+    result = match_by_name(name_to_check, state=state, office=office, cycle=THIS_CYCLE, reverse_name_order=False)
     if result:
         if result[0]['match']:
-            print "Fuzzy matching matched %s to %s with id %s" % (name_to_check, result[0]['name'], result[0]['id'])
+            print "Fuzzy matching matched %s, %s, %s to %s with id %s" % (name_to_check, state, office, result[0]['name'], result[0]['id'])
         
             return set_data_from_candidate_id(skedeline, result[0]['id'])
     
-    print "Fuzzy matching couldn't match %s" % name_to_check
+    print "Fuzzy matching couldn't match %s, %s, %s" % (name_to_check, state, office)
     return False
     
 

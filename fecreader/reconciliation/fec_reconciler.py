@@ -29,7 +29,7 @@ default_cycle='2014'
 
 # Log to the log file ? 
 debug=False
-starts_with_blocklength = 6
+starts_with_blocklength = 5
 
 # standardize the name that gets passed back to refine - add details to help id the candidate
 def standardize_name_from_dict(candidate):
@@ -45,7 +45,7 @@ def standardize_name_from_dict(candidate):
 def block_by_startswith(name, numchars, state=None, office=None, cycle=None):
     namestart = name[:numchars]
     if debug:
-        print "block_by_startswith = state=%s office=%s cycle=%s" % (state,office, cycle)
+        log.debug("block_by_startswith = state=%s office=%s cycle=%s" % (state,office, cycle))
         
     matches = Candidate.objects.filter(cand_name__istartswith=namestart)
     president_flag = False
@@ -138,8 +138,6 @@ def hash_lookup(name, state=None, office=None, cycle=None):
     return None
 
 def match_by_name(name, state=None, office=None, cycle=None, reverse_name_order=False):
-    if debug:
-        print "match_by_name = state=%s office=%s cycle=%s" % (state,office, cycle)
     result_array = []
     name1 = HumanName(name)
     
