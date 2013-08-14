@@ -16,10 +16,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         summary = SkedE.objects.all().exclude(superceded_by_amendment=True).exclude(candidate_checked__isnull=True).exclude(support_oppose_checked__isnull=True).exclude(expenditure_date_formatted__lt=cycle_start).order_by('candidate_checked', 'support_oppose_checked','filer_committee_id_number').values('candidate_checked', 'support_oppose_checked','filer_committee_id_number').annotate(total=Sum('expenditure_amount'))
         for summary_line in summary:
-            print "Candidate: %s s/o: %s amt: %s committee_id %s" % (summary_line['candidate_checked'], summary_line['support_oppose_checked'], summary_line['total'], summary_line['filer_committee_id_number'])
-            committee = Committee_Overlay.objects.get(fec_id=summary_line['filer_committee_id_number'])
-            candidate = Candidate_Overlay.objects.get(pk=summary_line['candidate_checked'])
-            pc, created = Pac_Candidate.objects.get_or_create(candidate=candidate, committee=committee, support_oppose=summary_line['support_oppose_checked'])
-            pc.total_ind_exp = int(round(summary_line['total']))
-            pc.save()
-        
+            #print "Candidate: %s s/o: %s amt: %s committee_id %s" % (summary_line['candidate_checked'], summary_line['support_oppose_checked'], summary_line['total'], summary_line['filer_committee_id_number'])
+            try:
+                committee = Committee_Overlay.objects.get(fec_id=summary_line['filer_committee_id_number'])
+                candidate = Candidate_Overlay.objects.get(pk=summary_line['candidate_checked'])
+                pc, created = Pac_Candidate.objects.get_or_create(candidate=candidate, committee=committee, support_oppose=summary_line['support_oppose_checked'])
+                pc.total_ind_exp = int(round(summary_line['total']))
+                pc.save()
+            except Committee_Overlay.DoesNotExist:
+                print "Missing committee overlay for %s" % (summary_line['filer_committee_id_number'])
