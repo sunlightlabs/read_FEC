@@ -1,5 +1,7 @@
 # Requires the date is specified in filerange.py -- so we give the header a filed date. 
 
+### THIS IS OUT OF DATE B/C HEADERS NOW GO ONLY IN NEW_FILING!!! 
+
 from os import system, path
 
 from dateutil.parser import parse as dateparse

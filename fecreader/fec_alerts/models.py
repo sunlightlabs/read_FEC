@@ -74,7 +74,7 @@ class new_filing(models.Model):
     
     
     
-    # processing status notes
+    ### processing status notes
     filing_is_downloaded = models.NullBooleanField(default=False)
     header_is_processed = models.NullBooleanField(default=False)
     previous_amendments_processed = models.NullBooleanField(default=False)
@@ -99,9 +99,33 @@ class new_filing(models.Model):
     tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     
     tot_ies = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
-    
+    tot_coordinated = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     # which filing types are contained? Store as a dict:
     lines_present =  DictionaryField(db_index=True, null=True)
+    
+    
+    ## Models migrated from old form_header model
+
+    header_data = DictionaryField(db_index=False, null=True)
+    
+    # does this supercede another an filing?
+    is_amendment=models.BooleanField()
+    # if so, what's the original?
+    amends_filing=models.IntegerField(null=True, blank=True)
+    amendment_number = models.IntegerField(null=True, blank=True)
+    
+    # Is this filing superceded by another filing, either a later amendment, or a periodic filing.
+    is_superceded=models.BooleanField(default=False)
+    # which filing is this one superceded by? 
+    amended_by=models.IntegerField(null=True, blank=True)
+    
+    # Is this a 24- or 48- hour notice that is now covered by a periodic (monthly/quarterly) filing, and if so, is ignorable ? 
+    covered_by_periodic_filing=models.BooleanField(default=False)
+    covered_by=models.IntegerField(null=True, blank=True)
+    
+    
+    # F5's can be monthly/quarterly or immediate. We need to keep track of which kind is which so we can supercede them. The filers sometimes fuck their filings up pretty substantially though, so this might not be advisable. 
+    is_f5_quarterly=models.BooleanField(default=False)
     
     objects = HStoreManager()
 

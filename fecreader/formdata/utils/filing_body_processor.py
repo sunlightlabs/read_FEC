@@ -81,25 +81,21 @@ def process_filing_body(filingnum, fp=None, logger=None):
       
     connection = get_connection()
     cursor = connection.cursor()
-    cmd = "select id, is_superceded from formdata_filing_header where filing_number=%s" % (filingnum)
+    cmd = "select fec_id, is_superceded, data_is_processed from fec_alerts_new_filing where filing_number=%s" % (filingnum)
     cursor.execute(cmd)
     
     cd = CSV_dumper(connection)
     
     result = cursor.fetchone()
     if not result:
-        msg = 'process_filing_body: Couldn\'t find a filing header for filing %s' % (filingnum)
+        msg = 'process_filing_body: Couldn\'t find a new_filing for filing %s' % (filingnum)
         logger.error(msg)
         raise FilingHeaderDoesNotExist(msg)
         
     # will throw a TypeError if it's missing.
-    header_id = result[0]
+    header_id = 1
     is_amended = result[1]
-    
-    cmd = "select data_is_processed from fec_alerts_new_filing where filing_number=%s" % (filingnum)
-    cursor.execute(cmd)
-    result = cursor.fetchone()
-    is_already_processed = result[0]
+    is_already_processed = result[2]
     if is_already_processed:
         msg = 'process_filing_body: This filing has already been entered.'
         logger.error(msg)
@@ -150,10 +146,6 @@ def process_filing_body(filingnum, fp=None, logger=None):
     # print msg
     logger.info(msg)
     
-    # save the line number count -- which is counter in the above -- as an hstore in the original 
-    header_data = dict_to_hstore(counter)
-    cmd = "update formdata_filing_header set lines_present='%s'::hstore where filing_number=%s" % (header_data, filingnum)
-    cursor.execute(cmd)
     
     # this data has been moved here. At some point we should pick a single location for this data. 
     header_data = dict_to_hstore(counter)

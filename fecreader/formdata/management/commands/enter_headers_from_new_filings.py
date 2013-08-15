@@ -6,8 +6,8 @@ from parsing.read_FEC_settings import FILECACHE_DIRECTORY
 
 from fec_alerts.models import new_filing
 
-from formdata.models import Filing_Header
-from formdata.utils.filing_processors import process_filing_header
+#from formdata.models import Filing_Header
+from fec_alerts.utils.filing_processors import process_new_filing
 
 
 
@@ -26,7 +26,7 @@ class Command(BaseCommand):
             #print "need to enter filing %s, entry_time %s" % (filing.filing_number, filing.process_time)
             result_header = None
             try: 
-                result_header = process_filing_header(filing.filing_number, fp=fp, filing_time=filing.process_time, filing_time_is_exact=True)
+                result_header = process_new_filing(filing, fp=fp, filing_time=filing.process_time, filing_time_is_exact=True)
             except IOError:
                 # if the file's missing, keep running. 
                 print "MISSING FILING: %s" % (filing.filing_number)  
