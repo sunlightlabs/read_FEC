@@ -189,6 +189,8 @@ def map_f3p_to_cts(f3p_dict):
 
 def string_to_float(the_string):
     # Return zero if it's a blank space
+    if not the_string:
+        return 0
     s = the_string.rstrip()
     if s:
         return float(s)
@@ -197,11 +199,11 @@ def string_to_float(the_string):
 
 def map_summary_form_to_dict(form, header_data):
     cts_dict = None
-    if form == 'F3':
+    if form in ['F3', 'F3A', 'F3T', 'F3N']:
         cts_dict = map_f3_to_cts(header_data)
-    elif form == 'F3P':
+    elif form in ['F3P', 'F3PA', 'F3PN', 'F3PT']:
         cts_dict = map_f3p_to_cts(header_data)
-    elif form == 'F3X':
+    elif form in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
         cts_dict = map_f3x_to_cts(header_data)
     return cts_dict
     
@@ -222,7 +224,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         
         pass
         
-    relevant_filings = new_filing.objects.filter(raw_filer_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT' 'F3', 'F3A', 'F3N', 'F3T' 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
+    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT' 'F3', 'F3A', 'F3N', 'F3T' 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
@@ -246,17 +248,17 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
 
         #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
         
-        last_end_date = this_filing.coverage_through_date
-        form = this_filing.form
+        last_end_date = this_filing.coverage_to_date
+        form = this_filing.form_type
         header_data = this_filing.header_data
         
         cts_dict = map_summary_form_to_dict(form, header_data)
-        
+        #print "Form = %s cts_dict = %s" % (form, cts_dict)
         
         tot_contribs = string_to_float(cts_dict['tot_ite_contrib']) + string_to_float(cts_dict['tot_non_ite_contrib'])
 
         cts_dict['filing_number'] = this_filing.filing_number
-        cts_dict['coverage_through_date'] = this_filing.coverage_through_date
+        cts_dict['coverage_through_date'] = this_filing.coverage_to_date
         cts_dict['coverage_from_date'] = this_filing.coverage_from_date
         cts_dict['data_source'] = 'electronic'
         cts_dict['com_id'] = committee_id
@@ -269,7 +271,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
             
         
         try:
-            this_summary = Committee_Time_Summary.objects.get(com_id=committee_id, coverage_from_date=this_filing.coverage_from_date, coverage_through_date=this_filing.coverage_through_date)
+            this_summary = Committee_Time_Summary.objects.get(com_id=committee_id, coverage_from_date=this_filing.coverage_from_date, coverage_through_date=this_filing.coverage_to_date)
             if force_update:
                 
                 this_summary.filing_number = this_filing.filing_number
