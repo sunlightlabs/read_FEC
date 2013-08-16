@@ -20,6 +20,7 @@
   <br>Treasurer: {{ committee.treasurer }}
   <br>Location: {{ committee.city}}, {{ committee.state}} {{committee.zip}}
   <br>Filing frequency: {{ committee.filing_frequency_text }}
+  <br>See <a href="{{committee.fec_all_filings}}">electronic filings</a> on the FEC's web site.
 <div class="numeric_summary">
 <span class="amount_description">Total receipts:</span>&nbsp;<span class="amount_dollars">{% if committee.total_receipts %}${{committee.total_receipts|intcomma}}{% else %}$0{% endif %}</span>
 
@@ -28,6 +29,41 @@
 <br><span class="amount_description">Cash on hand (as of {{ committee.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if committee.cash_on_hand %}${{committee.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
 
 </div>
+
+
+
+
+{% if recent_report_list %}
+<h2>24- and 48-hour filings</h2>
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Filing ID (Type)</th>
+                <th>Coverage Date</th>
+                <th class="sort">Raised</th>
+                <th class="sort">Independent Expenditures</th>
+
+                
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in recent_report_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}">
+                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }}</a>{% endif %} {{object.get_form_name}}</td>
+                          
+                          <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
+                          <td>{% if object.tot_raised %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_ies %}{% if object.filing_number %}<a href="{{object.get_skedb_url}}">{% endif %}${{ object.tot_ies|intcomma }}{% if object.tot_ies %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                           
+                        </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+{% endif %}
+
+{% if report_list %}
+<h2>Regular Filings</h2>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
@@ -43,7 +79,7 @@
               <tbody>
                   {% for object in report_list %}    
                       <tr class="{% cycle 'odd' 'even' %}">
-                          <td>{% if object.filing_number %}<a href="{{object.get_fec_url}}">{{ object.filing_number }}</a>{% endif %}</td>
+                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }}</a>{% endif %} {{object.get_form_name}}</td>
                           
                           <td>{% if object.coverage_through_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_through_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_receipts %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_receipts|intcomma }}</a>{% else %}$0{% endif %}</td>
@@ -56,6 +92,8 @@
                   
 </tbody>
 </table>
+
+{% endif %}
 </div>
   {% endblock %}
   

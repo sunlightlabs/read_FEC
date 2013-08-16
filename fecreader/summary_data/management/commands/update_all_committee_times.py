@@ -15,6 +15,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         all_committees = Committee_Overlay.objects.all()
         for committee in all_committees:
+            print "Handling %s" % (committee.fec_id)
+
             if committee.is_paper_filer:
                 summarize_committee_periodic_webk(committee.fec_id, force_update=True)
             else:

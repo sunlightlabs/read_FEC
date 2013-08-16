@@ -408,6 +408,10 @@ class Committee_Overlay(models.Model):
 
     def __unicode__(self):
         return self.name
+        
+    def fec_all_filings(self):
+        url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
+        return url
 
     def superpac_status(self):
         if (self.is_superpac):
@@ -597,7 +601,7 @@ class Authorized_Candidate_Committees(models.Model):
     is_pcc = models.NullBooleanField(null=True) 
     com_type = models.CharField(max_length=1, help_text="committee type")
     ignore = models.BooleanField(default=False, help_text="Make this true if this isn't actually authorized.")
-
+    # maybe we're missing a year? 
     
 
 

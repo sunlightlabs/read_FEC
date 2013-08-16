@@ -17,19 +17,10 @@ from summary_data.models import District, Candidate_Overlay
 class Committee_Changed(models.Model):
     committee_id=models.CharField(max_length=9, blank=True)
     time = models.DateTimeField(auto_now=True)
-    
-# Because the entry process for data rows is done by non-django processes, we need to track when it's done. Also mark when it starts, so that if it fails half way through we have some db record of it (and hence don't have to wade through log files)
-# class Filing_Data_Entry_Status(models.Model):
-#     filing_number=models.IntegerField(unique=True)
-#     entry_begun = models.BooleanField()
-#     entry_complete = models.BooleanField()
-#     is_error = models.BooleanField(help_text="If there's an error, flag it here--however, any file where entry has begun and not finished some amount of time later can probably be considered to be in error")
-#     error_text = models.TextField("Text of first DB error -- we give up on entry after the first error.")
-#     last_update_time = models.DateTimeField(auto_now=True)
-#     # which filing types are contained? Store as a dict:
-#     lines_present =  DictionaryField(db_index=True, null=True)
-#     objects = HStoreManager()
 
+
+
+"""  no longer used
 class Filing_Header(models.Model):
     raw_filer_id=models.CharField(max_length=9, blank=True)
 #    filer = models.ForeignKey(Committee_Overlay, null=True)
@@ -74,7 +65,7 @@ class Filing_Header(models.Model):
     
     def __unicode__(self):
         return str(self.filing_number)
-    
+"""
 
         
 # field sizes are based on v8.0 specs, generally
