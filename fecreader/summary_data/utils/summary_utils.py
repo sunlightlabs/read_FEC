@@ -6,7 +6,7 @@ from datetime import timedelta,date
 
 from fec_alerts.models import WebK
 from ftpdata.models import Committee
-from formdata.models import Filing_Header
+#from formdata.models import Filing_Header
 from summary_data.models import Candidate_Overlay, type_hash, Committee_Time_Summary, committee_designation_hash, Filing_Gap
 #from summary_data.models import Committee_Time_Summary
 
@@ -209,14 +209,19 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
     # it's a pain, but we need the committee name in this model. 
     committee_name = ""
     try:
-        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
+        this_committee = Committee.objects.filter(cmte_id=committee_id, cycle=CYCLE)
         committee_name = this_committee.cmte_name
     
     except Committee.DoesNotExist:
         print "Missing committee name"
         pass
+    
+    except Committee.MultipleObjectsReturned:
+        print "multiple committees!! id=%s" % (committee_id)
         
-    relevant_filings = Filing_Header.objects.filter(raw_filer_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form__in=['F3P', 'F3', 'F3X']).order_by('coverage_from_date')
+        pass
+        
+    relevant_filings = new_filing.objects.filter(raw_filer_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT' 'F3', 'F3A', 'F3N', 'F3T' 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
