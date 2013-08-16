@@ -83,6 +83,9 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
     for i, wk in enumerate(relevant_webks):
         #print i, wk.coverage_from_date, wk.coverage_through_date
         
+        
+        
+        """
         if i==0:
             if wk.coverage_from_date:
                 if wk.coverage_from_date - this_cycle_start > one_day:
@@ -92,6 +95,9 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
             difference = wk.coverage_from_date - last_end_date
             if difference > one_day:
                 set_gap_list(last_end_date,wk.coverage_from_date,committee_id)
+                
+        """
+        
         try:
             this_summary = Committee_Time_Summary.objects.get(com_id=committee_id, coverage_from_date=wk.coverage_from_date, coverage_through_date=wk.coverage_through_date)
             if force_update:
