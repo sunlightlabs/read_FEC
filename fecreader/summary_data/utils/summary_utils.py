@@ -7,6 +7,7 @@ from datetime import timedelta,date
 from fec_alerts.models import WebK
 from ftpdata.models import Committee
 #from formdata.models import Filing_Header
+from fec_alerts.models import new_filing
 from summary_data.models import Candidate_Overlay, type_hash, Committee_Time_Summary, committee_designation_hash, Filing_Gap
 #from summary_data.models import Committee_Time_Summary
 
