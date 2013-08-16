@@ -209,7 +209,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
     # it's a pain, but we need the committee name in this model. 
     committee_name = ""
     try:
-        this_committee = Committee.objects.filter(cmte_id=committee_id, cycle=CYCLE)
+        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
         committee_name = this_committee.cmte_name
     
     except Committee.DoesNotExist:
