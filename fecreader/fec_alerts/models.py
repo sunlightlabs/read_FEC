@@ -144,7 +144,14 @@ class new_filing(models.Model):
 
     def get_skede_url(self):
         url = "/filings/%s/SE/" % (self.filing_number)
-        return url    
+        return url
+    
+    def get_spending_url(self):
+        # send people to sked e if there's only sked e's found.
+        if self.form_type in ['F5', 'F5A', 'F5N', 'F24', 'F24A', 'F24N']:
+            return "/filings/%s/SE/" % (self.filing_number)
+        else:
+            return "/filings/%s/SB/" % (self.filing_number)
     
     # change this to be a local page once it is there. 
     def get_absolute_url(self):

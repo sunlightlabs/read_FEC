@@ -53,7 +53,7 @@
                           
                           <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_raised %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
-                          <td>{% if object.tot_ies %}{% if object.filing_number %}<a href="{{object.get_skedb_url}}">{% endif %}${{ object.tot_ies|intcomma }}{% if object.tot_ies %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_ies %}{% if object.filing_number %}<a href="{{object.get_spending_url}}">{% endif %}${{ object.tot_ies|intcomma }}{% if object.tot_ies %}</a>{% endif %}{% else %}$0{% endif %}</td>
                            
                         </tr>
                   {% endfor %}
