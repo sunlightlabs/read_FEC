@@ -5,7 +5,7 @@ from django.db.models import Sum
 
 
 
-from summary_data.utils.summary_utils import summarize_committee_periodic_webk, summarize_committee_periodic_electronic
+from summary_data.utils.summary_utils import summarize_committee_periodic_webk, summarize_committee_periodic_electronic, summarize_noncommittee_periodic_electronic
 from summary_data.models import Committee_Overlay, Committee_Time_Summary
 
 class Command(BaseCommand):
@@ -13,14 +13,19 @@ class Command(BaseCommand):
     requires_model_validation = False
     
     def handle(self, *args, **options):
-        all_committees = Committee_Overlay.objects.all()
+        #all_committees = Committee_Overlay.objects.all()
+        all_committees = Committee_Overlay.objects.filter(ctype='I')
         for committee in all_committees:
             print "Handling %s" % (committee.fec_id)
 
             if committee.is_paper_filer:
                 summarize_committee_periodic_webk(committee.fec_id, force_update=True)
             else:
-                summarize_committee_periodic_electronic(committee.fec_id, force_update=True)
+                # if they file on F5's it's different since, the same form is used for monthly and daily reports
+                if committee.ctype == 'I':
+                    summarize_noncommittee_periodic_electronic(committee.fec_id, force_update=True)                    
+                else:
+                    summarize_committee_periodic_electronic(committee.fec_id, force_update=True)
                 
             
             ## Now that the data is summarized, update the committee_overlay. At the moment we're just looking at the two year cycle; for senate races older webk files need to be populated. Senate special elections complicte this a little; e.g. Hawaii senate race being held off cycle. 

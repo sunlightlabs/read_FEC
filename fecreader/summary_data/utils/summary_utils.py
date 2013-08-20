@@ -148,48 +148,64 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
 
 
 # routines to standardize the variables present in different filings. Sigh. 
-def map_f3x_to_cts(f3p_dict):
+def map_f3x_to_cts(this_dict):
     cts_dict = {
-        'tot_receipts':f3p_dict.get('col_a_total_receipts'),
-        'tot_ite_contrib':f3p_dict.get('col_a_individuals_itemized'), #*
-        'tot_non_ite_contrib':f3p_dict.get('col_a_individuals_unitemized'), #*
-        'tot_disburse':f3p_dict.get('col_a_total_disbursements'),
-        'ind_exp_mad':f3p_dict.get('col_a_independent_expenditures'), #
-        'coo_exp_par':f3p_dict.get('col_a_coordinated_expenditures_by_party_committees'), # na for form 3
-        'new_loans':f3p_dict.get('col_a_total_loans'),
-        'outstanding_loans':f3p_dict.get('col_a_debts_by'),
+        'tot_receipts':this_dict.get('col_a_total_receipts'),
+        'tot_ite_contrib':this_dict.get('col_a_individuals_itemized'), #*
+        'tot_non_ite_contrib':this_dict.get('col_a_individuals_unitemized'), #*
+        'tot_disburse':this_dict.get('col_a_total_disbursements'),
+        'ind_exp_mad':this_dict.get('col_a_independent_expenditures'), #
+        'coo_exp_par':this_dict.get('col_a_coordinated_expenditures_by_party_committees'), # na for form 3
+        'new_loans':this_dict.get('col_a_total_loans'),
+        'outstanding_loans':this_dict.get('col_a_debts_by'),
         'electioneering_made':0, # NA
-        'cash_on_hand_end':f3p_dict.get('col_a_cash_on_hand_close_of_period'),
+        'cash_on_hand_end':this_dict.get('col_a_cash_on_hand_close_of_period'),
     }
     return cts_dict
 
-def map_f3_to_cts(f3p_dict):
+def map_f5_to_cts(this_dict):
     cts_dict = {
-        'tot_receipts':f3p_dict.get('col_a_total_receipts'),
-        'tot_ite_contrib':f3p_dict.get('col_a_individual_contributions_itemized'),
-        'tot_non_ite_contrib':f3p_dict.get('col_a_individual_contributions_unitemized'),
-        'tot_disburse':f3p_dict.get('col_a_total_disbursements'),
-        'ind_exp_mad':0, # na for form 3
+        'tot_receipts':this_dict.get('total_contribution'),
+        # 'tot_ite_contrib': F5 doesn't have this line
+        #'tot_non_ite_contrib':this_dict.get('col_a_individuals_unitemized'), #*
+        'tot_disburse':this_dict.get('total_independent_expenditure'),
+        'ind_exp_mad':this_dict.get('total_independent_expenditure'), #
         'coo_exp_par':0, # na for form 3
-        'new_loans':f3p_dict.get('col_a_total_loans'),
-        'outstanding_loans':f3p_dict.get('col_a_debts_by'),
+        #'new_loans':this_dict.get('col_a_total_loans'),
+        #'outstanding_loans':this_dict.get('col_a_debts_by'),
         'electioneering_made':0, # NA
-        'cash_on_hand_end':f3p_dict.get('col_a_cash_on_hand_close_of_period'),
+        #'cash_on_hand_end':this_dict.get('col_a_cash_on_hand_close_of_period'),
     }
     return cts_dict
 
-def map_f3p_to_cts(f3p_dict):
+
+def map_f3_to_cts(this_dict):
     cts_dict = {
-        'tot_receipts':f3p_dict.get('col_a_total_receipts'),
-        'tot_ite_contrib':f3p_dict.get('col_a_individuals_itemized'), #*
-        'tot_non_ite_contrib':f3p_dict.get('col_a_individuals_unitemized'), #*
-        'tot_disburse':f3p_dict.get('col_a_total_disbursements'),
+        'tot_receipts':this_dict.get('col_a_total_receipts'),
+        'tot_ite_contrib':this_dict.get('col_a_individual_contributions_itemized'),
+        'tot_non_ite_contrib':this_dict.get('col_a_individual_contributions_unitemized'),
+        'tot_disburse':this_dict.get('col_a_total_disbursements'),
         'ind_exp_mad':0, # na for form 3
         'coo_exp_par':0, # na for form 3
-        'new_loans':f3p_dict.get('col_a_total_loans'),
-        'outstanding_loans':f3p_dict.get('col_a_debts_by'),
+        'new_loans':this_dict.get('col_a_total_loans'),
+        'outstanding_loans':this_dict.get('col_a_debts_by'),
         'electioneering_made':0, # NA
-        'cash_on_hand_end':f3p_dict.get('col_a_cash_on_hand_close_of_period'),
+        'cash_on_hand_end':this_dict.get('col_a_cash_on_hand_close_of_period'),
+    }
+    return cts_dict
+
+def map_f3p_to_cts(this_dict):
+    cts_dict = {
+        'tot_receipts':this_dict.get('col_a_total_receipts'),
+        'tot_ite_contrib':this_dict.get('col_a_individuals_itemized'), #*
+        'tot_non_ite_contrib':this_dict.get('col_a_individuals_unitemized'), #*
+        'tot_disburse':this_dict.get('col_a_total_disbursements'),
+        'ind_exp_mad':0, # na for form 3
+        'coo_exp_par':0, # na for form 3
+        'new_loans':this_dict.get('col_a_total_loans'),
+        'outstanding_loans':this_dict.get('col_a_debts_by'),
+        'electioneering_made':0, # NA
+        'cash_on_hand_end':this_dict.get('col_a_cash_on_hand_close_of_period'),
     }
     return cts_dict
 
@@ -211,9 +227,94 @@ def map_summary_form_to_dict(form, header_data):
         cts_dict = map_f3p_to_cts(header_data)
     elif form in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
         cts_dict = map_f3x_to_cts(header_data)
+    elif form in ['F5', 'F5A', 'F5N']:
+        cts_dict = map_f5_to_cts(header_data)
     return cts_dict
     
+def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
+    committee_name = ""
+    try:
+        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
+        committee_name = this_committee.cmte_name
+    
+    except Committee.DoesNotExist:
+        print "Missing committee name"
+        pass
+    
+    except Committee.MultipleObjectsReturned:
+        print "multiple committees!! id=%s" % (committee_id)
+        
+        pass
+        
+    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_f5_quarterly=True, is_superceded=False, coverage_from_date__gte=date(2013,1,1)).order_by('coverage_from_date')
+    #print "processing %s" % committee_id
+    if not relevant_filings:
+        #print "No filings found for %s" % (committee_id)
+        return None
 
+    # check gaps
+    last_end_date = None
+    for i, this_filing in enumerate(relevant_filings):
+        #print i, this_filing.coverage_from_date, this_filing.coverage_through_date
+        if i==0:
+            if this_filing.coverage_from_date - this_cycle_start > one_day:
+                #print "Missing coverage from start of cycle!!"
+                set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
+
+
+        if i>0:
+            difference = this_filing.coverage_from_date - last_end_date
+            if difference > one_day:
+                #print "gap found!"
+                set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
+
+        #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
+
+        last_end_date = this_filing.coverage_to_date
+        form = this_filing.form_type
+        header_data = this_filing.header_data
+
+        cts_dict = map_summary_form_to_dict(form, header_data)
+        #print "Form = %s cts_dict = %s" % (form, cts_dict)
+
+
+        cts_dict['filing_number'] = this_filing.filing_number
+        cts_dict['coverage_through_date'] = this_filing.coverage_to_date
+        cts_dict['coverage_from_date'] = this_filing.coverage_from_date
+        cts_dict['data_source'] = 'electronic'
+        cts_dict['com_id'] = committee_id
+        # only reported receipts *are* the contribs, so...
+        cts_dict['tot_contrib'] = cts_dict['tot_receipts'] 
+        cts_dict['com_name'] = committee_name
+
+        for i in cts_dict:
+            if cts_dict[i] == '':
+                cts_dict[i] = None
+
+
+        try:
+            this_summary = Committee_Time_Summary.objects.get(com_id=committee_id, coverage_from_date=this_filing.coverage_from_date, coverage_through_date=this_filing.coverage_to_date)
+            if force_update:
+
+                this_summary.filing_number = this_filing.filing_number
+                this_summary.tot_receipts = cts_dict.get('tot_receipts')
+                this_summary.tot_contrib = cts_dict.get('tot_contrib')
+                this_summary.com_name = cts_dict.get('com_name')
+                this_summary.tot_disburse = cts_dict.get('tot_disburse')
+                this_summary.ind_exp_mad = cts_dict.get('ind_exp_mad')
+                this_summary.data_source = cts_dict.get('data_source')
+                this_summary.save()
+
+        except Committee_Time_Summary.DoesNotExist:
+            cts = Committee_Time_Summary(**cts_dict)
+            cts.save()
+
+
+
+
+
+
+## rewrite so this can handle F5's to replace the above
 def summarize_committee_periodic_electronic(committee_id, force_update=True):
     # it's a pain, but we need the committee name in this model. 
     committee_name = ""
