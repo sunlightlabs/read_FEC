@@ -13,8 +13,7 @@ class Command(BaseCommand):
     requires_model_validation = False
     
     def handle(self, *args, **options):
-        #all_committees = Committee_Overlay.objects.all()
-        all_committees = Committee_Overlay.objects.filter(ctype='I')
+        all_committees = Committee_Overlay.objects.all()
         for committee in all_committees:
             print "Handling %s" % (committee.fec_id)
 
