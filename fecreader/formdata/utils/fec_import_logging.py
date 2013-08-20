@@ -1,10 +1,10 @@
 import logging
 
-# should go in some non-django file; we'd then have to 
+# should go in some non-django file; we'd then have to
 LOG_DIRECTORY="/projects/realtimefec/log/"
 LOG_NAME="fec_import"
 
-""" Set up a logger with settings from the settings file. Will log info and anything higher. 
+""" Set up a logger with settings from the settings file. Will log info and anything higher.
 
 from utils.fec_logging import fec_logger
 
@@ -27,6 +27,6 @@ def fec_logger():
     hdlr = logging.FileHandler(LOG_DIRECTORY + LOG_NAME + '.log')
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     hdlr.setFormatter(formatter)
-    logger.addHandler(hdlr) 
+    logger.addHandler(hdlr)
     logger.setLevel(logging.ERROR)
     return logger
