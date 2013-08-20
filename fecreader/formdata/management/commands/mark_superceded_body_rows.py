@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Sum, Max, Min
 
 
-from formdata.models import Filing_Header, SkedA, SkedE, Committee_Changed
+from formdata.models import SkedA, SkedE, Committee_Changed
 from fec_alerts.models import new_filing
 from formdata.utils.fec_import_logging import fec_logger
 
@@ -14,13 +14,13 @@ from formdata.utils.fec_import_logging import fec_logger
 from django.db import connection
 
 # superceded operations are slow bc of query structure -- need to hit indexes here
-def mark_superceded_F24s(new_f3x_filing_header):
+def mark_superceded_F24s(new_f3x_new_filing):
     print "marking superceded F24 body rows"
     
     # we only mark the child rows as superceded--the filing itself isn't, because it's possible, in theory, that it's *half* superceded. 
-    coverage_from_date = new_f3x_filing_header.coverage_from_date
-    coverage_through_date = new_f3x_filing_header.coverage_through_date
-    raw_filer_id = new_f3x_filing_header.raw_filer_id
+    coverage_from_date = new_f3x_new_filing.coverage_from_date
+    coverage_through_date = new_f3x_new_filing.coverage_to_date
+    raw_filer_id = new_f3x_new_filing.fec_id
     
     filing_numbers = Filing_Header.objects.filter(raw_filer_id=raw_filer_id).values('filing_number')
     filing_array = []
@@ -35,12 +35,12 @@ def mark_superceded_F24s(new_f3x_filing_header):
     #Committee_Changed.objects.get_or_create(committee_id=raw_filer_id)
     
         
-def mark_superceded_F65s(new_f3_filing_header):
+def mark_superceded_F65s(new_f3x_new_filing):
     print "marking superceded F65s"
     
-    coverage_from_date = new_f3_filing_header.coverage_from_date
-    coverage_through_date = new_f3_filing_header.coverage_through_date
-    raw_filer_id = new_f3_filing_header.raw_filer_id
+    coverage_from_date = new_f3x_new_filing.coverage_from_date
+    coverage_through_date = new_f3x_new_filing.coverage_to_date
+    raw_filer_id = new_f3x_new_filing.fec_id
     
     filing_numbers = Filing_Header.objects.filter(raw_filer_id=raw_filer_id).values('filing_number')
     filing_array = []
@@ -59,6 +59,7 @@ def summarize_f24(new_filing):
     results = filing_ies.aggregate(tot_spent=Sum('expenditure_amount'), start_date=Min('expenditure_date_formatted'), end_date=Max('expenditure_date_formatted'))
     if results:
         new_filing.tot_spent = results['tot_spent']
+        new_filing.tot_ies = results['tot_spent']
         new_filing.coverage_from_date = results['start_date']
         new_filing.coverage_to_date = results['end_date']
         new_filing.save()
@@ -73,6 +74,13 @@ def summarize_f6(new_filing):
         new_filing.coverage_to_date = results['end_date']
         new_filing.save()
     
+def summarize_nonquarterly_f5(new_filing):
+    filing_ies = SkedE.objects.filter(filing_number=new_filing.filing_number)
+    
+    results = filing_ies.aggregate(start_date=Min('expenditure_date_formatted'), end_date=Max('expenditure_date_formatted'))
+    new_filing.coverage_from_date = results['start_date']
+    new_filing.coverage_to_date = results['end_date']
+    new_filing.save()
     
 
 class Command(BaseCommand):
@@ -84,6 +92,7 @@ class Command(BaseCommand):
         logger=fec_logger()
         
         filings_to_process = new_filing.objects.filter(previous_amendments_processed=True,header_is_processed=True, data_is_processed=True, body_rows_superceded=False).order_by('filing_number')
+                
         for this_filing in filings_to_process:
             print "processing %s " % (this_filing.filing_number)
             
@@ -94,36 +103,24 @@ class Command(BaseCommand):
             elif this_filing.form_type.upper() in ['F6', 'F6A', 'F6N']:
                 summarize_f6(this_filing)
             
-            # get the corresponding filing header
-            this_filing_header = None
-            try:
-                this_filing_header = Filing_Header.objects.get(filing_number = this_filing.filing_number)
-            except Filing_Header.DoesNotExist:
-                # log this 
-                msg = 'mark_superceded_body_rows: Couldn\'t find a filing header for # %s' % (this_filing.filing_number)
-                logger.info(msg) 
-                
-            
+
+            elif this_filing.form_type.startswith('F5') and not this_filing.is_f5_quarterly:
+                summarize_nonquarterly_f5(this_filing)
             
             # if it's got sked E's and it's an F3X, overwrite 24 hr report
-            if this_filing_header.form=='F3X':
-                # need more logical tests--needs to be candidate pcc... 
-                
+            elif this_filing.form_type.startswith('F3'):                
                 try:
-                    this_filing_header.lines_present['SchE']
-                    mark_superceded_F24s(this_filing_header)
+                    this_filing.lines_present['SchE']
+                    mark_superceded_F24s(this_filing)
                 except KeyError:
                     pass
 
 
-            # if it's a F3 remove F65's        
-            if this_filing_header.form=='F3':
                 try:
-                    this_filing_header.lines_present['SchA']
+                    this_filing.lines_present['SchA']
                     mark_superceded_F65s(this_filing_header)
                 except KeyError:
                     pass
-            if this_filing_header.form=='F3':        
-                mark_superceded_F65s(this_filing_header)
+                    
             this_filing.body_rows_superceded = True
             this_filing.save()

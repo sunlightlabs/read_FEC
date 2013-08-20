@@ -1,6 +1,6 @@
 from dateutil.parser import parse as dateparse
 
-from hstore_helpers import dict_to_hstore
+from formdata.utils.hstore_helpers import dict_to_hstore
 
         
 def validate_decimal(value):

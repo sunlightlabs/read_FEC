@@ -27,13 +27,13 @@
 </div>
 
 <p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
-  <b>Show: </b><span><a href="javascript:search_all();">all today</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a></span> <b>or set filter options below.</b><br>
+  <b>Show: </b><span><a href="javascript:search_all();">all today</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a>&nbsp;|&nbsp;<a href="javascript:search_party();">party committees</a></span> <b>or set filter options below.</b><br>
   <div id="formdiv">
     
   <span>
   Date filed: <select name="time_range" class="dropdown_field_narrow" id="time_range">
       <option value='day'>today</option>
-      <option value='week'>this week</option>
+      <option value='week'>last 7 days</option>
       <option value='cycle'>entire cycle</option>
     </select>
   </span>
@@ -48,8 +48,7 @@ Committee Type: <select name="committee_type" class="dropdown_field" id="committ
   <option value='UO'>Super PACs (NOT including hybrids)</option>
   <option value='P'>Presidential</option>
   <option value='E'>Electioneering Communication</option>
-  <option value='Z'>National Party</option>
-  <option value='XYZ'>All Party</option>
+  <option value='XYZ'>Party committees</option>
   <option value='I'>Non committees</option>
   <option value='C'>Communication Cost</option>
 </select>
@@ -152,7 +151,7 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
         <td><a href="{{ committee_url}}">{{ committee_name}}</a></td>
         <td>{{{ mddyy coverage_from_date }}} - {{{ mddyy coverage_to_date }}}</td>
         <td><a href="{{ skeda_url}}">${{{ addcommas tot_raised }}}</a></td>
-        <td><a href="{{ skedb_url}}">${{{ addcommas tot_spent }}}</a></td>
+        <td><a href="{{ spending_url}}">${{{ addcommas tot_spent }}}</a></td>
         <td>${{{ addcommas coh_end }}}</td>
         <td>{{ process_time_formatted }}</td>
     </tr>
@@ -245,11 +244,12 @@ function reset_all_fields() {
   });
   // default is filing order
   $("#ordering").val('-filing_number');
-  $("#time_range").val('day');  
+  $("#time_range").val('cycle');  
 }
 
 function search_all() {
   reset_all_fields();
+  $("#time_range").val('day');  
   button_load();
   
 }
@@ -264,6 +264,12 @@ function search_ies() {
 function search_committees() {
   reset_all_fields();
   $("#committee_class").val('HSP');
+  button_load();
+}
+
+function search_party() {
+  reset_all_fields();
+  $("#committee_class").val('XYZ');
   button_load();
 }
 

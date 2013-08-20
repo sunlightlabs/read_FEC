@@ -26,7 +26,7 @@
 <p>Use this page to find committee summary information for the entire cycle.</p>
 
 <b>Show: </b><span class="form_spacer"><a href="javascript:get_house();">House</a>&nbsp;|&nbsp;<a href="javascript:get_senate();">Senate</a>&nbsp;|&nbsp;<a href="javascript:get_superpacs();">
-super PACs</a>&nbsp;|&nbsp;<a href="javascript:get_npcmtes();">National Party Committees</a>&nbsp;<b>or set custom filter options below</b>
+super PACs</a>&nbsp;|&nbsp;<a href="javascript:get_cmtes();">Party committees</a>&nbsp;<b>or set custom filter options below</b>
 <div id="formdiv">
 <span>Search by candidate or committee name: <input type="text" class="text_field" id="search_term" name="search_term"></input>
 </span>
@@ -40,8 +40,7 @@ Committee type: <select name="committee_type" class="dropdown_field" id="committ
   <option value='UO'>Super PACs (NOT including hybrids)</option>
   <option value='P'>Presidential</option>
   <option value='E'>Electioneering Communication</option>
-  <option value='Z'>National Party</option>
-  <option value='XYZ'>All Party</option>
+  <option value='XYZ'>Party committees</option>
   <option value='I'>Non committees</option>
   <option value='C'>Communication Cost</option>
 </select>
@@ -222,9 +221,9 @@ function search_all() {
   
 }
 
-function get_npcmtes() {
+function get_cmtes() {
   reset_all_fields();
-  $("#committee_class").val('Z');  
+  $("#committee_class").val('XYZ');  
   button_load();
 }
 

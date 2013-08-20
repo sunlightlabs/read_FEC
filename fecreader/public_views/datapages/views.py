@@ -4,13 +4,14 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.db import connection
 from django.db.models import Q
 from django.template import RequestContext
+from django.shortcuts import redirect
 
 
 from fec_alerts.models import new_filing, newCommittee
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees
 this_cycle = '2014'
 this_cycle_start = datetime.date(2013,1,1)
-from formdata.models import Filing_Header, SkedA, SkedB, SkedE
+from formdata.models import SkedA, SkedB, SkedE
 from summary_data.utils.summary_utils import map_summary_form_to_dict
 # get not null senate ids. 
 #senate_ids =  [ senator['fec_id'] for senator in senate_crosswalk if senator['fec_id'] ]
@@ -25,10 +26,14 @@ except KeyError:
 def newbase(request):
     return render_to_response('datapages/realtime_base.html', {}, context_instance=RequestContext(request))
     
+def home_page(request):
+    # should eventually have a home page, or straighten out urls
+    return redirect('/newest-filings/')
+    
 def house(request):
 
     title="House Members - Cycle Summary"
-    explanatory_text="This page shows the fundraising totals for the entire cycle for current house members. For cyclewide totals for challengers, see the <a href=\"/candidates/\">candidates</a> page. For fundraising totals for just a single reporting period, see the <a href=\"/reports\">reports</a> page."
+    explanatory_text="This page shows the fundraising totals for the entire cycle for current house members. For cyclewide totals for challengers, see the <a href=\"/candidates/\">candidates</a> page."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
     
     legislators = Candidate_Overlay.objects.filter(office='H', is_incumbent=True)
@@ -46,7 +51,7 @@ def house(request):
 def candidates(request):
 
     title="Candidates - Cycle Summary"
-    explanatory_text="This page shows the fundraising totals for the entire cycle for current candidates. For fundraising totals for just a single reporting period, see the <a href=\"/reports\">reports</a> page."
+    explanatory_text="This page shows the fundraising totals for the entire cycle for current candidates."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
     legislators = Candidate_Overlay.objects.all()
@@ -238,10 +243,22 @@ def committee(request, committee_id):
         
     title = committee_overlay.name
     report_list = Committee_Time_Summary.objects.filter(com_id=committee_id, coverage_from_date__gte=this_cycle_start).order_by('coverage_through_date')
+    
+    
+    end_of_coverage_date = committee_overlay.cash_on_hand_date
+    recent_report_list = None
+    
+    if end_of_coverage_date:
+        recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=end_of_coverage_date, form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
+    else:
+        recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=this_cycle_start, form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
+        
+    
     return render_to_response('datapages/committee.html',
         {
         'title':title,
         'report_list':report_list,
+        'recent_report_list':recent_report_list,
         'committee':committee_overlay,
         }, 
         context_instance=RequestContext(request)

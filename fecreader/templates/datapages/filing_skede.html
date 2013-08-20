@@ -50,7 +50,7 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
                       <tr class="{% cycle 'odd' 'even' %}" id="{{ object.transaction_id }}">
                           <td><a href="#{{ object.transaction_id }}">{{ object.form_type }}</a></td>
                           <td> {{ object.support_oppose }}</td>
-                          <td>{{ object.candidate_name_raw }}</td>
+                          <td>{{ object.candidate_name_checked }}</td>
                           <td>{{ object.payee_name_simplified }}</td>
                           <td>{{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
                           <td>${{ object.expenditure_amount|intcomma}}</td>

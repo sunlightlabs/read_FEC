@@ -23,8 +23,10 @@ class Command(BaseCommand):
             try:
                 cando = Candidate_Overlay.objects.get(fec_id=acc.candidate_id)
             except Candidate_Overlay.DoesNotExist:
-                print "Missing candidate overlay for candidate--committee name is:%s committee_id is: %s" % (acc.committee_name, acc.candidate_id)
+                #print "Missing candidate overlay for candidate--committee name is:%s committee_id is: %s" % (acc.committee_name, acc.candidate_id)
                 continue
+            except Candidate_Overlay.MultipleObjectsReturned:
+                print "Multiple candidate overlays returned for candidate--committee name is:%s committee_id is: %s" % (acc.committee_name, acc.candidate_id)
                 
             como.curated_candidate = cando
             como.save()

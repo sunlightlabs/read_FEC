@@ -1,0 +1,15 @@
+{# The identifierSpace and schemaSpace isn't used; the view and preview urls would need to be set... #}
+{{ callbackarg }}({
+  "name" : "{{ reconciliation_name }}",
+  "identifierSpace" : "{{ space_base }}ns/authority.object.type",
+  "schemaSpace" : "{{ space_base }}ns/type.object.id",
+  "view" : {
+    "url" : "{{ url_base }}{% templatetag openbrace %}{% templatetag openbrace %}id{% templatetag closebrace %}{% templatetag closebrace %}/"
+  },
+  "preview" : {
+    "url" : "{{ preview_base }}{% templatetag openbrace %}{% templatetag openbrace %}id{% templatetag closebrace %}{% templatetag closebrace %}/",
+    "width" : {{ preview_width }},
+    "height" : {{ preview_height }}
+  },
+  "defaultTypes" : []
+})

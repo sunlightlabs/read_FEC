@@ -8,13 +8,13 @@ class NFSerializer(serializers.HyperlinkedModelSerializer):
     form_name = serializers.Field(source='get_form_name')
     process_time_formatted = serializers.Field(source='process_time_formatted')
     skeda_url = serializers.Field(source='get_skeda_url') 
-    skedb_url = serializers.Field(source='get_skedb_url') 
+    spending_url = serializers.Field(source='get_spending_url') 
     absolute_url = serializers.Field(source='get_absolute_url') 
     committee_url = serializers.Field(source='get_committee_url')  
     
     class Meta:
         model = new_filing
-        fields = ('fec_id', 'committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'coverage_to_date', 'is_superpac', 'committee_designation', 'committee_type', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent', 'lines_present', 'form_name', 'skeda_url', 'skedb_url', 'absolute_url', 'committee_url', 'process_time_formatted')
+        fields = ('fec_id', 'committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'coverage_to_date', 'is_superpac', 'committee_designation', 'committee_type', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent', 'lines_present', 'form_name', 'skeda_url', 'spending_url', 'absolute_url', 'committee_url', 'process_time_formatted')
 
 class COSerializer(serializers.HyperlinkedModelSerializer):
     display_type = serializers.Field(source='display_type')

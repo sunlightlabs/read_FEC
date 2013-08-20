@@ -74,7 +74,7 @@ class new_filing(models.Model):
     
     
     
-    # processing status notes
+    ### processing status notes
     filing_is_downloaded = models.NullBooleanField(default=False)
     header_is_processed = models.NullBooleanField(default=False)
     previous_amendments_processed = models.NullBooleanField(default=False)
@@ -83,6 +83,8 @@ class new_filing(models.Model):
     ## New # Have the body rows in superceded filings been marked as amendments? 
     ## alter table fec_alerts_new_filing add column "body_rows_superceded" boolean;
     body_rows_superceded = models.NullBooleanField(default=False)
+    # Have we added data to skede stuff ? 
+    ie_rows_processed = models.NullBooleanField(default=False)
     
     ## summary data only available after form is parsed:
     
@@ -96,8 +98,34 @@ class new_filing(models.Model):
     tot_raised = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     
+    tot_ies = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
+    tot_coordinated = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     # which filing types are contained? Store as a dict:
     lines_present =  DictionaryField(db_index=True, null=True)
+    
+    
+    ## Models migrated from old form_header model
+
+    header_data = DictionaryField(db_index=False, null=True)
+    
+    # does this supercede another an filing?
+    is_amendment=models.BooleanField()
+    # if so, what's the original?
+    amends_filing=models.IntegerField(null=True, blank=True)
+    amendment_number = models.IntegerField(null=True, blank=True)
+    
+    # Is this filing superceded by another filing, either a later amendment, or a periodic filing.
+    is_superceded=models.BooleanField(default=False)
+    # which filing is this one superceded by? 
+    amended_by=models.IntegerField(null=True, blank=True)
+    
+    # Is this a 24- or 48- hour notice that is now covered by a periodic (monthly/quarterly) filing, and if so, is ignorable ? 
+    covered_by_periodic_filing=models.BooleanField(default=False)
+    covered_by=models.IntegerField(null=True, blank=True)
+    
+    
+    # F5's can be monthly/quarterly or immediate. We need to keep track of which kind is which so we can supercede them. The filers sometimes fuck their filings up pretty substantially though, so this might not be advisable. 
+    is_f5_quarterly=models.BooleanField(default=False)
     
     objects = HStoreManager()
 
@@ -116,7 +144,14 @@ class new_filing(models.Model):
 
     def get_skede_url(self):
         url = "/filings/%s/SE/" % (self.filing_number)
-        return url    
+        return url
+    
+    def get_spending_url(self):
+        # send people to sked e if there's only sked e's found.
+        if self.form_type in ['F5', 'F5A', 'F5N', 'F24', 'F24A', 'F24N']:
+            return "/filings/%s/SE/" % (self.filing_number)
+        else:
+            return "/filings/%s/SB/" % (self.filing_number)
     
     # change this to be a local page once it is there. 
     def get_absolute_url(self):

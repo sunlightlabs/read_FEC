@@ -1,0 +1,1 @@
+{% if obj.tot_raised|intcomma }}$${{ obj.tot_raised|intcomma }} raised by <a href="{{obj.get_committee_url}}">{{ obj.committee_name}}</a>, {{ obj.get_form_name }} filed {{ obj.process_time}}
