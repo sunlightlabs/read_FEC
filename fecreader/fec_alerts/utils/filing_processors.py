@@ -4,7 +4,6 @@ from dateutil.parser import parse as dateparse
 from parsing.form_parser import form_parser, ParserMissingError
 from parsing.filing import filing
 from parsing.read_FEC_settings import FILECACHE_DIRECTORY
-from formdata.models import Committee_Changed
 from fec_alerts.models import new_filing
 from fec_alerts.utils.form_mappers import *
 
@@ -91,10 +90,6 @@ def process_new_filing(thisnewfiling, fp=None, filing_time=None, filing_time_is_
         amended_filing = f1.headers['filing_amended']
 
 
-    try:
-        Committee_Changed.objects.get_or_create(committee_id=f1.headers['fec_id'])
-    except Committee_Changed.MultipleObjectsReturned:
-        pass
     
     from_date = None
     through_date = None
