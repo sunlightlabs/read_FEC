@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Sum, Max, Min
 
 
-from formdata.models import SkedA, SkedE, Committee_Changed
+from formdata.models import SkedA, SkedE
 from fec_alerts.models import new_filing
 from formdata.utils.fec_import_logging import fec_logger
 
@@ -30,10 +30,6 @@ def mark_superceded_F24s(new_f3x_new_filing):
     SkedE.objects.filter(form_type__istartswith='F24', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_from_date).update(superceded_by_amendment=True)
    
     
-    ## This isn't necessary b/c the dirty flag will be set by the workers entering the new filing. 
-    # mark the committee as being dirty;
-    #Committee_Changed.objects.get_or_create(committee_id=raw_filer_id)
-    
         
 def mark_superceded_F65s(new_f3x_new_filing):
     print "marking superceded F65s"
@@ -48,10 +44,6 @@ def mark_superceded_F65s(new_f3x_new_filing):
         filing_array.append(i['filing_number'])
     SkedA.objects.filter(form_type__istartswith='F65', filing_number__in=filing_array, superceded_by_amendment=False, contribution_date__gte=coverage_from_date, contribution_date__lte=coverage_from_date).update(superceded_by_amendment=True)
     
-    #print connection.queries
-    
-    # mark the committee as being dirty;
-    # Committee_Changed.objects.get_or_create(committee_id=raw_filer_id)
     
 def summarize_f24(new_filing):
     filing_ies = SkedE.objects.filter(filing_number=new_filing.filing_number)

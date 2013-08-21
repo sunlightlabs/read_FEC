@@ -3,7 +3,6 @@ from summary_data.models import Candidate_Overlay, District, Committee_Overlay
 from summary_data.utils.term_reference import get_election_year_from_term_class, get_term_class_from_election_year
 from summary_data.utils.party_reference import get_party_from_pty
 from django.template.defaultfilters import slugify
-from formdata.models import Committee_Changed
 
 
 
@@ -87,11 +86,7 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
             return None
         except Committee_Overlay.DoesNotExist:
             pass
-            # It's a new committee, so mark it as dirty--in need of totalling! 
-            try:
-                Committee_Changed.objects.get_or_create(committee_id=committee_id)
-            except Committee_Changed.MultipleObjectsReturned:
-                pass
+
                 
     ctype = c.cmte_tp
     is_hybrid = False
@@ -128,6 +123,7 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
         is_noncommittee = is_noncommittee,
         designation = c.cmte_dsgn,
         ctype = ctype,
+        is_dirty=True,
     )
     
     return cm

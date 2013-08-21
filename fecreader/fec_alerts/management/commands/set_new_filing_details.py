@@ -83,6 +83,10 @@ def handle_filing(this_filing):
         this_filing.committee_slug = co.slug
         this_filing.party = co.party
         
+        # mark that the committee is dirty
+        co.is_dirty=True
+        co.save()
+        
     except Committee_Overlay.DoesNotExist:
         try:
             co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=2014)

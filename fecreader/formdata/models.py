@@ -13,61 +13,6 @@ from djorm_hstore.models import HStoreManager
 from summary_data.models import District, Candidate_Overlay
 
 
-# This is a flag for when we need to update summary stats on a committee. If we touch a committee, mark it here. Remove it when fixed. Hourly(ish) scripts will do the recalculating...
-class Committee_Changed(models.Model):
-    committee_id=models.CharField(max_length=9, blank=True)
-    time = models.DateTimeField(auto_now=True)
-
-
-
-"""  no longer used
-class Filing_Header(models.Model):
-    raw_filer_id=models.CharField(max_length=9, blank=True)
-#    filer = models.ForeignKey(Committee_Overlay, null=True)
-    form=models.CharField(max_length=7)
-    # Is filing_number gonna be unique within a cycle? 
-    filing_number=models.IntegerField(unique=True)
-    version=models.CharField(max_length=7)
-    
-    coverage_from_date = models.DateField(null=True)
-    coverage_through_date = models.DateField(null=True)
-    
-    # does this supercede another an filing?
-    is_amendment=models.BooleanField()
-    # if so, what's the original?
-    amends_filing=models.IntegerField(null=True, blank=True)
-    amendment_number = models.IntegerField(null=True, blank=True)
-    
-    # Is this filing superceded by another filing, either a later amendment, or a periodic filing.
-    is_superceded=models.BooleanField(default=False)
-    # which filing is this one superceded by? 
-    amended_by=models.IntegerField(null=True, blank=True)
-    
-    # Is this a 24- or 48- hour notice that is now covered by a periodic (monthly/quarterly) filing, and if so, is ignorable ? 
-    covered_by_periodic_filing=models.BooleanField(default=False)
-    covered_by=models.IntegerField(null=True, blank=True)
-    
-    # When did the filing come in? 
-    filing_time = models.DateTimeField(auto_now=False, null=True)
-    # Is this an exact time, or is it a day estimated from the zip file directories ? 
-    filing_time_is_exact = models.BooleanField()
-    
-    # Shortcut to store whether the files' been totally processed; helpful in tracking down filings where entry failed and they are now half done. 
-    entry_complete = models.BooleanField(default=False)
-
-    # store the actual header data as an hstore here:
-    header_data = DictionaryField(db_index=False)
-    
-    # which filing types are contained? Store as a dict:
-    lines_present =  DictionaryField(db_index=True, null=True)
-    
-    objects = HStoreManager()
-    
-    def __unicode__(self):
-        return str(self.filing_number)
-"""
-
-        
 # field sizes are based on v8.0 specs, generally
 class SkedA(models.Model):
     # additional fields 

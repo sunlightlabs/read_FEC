@@ -250,6 +250,8 @@ class Committee_Overlay(models.Model):
     is_paper_filer = models.NullBooleanField(null=True, default=False, help_text="True for most senate committees, also NRSC/DSCC, some others.")    
     curated_candidate = models.ForeignKey('Candidate_Overlay', related_name='related_candidate', null=True, help_text="For house and senate: Only include if it's a P-primary campaign committee or A-authorized campaign committee with the current cycle as appears in the candidate-committee-linkage file. Check this by hand for presidential candidates though, because many committees claim to be authorized by aren't")
     
+    is_dirty = models.NullBooleanField(null=True, default=True, help_text="Do summary numbers need to be recomputed?")    
+    
 
     # direct from the raw fec table
     name = models.CharField(max_length=255)

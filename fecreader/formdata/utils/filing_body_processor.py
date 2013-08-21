@@ -157,7 +157,7 @@ def process_filing_body(filingnum, fp=None, logger=None):
     cursor.execute(cmd)
     
     # flag this filer as one who has changed. 
-    cmd = "insert into formdata_committee_changed (committee_id, time) values ('%s', current_timestamp)" % (filer_id)
+    cmd = "update summary_data_committee_overlay set is_dirty=True where fec_id='%s'" % (filer_id)
     cursor.execute(cmd)
     
 
