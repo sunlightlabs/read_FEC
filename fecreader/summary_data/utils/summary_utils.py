@@ -449,6 +449,10 @@ def update_committee_times(committee):
         committee.outstanding_loans = most_recent_report.outstanding_loans
 
         sums = all_summaries.aggregate(tot_contrib=Sum('tot_contrib'), tot_disburse=Sum('tot_disburse'), tot_non_ite_contrib=Sum('tot_non_ite_contrib'), tot_receipts=Sum('tot_receipts'), coo_exp_par=Sum('coo_exp_par'), total_indy_expenditures=Sum('ind_exp_mad'))
+        
+        for i in sums:
+            if not sums[i]:
+                sums[i] = 0
 
         committee.total_contributions = sums['tot_contrib'] + recent_summary['tot_contrib']
         committee.total_disbursements = sums['tot_disburse'] + recent_summary['tot_disburse']
