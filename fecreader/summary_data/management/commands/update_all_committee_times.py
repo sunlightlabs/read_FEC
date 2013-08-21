@@ -13,8 +13,8 @@ class Command(BaseCommand):
     requires_model_validation = False
     
     def handle(self, *args, **options):
-        #all_committees = Committee_Overlay.objects.all()
-        all_committees = Committee_Overlay.objects.filter(ctype='I')
+        all_committees = Committee_Overlay.objects.all()
+        #all_committees = Committee_Overlay.objects.filter(ctype='I')
         for committee in all_committees:
             update_committee_times(committee)
             committee.is_dirty=False
