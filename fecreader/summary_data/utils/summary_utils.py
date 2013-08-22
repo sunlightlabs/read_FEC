@@ -397,6 +397,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
                 
         except Committee_Time_Summary.DoesNotExist:
             cts = Committee_Time_Summary(**cts_dict)
+            print "creating committee summary %s" % cts_dict
             cts.save()
 
 def get_recent_reports(fec_id, coverage_through_date):
@@ -418,7 +419,7 @@ def get_recent_reports(fec_id, coverage_through_date):
     
     
 
-# run the summary routine, generally, for any committee. Takes a commitee overlay as an argument. 
+# run the summary routine, generally, for any committee. Takes a committee overlay as an argument. 
 def update_committee_times(committee):
     print "Handling %s" % (committee.fec_id)
 
