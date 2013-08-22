@@ -330,7 +330,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         
         pass
         
-    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT' 'F3', 'F3A', 'F3N', 'F3T' 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
+    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT' 'F3', 'F3A', 'F3N', 'F3T', 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
@@ -399,6 +399,9 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
             cts = Committee_Time_Summary(**cts_dict)
             print "creating committee summary %s" % cts_dict
             cts.save()
+            
+## from summary_data.utils.summary_utils import summarize_committee_periodic_electronic
+## summarize_committee_periodic_electronic()
 
 def get_recent_reports(fec_id, coverage_through_date):
     if not coverage_through_date:
