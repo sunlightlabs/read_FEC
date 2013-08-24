@@ -576,12 +576,12 @@ class Committee_Time_Summary(models.Model):
     data_source = models.CharField(max_length=10, help_text="webk|electronic")
 
     # also appears in the newfiling model--normalize this. 
-    def get_fec_url(self):
+    def get_absolute_url(self):
         if self.filing_number:
             return "/filings/%s/" % (self.filing_number)
         else:
-            return None
-            # maybe return link to committee page? 
+            url = "http://query.nictusa.com/cgi-bin/fecimg/?%s" % (self.com_id)
+            return url
         
     def get_skeda_url(self):
         if self.filing_number:
@@ -594,6 +594,15 @@ class Committee_Time_Summary(models.Model):
             return "/filings/%s/SB/" % (self.filing_number)
         else:
             return None
+            
+    def get_fec_url(self):
+        
+        if self.filing_number:
+            url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.com_id, self.filing_number)
+            return url
+        else:
+            url = "http://query.nictusa.com/cgi-bin/fecimg/?%s" % (self.com_id)
+            return url
 
 # reference table. Has these relationships for everyone. We're not building candidate overlays for other cycles.
 class Authorized_Candidate_Committees(models.Model):
