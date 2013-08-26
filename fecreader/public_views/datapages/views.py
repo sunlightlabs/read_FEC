@@ -50,11 +50,11 @@ def candidates(request):
 def senate(request):
 
     title="Senate - Cycle Summary"
-    explanatory_text="Fundraising totals are for the entire cycle for current senators and senate candidates."
+    explanatory_text="Fundraising totals are for the entire cycle for current senators and senate candidates who reported having $1,000 or more. "
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(office='S')
+    legislators = Candidate_Overlay.objects.filter(office='S', cash_on_hand__gte=1000)
 
     return render_to_response('datapages/legislator_list.html',
         {
@@ -68,10 +68,10 @@ def senate(request):
 def house(request):
 
     title="House - Cycle Summary"
-    explanatory_text="Fundraising totals are for the entire cycle for current house members and house candidates."
+    explanatory_text="Fundraising totals are for the entire cycle for current house members and house candidates who reported having $1,000 or more. "
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(office='H')
+    legislators = Candidate_Overlay.objects.filter(office='H', cash_on_hand__gte=1000)
 
     return render_to_response('datapages/legislator_list.html',
         {
