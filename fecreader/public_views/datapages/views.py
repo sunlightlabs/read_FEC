@@ -29,24 +29,7 @@ def newbase(request):
 def home_page(request):
     # should eventually have a home page, or straighten out urls
     return redirect('/newest-filings/')
-    
-def house(request):
 
-    title="House Members - Cycle Summary"
-    explanatory_text="This page shows the fundraising totals for the entire cycle for current house members. For cyclewide totals for challengers, see the <a href=\"/candidates/\">candidates</a> page."
-    # Give up on ORM for data; we're not willing to enforce all the relationships required for them
-    
-    legislators = Candidate_Overlay.objects.filter(office='H', is_incumbent=True)
-    
-    return render_to_response('datapages/legislator_list.html',
-        {
-        'object_list':legislators,
-        'title':title,
-        'explanatory_text':explanatory_text,
-        }, 
-        context_instance=RequestContext(request)
-    )
-    
 
 def candidates(request):
 
@@ -66,12 +49,12 @@ def candidates(request):
     )
 def senate(request):
 
-    title="Senators - Cycle Summary"
-    explanatory_text="This page shows the fundraising totals for the entire cycle for current senators. For cyclewide totals for challengers, see the <a href=\"/candidates/\">candidates</a> page. For fundraising totals for just a single reporting period, see the <a href=\"/reports\">reports</a> page."
+    title="Senate - Cycle Summary"
+    explanatory_text="Fundraising totals are for the entire cycle for current senators and senate candidates."
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(office='S', is_incumbent=True)
+    legislators = Candidate_Overlay.objects.filter(office='S')
 
     return render_to_response('datapages/legislator_list.html',
         {
@@ -81,6 +64,24 @@ def senate(request):
         }, 
         context_instance=RequestContext(request)
     )
+
+def house(request):
+
+    title="House - Cycle Summary"
+    explanatory_text="Fundraising totals are for the entire cycle for current house members and house candidates."
+    # Give up on ORM for data; we're not willing to enforce all the relationships required for them
+
+    legislators = Candidate_Overlay.objects.filter(office='H')
+
+    return render_to_response('datapages/legislator_list.html',
+        {
+        'object_list':legislators,
+        'title':title,
+        'explanatory_text':explanatory_text,
+        }, 
+        context_instance=RequestContext(request)
+    )
+
 
 def races(request):
 

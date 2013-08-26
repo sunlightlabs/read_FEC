@@ -14,11 +14,17 @@
  <div id="contentHeader">
        <h2>{{ title }}</h2>
 </div>
-<p>{{ explanatory_text|safe }}</p>
-<table id="mainPageTable" class="sortable">
+<p>{{ explanatory_text|safe }}
+Show <select name="filter_display" class="dropdown_field" id="candidate_filter" style="width:200px;">
+  <option value='all'>challengers and incumbents</option>
+  <option value='incumbents'>only incumbents</option>
+  <option value='challengers'>only challengers</option>
+</select></p>
+<table id="PageTable" class="sortable">
             <thead>
                   <tr id="titles">
                       <th class="sort">Legislator</th>
+                      <th class="sort">Incumbent</th>
                       <th class="sort">Party</th>
                       <th class="sort">District</th>
                       <th class="sort">Election Year</th>
@@ -35,6 +41,7 @@
                   <tr class="{% cycle 'odd' 'even' %}">
                       <td class="lawmakerName">
                       <a href="{{object.get_absolute_url}}">{{object.name}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
+                      <td class="incumbency">{{object.incumbency_status }}</td>
                       <td>{{object.pty}}</td>
                       <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
                       <td>{{ object.election_year }}</td>
@@ -49,5 +56,65 @@
 </table>
 <p id="notseekingreelection">* Not seeking reelection to this office</p>
 </div>
+
+<script type="text/javascript" >
+
+
+$(document).ready(function() {
+    $( "#candidate_filter" ).val("all");
+    
+    $( "#candidate_filter" )
+    .bind( "change", function() {
+      selected = $(this).val();
+      //console.log("select changed: " + selected);
+      if (selected == 'all') {
+        show_all();
+      } else if (selected == 'incumbents') {
+        hide_challengers();
+      } else if (selected == 'challengers') {
+        hide_incumbents();
+      }
+      var sorting = [[6,1]]; 
+      // sort on the first column 
+      $("#PageTable").trigger("sorton",[sorting]);
+      
+      
+    });
+});
+
+function show_all() {
+   $("#PageTable > tbody > tr").each(function(index) {
+        $(this).show();
+      })
+}
+
+function hide_challengers() {
+    $("#PageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.incumbency').text().trim();
+      if (cell_text == 'N') {
+        console.log(index + " " + cell_text);
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+function hide_incumbents() {
+    $("#PageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.incumbency').text().trim();
+      if (cell_text == 'Y') {
+        console.log(index + " " + cell_text);
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+</script>
+
   {% endblock %}
   

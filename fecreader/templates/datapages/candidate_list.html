@@ -15,6 +15,13 @@
        <h2>{{ title }}</h2>
 </div>
 <p>{{ explanatory_text|safe }}</p>
+
+<p><select name="filter_display" class="dropdown_field" id="candidate_filter">
+  <option value='all'>show all</option>
+  <option value='incumbents'>only incumbents</option>
+  <option value='challengers'>only challengers</option>
+</select></p>
+
 <table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
@@ -37,7 +44,7 @@
                       <td class="lawmakerName">
                       <a href="{{object.get_absolute_url}}">{{object.name}}</a></td>
                       <td>{{object.pty}}</td>
-                      <td>{{object.incumbency_status }}</td>
+                      <td class="incumbency">{{object.incumbency_status }}</td>
                       <td>({{object.office}}) {{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
                       <td>{{ object.election_year }}</td>
                       <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
@@ -50,5 +57,60 @@
 </tbody>
 </table>
 </div>
+<script type="text/javascript" >
+
+
+$(document).ready(function() {
+    
+    $( "#candidate_filter" )
+    .bind( "change", function() {
+      selected = $(this).val();
+      //console.log("select changed: " + selected);
+      if (selected == 'all') {
+        show_all();
+      } else if (selected == 'incumbents') {
+        hide_challengers();
+      } else if (selected == 'challengers') {
+        hide_incumbents();
+      }
+      
+    });
+});
+
+function show_all() {
+   $("#mainPageTable > tbody > tr").each(function(index) {
+        $(this).show();
+      })
+}
+
+function hide_challengers() {
+    $("#mainPageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.incumbency').text().trim();
+      if (cell_text == 'N') {
+        console.log(index + " " + cell_text);
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+function hide_incumbents() {
+    $("#mainPageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.incumbency').text().trim();
+      if (cell_text == 'Y') {
+        console.log(index + " " + cell_text);
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+</script>
+
+
   {% endblock %}
   
