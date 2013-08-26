@@ -50,7 +50,7 @@ def candidates(request):
 def senate(request):
 
     title="Senate - Cycle Summary"
-    explanatory_text="Fundraising totals are for the entire cycle for current senators and senate candidates who reported having $1,000 or more. "
+    explanatory_text="Fundraising totals are from 1/1/13 through the present for current senators and senate candidates who reported having $1,000 or more. "
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
