@@ -247,9 +247,9 @@ class SkedE(models.Model):
             return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name or "")
     
     def get_candidate_url(self):
-        if candidate_id_checked:
+        if self.candidate_id_checked:
             return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_checked)
-        elif candidate_id_number:
+        elif self.candidate_id_number:
             return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_number)
         else:
             return None
