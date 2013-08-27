@@ -33,7 +33,7 @@
                       <td>{% if open_seat %}Y{% else %}N{% endif %}</td>
                       <td>{{ object.election_year }}</td>
                       <td>{% if object.candidate_raised %}${{ object.candidate_raised|intcomma }}{% else %}$0{% endif %}</td>
-                      <td>{% if object.candidate_spending %${{ object.candidate_spending|intcomma }}{% else %}$0{% endif %}</td>
+                      <td>{% if object.candidate_spending %}${{ object.candidate_spending|intcomma }}{% else %}$0{% endif %}</td>
                       <td>{% if object.outside_spending %}${{ object.outside_spending|intcomma }}{% else %}$0{% endif %}</td>
                       <td>{% if object.total_spending %}${{ object.total_spending|intcomma }}{% else %}$0{% endif %}</td>                  
 
