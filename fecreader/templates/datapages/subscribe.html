@@ -22,54 +22,54 @@
  {% block rtmain %}
 
 <div class="module">
+    <h3>Alerts</h3>
+    <h4>Get notified about new campaign finance reports</h4>
+    <div class="amountLine clear">
+        <p>Sign up to receive notifications any time a particular committee you're interested in files a new electronic report with the Federal Election Commission. Notifications are available for all committees that file with the FEC, not just super PACs. Senate candidates are not required to file electronically.</p>
+        <p >Also see <a href="/newest-filings/">a filterable listing of the most recent electronic filings, or the list of <a href='/new-committees/'>all new committees</a>.</p>
+        <p>Notifications are provided through <a href="http://scout.sunlightfoundation.com/">Scout</a>, the Sunlight Foundation's search and alert tool covering state and federal legislation, the Congressional Record and federal regulations. Contact <a href="mailto:jfenton@sunlightfoundation.com">jfenton@sunlightfoundation.com</a> with any questions.</p>
+    </div>
 
-  <h2>Get notified about new campaign finance reports</h2>
-  <div class="amountLine clear">
-      <p class="tip">Sign up to receive notifications any time a particular committee you're interested in files a new electronic report with the Federal Election Commission. Notifications are available for all committees that file with the FEC, not just super PACs. Senate candidates are not required to file electronically.</p>
-	<p class="tip">Also see <a href="/newest-filings/">a filterable listing of the most recent electronic filings, or the list of <a href='/new-committees/'>all new committees</a>.</p>
-    <p class="tip">Notifications are provided through <a href="http://scout.sunlightfoundation.com/">Scout</a>, the Sunlight Foundation's search and alert tool covering state and federal legislation, the Congressional Record and federal regulations. Contact <a href="mailto:jfenton@sunlightfoundation.com">jfenton@sunlightfoundation.com</a> with any questions.</p>
-</div>
+    <div id="form_filings">
+        <h4>Choose Committees to Follow</h4>
+        <input type="text" id="searchbox" value="Committee or candidate" style="width: 200px;"  />
+        <button class="searchBtn" type="submit" id="search_committees">
+            <span>Search!</span>
+        </button>
+        <div id="search_results" class="clearfix"></div>
+    </div>
 
-<div id="form_filings">
-      <h3>Choose Committees to Follow</h3>
-  	    <input type="text" id="searchbox" value="Committee or candidate" style="width: 200px;"  />
-  	    <button class="searchBtn" type="submit" id="search_committees">
-  	      <span>Search!</span>
-  	    </button>
-  	<div id="search_results">
-  	   
-  	</div>
-</div>
-<div id="alertSet">
-  	<h4>Set Your Alert</h4>
-  	<div id="alertSettings">
-      	<div id="selected_committees" class="module">
+    <div id="alertSet">
+        <h4>Set Your Alert</h4>
+        <div id="alertSettings" class="clearfix">
+            <div id="selected_committees" class="module"></div>
+            <div id="filing_types" class="filing_radio clearfix" style="display:none;">
+                <h6>Get notified about which filings?</h6>
+                <ul class="form_check">
+                    <li style="margin-bottom: 5px;">
+                        <label>
+                            <input class="filing_check checkbox" type="checkbox" name="word" id="monthly" />
+                            Monthly/quarterly reports<br>(Includes pre-election reports)
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input class="filing_check checkbox" type="checkbox" name="word" id="ie" />
+                            24/48-hour independent expenditures
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input class="filing_check checkbox" type="checkbox" name="word" id="F6" />
+                            48-hour contribution reports
+                            </label>
+                    </li>
+                </ul>
 
-          </div>
-  		<div id="filing_types" class="filing_radio" style="display:none;">
-  		    <h6>Get notified about which filings?</h6>
-      		<ul class="form_check">
-                      <li style="margin-bottom: 5px;">
-                          <label><input class="filing_check checkbox" type="checkbox" name="word" id="monthly" />Monthly/quarterly reports<br>(Includes pre-election reports)</label>
-                      </li>
-                      <li>
-                          <label><input class="filing_check checkbox" type="checkbox" name="word" id="ie" />24/48-hour independent expenditures</label>
-                      </li>
-                      <li>
-                          <label><input class="filing_check checkbox" type="checkbox" name="word" id="F6" />48-hour contribution reports</label>
-                      </li>
-              </ul>
-
-<div class="clear"></div>
-      		<a href='' id='gotoscout'>Get alerts</a>
-  	    </div>
-	</div>
-
-</div>
-<div class="clear"></div>
-
-
-
+                <a href='' id='gotoscout'>Get alerts</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -90,8 +90,8 @@ function get_amendment_list(form, include_new, include_amended) {
 function hyphenate(form_list, needs_hyphen) {
 	if (needs_hyphen) {
 		form_list += "-";
-	} 
-	return form_list;	
+	}
+	return form_list;
 }
 
 function get_feed_url() {
@@ -106,13 +106,13 @@ function get_feed_url() {
 	url_committee = "committee";
 	if (num_committees > 1) {
 		url_committee = "committees";
-	} 
-	feedurl = "http://realtime.influenceexplorer.com/feeds/" + url_committee + "/" + committee_list + "/" 
+	}
+	feedurl = "http://realtime.influenceexplorer.com/feeds/" + url_committee + "/" + committee_list + "/"
 
 
 	form_list = "";
 	var needs_hyphen = false;
-	
+
 	if ($("#monthly").is(":checked")) {
 		form_list += "F3-F3X-F3P-F3N-F3A-F3T-F3XN-F3XA-F3XT-F3PN-F3PA-F3PA";
 		needs_hyphen = true;
@@ -131,24 +131,24 @@ function get_feed_url() {
 		form_list = hyphenate(form_list, needs_hyphen);
 		form_list += "F6N-F6A-F6";
 		needs_hyphen = true;
-	} 
-	
+	}
+
 	if (needs_hyphen==false) {
 		alert("You haven't picked any forms. Please pick some forms and then submit.");
 		return false;
 	}
 	feedurl += "forms/" + form_list + "/";
-	
+
 	return feedurl;
-	
-	
+
+
 }
 
 function regen_committees_selected_list() {
 	$('#selected_committees').html("");
 	var update_html = "";
-	
-	
+
+
 	if (selected_committees.length == 0)
 	{
 		$("#filing_types").hide();
@@ -157,7 +157,7 @@ function regen_committees_selected_list() {
 		return false;
 	} else {
 		$("#filing_types").show();
-		
+
 		var committee_ref = "this committee";
 		if (selected_committees.length > 1) {
 			committee_ref = "these committees";
@@ -170,8 +170,8 @@ function regen_committees_selected_list() {
 		}
 		current_html += "</ul>";
 		$('#selected_committees').html(current_html);
-		
-		
+
+
 		$('.selected_committee_display').click(function() {
 		        remove_from_selections($(this).data('fecid'));
 		        return false;
@@ -191,16 +191,16 @@ function remove_from_selections(this_fecid) {
 	} else {
 		selected_committees = pruned_selections;
 	}
-	regen_committees_selected_list();	
+	regen_committees_selected_list();
 }
 
 function submit_add_to_array(this_fecid, this_name) {
-	
+
 	if (selected_committees.length == 10) {
 		alert("No more than 10 committees can be selected.");
 		return;
 	}
-	
+
 	// is it already in the array?
 	for (i=0; i<selected_committees.length; i++) {
 		if (selected_committees[i].fecid == this_fecid) {
@@ -231,11 +231,11 @@ function submit_goto_scout() {
 	gotoscout(get_feed_url());
 	return false;
 }
-	
+
 
 
 $(document).ready(function () {
-  
+
 	$('#gotoscout').click(function() {
 			submit_goto_scout();
 	        return false;
@@ -252,16 +252,16 @@ $(document).ready(function () {
 	regen_committees_selected_list();
 
 	$("#search_committees").bind('click', function() {
-  
+
 		var searchterm = $("#searchbox")[0].value;
 
 		if ( (searchterm.length < 4) || ( searchterm == 'Committee or candidate' )) {
-			alert('Please enter at least 3 characters to search for!');	
+			alert('Please enter at least 3 characters to search for!');
 			return false;
 		} else {
 			var searchurl = "/subscribe/committee_search/?name=" + encodeURI(searchterm)
 			//alert('Search url: ' + searchurl);
-			
+
 			$('#search_results').load(searchurl, function(thisdata) {
 				$('.subscribe_to_committee').click(function() {
 				        submit_add_to_array($(this).data('fecid'), $(this).attr('name'));
@@ -270,16 +270,16 @@ $(document).ready(function () {
 				$('.go_to_committee_feed').click(function() {
 				        submit_goto_feed($(this).data('fecid'));
 				        return false;
-				    });			
-			
+				    });
+
 			});
-			
+
 			return false;
-			
+
 		}
 	});
 });
 
 </script>
   {% endblock %}
-  
+

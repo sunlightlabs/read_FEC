@@ -17,131 +17,158 @@
 
 {% block body_class %}{% endblock %}
 
-{% block pagetitle %}Latest Filings {% endblock %}
+{% block pagetitle %}Newest Filings {% endblock %}
 
  {% block rtmain %}
 
 <div class="module">
- <div id="contentHeader" style="z-index:0;">
-       <h2>Latest Filings </h2>
-</div>
+    <div>
+        <h3>Newest Filings </h3>
+    </div>
 
-<p>Use this page to find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
-  <b>Show: </b><span><a href="javascript:search_all();">all today</a>&nbsp;|&nbsp;<a href="javascript:search_ies();">independent expenditures</a>&nbsp;|&nbsp;<a href="javascript:search_committees();">candidate committees</a>&nbsp;|&nbsp;<a href="javascript:search_superpacs();">superpacs</a>&nbsp;|&nbsp;<a href="javascript:search_party();">party committees</a></span> <b>or set filter options below.</b><br>
-  <div id="formdiv">
-    
-  <span>
-  Date filed: <select name="time_range" class="dropdown_field_narrow" id="time_range">
-      <option value='day'>today</option>
-      <option value='week'>last 7 days</option>
-      <option value='cycle'>entire cycle</option>
-    </select>
-  </span>
-  
-<span class="form_spacer">  
-Committee Type: <select name="committee_type" class="dropdown_field" id="committee_class">
-  <option value=''>All</option>
-  <option value='H'>House</option>
-  <option value='S'>Senate</option>
-  <option value='HSP'>Any Candidate</option>
-  <option value='UOVW'>Super PACs (including hybrids)</option>
-  <option value='UO'>Super PACs (NOT including hybrids)</option>
-  <option value='P'>Presidential</option>
-  <option value='E'>Electioneering Communication</option>
-  <option value='XYZ'>Party committees</option>
-  <option value='I'>Non committees</option>
-  <option value='C'>Communication Cost</option>
-</select>
-</span>
-<span class="form_spacer">  
-Filing: <select name="form_type" class="dropdown_field" id="report_type">
-  <option value=''>All</option>
-  <option value='monthly'>Monthly/quarterly reports</option>
-  <option value='ies'>Independent/coordinated expenditures</option>
-  <option value='F6'>48-hour notice of contributions/loans received</option>
-  <option value='F9'>24-hour notice of electioneering communications</option>
-  <option value='F2'>Statement of candidacy</option>
-</select>
-</span>
+    <p class="tip">Find and filter the latest electronic filings made by political committees at the Federal Election Commission.</p>
 
-<span class="form_spacer">
-Period covered: <select name="form_type" class="dropdown_field" id="period_type">
-    <option value=''>All</option>
-    <option value='Q1'>Quarterly: Q1</option>
-    <option value='Q2'>Quarterly: Q2</option>
-    <option value='Q3'>Quarterly: Q3</option>
-    <option value='Q4'>Quarterly: Q4</option>
-    <option value='S1'>Semiannual: Jan.-Jun.</option>
-    <option value='S2'>Semiannual: Jul.-Dec.</option>
-    <option value='M1'>Monthly: Jan.</option>
-    <option value='M2'>Monthly: Feb.</option>
-    <option value='M3'>Monthly: Mar.</option>
-    <option value='M4'>Monthly: Apr.</option>
-    <option value='M5'>Monthly: May</option>
-    <option value='M6'>Monthly: Jun.</option>
-    <option value='M7'>Monthly: July</option>
-    <option value='M8'>Monthly: Aug.</option>
-    <option value='M9'>Monthly: Sept.</option>
-    <option value='M10'>Monthly: Oct.</option>
-    <option value='M11'>Monthly: Nov.</option>
-    <option value='M12'>Monthly: Dec.</option>    
-  </select>
-  
-</span>
-<br>
-<span>
-Minimum raised: <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
-</span>
 
-<span class="form_spacer">
-Minimum spent: <input type="text" class="dollar_field" id="min_spent" name="min_spent"></input>
-</span>
-<span class="form_spacer">
-Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name="min_coh"></input>
-</span>
+    <div id="formdiv" class="clearfix">
+        <div class="form-row clearfix">
+              <label>Quick Filters: </label>
+              <div class="form_spacer">
+                  <a href="javascript:search_all();">all today</a>&nbsp;|&nbsp;
+                  <a href="javascript:search_ies();">Independent Expenditures</a>&nbsp;|&nbsp;
+                  <a href="javascript:search_committees();">Candidate Committees</a>&nbsp;|&nbsp;
+                  <a href="javascript:search_superpacs();">Super PACs</a>&nbsp;|&nbsp;
+                  <a href="javascript:search_party();">Party Committees</a>
+              </div>
+        </div>
 
-<br>
-<span><b>Order by: </b><select name="order_field" class="dropdown_field" id="ordering">
-  <option value='-filing_number'>newest-to-oldest</option>
-  <option value='-coh_end'>cash on hand</option>
-  <option value='-tot_raised'>total raised</option>
-  <option value='-tot_spent'>total spent</option>
-  <option value='committee_name'>committee name</option>
+        <div class="form-row clearfix form-break">
+            <div class="form_spacer">
+                <label>Committee Type:</label>
+                <select name="committee_type" class="dropdown_field" id="committee_class">
+                    <option value=''>All</option>
+                    <option value='H'>House</option>
+                    <option value='S'>Senate</option>
+                    <option value='HSP'>Any Candidate</option>
+                    <option value='UOVW'>Super PACs (including hybrids)</option>
+                    <option value='UO'>Super PACs (NOT including hybrids)</option>
+                    <option value='P'>Presidential</option>
+                    <option value='E'>Electioneering Communication</option>
+                    <option value='XYZ'>Party Committees</option>
+                    <option value='I'>Non Committees</option>
+                    <option value='C'>Communication Cost</option>
+                </select>
+            </div>
 
-</select>
-</span>
+            <div class="form_spacer">
+                <label>Filing:</label>
+                <select name="form_type" class="dropdown_field_long" id="report_type">
+                    <option value=''>All</option>
+                    <option value='monthly'>Monthly/quarterly reports</option>
+                    <option value='ies'>Independent/coordinated expenditures</option>
+                    <option value='F6'>48-hour notice of contributions/loans received</option>
+                    <option value='F9'>24-hour notice of electioneering communications</option>
+                    <option value='F2'>Statement of candidacy</option>
+                </select>
+            </div>
+        </div>
 
-<input type="button" value="FILTER FILINGS" id="load_button" style="width:300px; margin-left: 20px;" />
 
-</div>
+        <div class="form-row clearfix">
+            <div class="form_spacer">
+                <label>Date filed:</label>
+                <select name="time_range" class="dropdown_field_narrow" id="time_range">
+                  <option value='day'>today</option>
+                  <option value='week'>last 7 days</option>
+                  <option value='cycle'>entire cycle</option>
+                </select>
+            </div>
 
-<span id="display_info"></span>
-<div class="pagination_container">
-<div class="load_next" style="float: right; width: 200px;"></div>
-<div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>  
-<div class="clear"></div>
-</div>
+            <div class="form_spacer">
+                <label>Period covered:</label>
+                <select name="form_type" class="dropdown_field" id="period_type">
+                    <option value=''>All</option>
+                    <option value='Q1'>Quarterly: Q1</option>
+                    <option value='Q2'>Quarterly: Q2</option>
+                    <option value='Q3'>Quarterly: Q3</option>
+                    <option value='Q4'>Quarterly: Q4</option>
+                    <option value='S1'>Semiannual: Jan.-Jun.</option>
+                    <option value='S2'>Semiannual: Jul.-Dec.</option>
+                    <option value='M1'>Monthly: Jan.</option>
+                    <option value='M2'>Monthly: Feb.</option>
+                    <option value='M3'>Monthly: Mar.</option>
+                    <option value='M4'>Monthly: Apr.</option>
+                    <option value='M5'>Monthly: May</option>
+                    <option value='M6'>Monthly: Jun.</option>
+                    <option value='M7'>Monthly: July</option>
+                    <option value='M8'>Monthly: Aug.</option>
+                    <option value='M9'>Monthly: Sept.</option>
+                    <option value='M10'>Monthly: Oct.</option>
+                    <option value='M11'>Monthly: Nov.</option>
+                    <option value='M12'>Monthly: Dec.</option>
+                </select>
+            </div>
+        </div>
 
-<table id="mainPageTable" class="sortable">
-            <thead>
-                  <tr id="titles">
-                      <th>Filing ID (Type)</th>
-                      <th>Committee - Form</th>
-                      <th>Coverage Date</th>
-                      <th class="sort">Raised</th>
-                      <th class="sort">Spent</th>
-                      <th class="sort">Cash on hand</th>
-                      <th class="sort">Filing Date</th>
-                    </tr>
-              </thead>
-              <tbody id="maintablebody">
-</tbody>
-</table>
-<div>
-<div class="load_next" style="float: right; width: 200px;"></div>
-<div class="load_previous" style="float: left; width: 200px;"></div>  
-<div style="clear:both;"></div>
-</div>
+
+        <div class="form-row clearfix">
+            <div class="form_spacer">
+                <label>Minimum raised:</label>
+                <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
+            </div>
+
+            <div class="form_spacer">
+                <label>Minimum spent:</label>
+                <input type="text" class="dollar_field" id="min_spent" name="min_spent"></input>
+            </div>
+
+            <div class="form_spacer">
+                <label>Minimum cash on hand:</label>
+                <input type="text" class="dollar_field" id="min_coh" name="min_coh"></input>
+            </div>
+        </div>
+
+        <div class="form-row clearfix form-break">
+            <div class="form_spacer">
+                <label>Order by:</label>
+                <select name="order_field" class="dropdown_field_narrow" id="ordering">
+                    <option value='-filing_number'>newest-to-oldest</option>
+                    <option value='-coh_end'>cash on hand</option>
+                    <option value='-tot_raised'>total raised</option>
+                    <option value='-tot_spent'>total spent</option>
+                    <option value='committee_name'>committee name</option>
+                </select>
+            </div>
+
+            <input type="button" value="Filter Filings" id="load_button" />
+        </div>
+    </div>
+
+    <div id="display_info"></div>
+    <div class="pagination_container">
+        <div class="load_next" style="float: right; width: 200px;"></div>
+        <div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>
+    </div>
+
+    <table id="mainPageTable">
+        <thead>
+              <tr id="titles">
+                  <th>Filing ID (Type)</th>
+                  <th>Committee - Form</th>
+                  <th>Coverage Date</th>
+                  <th >Raised</th>
+                  <th >Spent</th>
+                  <th >Cash on hand</th>
+                  <th >Filing Date</th>
+                </tr>
+          </thead>
+          <tbody id="maintablebody">
+          </tbody>
+    </table>
+
+    <div class"clearfix">
+        <div class="load_next" style="float: right; width: 200px;"></div>
+        <div class="load_previous" style="float: left; width: 200px;"></div>
+    </div>
 
 </div>
 {% verbatim %}
@@ -155,14 +182,14 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
         <td>${{{ addcommas coh_end }}}</td>
         <td>{{ process_time_formatted }}</td>
     </tr>
-        
+
 </script>
 {% endverbatim %}
 
 <script type="text/javascript">
 // The api doesn't tell us the pagenumber
 pagenumber = 1;
-// set this dynamically 
+// set this dynamically
 pagination_size = {{ PAGINATE_BY }};
 
 function is_valid_number(a) {
@@ -170,15 +197,15 @@ function is_valid_number(a) {
 }
 
 function clean_dollar_fields(str) {
-  str = str.replace(/ /g,"");  
+  str = str.replace(/ /g,"");
   str = str.replace("$","");
   str = str.replace(/,/g,"");
   return str;
 }
 
 function validate_fields() {
-  
-  // Clean up dollar fields if we can; if they seem not-numeric, set them to empty. 
+
+  // Clean up dollar fields if we can; if they seem not-numeric, set them to empty.
   $(".dollar_field").each(function( index ) {
       this_amount = clean_dollar_fields($(this).val());
       if (is_valid_number(this_amount) ) {
@@ -188,27 +215,27 @@ function validate_fields() {
       }
   });
 
-  
+
 }
 
 function get_json_url() {
   query_string = "?ordering=" + $("#ordering").val();
-  
+
   min_spent = $("#min_spent").val();
   if (min_spent.length > 0) {
     query_string += "&min_spent=" + min_spent
   }
-  
+
   min_raised = $("#min_raised").val();
   if (min_raised.length > 0) {
     query_string += "&min_raised=" + min_raised
   }
-  
+
   min_coh = $("#min_coh").val();
   if (min_coh.length > 0) {
     query_string += "&min_coh=" + min_coh
   }
-  
+
   committee_class =  $("#committee_class").val();
   if (committee_class.length>0) {
     query_string += "&committee_class=" + committee_class;
@@ -223,18 +250,18 @@ function get_json_url() {
   if (report_type.length>0) {
     query_string += "&report_type=" + report_type;
   }
-  
+
   period_type = $('#period_type').val();
   if (period_type.length>0) {
     query_string += "&period_type=" + period_type;
   }
-  
+
   window.location.hash = query_string;
-  
+
   url = "/api/new_filing/" + query_string
   console.log("url is: " + url);
   return url;
-  
+
 
 }
 
@@ -244,21 +271,21 @@ function reset_all_fields() {
   });
   // default is filing order
   $("#ordering").val('-filing_number');
-  $("#time_range").val('cycle');  
+  $("#time_range").val('cycle');
 }
 
 function search_all() {
   reset_all_fields();
-  $("#time_range").val('day');  
+  $("#time_range").val('day');
   button_load();
-  
+
 }
 
 function search_ies() {
   reset_all_fields();
   $("#report_type").val('ies');
   button_load();
-  
+
 }
 
 function search_committees() {
@@ -284,7 +311,7 @@ function search_superpacs() {
   $("#committee_class").val('UOVW');
   button_load();
 }
-// Some template functions. Should eventually live somewhere else. 
+// Some template functions. Should eventually live somewhere else.
 
 function roundwCommas(nStr) {
     nStr = Math.round(nStr);
@@ -300,16 +327,16 @@ function roundwCommas(nStr) {
 
 /* This date stuff is fucking terrible. There's gotta be a better approach */
 function getDate(datestring) {
-  // Why is this so annoying? 
+  // Why is this so annoying?
   date_components = datestring.split('-');
-  // Months are zero-indexed, but day numbers aren't. Nice work, guys. 
+  // Months are zero-indexed, but day numbers aren't. Nice work, guys.
   return_date = new Date(date_components[0], Math.round(date_components[1])-1, date_components[2]);
   return return_date;
 }
 
 function format_mddyy(datestring) {
   thisdate = getDate(datestring);
-  // Months are zero-indexed, but day numbers aren't. Again, nice work. 
+  // Months are zero-indexed, but day numbers aren't. Again, nice work.
   month = Math.round(thisdate.getMonth()) + 1;
   year = String(thisdate.getFullYear()).substring(2,4);
   return_string =  month + "/" +   thisdate.getDate() + "/" +  year;
@@ -320,9 +347,9 @@ function remove_tablesorter() {
   // apparently the best way to remove tablesorter altogether
   // see http://stackoverflow.com/questions/8171530/remove-jquery-tablesorter-from-table/8177869#8177869
   // if we don't remove and add it back the sort stops working in an odd, quiet way. (on FF, for instance, the first sort of a column works, but subsequent ones don't)
-    
+
   console.log("trying to remove tablesorter");
-  
+
   $('.sortable')
    .unbind('appendCache applyWidgetId applyWidgets sorton update updateCell')
    .removeClass('tablesorter')
@@ -352,24 +379,24 @@ function loadjson(jsonurl) {
   console.log("loading json");
   //jsonurl = "/api/new_filing/";
   $.getJSON(jsonurl, function(data_loaded) {
- 
+
                var source   = $("#row-template").html();
                var template = Handlebars.compile(source);
-               
+
                results = data_loaded.results;
                numresults = results.length;
                first_result = 100*(pagenumber-1)+1;
                last_result = 100*(pagenumber-1) + numresults;
-               
+
                result_string = "Total of " + roundwCommas(data_loaded.count) + " results found. Showing " + first_result + "-" + last_result + ".";
-               $( "#display_info" ).html(result_string);               
-               
+               $( "#display_info" ).html(result_string);
+
                next =  data_loaded.next;
                previous = data_loaded.previous;
-               
+
                $( "#result_description" ).html("<b>This is a text description of the results shown below</b>")
-               
-               
+
+
                if (next != null) {
                  $( ".load_next" ).html( "<a href=\"javascript:load_next('" + next + "');\">next page<\/a>");
                } else {
@@ -382,13 +409,13 @@ function loadjson(jsonurl) {
                } else {
                  $( ".load_previous" ).html("");
                }
-               
-               
+
+
                //console.log("count is: " + data_loaded.count + " num results: " + numresults);
                first_result = 100*(pagenumber-1)+1;
                last_result = 100*(pagenumber-1) + numresults;
-               
-               
+
+
                resultrows = []
                for (var i=0;i<results.length;i++) {
                   var context = results[i];
@@ -401,51 +428,51 @@ function loadjson(jsonurl) {
                   resultrows.push(html);
                };
                $( "#maintablebody" ).html( resultrows.join(""));
-               // rerun tablesorter 
-               remove_tablesorter();               
-               
+               // rerun tablesorter
+               remove_tablesorter();
+
                // This doesn't work sometimes, and also isn't needed in others. wtf?
-               // addCommaParser() 
+               // addCommaParser()
                $(".sortable").tablesorter({ widgets: ['zebra']});
-               
+
             });
-  
+
 }
 
-/* prob not needed. 
+/* prob not needed.
 
 function addCommaParser() {
-  $.tablesorter.addParser({ 
-    id: 'nocomma', 
-    is: function(s) { 
-      // return false so this parser is not auto detected 
-      return false; 
-    }, 
-    format: function(s) { 
+  $.tablesorter.addParser({
+    id: 'nocomma',
+    is: function(s) {
+      // return false so this parser is not auto detected
+      return false;
+    },
+    format: function(s) {
       return s.replace(/,/,'');
-    }, 
-    type: 'numeric' 
+    },
+    type: 'numeric'
   });
 }
 */
 function addMustacheHelpers() {
-  
+
   Handlebars.registerHelper('addcommas', function(object) {
     return new Handlebars.SafeString(
       roundwCommas(object)
     );
   });
-  
+
   Handlebars.registerHelper('mddyy', function(object) {
     if (object != null) {
       return new Handlebars.SafeString(
         format_mddyy(object)
-      );  
+      );
     } else {
       return new Handlebars.SafeString("");
     }
   });
-  
+
 }
 
 $(document).ready(function() {
@@ -455,27 +482,27 @@ $(document).ready(function() {
     .bind( "click", function() {
       button_load();
     });
-    
-      
-   
+
+
+
    reset_all_fields();
-   
+
    windowhash = window.location.hash;
    var hashdict = {};
-   
+
    $.each(windowhash.substr(2).split('&'), function(i, elem) {
       var parts = elem.split('=');
       console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
       $("#" + parts[0]).val(parts[1]);
-   }); 
-   
+   });
+
    console.log("hashdict is " + hashdict);
-   
+
    button_load();
-   
+
 });
 
 
 </script>
   {% endblock %}
-  
+

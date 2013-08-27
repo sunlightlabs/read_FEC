@@ -10,11 +10,14 @@
 
 {% block rtmain %}
 
-<div class="module">
- <div id="contentHeader">
-       <h2>{{ title }}</h2>
+
+<div class="overviewBar withNav withTip">
+    <h4>Races</h4>
 </div>
-<p>{{ explanatory_text|safe }}</p>
+<div class="module">
+
+
+
 
 
 <table id="mainPageTable" class="sortable">
@@ -41,14 +44,12 @@
                       <td>${{ object.candidate_spending|intcomma }}</td>
                       <td>${{ object.outside_spending|intcomma }}</td>
                       <td>${{ object.total_spending|intcomma }}</td>                  
+
                       </tr>
                 {% endfor %}
-                 
+
 </tbody>
 </table>
 
-
-
 </div>
-  {% endblock %}
-  
+{% endblock %}

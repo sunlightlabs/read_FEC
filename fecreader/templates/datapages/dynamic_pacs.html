@@ -20,55 +20,77 @@
 {% block rtmain %}
 
 <div class="module">
- <div id="contentHeader" style="z-index:0;">
-       <h2>Find PAC summaries</h2>
-</div>
-<p>Use this page to find committee summary information for the entire cycle.</p>
+    <div>
+        <h3>Find PAC summaries</h3>
+   </div>
+   <p class="tip">Find and filter committee summary information for the entire cycle.</p>
 
-<b>Show: </b><span class="form_spacer"><a href="javascript:get_house();">House</a>&nbsp;|&nbsp;<a href="javascript:get_senate();">Senate</a>&nbsp;|&nbsp;<a href="javascript:get_superpacs();">
-super PACs</a>&nbsp;|&nbsp;<a href="javascript:get_cmtes();">Party committees</a>&nbsp;<b>or set custom filter options below</b>
-<div id="formdiv">
-<span>Search by candidate or committee name: <input type="text" class="text_field" id="search_term" name="search_term"></input>
-</span>
-<br>
-<span>  
-Committee type: <select name="committee_type" class="dropdown_field" id="committee_class">
-  <option value=''>All</option>
-  <option value='H'>House</option>
-  <option value='S'>Senate</option>
-  <option value='UOVW'>Super PACs (including hybrids)</option>
-  <option value='UO'>Super PACs (NOT including hybrids)</option>
-  <option value='P'>Presidential</option>
-  <option value='E'>Electioneering Communication</option>
-  <option value='XYZ'>Party committees</option>
-  <option value='I'>Non committees</option>
-  <option value='C'>Communication Cost</option>
-</select>
-</span>
-<span class="form_spacer">
-Minimum raised: <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
-</span>
+   <div id="formdiv" class="clearfix">
+        <div class="form-row clearfix">
+             <label>Quick Filters: </label>
+             <div class="form_spacer">
+                 <a href="javascript:get_house();">House</a>&nbsp;|&nbsp;
+                 <a href="javascript:get_senate();">Senate</a>&nbsp;|&nbsp;
+                 <a href="javascript:get_superpacs();">Super PACs</a>&nbsp;|&nbsp;
+                 <a href="javascript:get_cmtes();">Party Committees</a>&nbsp;
+             </div>
+         </div>
 
-<span class="form_spacer">
-Minimum spent: <input type="text" class="dollar_field" id="min_spent" name="min_spent"></input>
-</span>
-<span class="form_spacer">
-Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name="min_coh"></input>
-</span>
 
-<br>
-<span>  
-<b>Order by: </b><select name="order_field" class="dropdown_field" id="ordering">
-  <option value='-cash_on_hand'>cash on hand</option>
-  <option value='-total_receipts'>total raised</option>
-  <option value='-total_disbursements'>total spent</option>
-  <option value='-outstanding_loans'>outstanding debt</option>
-  <option value='name'>committee name</option>
+        <div class="clearfix form-break form-row">
+            <div class="form_spacer">
+                <label>Candidate or Committee name:</label>
+                <input type="text" class="text_field" id="search_term" name="search_term"></input>
+            </div>
 
-</select>
-</span>
+            <div class="form_spacer">
+                <label>Committee type:</label>
+                <select name="committee_type" class="dropdown_field" id="committee_class">
+                    <option value=''>All</option>
+                    <option value='H'>House</option>
+                    <option value='S'>Senate</option>
+                    <option value='UOVW'>Super PACs (including hybrids)</option>
+                    <option value='UO'>Super PACs (NOT including hybrids)</option>
+                    <option value='P'>Presidential</option>
+                    <option value='E'>Electioneering Communication</option>
+                    <option value='XYZ'>Party committees</option>
+                    <option value='I'>Non committees</option>
+                    <option value='C'>Communication Cost</option>
+                </select>
+            </div>
+        </div>
 
-<input type="button" value="FILTER COMMITTEES" id="load_button" title="Apply the selections to show a different set of committees"/>
+        <div class="form-row clearfix">
+            <div class="form_spacer">
+                <label>Minimum raised:</label>
+                <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
+            </div>
+
+            <div class="form_spacer">
+                <label>Minimum spent:</label>
+                <input type="text" class="dollar_field" id="min_spent" name="min_spent"></input>
+            </div>
+
+            <div class="form_spacer">
+                <label>Minimum cash on hand:</label>
+                <input type="text" class="dollar_field" id="min_coh" name="min_coh"></input>
+            </div>
+        </div>
+
+        <div class="form-row clearfix form-break">
+            <div class="form_spacer">
+                <label>Order by:</label>
+                <select name="order_field" class="dropdown_field" id="ordering">
+                    <option value='-cash_on_hand'>cash on hand</option>
+                    <option value='-total_receipts'>total raised</option>
+                    <option value='-total_disbursements'>total spent</option>
+                    <option value='-outstanding_loans'>outstanding debt</option>
+                    <option value='name'>committee name</option>
+                </select>
+            </div>
+
+            <input type="button" value="Filter Committees" id="load_button" title="Apply the selections to show a different set of committees"/>
+        </div>
 </div>
 
 
@@ -76,7 +98,7 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
 <div id="result_description"><b></b></div>
 <div id="display_info"></div>
 <div class="load_next" style="float: right; width: 200px;"></div>
-<div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>  
+<div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>
 <div style="clear:both;"></div>
 </div>
 
@@ -93,13 +115,13 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
                     </tr>
               </thead>
               <tbody id="maintablebody">
-              
-                 
+
+
 </tbody>
 </table>
 <div>
 <div class="load_next" style="float: right; width: 200px;"></div>
-<div class="load_previous" style="float: left; width: 200px;"></div>  
+<div class="load_previous" style="float: left; width: 200px;"></div>
 <div style="clear:both;"></div>
 </div>
 
@@ -116,14 +138,14 @@ Minimum cash on hand: <input type="text" class="dollar_field" id="min_coh" name=
         <td>${{{ addcommas cash_on_hand }}}</td>
         <td>${{{ addcommas outstanding_loans }}}</td>
     </tr>
-        
+
 </script>
 {% endverbatim %}
 
 <script type="text/javascript">
 // The api doesn't tell us the pagenumber
 pagenumber = 1;
-// set this dynamically 
+// set this dynamically
 pagination_size = {{ PAGINATE_BY }};
 
 function is_valid_number(a) {
@@ -131,15 +153,15 @@ function is_valid_number(a) {
 }
 
 function clean_dollar_fields(str) {
-  str = str.replace(/ /g,"");  
+  str = str.replace(/ /g,"");
   str = str.replace("$","");
   str = str.replace(/,/g,"");
   return str;
 }
 
 function validate_fields() {
-  
-  // Clean up dollar fields if we can; if they seem not-numeric, set them to empty. 
+
+  // Clean up dollar fields if we can; if they seem not-numeric, set them to empty.
   $(".dollar_field").each(function( index ) {
       this_amount = clean_dollar_fields($(this).val());
       if (is_valid_number(this_amount) ) {
@@ -148,7 +170,7 @@ function validate_fields() {
         $(this).val("");
       }
   });
-  
+
   $(".text_field").each(function( index ) {
       this_text = $(this).val();
       this_text = $.trim(this_text);
@@ -157,7 +179,7 @@ function validate_fields() {
 
 }
 
-// Some template functions. Should eventually live somewhere else. 
+// Some template functions. Should eventually live somewhere else.
 
 function roundwCommas(nStr) {
     nStr = Math.round(nStr);
@@ -173,34 +195,34 @@ function roundwCommas(nStr) {
 
 function get_json_url() {
   query_string = "?ordering=" + $("#ordering").val();
-  
+
   min_spent = $("#min_spent").val();
   if (min_spent.length > 0) {
     query_string += "&min_spent=" + min_spent
   }
-  
+
   search_term = $("#search_term").val();
   if (search_term.length > 0) {
     query_string += "&search_term=" + search_term
   }
-  
+
   min_raised = $("#min_raised").val();
   if (min_raised.length > 0) {
     query_string += "&min_raised=" + min_raised
   }
-  
+
   min_coh = $("#min_coh").val();
   if (min_coh.length > 0) {
     query_string += "&min_coh=" + min_coh
   }
-  
+
   committee_class =  $("#committee_class").val();
   if (committee_class.length>0) {
     query_string += "&committee_class=" + committee_class;
   }
-  
+
   window.location.hash = query_string;
-  
+
   url = "/api/committee/" + query_string
   console.log("url is: " + url);
   return url;
@@ -218,12 +240,12 @@ function reset_all_fields() {
 function search_all() {
   reset_all_fields();
   button_load();
-  
+
 }
 
 function get_cmtes() {
   reset_all_fields();
-  $("#committee_class").val('XYZ');  
+  $("#committee_class").val('XYZ');
   button_load();
 }
 
@@ -249,16 +271,16 @@ function get_superpacs() {
 }
 /* This date stuff is fucking terrible. There's gotta be a better approach */
 function getDate(datestring) {
-  // Why is this so annoying? 
+  // Why is this so annoying?
   date_components = datestring.split('-');
-  // Months are zero-indexed, but day numbers aren't. Nice work, guys. 
+  // Months are zero-indexed, but day numbers aren't. Nice work, guys.
   return_date = new Date(date_components[0], Math.round(date_components[1])-1, date_components[2]);
   return return_date;
 }
 
 function format_mddyy(datestring) {
   thisdate = getDate(datestring);
-  // Months are zero-indexed, but day numbers aren't. Again, nice work. 
+  // Months are zero-indexed, but day numbers aren't. Again, nice work.
   month = Math.round(thisdate.getMonth()) + 1;
   year = String(thisdate.getFullYear()).substring(2,4);
   return_string =  month + "/" +   thisdate.getDate() + "/" +  year;
@@ -269,9 +291,9 @@ function remove_tablesorter() {
   // apparently the best way to remove tablesorter altogether
   // see http://stackoverflow.com/questions/8171530/remove-jquery-tablesorter-from-table/8177869#8177869
   // if we don't remove and add it back the sort stops working in an odd, quiet way. (on FF, for instance, the first sort of a column works, but subsequent ones don't)
-    
+
   console.log("trying to remove tablesorter");
-  
+
   $('.sortable')
    .unbind('appendCache applyWidgetId applyWidgets sorton update updateCell')
    .removeClass('tablesorter')
@@ -301,27 +323,27 @@ function loadjson(jsonurl) {
   validate_fields();
   //jsonurl = "/api/new_filing/";
   $.getJSON(jsonurl, function(data_loaded) {
- 
+
                var source   = $("#committeerow-template").html();
                var template = Handlebars.compile(source);
-               
+
                results = data_loaded.results;
                numresults = results.length;
                first_result = 100*(pagenumber-1)+1;
                last_result = 100*(pagenumber-1) + numresults;
-               
+
                result_string = "Total of " + roundwCommas(data_loaded.count) + " results found. Showing " + first_result + "-" + last_result + ".";
-               $( "#display_info" ).html(result_string);               
-               
+               $( "#display_info" ).html(result_string);
+
                next =  data_loaded.next;
                previous = data_loaded.previous;
-               
+
                if (next != null) {
                  $( ".load_next" ).html( "<a href=\"javascript:load_next('" + next + "');\">next page<\/a>");
                } else {
                  $( ".load_next" ).html("");
                }
-               
+
                $( "#result_description" ).html("<b>This is a text description of the results shown below.</b>")
 
                if (previous != null) {
@@ -329,13 +351,13 @@ function loadjson(jsonurl) {
                } else {
                  $( ".load_previous" ).html("");
                }
-               
-               
+
+
                //console.log("count is: " + data_loaded.count + " num results: " + numresults);
                first_result = 100*(pagenumber-1)+1;
                last_result = 100*(pagenumber-1) + numresults;
-               
-               
+
+
                resultrows = []
                for (var i=0;i<results.length;i++) {
                   var context = results[i];
@@ -348,51 +370,51 @@ function loadjson(jsonurl) {
                   resultrows.push(html);
                };
                $( "#maintablebody" ).html( resultrows.join(""));
-               // rerun tablesorter 
-               remove_tablesorter();               
-               
+               // rerun tablesorter
+               remove_tablesorter();
+
                // This doesn't work sometimes, and also isn't needed in others. wtf?
-               // addCommaParser() 
+               // addCommaParser()
                $(".sortable").tablesorter({ widgets: ['zebra']});
-               
+
             });
-  
+
 }
 
-/* prob not needed. 
+/* prob not needed.
 
 function addCommaParser() {
-  $.tablesorter.addParser({ 
-    id: 'nocomma', 
-    is: function(s) { 
-      // return false so this parser is not auto detected 
-      return false; 
-    }, 
-    format: function(s) { 
+  $.tablesorter.addParser({
+    id: 'nocomma',
+    is: function(s) {
+      // return false so this parser is not auto detected
+      return false;
+    },
+    format: function(s) {
       return s.replace(/,/,'');
-    }, 
-    type: 'numeric' 
+    },
+    type: 'numeric'
   });
 }
 */
 function addMustacheHelpers() {
-  
+
   Handlebars.registerHelper('addcommas', function(object) {
     return new Handlebars.SafeString(
       roundwCommas(object)
     );
   });
-  
+
   Handlebars.registerHelper('mddyy', function(object) {
     if (object != null) {
       return new Handlebars.SafeString(
         format_mddyy(object)
-      );  
+      );
     } else {
       return new Handlebars.SafeString("");
     }
   });
-  
+
 }
 
 $(document).ready(function() {
@@ -402,27 +424,27 @@ $(document).ready(function() {
       .bind( "click", function() {
         button_load();
       });
-       
-   
+
+
    reset_all_fields();
-   
+
    windowhash = window.location.hash;
    var hashdict = {};
-   
+
    $.each(windowhash.substr(2).split('&'), function(i, elem) {
       var parts = elem.split('=');
       console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
       $("#" + parts[0]).val(parts[1]);
-   }); 
-   
+   });
+
    console.log("hashdict is " + hashdict);
    button_load();
-   
-   
-   
+
+
+
 });
 
 
 </script>
   {% endblock %}
-  
+
