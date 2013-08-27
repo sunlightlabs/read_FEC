@@ -90,7 +90,7 @@ def races(request):
 
     districts = District.objects.all()
 
-    return render_to_response('datapages/districts.html',
+    return render_to_response('datapages/races.html',
         {
         'title':title,
         'explanatory_text':explanatory_text,
@@ -131,6 +131,7 @@ def senate_race(request, cycle, state, term_class):
 def newest_filings(request):
     return render_to_response('datapages/dynamic_filings.html', 
         {
+        'title':'Newest Filings',
         'PAGINATE_BY':PAGINATE_BY,
         },
         context_instance=RequestContext(request)
@@ -139,6 +140,7 @@ def newest_filings(request):
 def pacs(request):
     return render_to_response('datapages/dynamic_pacs.html', 
         {
+        'title':'PAC summaries',
         'PAGINATE_BY':PAGINATE_BY,
         },
         context_instance=RequestContext(request)
@@ -168,9 +170,6 @@ def render_blank_page(title, explanatory_text, request):
 def downloads(request):
     return render_blank_page('Downloads','Downloadable files will go here.', request)
 
-
-def alerts(request):
-    return render_blank_page('Alerts','This is where you sign up to receive alerts. This time we should make alerts for a specific race too. New filing alerts should include summary details--so the amount raised in the newly-filed filing.', request)
 
 def outside_spending(request):
     return render_blank_page('Outside Spending','This is a page on outside spending. Maybe include links to subpages on electioneering, and coordinated spending? I dunno.', request)
@@ -314,6 +313,7 @@ def candidate(request, candidate_id):
 def subscribe(request):
     return render_to_response('datapages/subscribe.html',
         {
+        'title':'Subscribe to alerts',
         }, 
         context_instance=RequestContext(request)
     )
