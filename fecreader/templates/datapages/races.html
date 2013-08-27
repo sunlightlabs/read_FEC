@@ -34,8 +34,8 @@
                       <td>{{ object.election_year }}</td>
                       <td>${{ object.candidate_raised|intcomma }}</td>
                       <td>${{ object.candidate_spending|intcomma }}</td>
-                      <td>${{ object.outside_spending|intcomma }}</td>
-                      <td>${{ object.total_spending|intcomma }}</td>                  
+                      <td>{% if object.outside_spending %}${{ object.outside_spending|intcomma }}{% else %}$0{% endif %}</td>
+                      <td>{% if object.total_spending %}${{ object.total_spending|intcomma }}{% else %}$0{% endif %}</td>                  
 
                       </tr>
                 {% endfor %}

@@ -59,5 +59,15 @@ class Command(BaseCommand):
                     candidate.has_contributions = True
                 
 
-                candidate.save()
+            else:
+                candidate.cash_on_hand_date = None
+                candidate.cash_on_hand = 0
+                candidate.outstanding_loans = 0
+                candidate.total_contributions = 0
+                candidate.total_unitemized = 0
+                candidate.total_disbursements = 0
+                candidate.total_receipts = 0
+                candidate.has_contributions = False
+                
+            candidate.save()
             

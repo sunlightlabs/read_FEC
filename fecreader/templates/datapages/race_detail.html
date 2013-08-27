@@ -47,13 +47,13 @@
       <tbody>
           {% for object in candidates %}    
           <tr class="{% cycle 'odd' 'even' %}">
-              <td><a href="{{object.get_absolute_url}}">{{object.name}} {{object.display_party}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
+              <td><a href="{{object.get_absolute_url}}">{{object.name}} ({{object.party}})</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
               <td class="incumbency">{{object.incumbency_status }}</td>
               <td>${{ object.total_receipts|intcomma }}</td>
               <td>${{ object.total_disbursements|intcomma }}</td>
-              <td>${{ object.expenditures_supporting|intcomma }}</td>
-              <td>${{ object.expenditures_opposing|intcomma }}</td>
-              <td>${{ object.total_expenditures|intcomma }}</td>
+              <td>{% if object.expenditures_supporting %}${{ object.expenditures_supporting|intcomma }}{% else %}$0{% endif %}</td>
+              <td>{% if object.expenditures_opposing %}${{ object.expenditures_opposing|intcomma }}{% else %}$0{% endif %}</td>
+              <td>{% if object.total_expenditures %}${{ object.total_expenditures|intcomma }}{% else %}$0{% endif %}</td>
           </tr>
           {% endfor %}
         </tbody>
