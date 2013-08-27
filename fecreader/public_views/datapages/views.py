@@ -86,18 +86,45 @@ def house(request):
 def races(request):
 
     title="Race Spending Comparison"
-    explanatory_text="District totals are based on the most recent information available, but different political groups report this differently. Super PACs must reported independent expenditures within 48- or 24-hours, but candidate committees typically report this quarterly."
+    explanatory_text="District totals are based on the most recent information available, but different political groups report this on different schedules. Super PACs must reported independent expenditures within 48- or 24-hours, but candidate committees only report this quarterly."
 
-    senate_districts = District.objects.filter(office='S').order_by('state')
-    house_districts = District.objects.filter(office='H').order_by('state', 'office_district')
+    districts = District.objects.all()
 
     return render_to_response('datapages/districts.html',
         {
         'title':title,
         'explanatory_text':explanatory_text,
-        'senate_districts':senate_districts,
-        'house_districts':house_districts,
+        'races':districts,
         }, 
+        context_instance=RequestContext(request)
+    )
+
+
+
+def house_race(request, cycle, state, district):
+    race = get_object_or_404(District, cycle=cycle, state=state, office_district=district, office='H')
+    title = race.race_name()
+    candidates = Candidate_Overlay.objects.filter(district=race)
+    return render_to_response('datapages/race_detail.html', 
+        {
+        'candidates':candidates,
+        'title':title,
+        'race':race,
+        },
+        context_instance=RequestContext(request)
+    )
+    
+    
+def senate_race(request, cycle, state, term_class):
+    race = get_object_or_404(District, cycle=cycle, state=state, term_class=term_class, office='S')
+    title = race.race_name()
+    candidates = Candidate_Overlay.objects.filter(district=race)
+    return render_to_response('datapages/race_detail.html', 
+        {
+        'candidates':candidates,
+        'title':title,
+        'race':race,
+        },
         context_instance=RequestContext(request)
     )
 

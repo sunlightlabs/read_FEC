@@ -489,6 +489,23 @@ def update_committee_times(committee):
     if committee.ctype in ['Y', 'Z'] and not committee.has_coordinated_expenditures and committee.total_coordinated_expenditures > 0:
         committee.has_coordinated_expenditures = True
     committee.save()
-        
     
 
+def update_district_totals(district):
+    # get authorized spending
+    candidates = Candidate_Overlay.objects.filter(district=district)
+    # expenditures is independent expenditures for or against; disbursements is spending by them.
+    sums = candidates.aggregate(total_expenditures=Sum('total_expenditures'), total_receipts=Sum('total_receipts'), total_disbursements=Sum('total_disbursements'))
+    for i in sums:
+        if not sums[i]:
+            sums[i] = 0
+    
+    district.candidate_raised = round(sums['total_receipts'])
+    district.candidate_spending = round(sums['total_disbursements'])
+    district.outside_spending = round(sums['total_expenditures'])
+    
+    # we're disregarding coordinated spending for now. 
+    district.total_spending = round(sums['total_disbursements'] + sums['total_expenditures'])
+    district.save()
+    
+    # todo: coordinated spending, electioneering.

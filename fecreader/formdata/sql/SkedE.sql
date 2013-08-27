@@ -9,3 +9,8 @@ alter table formdata_skede drop constraint formdata_skede_pkey;
 --For more see: http://www.postgresql.org/docs/9.2/static/sql-createindex.html.
 
 create index formdata_skede_fnumber on formdata_skede (filing_number)  WITH (fillfactor = 50);
+
+-- Even though it'll slow our inserts down, we reuse this table as ie data, so index it. 
+
+-- index on candidate id, state, race
+-- TODO--THE INDEXES!

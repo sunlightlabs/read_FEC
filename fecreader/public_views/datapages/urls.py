@@ -23,4 +23,8 @@ urlpatterns = patterns('',
         url(r'^filings/(\d+)/$', 'public_views.datapages.views.filing'),
         url(r'^committee/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee'),
         url(r'^candidate/[\w-]+\/(?P<candidate_id>[\w\d]+)\/?$', 'public_views.datapages.views.candidate'),        
+        url(r'^race/(?P<cycle>\d\d\d\d)\/H\/(?P<state>\w\w)\/(?P<district>\d+)\/', 'public_views.datapages.views.house_race'),
+        url(r'^race/(?P<cycle>\d\d\d\d)\/S\/(?P<state>\w\w)\/(?P<term_class>\d+)\/', 'public_views.datapages.views.senate_race'),
+#        url(r'^race/(?P<cycle>\d\d\d\d)\/president\/', 'public_views.datapages.views.presidential_race'),
+
 )

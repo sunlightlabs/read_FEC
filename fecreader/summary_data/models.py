@@ -89,7 +89,32 @@ class District(models.Model):
     dem_frac_historical = models.FloatField(null=True, help_text="What fraction of the time since 2000 has this seat been occupied by democrats")
     rep_frac_historical = models.FloatField(null=True, help_text="What fraction of the time since 2000 has this seat been occupied by republicans")
     altered_by_2010_redistricting = models.BooleanField(default=False,help_text="Was this district substantially changed in the 2010 redistricting ? ")
+    # summary data
+    
+    # do these need to be differentiated between primary / general elections ? 
+    candidate_raised = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    candidate_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    # should we include electioneering? 
+    electioneering_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
 
+    
+    def district_formatted(self):
+        if self.office == 'S':
+            return "%s Sen" % (self.state)
+        elif self.office== 'H':
+            if self.office_district:
+                return "%s-%s" % (self.state, self.office_district)
+            else:
+                return "%s" % (self.state) 
+        elif self.office == 'P':
+            return "President"
+            
+        return ""
+
+            
     def __unicode__(self):
         if self.office == 'P':
             return 'President'
@@ -97,6 +122,29 @@ class District(models.Model):
             return '%s (Senate) %s-%s' % (self.state, self.term_class, self.election_year)
         else:
             return '%s-%s (House)' % (self.state, self.office_district)
+            
+    def get_absolute_url(self):
+        url= ""
+        if self.office == 'H':
+            url="/race/%s/%s/%s/%s/" % (self.cycle, self.office, self.state, self.office_district)
+        elif self.office == 'S':
+            url= "/race/%s/%s/%s/%s/" % (self.cycle, self.office, self.state, self.term_class)
+        elif self.office == 'P':
+            url= "/race/%s/president/" % (self.cycle)
+        
+        return url
+            
+    def race_name(self):
+        name = ""
+        if self.office == 'H':
+            name="%s House Race, District %s, %s" % (STATE_CHOICES_DICT[self.state], self.office_district, self.election_year)
+        elif self.office == 'S':
+            name= "%s Senate Race, %s" % (STATE_CHOICES_DICT[self.state], self.election_year)
+        elif self.office == 'P':
+            name= "Presidential Race"
+        return name
+            
+
 
 class Candidate_Overlay(models.Model):
     ## This is the human verified field -- see legislators.models.incumbent_challenger
@@ -136,7 +184,7 @@ class Candidate_Overlay(models.Model):
     
     # add on id fields
     crp_id = models.CharField(max_length=9, blank=True, null=True)
-    transparencydata_id = models.CharField(max_length=40, default='', null=True)    
+    transparencydata_id = models.CharField(max_length=40, default='', null=True)
 
     #
 
@@ -173,7 +221,7 @@ class Candidate_Overlay(models.Model):
     ## these two are currently not populated
     cand_cand_contrib = models.DecimalField(max_digits=19, decimal_places=2, null=True, help_text="contributions from the candidate herself")
     cand_cand_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, help_text="loans from the candidate herself")
-    
+        
 
     class Meta:
         unique_together = ('fec_id', 'cycle')
@@ -212,7 +260,7 @@ class Candidate_Overlay(models.Model):
         try:
             if (self.party.upper()=='REP'):
                 return '(R)'
-            elif (self.party.upper()=='DEM'):
+            elif (self.party.upper()=='DEM' or self.party.upper()=='DFL'):
                 return '(D)'
             else: 
                 return ''
