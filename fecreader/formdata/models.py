@@ -6,6 +6,7 @@
 
 
 from django.db import models
+from django.utils.text import slugify
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
@@ -244,6 +245,14 @@ class SkedE(models.Model):
             return candidate_name_checked
         else:
             return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name or "")
+    
+    def get_candidate_url(self):
+        if candidate_id_checked:
+            return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_checked)
+        elif candidate_id_number:
+            return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_number)
+        else:
+            return None
     
         
 class OtherLine(models.Model):
