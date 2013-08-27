@@ -11,7 +11,12 @@
 {% block rtmain %}
 
 <div class="module">
-
+Show: <select name="filter_display" class="dropdown_field" id="candidate_filter" style="width:200px;">
+    <option value='all'>House and Senate races</option>
+    <option value='senate'>only Senate races</option>
+    <option value='house'>only House races</option>
+  </select></p>
+  
 <table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
@@ -28,7 +33,7 @@
               <tbody>
                 {% for object in races %}
                   <tr class="{% cycle 'odd' 'even' %}">
-                      <td><a href="{{ object.get_absolute_url }}">{{ object.district_formatted }}</a></td>
+                      <td class="district">({{object.office}}) <a href="{{ object.get_absolute_url }}">{{ object.district_formatted }}</a></td>
                       <td>{{object.incumbent_name}} ({{object.incumbent_party}})</td>
                       <td>{% if open_seat %}Y{% else %}N{% endif %}</td>
                       <td>{{ object.election_year }}</td>
@@ -44,4 +49,61 @@
 </table>
 
 </div>
+
+<script type="text/javascript" >
+
+
+$(document).ready(function() {
+    $( "#candidate_filter" ).val("all");
+    $( "#candidate_filter" )
+    .bind( "change", function() {
+      selected = $(this).val();
+      console.log("select changed: " + selected);
+      if (selected == 'all') {
+        show_all();
+      } else if (selected == 'senate') {
+        hide_house();
+      } else if (selected == 'house') {
+        hide_senate();
+      }
+      var sorting = [[7,1]]; 
+      // sort on the seventh column 
+      $("#mainPageTable").trigger("sorton",[sorting]);
+      
+      
+    });
+});
+
+function show_all() {
+   $("#mainPageTable > tbody > tr").each(function(index) {
+        $(this).show();
+      })
+}
+
+function hide_house() {
+    $("#mainPageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.district').text().trim();
+      if (cell_text.substring(0,2) == '(H') {
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+function hide_senate() {
+    $("#mainPageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.district').text().trim();
+      if (cell_text.substring(0,2) == '(S') {
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+</script>
+
 {% endblock %}

@@ -85,7 +85,7 @@ def house(request):
 
 def races(request):
 
-    title="Race Spending Comparison"
+    title="Race-wide spending totals"
     explanatory_text="District totals are based on the most recent information available, but different political groups report this on different schedules. Super PACs must reported independent expenditures within 48- or 24-hours, but candidate committees only report this quarterly."
 
     districts = District.objects.all()
