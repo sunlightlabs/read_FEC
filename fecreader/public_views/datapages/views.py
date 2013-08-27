@@ -54,7 +54,7 @@ def senate(request):
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(office='S', cash_on_hand__gte=1000)
+    legislators = Candidate_Overlay.objects.filter(office='S').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)) 
 
     return render_to_response('datapages/legislator_list.html',
         {
@@ -71,7 +71,7 @@ def house(request):
     explanatory_text="Fundraising totals are for the entire cycle for current house members and house candidates who reported having $1,000 or more. "
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(office='H', cash_on_hand__gte=1000)
+    legislators = Candidate_Overlay.objects.filter(office='H').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)) 
 
     return render_to_response('datapages/legislator_list.html',
         {
