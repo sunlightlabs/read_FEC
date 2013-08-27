@@ -14,7 +14,7 @@
 
 {% if candidate.not_seeking_reelection %}This candidate is not seeking reelection to this position.{% endif %}{% if candidate.other_office_sought %} This candidate is running for {% if candidate.other_fec_id %}<a href="/candidate/{{candidate.slug}}/{{candidate.other_fec_id}}">{% endif %}{{ candidate.other_office_sought }}{% if candidate.other_fec_id %}</a>{% endif %}.{% endif %}
 
-<p>{% if candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %} {{ candidate.detailed_office}}. {{candidate.next_election}}
+<p>{% if candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %} <a href="{{ candidate.district.get_absolute_url }}">{{ candidate.detailed_office}}</a>. {{candidate.next_election}}
 <br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>{% if not forloop.last %}&nbsp;|&nbsp;{% endif %}{% endfor %}
 <div class="numeric_summary">
 
