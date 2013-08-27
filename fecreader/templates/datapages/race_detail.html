@@ -1,0 +1,64 @@
+{# race details #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+{% block timestamp %}Override timestamp here{% endblock %}
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }} {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+ <div id="contentHeader">
+       <h2>{{ title }}</h2>
+</div>
+<p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})</p>
+<div class="numeric_summary">
+<span class="amount_description">Total candidate fundraising:</span>&nbsp;<span class="amount_dollars">{% if race.candidate_raised %}${{race.candidate_raised|intcomma}}{% else %}$0{% endif %}</span>
+
+<br><span class="amount_description">Total candidate spending:</span>&nbsp;<span class="amount_dollars">{% if race.candidate_spending %}${{race.candidate_spending|intcomma}}{% else %}$0{% endif %}</span>  
+
+<br><span class="amount_description">Total outside spending</span>&nbsp;<span class="amount_dollars">{% if race.outside_spending %}${{race.outside_spending|intcomma}}{% else %}$0{% endif %}</span>
+
+
+<br><span class="amount_description">Candidate spending plus outside spending</span>&nbsp;<span class="amount_dollars">{% if race.total_spending %}${{race.total_spending|intcomma}}{% else %}$0{% endif %}</span>
+
+</div>
+
+
+
+<h2>Candidates</h2>
+{% if candidates %}
+<table id="mainPageTable" class="sortable">
+      <thead>
+        <tr id="titles">
+            <th class="sort">Candidate</th>
+            <th class="sort">Incumbent</th>
+        
+            <th class="sort">Candidate Fundraising</th>
+            <th class="sort">Candidate Spending</th>
+            <th class="sort">Outside Spending For</th>
+            <th class="sort">Outside Spending Against</th>
+            <th class="sort">Total Outside Spending</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for object in candidates %}    
+          <tr class="{% cycle 'odd' 'even' %}">
+              <td><a href="{{object.get_absolute_url}}">{{object.name}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
+              <td class="incumbency">{{object.incumbency_status }}</td>
+              <td>${{ object.total_receipts|intcomma }}</td>
+              <td>${{ object.total_disbursements|intcomma }}</td>
+              <td>${{ object.expenditures_supporting|intcomma }}</td>
+              <td>${{ object.expenditures_opposing|intcomma }}</td>
+              <td>${{ object.total_expenditures|intcomma }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+</table>
+{% endif %}
+
+</div>
+{% endblock %}
