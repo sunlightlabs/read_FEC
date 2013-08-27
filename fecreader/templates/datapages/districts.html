@@ -10,15 +10,17 @@
 
 {% block rtmain %}
 
-<div class="module">
- <div id="contentHeader">
-       <h2>{{ title }}</h2>
-</div>
-<p>{{ explanatory_text|safe }}</p>
 
-<h3>Senate</h3>
+<div class="overviewBar withNav withTip">
+    <h4>Senate</h4>
+</div>
+<div class="module">
+
+
+
+
 <p class="tip">For house districts see <a href="#house">here</a></p>
-<table id="mainPageTable" class="sortable">
+<table id="mainPageTable" class=" compressed sortable">
             <thead>
                   <tr id="titles">
                       <th class="sort">State</th>
@@ -41,16 +43,16 @@
                       <td>{{ object.election_year }}</td>
                       <td></td>
                       <td></td>
-                      <td></td>                      
                       <td></td>
-                      <td></td>                  
+                      <td></td>
+                      <td></td>
                       </tr>
                 {% endfor %}
-                 
+
 </tbody>
 </table>
 
-<h3 id="house">House</h3>
+<h4 id="house">House</h4>
 <table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
@@ -74,12 +76,12 @@
                       <td>{{ object.election_year }}</td>
                       <td></td>
                       <td></td>
-                      <td></td>                      
                       <td></td>
-                      <td></td>                  
+                      <td></td>
+                      <td></td>
                       </tr>
                 {% endfor %}
-                 
+
 </tbody>
 
 </table>
@@ -87,4 +89,4 @@
 
 </div>
   {% endblock %}
-  
+
