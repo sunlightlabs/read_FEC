@@ -34,13 +34,21 @@ class Command(BaseCommand):
                 
                 # get data from the most recent report
                 recent_sums = recent_reports.aggregate( outstanding_loans=Sum('outstanding_loans'), cash_on_hand_end=Sum('cash_on_hand_end'))
+                for i in recent_sums:
+                    if not recent_sums[i]:
+                        recent_sums[i] = 0
                 # Independent expenditures are summarized separately. 
                 candidate.cash_on_hand_date = most_recent_report.coverage_through_date
                 candidate.cash_on_hand = recent_sums['cash_on_hand_end']
                 candidate.outstanding_loans = recent_sums['outstanding_loans']
                 
+                
                 # get data for all reports
                 sums = all_summaries.aggregate(tot_contrib=Sum('tot_contrib'), tot_disburse=Sum('tot_disburse'), tot_receipts=Sum('tot_receipts'), tot_non_ite_contrib=Sum('tot_non_ite_contrib'))
+                
+                for i in sums:
+                    if not sums[i]:
+                        sums[i] = 0
                 
                 candidate.total_contributions = sums['tot_contrib']
                 candidate.total_unitemized = sums['tot_non_ite_contrib']

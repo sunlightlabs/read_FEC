@@ -460,7 +460,12 @@ class Committee_Overlay(models.Model):
         return self.name
         
     def fec_all_filings(self):
-        url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
+        url = ""
+        if self.is_paper_filer:
+            url = "http://query.nictusa.com/cgi-bin/fecimg/?%s" % (self.fec_id)
+        else:
+            url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
+
         return url
 
     def superpac_status(self):

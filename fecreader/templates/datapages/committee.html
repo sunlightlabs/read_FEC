@@ -20,7 +20,9 @@
   <br>Treasurer: {{ committee.treasurer }}
   <br>Location: {{ committee.city}}, {{ committee.state}} {{committee.zip}}
   <br>Filing frequency: {{ committee.filing_frequency_text }}
-  <br>See <a href="{{committee.fec_all_filings}}">electronic filings</a> on the FEC's web site.
+  <br><a href="{{committee.fec_all_filings}}">See filings</a> on the FEC's web site.
+  
+  
 <div class="numeric_summary">
 <span class="amount_description">Total receipts:</span>&nbsp;<span class="amount_dollars">{% if committee.total_receipts %}${{committee.total_receipts|intcomma}}{% else %}$0{% endif %}</span>
 
