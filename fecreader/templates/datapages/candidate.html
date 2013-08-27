@@ -11,9 +11,7 @@
  {% block rtmain %}
 
 <div class="module">
- <div id="contentHeader">
-       <h2>{{ title }}</h2>
-</div>
+
 {% if candidate.not_seeking_reelection %}This candidate is not seeking reelection to this position.{% endif %}{% if candidate.other_office_sought %} This candidate is running for {% if candidate.other_fec_id %}<a href="/candidate/{{candidate.slug}}/{{candidate.other_fec_id}}">{% endif %}{{ candidate.other_office_sought }}{% if candidate.other_fec_id %}</a>{% endif %}.{% endif %}
 
 <p>{% if candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %} {{ candidate.detailed_office}}. {{candidate.next_election}}

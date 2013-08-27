@@ -92,13 +92,13 @@ class District(models.Model):
     # summary data
     
     # do these need to be differentiated between primary / general elections ? 
-    candidate_raised = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    candidate_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    candidate_raised = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    candidate_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     # should we include electioneering? 
-    electioneering_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    electioneering_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
 
     
     def district_formatted(self):
@@ -191,11 +191,11 @@ class Candidate_Overlay(models.Model):
     slug = models.SlugField()
     
     # independent expenditures data
-    total_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    expenditures_supporting = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    expenditures_opposing = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    expenditures_supporting = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    expenditures_opposing = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     # need to add electioneering here:
-    electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     
     # Is this candidate a winner in the general election?
     cand_is_gen_winner = models.NullBooleanField(null=True)
@@ -206,16 +206,16 @@ class Candidate_Overlay(models.Model):
     
     has_contributions = models.NullBooleanField(null=True, default=False)
     # total receipts
-    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
 
-    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True)
+    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, default=0)
 
     # total unitemized receipts
-    total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
 
-    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     cash_on_hand_date = models.DateField(null=True)
     
     ## these two are currently not populated
@@ -348,7 +348,7 @@ class Committee_Overlay(models.Model):
     total_coordinated_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
 
     has_electioneering = models.NullBooleanField(null=True, default=False)
-    total_electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    total_electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
 
       ## new
 

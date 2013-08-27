@@ -11,9 +11,7 @@
  {% block rtmain %}
 
 <div class="module">
- <div id="contentHeader">
-       <h2>{{ title|safe }}</h2>
-</div>
+
 Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 
 {% if filing_data.coverage_from_date %}<br>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ filing_data.process_time}}.

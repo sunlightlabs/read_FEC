@@ -164,7 +164,7 @@ class new_filing(models.Model):
         
     def get_form_name(self):
         report_extra = ""
-        if re.search('A', self.form_type):
+        if (self.is_amendment):
             report_extra=" (AMENDED)"
         if re.search('T', self.form_type):
             report_extra=" (TERMINATION REPORT)"
@@ -176,6 +176,15 @@ class new_filing(models.Model):
     def FEC_url(self):
         fec_download_url = FEC_HTML_LOCATION % (self.fec_id, self.filing_number)
         return fec_download_url
+    
+    def has_sked_e(self):
+        try:
+            if self.lines_present['E']>0:
+                return True
+            else:
+                return False
+        except KeyError:
+            return False
     
     def get_committee_url(self):    
         return ("/committee/%s/%s/" % (self.committee_slug, self.fec_id))

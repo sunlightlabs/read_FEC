@@ -58,7 +58,8 @@ class Command(BaseCommand):
                 if not candidate.has_contributions and candidate.total_contributions > 0:
                     candidate.has_contributions = True
                 
-
+"""
+It's probably better to make these the defaults and not recalculate this stuff
             else:
                 candidate.cash_on_hand_date = None
                 candidate.cash_on_hand = 0
@@ -68,6 +69,7 @@ class Command(BaseCommand):
                 candidate.total_disbursements = 0
                 candidate.total_receipts = 0
                 candidate.has_contributions = False
+"""
                 
             candidate.save()
             

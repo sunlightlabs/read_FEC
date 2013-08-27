@@ -11,9 +11,6 @@
  {% block rtmain %}
 
 <div class="module">
- <div id="contentHeader">
-       <h2>{{ title }}</h2>
-</div>
 <p>Committee Type: "{{ committee.ctype }}" - {{ committee.display_type}} 
   {% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ committee.curated_candidate.detailed_office}}{% endif %}
   <br>Designation: "{{ committee.designation}}" - {{ committee.display_designation}}
@@ -51,7 +48,7 @@
               <tbody>
                   {% for object in recent_report_list %}    
                       <tr class="{% cycle 'odd' 'even' %}">
-                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }}</a>{% endif %} {{object.get_form_name}}</td>
+                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% endif %} </td>
                           
                           <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_raised %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
@@ -81,7 +78,7 @@
               <tbody>
                   {% for object in report_list %}    
                       <tr class="{% cycle 'odd' 'even' %}">
-                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }}</a>{% endif %} {{object.get_form_name}}</td>
+                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% else %}<a href="{{object.get_fec_url}}">paper filing</a>{% endif %} </td>
                           
                           <td>{% if object.coverage_through_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_through_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_receipts %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_receipts|intcomma }}</a>{% else %}$0{% endif %}</td>

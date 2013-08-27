@@ -181,7 +181,7 @@ def filing(request, filing_num):
     
     try:
         committee = Committee_Overlay.objects.get(fec_id = filing.fec_id)
-        title="<a href=\"%s\">%s</a>:details of filing #%s" % (committee.get_absolute_url(), filing.committee_name, filing_num)
+        title="<a href=\"%s\">%s</a>: details of filing #%s" % (committee.get_absolute_url(), filing.committee_name, filing_num)
         
     except:
         pass
