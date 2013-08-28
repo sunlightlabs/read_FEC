@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 
 
 from fec_alerts.models import new_filing, newCommittee
-from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees
+from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate
 this_cycle = '2014'
 this_cycle_start = datetime.date(2013,1,1)
 from formdata.models import SkedA, SkedB, SkedE
@@ -30,7 +30,7 @@ def home_page(request):
     # should eventually have a home page, or straighten out urls
     return redirect('/newest-filings/')
 
-
+"""
 def candidates(request):
 
     title="Candidates - Cycle Summary"
@@ -47,6 +47,7 @@ def candidates(request):
         }, 
         context_instance=RequestContext(request)
     )
+"""
 def senate(request):
 
     title="Senate - Cycle Summary"
@@ -119,11 +120,14 @@ def senate_race(request, cycle, state, term_class):
     race = get_object_or_404(District, cycle=cycle, state=state, term_class=term_class, office='S')
     title = race.race_name()
     candidates = Candidate_Overlay.objects.filter(district=race)
+    outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates).select_related('committee', 'candidate')
+    
     return render_to_response('datapages/race_detail.html', 
         {
         'candidates':candidates,
         'title':title,
         'race':race,
+        'outside_spenders':outside_spenders,
         },
         context_instance=RequestContext(request)
     )
@@ -280,6 +284,9 @@ def committee(request, committee_id):
     else:
         recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=this_cycle_start, form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
         
+    independent_spending = Pac_Candidate.objects.filter(committee=committee_overlay).select_related('candidate')
+    
+        
     
     return render_to_response('datapages/committee.html',
         {
@@ -287,6 +294,7 @@ def committee(request, committee_id):
         'report_list':report_list,
         'recent_report_list':recent_report_list,
         'committee':committee_overlay,
+        'independent_spending':independent_spending,
         }, 
         context_instance=RequestContext(request)
     )
@@ -300,12 +308,17 @@ def candidate(request, candidate_id):
     committee_list = [x.get('committee_id') for x in authorized_committee_list.values('committee_id')]
     
     report_list = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start).order_by('coverage_through_date')
+    
+    # are their outside groups who've spent for/against this candidate? 
+    outside_spenders = Pac_Candidate.objects.filter(candidate=candidate_overlay).select_related('committee')
+    
     return render_to_response('datapages/candidate.html',
         {
         'title':title,
         'report_list':report_list,
         'candidate':candidate_overlay,
         'authorized_committee_list':authorized_committee_list,
+        'outside_spenders':outside_spenders,
         }, 
         context_instance=RequestContext(request)
     )

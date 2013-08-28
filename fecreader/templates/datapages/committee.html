@@ -32,11 +32,45 @@
 </div>
 
 
+{% if independent_spending %}
+<div class="overviewBar withNav withTip">
+    <h4>Independent Expenditure Summary</h4>
+</div>
+<p>Candidates supported or opposed by this committee's independent expenditures are listed below.</p>
+
+<table class="sortable">
+  <thead>
+    <tr>
+      <th class="sort">Candidate</th>
+      <th>Incumbent</th>
+      <th> Office Sought </th>
+      <th class="sort">Support / Oppose</th>
+      <th class="sort">Total outside spending</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for object in independent_spending %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td><a href="{{object.candidate.get_absolute_url}}">{{object.candidate.name}}</a></td>
+        <td>{{ object.candidate.incumbency_status }}</td>
+        <td><a href="{{ object.candidate.district.get_absolute_url }}">{{ object.candidate.detailed_office }}</a></td>
+        <td>{{object.support_or_oppose}}</td>
+        <td>${{object.total_ind_exp|intcomma}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
 
 
 {% if recent_report_list %}
-<h2>Recent 24- and 48-hour filings</h2>
+<div class="overviewBar withNav withTip">
+    <h4>Recent 24- and 48-hour filings</h4>
+</div>
 <p>Only filings made since the last monthly/quarterly report are shown</p>
+
+
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
@@ -65,7 +99,9 @@
 {% endif %}
 
 {% if report_list %}
-<h2>Regular Filings</h2>
+<div class="overviewBar withNav withTip">
+    <h4>Committee Summary Filings</h4>
+</div>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
