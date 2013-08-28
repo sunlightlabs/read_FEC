@@ -27,7 +27,7 @@ def mark_superceded_F24s(new_f3x_new_filing):
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
     
-    SkedE.objects.filter(form_type__istartswith='F24', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_to_date).update(superceded_by_amendment=True)
+    SkedE.objects.filter(form_type__istartswith='F24', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_through_date).update(superceded_by_amendment=True)
    
     
         
@@ -42,10 +42,10 @@ def mark_superceded_F65s(new_f3x_new_filing):
     filing_array = []
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
-    SkedA.objects.filter(form_type__istartswith='F65', filing_number__in=filing_array, superceded_by_amendment=False, contribution_date__gte=coverage_from_date, contribution_date__lte=coverage_to_date).update(superceded_by_amendment=True)
+    SkedA.objects.filter(form_type__istartswith='F65', filing_number__in=filing_array, superceded_by_amendment=False, contribution_date__gte=coverage_from_date, contribution_date__lte=coverage_through_date).update(superceded_by_amendment=True)
     
     
-def mark_superceded_F5s(new_monthly_f5):
+def mark_superceded_F57s(new_monthly_f5):
     print "marking superceded F57s"
     
     coverage_from_date = new_monthly_f5.coverage_from_date
@@ -56,7 +56,7 @@ def mark_superceded_F5s(new_monthly_f5):
     filing_array = []
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
-    SkedE.objects.filter(form_type__istartswith='F57', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_to_date).update(superceded_by_amendment=True)
+    SkedE.objects.filter(form_type__istartswith='F57', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_through_date).update(superceded_by_amendment=True)
     
     
 def summarize_f24(new_filing):
@@ -114,7 +114,7 @@ class Command(BaseCommand):
                 summarize_nonquarterly_f5(this_filing)
                 
             elif this_filing.form_type.startswith('F5') and this_filing.is_f5_quarterly:
-                mark_superceded_F5s(this_filing)
+                mark_superceded_F57s(this_filing)
             
             # if it's got sked E's and it's an F3X, overwrite 24 hr report
             elif this_filing.form_type.startswith('F3'):                
