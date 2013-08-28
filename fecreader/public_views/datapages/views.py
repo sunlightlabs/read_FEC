@@ -106,11 +106,14 @@ def house_race(request, cycle, state, district):
     race = get_object_or_404(District, cycle=cycle, state=state, office_district=district, office='H')
     title = race.race_name()
     candidates = Candidate_Overlay.objects.filter(district=race)
+    outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=1000).select_related('committee', 'candidate')
+    
     return render_to_response('datapages/race_detail.html', 
         {
         'candidates':candidates,
         'title':title,
         'race':race,
+        'outside_spenders':outside_spenders,
         },
         context_instance=RequestContext(request)
     )
@@ -120,7 +123,7 @@ def senate_race(request, cycle, state, term_class):
     race = get_object_or_404(District, cycle=cycle, state=state, term_class=term_class, office='S')
     title = race.race_name()
     candidates = Candidate_Overlay.objects.filter(district=race)
-    outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates).select_related('committee', 'candidate')
+    outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=1000).select_related('committee', 'candidate')
     
     return render_to_response('datapages/race_detail.html', 
         {
@@ -284,7 +287,7 @@ def committee(request, committee_id):
     else:
         recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=this_cycle_start, form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
         
-    independent_spending = Pac_Candidate.objects.filter(committee=committee_overlay).select_related('candidate')
+    independent_spending = Pac_Candidate.objects.filter(committee=committee_overlay, total_ind_exp__gte=1000).select_related('candidate')
     
         
     
@@ -310,7 +313,7 @@ def candidate(request, candidate_id):
     report_list = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start).order_by('coverage_through_date')
     
     # are their outside groups who've spent for/against this candidate? 
-    outside_spenders = Pac_Candidate.objects.filter(candidate=candidate_overlay).select_related('committee')
+    outside_spenders = Pac_Candidate.objects.filter(candidate=candidate_overlay, total_ind_exp__gte=1000).select_related('committee')
     
     return render_to_response('datapages/candidate.html',
         {

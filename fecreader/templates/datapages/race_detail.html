@@ -68,7 +68,7 @@
 <div class="overviewBar withNav withTip">
     <h4>Independent Expenditure Summary</h4>
 </div>
-<p>Outside groups that supported or opposed a candidate in this race are listed below.</p>
+<p>Candidates supported or opposed by independent expenditures of $5,000 or more are listed below.</p>
 
 <table class="sortable">
   <thead>
@@ -85,7 +85,7 @@
       {% for object in outside_spenders %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td><a href="{{object.committee.get_absolute_url}}">{{object.committee.name}}</a></td>
-        <td><a href="{{object.candidate.get_absolute_url}}">{{object.candidate.name}}</a></td>
+        <td><a href="{{object.candidate.get_absolute_url}}">{{object.candidate.name}} {{ object.candidate.display_party}}</a></td>
         <td>{{ object.candidate.incumbency_status }}</td>
         <td><a href="{{ object.candidate.district.get_absolute_url }}">{{ object.candidate.detailed_office }}</a></td>
         <td>{{object.support_or_oppose}}</td>

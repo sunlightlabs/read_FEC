@@ -257,16 +257,11 @@ class Candidate_Overlay(models.Model):
 
 
     def display_party(self):
-        try:
-            if (self.party.upper()=='REP'):
-                return '(R)'
-            elif (self.party.upper()=='DEM' or self.party.upper()=='DFL'):
-                return '(D)'
-            else: 
-                return ''
-        except AttributeError:
+        if (self.party):
+            return "(%s)" % (self.party.upper())
+        else: 
             return ''
-        # todo--add other parties, if there are any that are being used?
+
 
     def influence_explorer_url(self):
         if not self.transparencydata_id:
