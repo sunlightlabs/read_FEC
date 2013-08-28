@@ -18,11 +18,46 @@
 <br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>{% if not forloop.last %}&nbsp;|&nbsp;{% endif %}{% endfor %}
 <div class="numeric_summary">
 
-<br><span class="amount_description">Total disbursements:</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
+<span class="amount_description">Candidate Spending:</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
 
-<br><span class="amount_description">Cash on hand (as of {{ candidate.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if candidate.cash_on_hand %}${{candidate.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
+<br><span class="amount_description">Candidate's Cash (as of {{ candidate.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if candidate.cash_on_hand %}${{candidate.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
+
+<br><span class="amount_description">Outside support</span>&nbsp;<span class="amount_dollars">{% if candidate.expenditures_supporting %}${{candidate.expenditures_supporting|intcomma}}{% else %}$0{% endif %}</span>
+
+<br><span class="amount_description">Outside opposition</span>&nbsp;<span class="amount_dollars">{% if candidate.expenditures_opposing %}${{candidate.expenditures_opposing|intcomma}}{% else %}$0{% endif %}</span>
 
 </div>
+{% if outside_spenders %}
+<div class="overviewBar withNav withTip">
+    <h4>Outside groups supporting or opposing this candidate</h4>
+</div>
+<p>Committees supporting or opposing this candidate with independent expenditures of $1,000 or more are listed below.</p>
+
+<table class="sortable">
+  <thead>
+    <tr>
+      <th class="sort">Committee</th>
+      <th class="sort">Support / Oppose</th>
+      <th class="sort">Total outside spending</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for object in outside_spenders %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td><a href="{{object.committee.get_absolute_url}}">{{object.committee.name}}</a></td>
+        <td>{{object.support_or_oppose}}</td>
+        <td>${{object.total_ind_exp|intcomma}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+<div class="overviewBar withNav withTip">
+    <h4>Candidate Filings</h4>
+</div>
+
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
