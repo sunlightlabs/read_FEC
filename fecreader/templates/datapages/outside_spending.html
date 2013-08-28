@@ -1,0 +1,48 @@
+{# list of filings #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title|striptags }} {% endblock %}
+
+{% block rtmain %}
+
+<div class="module">
+
+
+<h2>Independent Expenditures</h2>
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Committee</th>
+                <th>Support<br>Oppose</th>
+                <th>Candidate</th>
+                <th class="sort">Payee</th>
+                <th class="sort">Amount</th>
+                <th class="sort">Date</th>
+                <th class="sort">Purpose</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in object_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}" id="{{ object.transaction_id }}">
+                          <td>{% if object.committee_name %} <a href="{{ object.get_committee_url }}">{{object.committee_name}}{% endif %}</a></th>
+                          <td> {{ object.support_oppose }}</td>
+                          <td>{% if object.candidate_checked %}<a href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
+                          <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
+                          <td>${{ object.expenditure_amount|intcomma}}</td>
+                          <td>{{ object.expenditure_date_formatted|date:"Y-m-d"}}</td>
+                          <td>{% if object.expenditure_purpose_descrip %}{{ object.expenditure_purpose_descrip}}{% endif %}</td>
+                      </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+
+</div>
+{% endblock %}
+  
+

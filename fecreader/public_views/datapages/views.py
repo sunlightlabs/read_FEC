@@ -179,7 +179,22 @@ def downloads(request):
 
 
 def outside_spending(request):
-    return render_blank_page('Outside Spending','This is a page on outside spending. Maybe include links to subpages on electioneering, and coordinated spending? I dunno.', request)
+    
+    
+    title="Independent Expenditures" 
+    explanatory_text = "Only independent expenditures of $50,000 or more are shown"
+
+
+    ies = SkedE.objects.filter(superceded_by_amendment=False, expenditure_amount__gte=50000, expenditure_date_formatted__gte=datetime.date(2013,1,1)).order_by('-expenditure_date_formatted')
+
+    return render_to_response('datapages/outside_spending.html',
+        {
+        'title':title,
+        'explanatory_text':explanatory_text,
+        'object_list':ies,
+        }, 
+        context_instance=RequestContext(request)
+    )
 
 def filing(request, filing_num):
     filing = get_object_or_404(new_filing, filing_number=filing_num)

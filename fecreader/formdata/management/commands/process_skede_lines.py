@@ -5,6 +5,8 @@ from formdata.models import SkedE
 from summary_data.models import Candidate_Overlay
 from reconciliation.fec_reconciler import match_by_name
 
+from add_committees_to_skede import attach_committee_to_skedeline
+
 cycle_start = date(2013,1,1)
 THIS_CYCLE = '2014'
 
@@ -121,6 +123,7 @@ class Command(BaseCommand):
                 skedelines = SkedE.objects.filter(filing_number=this_filing.filing_number)
                 
                 for skede in skedelines:
+                    attach_committee_to_skedeline(skede)
                     attach_ie_target(skede)
             # mark that we've been processed. 
             this_filing.ie_rows_processed=True

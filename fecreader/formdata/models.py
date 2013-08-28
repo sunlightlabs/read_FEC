@@ -166,6 +166,8 @@ class SkedE(models.Model):
     candidate_state_checked = models.CharField(max_length=2, blank=True, null=True)
     candidate_district_checked = models.CharField(max_length=2, blank=True, null=True)
     support_oppose_checked = models.CharField(max_length=1, blank=True, null=True)
+    committee_name = models.CharField(max_length=255, blank=True, null=True)
+    committee_slug = models.CharField(max_length=255, blank=True, null=True)
 
     # from the model
     form_type = models.CharField(max_length=8, blank=True)
@@ -253,6 +255,11 @@ class SkedE(models.Model):
             return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_number)
         else:
             return None
+            
+    def get_committee_url(self):
+        return "/committee/%s/%s/" % (self.committee_slug, self.filer_committee_id_number)
+    
+    
     
         
 class OtherLine(models.Model):

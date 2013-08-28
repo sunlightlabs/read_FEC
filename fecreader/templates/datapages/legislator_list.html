@@ -16,7 +16,7 @@ Show <select name="filter_display" class="dropdown_field" id="candidate_filter" 
   <option value='incumbents'>only incumbents</option>
   <option value='challengers'>only challengers</option>
 </select></p>
-<table id="PageTable" class="sortable">
+<table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
                       <th class="sort">Legislator</th>
@@ -72,20 +72,20 @@ $(document).ready(function() {
       }
       var sorting = [[6,1]]; 
       // sort on the first column 
-      $("#PageTable").trigger("sorton",[sorting]);
+      $("#mainPageTable").trigger("sorton",[sorting]);
       
       
     });
 });
 
 function show_all() {
-   $("#PageTable > tbody > tr").each(function(index) {
+   $("#mainPageTable > tbody > tr").each(function(index) {
         $(this).show();
       })
 }
 
 function hide_challengers() {
-    $("#PageTable > tbody > tr").each(function(index) {
+    $("#mainPageTable > tbody > tr").each(function(index) {
       cell_text = $(this).find('td.incumbency').text().trim();
       if (cell_text == 'N') {
         console.log(index + " " + cell_text);
@@ -98,7 +98,7 @@ function hide_challengers() {
 }
 
 function hide_incumbents() {
-    $("#PageTable > tbody > tr").each(function(index) {
+    $("#mainPageTable > tbody > tr").each(function(index) {
       cell_text = $(this).find('td.incumbency').text().trim();
       if (cell_text == 'Y') {
         console.log(index + " " + cell_text);
@@ -112,5 +112,5 @@ function hide_incumbents() {
 
 </script>
 
-  {% endblock %}
+{% endblock %}
   
