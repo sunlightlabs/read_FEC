@@ -122,14 +122,14 @@ class Command(BaseCommand):
             # if it's got sked E's and it's an F3X, overwrite 24 hr report
             elif this_filing.form_type.startswith('F3'):                
                 try:
-                    this_filing.lines_present['SchE']
+                    this_filing.lines_present['E']
                     mark_superceded_F24s(this_filing)
                 except KeyError:
                     pass
 
 
                 try:
-                    this_filing.lines_present['SchA']
+                    this_filing.lines_present['A']
                     mark_superceded_F65s(this_filing)
                 except KeyError:
                     pass

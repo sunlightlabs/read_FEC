@@ -14,6 +14,7 @@ from fec_import_logging import fec_logger
 from hstore_helpers import dict_to_hstore
 
 from db_utils import get_connection
+verbose = True
 
 class FilingHeaderDoesNotExist(Exception):
     pass
@@ -24,6 +25,14 @@ class FilingHeaderAlreadyProcessed(Exception):
 
 def process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id):
     form = linedict['form_parser']
+    
+    ## Mark memo-ized rows as being superceded by an amendment.
+    try:
+        if linedict['memo_code']=='X':
+            linedict['superceded_by_amendment'] = True
+    except KeyError:
+        pass
+    
     #print "processing form type: %s" % (form)
     if form=='SchA':
         skeda_from_skedadict(linedict, filingnum, header_id, is_amended, cd)
