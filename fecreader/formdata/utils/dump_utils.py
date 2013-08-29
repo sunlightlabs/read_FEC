@@ -57,8 +57,8 @@ def dump_all_sked(sked_name, destination_file):
     cursor = connection.cursor()
     
     # This might
-    #dumpcmd = """copy (SELECT %s FROM formdata_sked%s WHERE superceded_by_amendment=False and %s >= %s and filing_number in (select filing_number from fec_alerts_new_filing where is_superceded=False)) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, datefield, CYCLE_START_STRING, destination_file)
-    dumpcmd = """copy (SELECT %s FROM formdata_sked%s WHERE superceded_by_amendment=False and %s >= %s) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, datefield, CYCLE_START_STRING, destination_file)
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s WHERE superceded_by_amendment=False and %s >= %s and filing_number in (select filing_number from fec_alerts_new_filing where is_superceded=False)) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, datefield, CYCLE_START_STRING, destination_file)
+    #dumpcmd = """copy (SELECT %s FROM formdata_sked%s WHERE superceded_by_amendment=False and %s >= %s) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, datefield, CYCLE_START_STRING, destination_file)
     start = time.time()
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
