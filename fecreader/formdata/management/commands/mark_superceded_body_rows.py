@@ -21,7 +21,7 @@ def mark_superceded_F24s(new_f3x_new_filing):
     coverage_through_date = new_f3x_new_filing.coverage_to_date
     raw_filer_id = new_f3x_new_filing.fec_id
     
-    filing_numbers = new_filing.objects.filter(fec_id=raw_filer_id).values('filing_number')
+    filing_numbers = new_filing.objects.filter(fec_id=raw_filer_id, form_type__startswith='F24').values('filing_number')
     filing_array = []
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
@@ -37,7 +37,7 @@ def mark_superceded_F65s(new_f3x_new_filing):
     coverage_through_date = new_f3x_new_filing.coverage_to_date
     raw_filer_id = new_f3x_new_filing.fec_id
     
-    filing_numbers = new_filing.objects.filter(fec_id=raw_filer_id).values('filing_number')
+    filing_numbers = new_filing.objects.filter(fec_id=raw_filer_id, form_type__startswith='F6').values('filing_number')
     filing_array = []
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
