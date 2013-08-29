@@ -15,7 +15,6 @@ from django.db import connection
 
 # superceded operations are slow bc of query structure -- need to hit indexes here
 def mark_superceded_F24s(new_f3x_new_filing):
-    print "marking superceded F24 body rows"
     
     # we only mark the child rows as superceded--the filing itself isn't, because it's possible, in theory, that it's *half* superceded. 
     coverage_from_date = new_f3x_new_filing.coverage_from_date
@@ -27,12 +26,12 @@ def mark_superceded_F24s(new_f3x_new_filing):
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
     
-    SkedE.objects.filter(form_type__istartswith='F24', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_through_date).update(superceded_by_amendment=True)
-   
+    updated = SkedE.objects.filter(filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_through_date).update(superceded_by_amendment=True)
+    if updated:
+        print "marked %s superceded F24s" % updated
     
         
 def mark_superceded_F65s(new_f3x_new_filing):
-    print "marking superceded F65s"
     
     coverage_from_date = new_f3x_new_filing.coverage_from_date
     coverage_through_date = new_f3x_new_filing.coverage_to_date
@@ -42,8 +41,10 @@ def mark_superceded_F65s(new_f3x_new_filing):
     filing_array = []
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
-    SkedA.objects.filter(form_type__istartswith='F65', filing_number__in=filing_array, superceded_by_amendment=False, contribution_date__gte=coverage_from_date, contribution_date__lte=coverage_through_date).update(superceded_by_amendment=True)
-    
+    updated = SkedA.objects.filter(filing_number__in=filing_array, superceded_by_amendment=False, contribution_date__gte=coverage_from_date, contribution_date__lte=coverage_through_date).update(superceded_by_amendment=True)
+    if updated:
+        print "marked %s superceded F65s" % updated
+        
     
 def mark_superceded_F57s(new_monthly_f5):
     print "marking superceded F57s"
@@ -56,8 +57,10 @@ def mark_superceded_F57s(new_monthly_f5):
     filing_array = []
     for i in filing_numbers:
         filing_array.append(i['filing_number'])
-    SkedE.objects.filter(form_type__istartswith='F57', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_through_date).update(superceded_by_amendment=True)
-    
+    updated = SkedE.objects.filter(form_type__istartswith='F57', filing_number__in=filing_array, superceded_by_amendment=False, expenditure_date_formatted__gte=coverage_from_date, expenditure_date_formatted__lte=coverage_through_date).update(superceded_by_amendment=True)
+    if updated:
+        print "marked %s superceded F57s" % updated
+        
     
 def summarize_f24(new_filing):
     filing_ies = SkedE.objects.filter(filing_number=new_filing.filing_number)
