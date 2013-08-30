@@ -231,14 +231,14 @@ class SkedE(models.Model):
         # fall back on original code if new one isn't processed.
         if self.support_oppose_checked:
             if self.support_oppose_checked.upper() == 'S':
-                return "Support"
+                return '<div class="label-support">Support</div>'
             elif self.support_oppose_checked.upper() == 'O':
-                return "Oppose"
+                return '<div class="label-oppose">Oppose</div>'
             
         elif self.support_oppose_code.upper() == 'S':
-            return "Support"
+            return '<div class="label-support">Support</div>'
         elif self.support_oppose_code.upper() == 'O':
-            return "Oppose"            
+            return '<div class="label-oppose">Oppose</div>'            
             
         return ""
     

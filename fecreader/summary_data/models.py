@@ -717,9 +717,9 @@ class Pac_Candidate(models.Model):
 
     def support_or_oppose(self):
         if (self.support_oppose.upper() == 'O'):
-            return 'Oppose'
+            return '<div class="label-oppose">Oppose</div>'
         elif (self.support_oppose.upper() == 'S'): 
-            return 'Support'
+            return '<div class="label-support">Support</div>'
         return ''
 
 class State_Aggregate(models.Model):    

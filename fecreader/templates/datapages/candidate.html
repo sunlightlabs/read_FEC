@@ -31,7 +31,7 @@
 </div>
 <p>Committees supporting or opposing this candidate with independent expenditures of $1,000 or more are listed below.</p>
 
-<table class="sortable">
+<table id="mainPageTable" class="sortable">
   <thead>
     <tr>
       <th class="sort">Committee</th>
@@ -43,7 +43,7 @@
       {% for object in outside_spenders %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td><a href="{{object.committee.get_absolute_url}}">{{object.committee.name}}</a></td>
-        <td>{{object.support_or_oppose}}</td>
+        <td>{{object.support_or_oppose|safe}}</td>
         <td>${{object.total_ind_exp|intcomma}}</td>
       </tr>
     {% endfor %}

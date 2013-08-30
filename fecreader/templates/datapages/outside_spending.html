@@ -28,7 +28,7 @@
                   {% for object in object_list %}    
                       <tr class="{% cycle 'odd' 'even' %}" id="{{ object.transaction_id }}">
                           <td>{% if object.committee_name %} <a href="{{ object.get_committee_url }}">{{object.committee_name}}{% endif %}</a></th>
-                          <td> {{ object.support_oppose }}</td>
+                          <td>{{ object.support_oppose|safe}}</td>
                           <td>{% if object.candidate_checked %}<a href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
                           <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
                           <td>${{ object.expenditure_amount|intcomma}}</td>

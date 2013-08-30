@@ -84,7 +84,7 @@
         <td><a href="{{object.candidate.get_absolute_url}}">{{object.candidate.name}} {{ object.candidate.display_party}}</a></td>
         <td>{{ object.candidate.incumbency_status }}</td>
         <td><a href="{{ object.candidate.district.get_absolute_url }}">{{ object.candidate.detailed_office }}</a></td>
-        <td>{{object.support_or_oppose}}</td>
+        <td>{{object.support_or_oppose|safe}}</td>
         <td>${{object.total_ind_exp|intcomma}}</td>
       </tr>
     {% endfor %}
