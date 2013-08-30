@@ -424,7 +424,7 @@ def get_recent_reports(fec_id, coverage_through_date):
 
 # run the summary routine, generally, for any committee. Takes a committee overlay as an argument. 
 def update_committee_times(committee):
-    print "Handling %s" % (committee.fec_id)
+    #print "Handling %s" % (committee.fec_id)
 
     if committee.is_paper_filer:
         summarize_committee_periodic_webk(committee.fec_id, force_update=True)
