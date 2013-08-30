@@ -9,16 +9,8 @@
  {% block rtmain %}
 
 <div class="module">
-<p>Committee Type: "{{ committee.ctype }}" - {{ committee.display_type}} 
-  {% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}<a href="{{  committee.curated_candidate.district.get_absolute_url }}">{{ committee.curated_candidate.detailed_office}}</a>{% endif %}
-  <br>Designation: "{{ committee.designation}}" - {{ committee.display_designation}}
-  <br>Treasurer: {{ committee.treasurer }}
-  <br>Location: {{ committee.city}}, {{ committee.state}} {{committee.zip}}
-  <br>Filing frequency: {{ committee.filing_frequency_text }}
-  <br><a href="{{committee.fec_all_filings}}">See filings</a> on the FEC's web site.
-  
-  
-<div class="numeric_summary">
+
+  <div class="numeric_summary">
 <span class="amount_description">Total receipts:</span>&nbsp;<span class="amount_dollars">{% if committee.total_receipts %}${{committee.total_receipts|intcomma}}{% else %}$0{% endif %}</span>
 
 <br><span class="amount_description">Total disbursements:</span>&nbsp;<span class="amount_dollars">{% if committee.total_disbursements %}${{committee.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
@@ -28,6 +20,14 @@
 <br><span class="amount_description">Cash on hand (as of {{ committee.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if committee.cash_on_hand %}${{committee.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
 
 </div>
+
+<p>Committee Type: "{{ committee.ctype }}" - {{ committee.display_type}} 
+  {% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}<a href="{{  committee.curated_candidate.district.get_absolute_url }}">{{ committee.curated_candidate.detailed_office}}</a>{% endif %}
+  <br>Designation: "{{ committee.designation}}" - {{ committee.display_designation}}
+  <br>Treasurer: {{ committee.treasurer }}
+  <br>Location: {{ committee.city}}, {{ committee.state}} {{committee.zip}}
+  <br>Filing frequency: {{ committee.filing_frequency_text }}
+  <br><a href="{{committee.fec_all_filings}}">See filings</a> on the FEC's web site.
 
 
 {% if independent_spending %}

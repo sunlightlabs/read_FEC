@@ -10,7 +10,6 @@
 
 <div class="module">
 
-<p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})</p>
 <div class="numeric_summary">
 <span class="amount_description">Total candidate fundraising:</span>&nbsp;<span class="amount_dollars">{% if race.candidate_raised %}${{race.candidate_raised|intcomma}}{% else %}$0{% endif %}</span>
 
@@ -22,7 +21,7 @@
 <br><span class="amount_description">Candidate spending plus outside spending</span>&nbsp;<span class="amount_dollars">{% if race.total_spending %}${{race.total_spending|intcomma}}{% else %}$0{% endif %}</span>
 
 </div>
-
+<p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})</p>
 
 
 <div class="overviewBar withNav withTip">
