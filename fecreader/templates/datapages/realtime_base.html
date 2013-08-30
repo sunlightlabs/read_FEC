@@ -32,7 +32,7 @@
 </nav>
 
 <div class="module RT clearfix">
-       <h3>{% block title %}{{ title|safe }}{% endblock %}</h3>
+       <h3>{% block title %}{{ title|safe }} {% endblock %}</h3>
        <div id="timestamp">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div>
        <p>{{ explanatory_text|safe }}</p>
 
