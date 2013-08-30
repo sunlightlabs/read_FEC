@@ -1,21 +1,43 @@
-{# list of new committees #}
-{% extends "test_templates/search_base.html" %}
+{# committee details #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+{% load timestamp %}
+
 
 {% block body_class %}{% endblock %}
 
+{% block timestamp %}{% timestamp_export %}{% endblock %}
+
 {% block pagetitle %}{{ title }}{% endblock %}
 
- {% block main %}
-
+ {% block rtmain %}
+ 
 <div class="module">
- <div id="contentHeader">
-       <h2>{{ title }}</h2>
-</div>
-<p>These are downloadable files.</p>
+
+  <div class="overviewBar withNav withTip">
+      <h4>Schedule Files</h4>
+  </div>
+    <p>All files are provided as gzipped .csv files and can be quite large. They are regenerated several times a day--the most recent update was at {{ update_time }}</p> 
+    
+  <ul class="downloadable_files"><li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/skeda.csv.gz">Schedule A</a> - Itemized Contributions ($200+)</li>
+  <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/skedb.csv.gz">Schedule B</a> - Itemized Disbursements</li>
+  <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/skede.csv.gz">Schedule E</a> - Itemized Electronic Expenditures</li>
+  </ul>
+
+  <p>These files consist of transactions itemized on electronic filers dated 1/1/2013 and after. They include every line in every electronic filing that hasn't been superceded by an amended version of the filing and hasn't been given a memo code of 'X'. ['X' memo codes indicate that the data has been subitemized, so the 'X'-ed lines are duplicates]. Senate committees, including the Democratic and Republican National Senate Committees--which are required to file paper records with the senate clerk's office--are not included. </p>
+  <p>For ease of use, a few non-standard schedules are included--they can be identified within the bulk files in the 'form_type' field.
+    <ul class="download_bullets"><li>Line F57--independent expenditures made by a non-committee (typically these are individuals, businesses or 501(c)(4)'s)--are included on schedule E.</li>
+      <li>Line F65--contributions of $1,000 or more given to candidate committees less than 20 days before an election and which are required to be reported within 48-hours of receipt--are included as if they were received on schedule A. These line items, however, are removed once a post-election report covering this time period is received</li>
+      <li>Line F56--contributions to non-committees (typically these are individuals, businesses or 501(c)(4)'s) that do not have to legally report contributions are included on schedule A. Line 56's received on 24/48-hour reports are replaced when a quarterly report covering the time period they were reported in is received.</li>
+      <li>Line F92--contributions to electioneering groups--are included on schedule A.</li>
+      <li>Line F132/133--contributions and refunds to a presidential inaugural committee--are included in schedule A. Lines F133--refunds--are always given as negative. It's important to note that inaugural committees sometimes file multiple, unamended reports covering overlapping time periods, so extensive, unremarked duplication is likely. These lines should probably be ignored by most users.</li>
+</ul>
+  </p>
+  <p>
+    <br>
+    <br><b>DATA DICTIONARIES: TK</b>
+</p>
 
 </div>
-  {% endblock %}
+{% endblock %}
   
-
-{# override get satisfaction #}  
-  {% block gsfn %}{% endblock %}

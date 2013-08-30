@@ -320,3 +320,34 @@ th.sort.header:hover {
 #alertSettings {
     padding-left: 20px;
     }
+    
+/*  more jf styles  */
+
+
+.download_bullets{
+    margin-left: 20px;
+    display: block;
+    list-style-type: disc;
+    margin-before: 1em;
+    margin-after: 1em;
+    margin-start: 0;
+    margin-end: 0;
+    padding-start: 40px;
+}
+
+.downloadable_files{
+    margin-left: 40px;
+    display: block;
+    list-style-type: none;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-start: 0;
+    margin-end: 0;
+    padding-start: 40px;
+    font-family: Georgia,Serif;
+    font-style: italic;
+    font-size: 18px; 
+    line-height:30px;
+}
+
+

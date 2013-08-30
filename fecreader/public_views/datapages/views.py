@@ -16,12 +16,19 @@ from summary_data.utils.summary_utils import map_summary_form_to_dict
 # get not null senate ids. 
 #senate_ids =  [ senator['fec_id'] for senator in senate_crosswalk if senator['fec_id'] ]
 from django.conf import settings
+from summary_data.utils.update_utils import get_update_time
+
 
 try:
     PAGINATE_BY = settings.REST_FRAMEWORK['PAGINATE_BY']
 except KeyError:
     print "Missing rest framework default pagination size. "
     PAGINATE_BY = 100
+
+try:
+    BULK_EXPORT_KEY  = settings.BULK_EXPORT_KEY
+except KeyError:
+    print "Missing bulk dowload key -- please enter a BULK_EXPORT_KEY in settings.py"
 
 def newbase(request):
     return render_to_response('datapages/realtime_base.html', {}, context_instance=RequestContext(request))
@@ -175,7 +182,20 @@ def render_blank_page(title, explanatory_text, request):
                 )
                 
 def downloads(request):
-    return render_blank_page('Downloads','Downloadable files will go here.', request)
+    
+    title="Bulk Downloads" 
+    update_time = get_update_time(BULK_EXPORT_KEY)
+    
+
+
+
+    return render_to_response('datapages/downloads.html',
+        {
+        'title':title,
+        'update_time':update_time,
+        }, 
+        context_instance=RequestContext(request)
+    )
 
 
 def outside_spending(request):
