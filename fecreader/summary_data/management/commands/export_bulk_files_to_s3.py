@@ -33,7 +33,7 @@ class Command(BaseCommand):
         
         for sked in ['e','b', 'a']:
             filename = "sked%s.csv" % sked
-            """
+            
             local_skedfile = "%s/%s" % (CSV_EXPORT_DIR, filename)
             print "Dumping sked %s to %s" % (sked, local_skedfile)
             dump_all_sked(sked, local_skedfile)
@@ -53,7 +53,7 @@ class Command(BaseCommand):
             k.set_contents_from_filename(local_skedfile_zipped, policy='public-read')
             elapsed_time = time.time() - start
             print "elapsed time for pushing to s3 is %s" % (elapsed_time)
-            """
+            
         
         # if we didn't die, set the update time
         set_update(BULK_EXPORT_KEY)
