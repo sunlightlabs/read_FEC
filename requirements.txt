@@ -13,6 +13,9 @@ cssselect
 # for parsing legislators -- don't care about performance...
 pyyaml
 
+# pushing to s3
+boto
+
 # for running all the stuff
 supervisor
 redis

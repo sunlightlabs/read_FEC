@@ -58,8 +58,7 @@ def dump_all_sked(sked_name, destination_file):
     
     # need to join to get the committee name. 
     dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
-    print dumpcmd
     start = time.time()
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
-    print "elapsed time for dump: %s" % (elapsed_time)
+    print "elapsed time for dumping sked %s: %s" % (sked_name, elapsed_time)
