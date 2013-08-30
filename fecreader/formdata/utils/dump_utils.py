@@ -20,7 +20,7 @@ def dump_filing_sked(sked_name, filing_number, destination_file):
     connection = get_connection()
     cursor = connection.cursor()
     
-    dumpcmd = """copy (SELECT filing_number, %s FROM formdata_sked%s WHERE filing_number = %s and superceded_by_amendment=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, filing_number, destination_file)
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE fec_alerts_new_filing.filing_number = %s and superceded_by_amendment=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, filing_number, destination_file)
     cursor.execute(dumpcmd);
 
 def dump_committee_sked(sked_name, committee_number, destination_file):
@@ -40,7 +40,7 @@ def dump_committee_sked(sked_name, committee_number, destination_file):
     
     connection = get_connection()
     cursor = connection.cursor()
-    dumpcmd = """copy (SELECT filing_number, %s FROM formdata_sked%s WHERE superceded_by_amendment=False and %s >= %s and filing_number in (select filing_number from fec_alerts_new_filing where fec_id='%s' and is_superceded=False)) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, datefield, CYCLE_START_STRING, committee_number, destination_file)
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False and fec_alerts_new_filing.fec_id = '%s') to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, committee_number, destination_file)
     cursor.execute(dumpcmd);
 
 def dump_all_sked(sked_name, destination_file):
@@ -57,8 +57,8 @@ def dump_all_sked(sked_name, destination_file):
     cursor = connection.cursor()
     
     # need to join to get the committee name. 
-    dumpcmd = """copy (SELECT committee_name, fec_alerts_new_filing.filing_number as filing_number, %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE superceded_by_amendment=False and %s >= %s and  is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
-
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
+    print dumpcmd
     start = time.time()
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
