@@ -322,8 +322,11 @@ def committee(request, committee_id):
     else:
         recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=this_cycle_start, form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
         
-    independent_spending = Pac_Candidate.objects.filter(committee=committee_overlay, total_ind_exp__gte=1000).select_related('candidate')
+    independent_spending = Pac_Candidate.objects.filter(committee=committee_overlay, total_ind_exp__gte=5000).select_related('candidate')
     
+    recent_ies = None
+    if committee_overlay.total_indy_expenditures > 5000:
+        recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False)
         
     
     return render_to_response('datapages/committee.html',
@@ -333,6 +336,7 @@ def committee(request, committee_id):
         'recent_report_list':recent_report_list,
         'committee':committee_overlay,
         'independent_spending':independent_spending,
+        'recent_ies':recent_ies,
         }, 
         context_instance=RequestContext(request)
     )
