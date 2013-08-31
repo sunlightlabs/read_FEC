@@ -28,7 +28,9 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 <p>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 {% endif %}
 {% if object_list %}
-<h2>Independent Expenditures</h2>
+<div class="overviewBar withNav withTip">
+    <h4>Independent Expenditures</h4>
+</div>
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
