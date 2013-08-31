@@ -326,7 +326,7 @@ def committee(request, committee_id):
     
     recent_ies = None
     if committee_overlay.total_indy_expenditures > 5000:
-        recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False)
+        recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).order_by('-expenditure_date_formatted')[:10]
         
     
     return render_to_response('datapages/committee.html',
