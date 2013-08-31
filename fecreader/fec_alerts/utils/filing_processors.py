@@ -74,12 +74,21 @@ def process_new_filing(thisnewfiling, fp=None, filing_time=None, filing_time_is_
     form = f1.get_form_type()
     version = f1.get_version()
 
+
+    # check if it's an amendment based on form types -- if so, mark it. Otherwise the F1's will look like they haven't been amended. 
+    try:
+        if thisnewfiling.form_type[-1].upper() == 'A':
+            thisnewfiling.is_amendment = True
+    except IndexError:
+        pass
+
     # only parse forms that we're set up to read
-    
     if not fp.is_allowed_form(form):
         if verbose:
             print "Not a parseable form: %s - %s" % (form, thisnewfiling.filing_number)
-
+        
+        if thisnewfiling.is_amendment:
+            thisnewfiling.save()
         return True
 
     header = f1.get_first_row()
@@ -103,7 +112,9 @@ def process_new_filing(thisnewfiling, fp=None, filing_time=None, filing_time_is_
         pass
     
     # Create the filing -- but don't mark it as being complete. 
-    thisnewfiling.form_type = form
+    
+    ## leave the old form -- that's where it says if it is terminated. 
+    #thisnewfiling.form_type = form
     thisnewfiling.coverage_from_date = from_date
     thisnewfiling.coverage_through_date = through_date,
     thisnewfiling.is_amendment = f1.is_amendment
