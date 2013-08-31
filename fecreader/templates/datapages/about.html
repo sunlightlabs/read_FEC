@@ -1,0 +1,51 @@
+{# committee details #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+{% load timestamp %}
+
+
+{% block body_class %}{% endblock %}
+
+{% block timestamp %}{% timestamp_export %}{% endblock %}
+
+{% block pagetitle %}{{ title }}{% endblock %}
+
+ {% block rtmain %}
+ 
+<div class="module">
+  
+      <h2><a href="/">Realtime.InfluenceExplorer.com</a> uses completely different data than <a href="http://influenceexplorer.com">InfluenceExplorer.com</a></h2>
+  <p><br>While <a href="http://influenceexplorer.com">influenceexplorer.com</a> uses federal campaign finance data from the Center for Responsive Politics and state data from the National Institute of Money in State Politics, <a href="/">realtime.influenceexplorer.com</a> uses only data directly from the Federal Election Commission. Both CRP and NIMSP attempt to "code" campaign contribution data by donor industry--but that takes time.  Data received from these groups often runs months behind. Moreover, these sources don't provide complete campaign finance information. For instance, spending data is not provided.  None of this is meant as a criticism of CRP or NIMSP--they simply provide a different service than this.
+  
+<p>The pages on <a href="/">realtime.influenceexplorer.com</a> attempt to make federal campaign finance data from the current election cycle available in a timely and useful way. To do so, we automatically gather FEC data from a variety of sources, present both "soft" and "hard" money together, and make the itemized transactions--including committee spending--downloadable on a nearly-immediate basis. Aggregating this information on an ongoing basis requires a relatively complex process, which is detailed at some length below. For more information <a href="mailto:listTK@sunlightfoundation.com">contact us</a>.
+</p>
+
+
+<div class="overviewBar withNav withTip" id="schedule_modifications">
+    <h4>Overview</h4>
+</div>
+<p>In general, this site works by regularly downloading and processing the newest electronic filings received the FEC. Typically reports appear on this site within 20 minutes or less of being filed. Different types of campaign finance data are reported on different schedules. For instance, independent expenditures over $1,000 must be reported within 24 hours. And during the last twenty days before an election, House candidates must report receipt of contributions of $1,000 or more within 48 hours (Senate candidates also file these reports, but do so on paper). Data from these immediate reports is included on <a href="/">realtime.influenceexplorer.com</a> on a rolling basis.</p>
+<p>In the interest of timely disclosure, campaign finance law allows PACs to report estimated expenses in 24- and 48-hour reports. The data from these fast turn-around reports is then re-reported, in final form, in monthly or quarterly filings. As these reports are received, <a href="/">realtime.influenceexplorer.com</a> removes the original estimates.</p>
+<p>Campaign finance laws also allow PACs to amend their earlier filings at any time. It's not uncommon for committees to amend their reports years later. Only the current version of a report is used in calculating totals and presented on committee and candidate pages--however, the earlier reports can be located by searching the 'newest filings' page, and their itemizations can still be viewed and downloaded.</p>
+<p>Reporting frequency varies widely. Committees not authorized by candidates only file contributor information in monthly or quarterly reports. In off years, quarterly filers only file twice a year. So a $5,000 contribution received January 1, 2013 wouldn't be reported until July 31. Other groups never disclose donors. Campaign finance laws don't require outside groups to say who is funding them.</p>
+<p>Paper filers are handled differently. Although electronic filing began more than a decade ago, senate candidate committees (including the national Republican and Democratic senatorial committees) file their reports on paper. At taxpayer expense, these reports are converted into digital format by the FEC. <a href="/">Realtime.influenceexplorer.com</a> does not include line items from these committees, but it does provide summary data about these committees as soon as it is available--typically 3-7 days after the paper filings are received. Some senators do file electronically on an experimental basis. Currently these reports are not included, but we hope to add them in the near future. We also plan to add itemized contributions to senate committees as well, though these aren't immediately available.</p>
+
+  <div class="overviewBar withNav withTip" id="schedule_modifications">
+      <h4>Schedule Modifications</h4>
+  </div>
+  <p>For ease of use, a few non-standard schedules are included--they can be identified within the bulk files in the 'form_type' field.
+    <ul class="download_bullets"><li>Line F57--independent expenditures made by a non-committee (typically these are individuals, businesses or 501(c)(4)'s)--are included on schedule E.</li>
+      <li>Line F65--contributions of $1,000 or more given to candidate committees less than 20 days before an election and which are required to be reported within 48-hours of receipt--are included as if they were received on schedule A. These line items, however, are removed once a post-election report covering this time period is received</li>
+      <li>Line F56--contributions to non-committees (typically these are individuals, businesses or 501(c)(4)'s) that do not have to legally report contributions are included on schedule A. Line 56's received on 24/48-hour reports are replaced when a quarterly report covering the time period they were reported in is received.</li>
+      <li>Line F92--contributions to electioneering groups--are included on schedule A.</li>
+      <li>Line F132/133--contributions and refunds to a presidential inaugural committee--are included in schedule A. Lines F133--refunds--are always given as negative. </li>
+</ul>
+  </p>
+  <p>
+    <br>
+    <br><b>DATA DICTIONARIES: TK</b>
+</p>
+
+</div>
+{% endblock %}
+  

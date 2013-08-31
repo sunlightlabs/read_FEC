@@ -58,7 +58,7 @@ def candidates(request):
 def senate(request):
 
     title="Senate - Cycle Summary"
-    explanatory_text="Fundraising totals are from 1/1/13 through the present for current senators and senate candidates who reported having $1,000 or more. "
+    explanatory_text="Fundraising totals are from 1/1/13 through the present for current senators and senate candidates who reported having $1,000 or more. Only candidates actually running in the current cycle who have filed a statement of candidacy are included. If we've included anyone who isn't running--or missed anyone who is, please let us know."
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
@@ -76,7 +76,7 @@ def senate(request):
 def house(request):
 
     title="House - Cycle Summary"
-    explanatory_text="Fundraising totals are for the entire cycle for current house members and house candidates who reported having $1,000 or more. "
+    explanatory_text="Fundraising totals are for the entire cycle for current house members and house candidates who reported having $1,000 or more. Only candidates actually running in the current cycle who have filed a statement of candidacy are included. If we've included anyone who isn't running--or missed anyone who is, please let us know."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
     legislators = Candidate_Overlay.objects.filter(office='H').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)) 
@@ -185,9 +185,6 @@ def downloads(request):
     
     title="Bulk Downloads" 
     update_time = get_update_time(BULK_EXPORT_KEY)
-    
-
-
 
     return render_to_response('datapages/downloads.html',
         {
@@ -197,6 +194,16 @@ def downloads(request):
         context_instance=RequestContext(request)
     )
 
+def about(request):
+
+    title="About Real Time FEC Data" 
+
+    return render_to_response('datapages/about.html',
+        {
+        'title':title,
+        }, 
+        context_instance=RequestContext(request)
+    )
 
 def outside_spending(request):
     
@@ -326,7 +333,7 @@ def committee(request, committee_id):
     
     recent_ies = None
     if committee_overlay.total_indy_expenditures > 5000:
-        recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).order_by('-expenditure_date_formatted')[:10]
+        recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
         
     
     return render_to_response('datapages/committee.html',
