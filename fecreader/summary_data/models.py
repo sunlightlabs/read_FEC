@@ -244,7 +244,15 @@ class Candidate_Overlay(models.Model):
             return 'US Sen. (%s)' % (self.state)
         else:
             return 'US Rep. (%s-%s)' % (self.state, self.office_district) 
-            
+    
+
+    def short_office(self):
+        if self.office == 'S':
+            return '%s (Sen.)' % (self.state)
+        elif self.office =='H':
+            return '%s-%s' % (self.state, self.office_district)
+        else:
+            return None
         
     def next_election(self):
         if self.not_seeking_reelection:

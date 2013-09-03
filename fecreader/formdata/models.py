@@ -259,7 +259,15 @@ class SkedE(models.Model):
     def get_committee_url(self):
         return "/committee/%s/%s/" % (self.committee_slug, self.filer_committee_id_number)
     
-    
+    def short_office(self):
+            
+        if self.candidate_office_checked == 'S':
+            return '%s (Sen.)' % (self.candidate_state_checked)
+        elif self.candidate_office_checked =='H':
+            return '%s-%s' % (self.candidate_state_checked, self.candidate_district_checked)
+        else:
+            return ""
+
     
         
 class OtherLine(models.Model):

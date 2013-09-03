@@ -18,6 +18,7 @@
                 <th>Committee</th>
                 <th>Support<br>Oppose</th>
                 <th>Candidate</th>
+                <th>District</th>
                 <th class="sort">Payee</th>
                 <th class="sort">Amount</th>
                 <th class="sort">Date</th>
@@ -30,6 +31,7 @@
                           <td>{% if object.committee_name %} <a href="{{ object.get_committee_url }}">{{object.committee_name}}{% endif %}</a></th>
                           <td>{{ object.support_oppose|safe}}</td>
                           <td>{% if object.candidate_checked %}<a href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
+                          <td>{% if object.district_checked %}<a href="object.district_checked.get_absolute_url">{{ object.district_checked.district_formatted }}</a>{% else %}{{ object.short_office }}{% endif %}</td>
                           <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
                           <td>${{ object.expenditure_amount|intcomma}}</td>
                           <td>{{ object.expenditure_date_formatted|date:"Y-m-d"}}</td>
