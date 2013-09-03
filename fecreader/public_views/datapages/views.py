@@ -209,10 +209,10 @@ def outside_spending(request):
     
     
     title="Independent Expenditures" 
-    explanatory_text = "Only independent expenditures of $50,000 or more are shown"
+    explanatory_text = "Only independent expenditures of $10,000 or more are shown"
 
 
-    ies = SkedE.objects.filter(superceded_by_amendment=False, expenditure_amount__gte=50000, expenditure_date_formatted__gte=datetime.date(2013,1,1)).select_related('candidate_checked').order_by('-expenditure_date_formatted')
+    ies = SkedE.objects.filter(superceded_by_amendment=False, expenditure_amount__gte=10000, expenditure_date_formatted__gte=datetime.date(2013,1,1)).select_related('candidate_checked').order_by('-expenditure_date_formatted')
 
     return render_to_response('datapages/outside_spending.html',
         {
