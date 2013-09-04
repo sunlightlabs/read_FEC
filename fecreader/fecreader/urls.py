@@ -23,5 +23,5 @@ urlpatterns = patterns('',
     url(r'^api/', include('api.urls')),
     url(r'^feeds/', include('feeds.urls')), 
     url(r'^reconcile/', include('reconciliation.urls')),
-    url(r'^downloads/', include('downloads.urls'))
+    url(r'^download/', include('downloads.urls'))
 ) 

@@ -14,7 +14,7 @@ def get_filing(request, filing_number, sked):
     print "stating task %s %s %s" % (b.id, b.state, b.result)
     
     task_id = b.id
-    return redirect('/downloads/build_file/%s/' % task_id)
+    return redirect('/download/build_file/%s/' % task_id)
     
 def build_file(request, task_id):
     # this is the page that gets shown while the file is downloading. It polls the status until it's done. 
