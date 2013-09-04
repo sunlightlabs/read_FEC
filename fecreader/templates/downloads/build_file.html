@@ -1,0 +1,81 @@
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+        <title>Download</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="keywords" content="campaign contributions, sunlight foundation, influence explorer, politics, government, influence" />
+        <meta name="description" content="Influence Explorer is the central source for information on money and influence in politics. From here you can explore who the big donors to a politician are, how companies and whole industries spend their political money, and who politically connected individuals have given money to." />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+
+        <link rel="icon" href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/dryrub/images/favicon.ico" type="image/x-icon">
+        <link rel="canonical" rel="" />
+
+        
+        <link rel="stylesheet" href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/dryrub/css/main.css" />
+        
+<link rel="stylesheet" href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/css/realtimefec_main.css" />
+
+        <script src="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/dryrub/js/jquery-1.10.2.min.js"></script>
+        </head>
+<body>
+
+
+
+     <div class="module RT clearfix" style="width:300px;">
+       <div id="imgspot"><img style="margin: 0px; padding: 0px;" src="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/images/ajax-loader.gif" /></div>
+
+            <h3>&nbsp;File Download</h3>
+            <div id="message"><p>Please wait while your file is built.</p></div>
+
+     </div>
+  
+     <script type="text/javascript" >
+     var thisint;
+     file_is_ready = false;
+     seconds_waited = 0;
+     timeout = 1;
+     var task_id = "b0efc4c8-0dd7-4143-8c04-bade3e25e2ab";
+     var poll_url = "/download/taskstatus/" + task_id + "/";
+
+     function stop_all() {
+       window.clearInterval(thisint);
+       $("#imgspot").html('');
+       
+     }
+     
+     function poll_for_results() {
+       seconds_waited++;
+       console.log("polled for results: " + seconds_waited);
+       
+       $.getJSON( poll_url, function( json ) {
+       console.log( "JSON Data: " + json );
+       if (json['done']) {
+         stop_all();
+         result_url = json['result']
+         $("#message").html('<p>Your file is <a href="' + result_url + '">ready for download</a>. It will remain available for the next hour.</p>');
+         
+       }
+       
+       
+       });
+       
+       if (seconds_waited > timeout) {
+         console.log("Timed out")
+         stop_all();
+         $("#message").html('<p>Couldn\'t build this file. Please try again later.');
+       }
+     }
+     $(document).ready(function() {
+         thisint = self.setInterval(function(){poll_for_results()},2000);
+
+      });
+    
+     </script>
+
+</body>
+</html>

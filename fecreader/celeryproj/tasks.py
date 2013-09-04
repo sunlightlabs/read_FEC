@@ -1,22 +1,38 @@
 from __future__ import absolute_import
 
-from celeryproj.celery import celery
+from celery import current_task
 from time import sleep
 from datetime import datetime
-from formdata.utils.filing_body_processor import process_filing_body
 
+from celeryproj.celery import celery
+
+from formdata.utils.filing_body_processor import process_filing_body
+from formdata.utils.dump_utils import dump_filing_sked, dump_committee_sked
+
+#sys.path.append('../../')
+
+from fecreader.settings import CUSTOM_DOWNLOAD_DIR, CUSTOM_DOWNLOAD_URL
 
 @celery.task
-def printfile(sleeptime):
-    print "Running printfile -- sleeping for %s seconds\n" % (sleeptime)
-    sleep(sleeptime)
-    # include milliseconds so we know exactly when the task ran
-    filename = datetime.now().strftime("%Y_%m_%T_%f").replace(":","_") + ".txt"
-    fh = open(filename, 'w')
-    fh.write('printfile executed')
-    fh.close()
+def dump_filing_sked_celery(sked_name, filing_number):
+    this_request_id = str(dump_filing_sked_celery.request.id)
+    this_request_id = this_request_id.replace("-", "")
+    filename = "filing%ssked%s_%s.csv" % (filing_number, sked_name, this_request_id)
+    destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
+    destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
+    dump_filing_sked(sked_name, filing_number, destination_file)
+    return destination_url
 
-
+@celery.task
+def dump_committee_sked_celery(sked_name, committee_number):
+    this_request_id = dump_committee_sked_celery.request.id
+    this_request_id = this_request_id.replace("-", "")
+    filename = "%ssked%s_%s.csv" % (committee_number, sked_name, this_request_id)
+    destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
+    destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
+    dump_committee_sked(sked_name, committee_number, destination_file)
+    return destination_url
+    
 
 @celery.task
 def process_filing_body_celery(filingnum):
