@@ -21,3 +21,12 @@ def printfile(sleeptime):
 @celery.task
 def process_filing_body_celery(filingnum):
     process_filing_body(filingnum)
+
+
+@celery.task
+def add(x, sked):
+    print('Executing task id %r, args: %r kwargs: %r' % (
+        add.request.id, add.request.args, add.request.kwargs))
+    print('sleeping for 10 seconds')
+    sleep(10)
+    return x + 1

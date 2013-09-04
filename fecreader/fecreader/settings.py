@@ -167,6 +167,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'south',
     'dryrub',
+    'downloads',
 )
 
 REST_FRAMEWORK = {

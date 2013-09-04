@@ -22,6 +22,6 @@ urlpatterns = patterns('',
     url(r'', include('public_views.datapages.urls')),
     url(r'^api/', include('api.urls')),
     url(r'^feeds/', include('feeds.urls')), 
-    url(r'^reconcile/', include('reconciliation.urls'))
-    
+    url(r'^reconcile/', include('reconciliation.urls')),
+    url(r'^downloads/', include('downloads.urls'))
 ) 
