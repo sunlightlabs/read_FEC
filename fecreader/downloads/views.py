@@ -1,6 +1,6 @@
 import json
 
-from celeryproj.tasks import add
+from celeryproj.tasks import dump_filing_sked_celery, dump_committee_sked_celery
 from celery.result import AsyncResult
 
 from django.shortcuts import redirect
@@ -10,12 +10,19 @@ from reconciliation.utils.json_helpers import render_to_json, render_to_json_via
 
 def get_filing(request, filing_number, sked):
     # should eventually have a home page, or straighten out urls
-    b = add.apply_async([1,2], queue='slow',routing_key="slow")
-    print "stating task %s %s %s" % (b.id, b.state, b.result)
-    
-    task_id = b.id
+    celery_request = dump_filing_sked_celery.apply_async([sked,filing_number], queue='slow',routing_key="slow")    
+    task_id = celery_request.id
     return redirect('/download/build_file/%s/' % task_id)
     
+    
+
+def get_committee(request, committee_id, sked):
+    # should eventually have a home page, or straighten out urls
+    celery_request = dump_committee_sked_celery.apply_async([sked,committee_id], queue='slow',routing_key="slow")
+    task_id = celery_request.id
+    return redirect('/download/build_file/%s/' % task_id)
+    
+        
 def build_file(request, task_id):
     # this is the page that gets shown while the file is downloading. It polls the status until it's done. 
     
