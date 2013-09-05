@@ -1,8 +1,13 @@
 {# list of filings #}
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
+{% load staticfiles %}
 
 
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/bootstrap/css/bootstrap.min.css' %}" />
+{% endblock sitecss %}
 
 {% block body_class %}{% endblock %}
 
@@ -17,9 +22,9 @@
 
 
       
-      <br><span class="amount_description">Total receipts: </span> <span class="amount_dollars"><a href="{{ filing.get_skeda_url }}">${{ filing.tot_raised|intcomma }}</a></span>
+      <br><span class="amount_description">Total receipts: </span> <span class="amount_dollars"><a class="link" href="{{ filing.get_skeda_url }}">${{ filing.tot_raised|intcomma }}</a></span>
 
-      <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a href="{{filing.get_spending_url}}">${{ filing.tot_spent|intcomma }}</a></span>
+      <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a class="link" href="{{filing.get_spending_url}}">${{ filing.tot_spent|intcomma }}</a></span>
       
       
       <br><span class="amount_description">Originally filed {{ filing.process_time}}</span>
@@ -36,15 +41,102 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
     <h4>Itemized Filing Data</h4>
 </div>
 <span class="amount_description">
-{% if filing.lines_present.A %}{{  filing.lines_present.A|intcomma }} Itemized contributions. <a href="{{ filing.get_skeda_url }}"> See contributions</a>&nbsp;|&nbsp;<a href="">Download file</a>{% endif %}
+{% if filing.lines_present.A %}{{  filing.lines_present.A|intcomma }} Itemized contributions. <a class="link" href="{{ filing.get_skeda_url }}"> See contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ filing.fec_id }}','A', '{{ filing.committee_name }}');">Download file</a>{% endif %}
 
-{% if filing.lines_present.B %}<br>{{  filing.lines_present.B|intcomma }} Itemized disbursements. <a href="{{ filing.get_skedb_url }}"> See disbursements</a>&nbsp;|&nbsp;<a href="">Download file</a>{% endif %}
+{% if filing.lines_present.B %}<br>{{  filing.lines_present.B|intcomma }} Itemized disbursements. <a class="link" href="{{ filing.get_skedb_url }}"> See disbursements</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ filing.fec_id }}','B', '{{ filing.committee_name }}');">Download file</a>{% endif %}
 
-{% if filing.has_sked_e %}<br>{{  filing.lines_present.E|intcomma }} Independent Expenditures. <a href="{{ filing.get_skede_url }}"> See expenditures</a>&nbsp;|&nbsp;<a href="">Download file</a>{% endif %}
+{% if filing.has_sked_e %}<br>{{  filing.lines_present.E|intcomma }} Independent Expenditures. <a class="link" href="{{ filing.get_skede_url }}"> See expenditures</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ filing.fec_id }}','E', '{{ filing.committee_name }}');">Download file</a>{% endif %}
 
 </span>
 
+
+<br><a title="click to launch modal" href="javascript:download_committee_data('C100','A', 'not-so-crazy pac');">Download comittee A</a>
+
 </div>
+
+<!-- Modal -->
+ <div class="modal fade" id="download_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+         <h4 class="modal-title" id="modal-title">Confirm Bulk File Download</h4>
+       </div>
+       <div class="modal-body"><span id="modal_body">
+      You're about to download a .csv file of itemized Federal Election Commission data. Some files may be quite large. Are you sure you want to continue?</span>
+      <div style="padding-top:10px;" id="confirmation_buttons">
+        <button type="button" class="btn btn-default" id="confirm_download">Yes, create the file</button>&nbsp;
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+      <div id="download_div"></div>
+      
+       </div>
+     </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->
+
+
+<script src="{% static 'realtimefec/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script type="text/javascript">
+  
+  
+
+  function set_modal_body(sked, source) {
+    data_type = ""
+    if (sked.toUpperCase()=='A') {
+      data_type = "contributions itemized";
+    } else if (sked.toUpperCase()=='B') {
+      data_type = "disbursements itemized";
+    } else if (sked.toUpperCase()=='E') {
+      data_type = "independent expenditures itemized"
+    }
+    
+    string = "You're about to download a .csv file of " + data_type + source + ". Some files may be quite large. Are you sure you want to continue?";
+    
+    $('#modal_body').html(string);
+  }
+  
+  function load_iframe(url) {
+    console.log("loading iframe");
+    iframe_html = '<iframe width="500" scrolling="no" height="100" frameborder="0" src="' + url + '" seamless="seamless">';
+    $('#download_div').html(iframe_html)
+    $('#confirmation_buttons').hide();
+    $('#modal_body').hide();    
+  }
+  
+  function reset_window() {
+    $('#confirmation_buttons').show();
+    $('#download_div').html('');
+    $('#download_modal').modal('toggle');
+    $('#modal_body').show();    
+    
+  }
+  
+  function download_filing_data(filing_number, sked) {
+    $('#confirm_download').unbind('click');
+    $('#confirm_download').on('click', function() {
+      url = "/download/filing/" + filing_number + "/" + sked + "/";
+      load_iframe(url);
+    });
+    reset_window();
+    set_modal_body(sked, " on electronic filing " + filing_number);
+  }
+  
+  function download_committee_data(committee_id, sked, committee_name) {
+    $('#confirm_download').unbind('click');
+    $('#confirm_download').on('click', function() {
+      url = "/download/committee/" + committee_id + "/"+ sked + "/";
+      load_iframe(url);
+    });
+    reset_window();
+    set_modal_body(sked, " by " + committee_name );
+    
+  }
+  
+
+
+</script>
 {% endblock %}
   
 

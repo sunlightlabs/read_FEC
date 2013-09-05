@@ -49,9 +49,9 @@
     <tbody>
       {% for object in independent_spending %}
       <tr class="{% cycle 'odd' 'even' %}">
-        <td><a href="{{object.candidate.get_absolute_url}}">{{object.candidate.name}} {{ object.candidate.display_party}}</a></td>
+        <td><a class="link" href="{{object.candidate.get_absolute_url}}">{{object.candidate.name}} {{ object.candidate.display_party}}</a></td>
         <td>{{ object.candidate.incumbency_status }}</td>
-        <td><a href="{{ object.candidate.district.get_absolute_url }}">{{ object.candidate.detailed_office }}</a></td>
+        <td><a class="link" href="{{ object.candidate.district.get_absolute_url }}">{{ object.candidate.detailed_office }}</a></td>
         <td>{{ object.support_or_oppose|safe }}</td>
         <td>${{object.total_ind_exp|intcomma}}</td>
       </tr>
@@ -82,7 +82,7 @@
     <tbody>
       {% for object in recent_ies %}
       <tr class="{% cycle 'odd' 'even' %}">
-        <td>{% if object.candidate_checked %}<a href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
+        <td>{% if object.candidate_checked %}<a class="link" href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
         <td>{{ object.support_oppose|safe}}</td>
         <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
         <td>${{ object.expenditure_amount|intcomma}}</td>
@@ -116,11 +116,11 @@
               <tbody>
                   {% for object in recent_report_list %}    
                       <tr class="{% cycle 'odd' 'even' %}">
-                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% endif %} </td>
+                          <td>{% if object.filing_number %}<a class="link" href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% endif %} </td>
                           
                           <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
-                          <td>{% if object.tot_raised %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
-                          <td>{% if object.tot_ies %}{% if object.filing_number %}<a href="{{object.get_spending_url}}">{% endif %}${{ object.tot_ies|intcomma }}{% if object.tot_ies %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_raised %}{% if object.filing_number %}<a class="link" href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_ies %}{% if object.filing_number %}<a class="link" href="{{object.get_spending_url}}">{% endif %}${{ object.tot_ies|intcomma }}{% if object.tot_ies %}</a>{% endif %}{% else %}$0{% endif %}</td>
                            
                         </tr>
                   {% endfor %}
@@ -148,11 +148,11 @@
               <tbody>
                   {% for object in report_list %}    
                       <tr class="{% cycle 'odd' 'even' %}">
-                          <td>{% if object.filing_number %}<a href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% else %}<a href="{{object.get_fec_url}}">paper filing</a>{% endif %} </td>
+                          <td>{% if object.filing_number %}<a class="link" href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% else %}<a class="link" href="{{object.get_fec_url}}">paper filing</a>{% endif %} </td>
                           
                           <td>{% if object.coverage_through_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_through_date|date:"n/j/y" }}{% endif %}</td> 
-                          <td>{% if object.tot_receipts %}{% if object.filing_number %}<a href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_receipts|intcomma }}</a>{% else %}$0{% endif %}</td>
-                          <td>{% if object.tot_disburse %}{% if object.filing_number %}<a href="{{object.get_skedb_url}}">{% endif %}${{ object.tot_disburse|intcomma }}{% if object.filing_number %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_receipts %}{% if object.filing_number %}<a class="link" href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_receipts|intcomma }}</a>{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_disburse %}{% if object.filing_number %}<a class="link" href="{{object.get_skedb_url}}">{% endif %}${{ object.tot_disburse|intcomma }}{% if object.filing_number %}</a>{% endif %}{% else %}$0{% endif %}</td>
                           <td>{% if object.cash_on_hand_end %}${{ object.cash_on_hand_end|intcomma }}{% else %}$0{% endif %}</td>
                           <td>{% if object.outstanding_loans %}${{ object.outstanding_loans|intcomma }}{% else %}$0{% endif %}</td> 
                           
