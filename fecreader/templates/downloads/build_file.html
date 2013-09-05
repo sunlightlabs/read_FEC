@@ -22,14 +22,12 @@
 
         <script src="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/dryrub/js/jquery-1.10.2.min.js"></script>
         </head>
-<body>
+<body style="background-image:none; background-color:#ffffff; margin:0px; padding:0px;">
 
 
 
-     <div class="module RT clearfix" style="width:300px;">
-       <div id="imgspot"><img style="margin: 0px; padding: 0px;" src="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/images/ajax-loader.gif" /></div>
-
-            <h3>&nbsp;File Download</h3>
+     <div class="module RT clearfix" style="width:300px; margin:0px; padding:0px;">
+            <div><h3 style="padding-top:0px;">File Download &nbsp;<span id="imgspot"><img style="margin: 0px; padding: 0px;" src="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/images/ajax-loader.gif" /></span></h3></div>
             <div id="message"><p>Please wait while your file is built.</p></div>
 
      </div>
@@ -57,7 +55,7 @@
        if (json['done']) {
          stop_all();
          result_url = json['result']
-         $("#message").html('<p>Your file is <a href="' + result_url + '">ready for download</a>. It will remain available for the next hour.</p>');
+         $("#message").html('<p>Your file is <a target="null" href="' + result_url + '">ready for download</a>. It will remain available for the next hour.</p>');
          
        }
        
