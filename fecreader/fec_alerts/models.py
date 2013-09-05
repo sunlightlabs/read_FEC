@@ -179,7 +179,7 @@ class new_filing(models.Model):
     
     def has_sked_e(self):
         try:
-            if self.lines_present['E']>0:
+            if int(self.lines_present['E'])>0:
                 return True
             else:
                 return False
