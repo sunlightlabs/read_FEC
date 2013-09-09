@@ -186,6 +186,24 @@ class new_filing(models.Model):
         except KeyError:
             return False
     
+    def has_sked_a(self):
+        try:
+            if int(self.lines_present['A'])>0:
+                return True
+            else:
+                return False
+        except KeyError:
+            return False    
+    
+    def has_sked_b(self):
+        try:
+            if int(self.lines_present['B'])>0:
+                return True
+            else:
+                return False
+        except KeyError:
+            return False    
+    
     def get_committee_url(self):    
         return ("/committee/%s/%s/" % (self.committee_slug, self.fec_id))
         
