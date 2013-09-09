@@ -11,19 +11,23 @@
  {% block rtmain %}
 
 <div class="module">
-
-Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
-
-{% if filing_data.coverage_from_date %}<br>Covering {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}. {% endif %}Originally filed {{ filing_data.process_time}}.
-
-<br>Total receipts of ${{ filing_data.tot_raised|intcomma }} include  {% if  filing_data.lines_present.A %}<a href="{{ filing_data.get_skeda_url }}">{{  filing_data.lines_present.A|intcomma }} itemized contributions</a>{% else %}0 itemized contributions{% endif %}.
-
-<br> Total spending for this period amounted to ${{ filing_data.tot_spent|intcomma }} and include  {% if  filing_data.lines_present.B %}<a href="{{ filing_data.get_skedb_url }}">{{  filing_data.lines_present.B|intcomma }} itemized disbursements</a>{% else %}0 itemized disbursements{% endif %}.
+  
+  <div class="numeric_summary">
+    <span class="amount_description">{% if filing_data.coverage_from_date %}Covers {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}{% endif %}</span>
+    <br><span class="amount_description">Total receipts: </span> <span class="amount_dollars"><a class="link" href="{{ filing_data.get_skeda_url }}">${{ filing_data.tot_raised|intcomma }}</a></span>
+    <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a class="link" href="{{filing_data.get_spending_url}}">${{ filing_data.tot_spent|intcomma }}</a></span>      
+    <br><span class="amount_description">Originally filed {{ filing_data.process_time}}</span>
+  </div>
+  
+  
+<p>
+Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.
 
 {% if  filing_data.lines_present.E %}<br>This filing also includes <a href="{{ filing_data.get_skede_url }}">{{  filing_data.lines_present.E|intcomma }} itemized independent expenditures</a>.{% endif %}
+</p>
 
 {% if too_many_to_display %}
-<p>There are more than 1,000 contributors itemized on this report; read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
+<p>There are more than 1,000 contributors itemized on this report; you can <a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','A');">download a file of them</a> or see the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission. </p>
 {% else %}
 <p>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
 {% endif %}
@@ -31,6 +35,7 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.<br>
 <div class="overviewBar withNav withTip">
     <h4>Contributions</h4>
 </div>
+<a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','A');">Download a .csv file</a> of all itemized contributions listed below.
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>

@@ -20,17 +20,10 @@
   
     <div class="numeric_summary">
       <span class="amount_description">{% if filing.coverage_from_date %}Covers {{ filing.coverage_from_date|date:"N j, Y"}} through {{ filing.coverage_to_date|date:"N j, Y" }}{% endif %}</span>
-
-
-      
       <br><span class="amount_description">Total receipts: </span> <span class="amount_dollars"><a class="link" href="{{ filing.get_skeda_url }}">${{ filing.tot_raised|intcomma }}</a></span>
-
-      <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a class="link" href="{{filing.get_spending_url}}">${{ filing.tot_spent|intcomma }}</a></span>
-      
-      
+      <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a class="link" href="{{filing.get_spending_url}}">${{ filing.tot_spent|intcomma }}</a></span>      
       <br><span class="amount_description">Originally filed {{ filing.process_time}}</span>
-      
-      </div>
+    </div>
       
 Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ filing.FEC_url }}">original electronic report</a>.
 
@@ -57,7 +50,7 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
 
 </div>
 
-
+<!-- start js inpage include -->
 <!-- ui-dialog -->
 <div id="dialog" title="Confirm Bulk File Download">
   <!-- crazy workaround: http://stackoverflow.com/a/10455573 -->
@@ -158,6 +151,8 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
 
 
 </script>
+<!-- end js include -->
+
 {% endblock %}
   
 
