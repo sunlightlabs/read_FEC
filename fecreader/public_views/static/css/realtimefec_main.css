@@ -357,7 +357,7 @@ th.sort.header:hover {
 A.link:hover {text-decoration: underline}
 
 /* BUTTON RESET */
-button, .linkBtn {
-    text-indent:0em;
+.textBtn {
+    text-indent:0px;
     
 }
