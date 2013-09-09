@@ -5,8 +5,9 @@
 
 
 {% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
+
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'realtimefec/bootstrap/css/bootstrap.min.css' %}" />
 {% endblock sitecss %}
 
 {% block body_class %}{% endblock %}
@@ -37,6 +38,9 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
 {% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ committee.curated_candidate.detailed_office}}{% endif %}
 {% endif %}
 
+<br>Test: <a class="link" href="javascript:download_filing_data('{{ filing.fec_id }}','A', '{{ filing.committee_name }}');">Download file</a>
+
+
 <div class="overviewBar withNav withTip">
     <h4>Itemized Filing Data</h4>
 </div>
@@ -50,37 +54,54 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
 </span>
 
 
-<br><a title="click to launch modal" href="javascript:download_committee_data('C100','A', 'not-so-crazy pac');">Download comittee A</a>
 
 </div>
 
-<!-- Modal -->
- <div class="modal fade" id="download_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-         <h4 class="modal-title" id="modal-title">Confirm Bulk File Download</h4>
-       </div>
-       <div class="modal-body"><span id="modal_body">
-      You're about to download a .csv file of itemized Federal Election Commission data. Some files may be quite large. Are you sure you want to continue?</span>
-      <div style="padding-top:10px;" id="confirmation_buttons">
-        <button type="button" class="btn btn-default" id="confirm_download">Yes, create the file</button>&nbsp;
-        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-      </div>
-      <div id="download_div"></div>
-      
-       </div>
-     </div><!-- /.modal-content -->
-   </div><!-- /.modal-dialog -->
- </div><!-- /.modal -->
 
+<!-- ui-dialog -->
+<div id="dialog" title="Confirm Bulk File Download">
+  <!-- crazy workaround: http://stackoverflow.com/a/10455573 -->
+  <span class="ui-helper-hidden-accessible"><input type="text"/></span>
+  <!-- end nutty workaround -->
+  <div class="dialog-body"><span id="modal_body">
+  You're about to download a .csv file of itemized Federal Election Commission data. Some files may be quite large. Are you sure you want to continue?</span>
+  <span id="confirmation_buttons">
+  <br><br><button id="confirm_button">Yes, Continue</button>&nbsp;<button id="dismiss_button">No, Quit</button></div>
+  </span>
+  <div id="download_div"></div>
+</div>
 
-<script src="{% static 'realtimefec/bootstrap/js/bootstrap.min.js' %}"></script>
-
+<script src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
 <script type="text/javascript">
-  
-  
+
+
+	
+	$( "#confirm_button" ).button();
+	$( "#dismiss_button" ).button();
+	
+	
+	
+	$( "#confirm_button" ).click(function( event ) {
+		alert("download confirmed");
+	});
+
+	
+	$( "#dismiss_button" ).click(function( event ) {
+		$( "#dialog" ).dialog( "close" );
+	});
+	
+	
+	$( "#dialog" ).dialog({
+		autoOpen: false,
+		width: 600,
+	});
+
+	// Link to open the dialog
+	$( "#dialog-link" ).click(function( event ) {
+		$( "#dialog" ).dialog( "open" );
+		event.preventDefault();
+	});
+
 
   function set_modal_body(sked, source) {
     data_type = ""
@@ -108,32 +129,32 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
   function reset_window() {
     $('#confirmation_buttons').show();
     $('#download_div').html('');
-    $('#download_modal').modal('toggle');
     $('#modal_body').show();    
     
   }
   
   function download_filing_data(filing_number, sked) {
-    $('#confirm_download').unbind('click');
-    $('#confirm_download').on('click', function() {
+    $('#confirm_button').unbind('click');
+    $('#confirm_button').on('click', function() {
       url = "/download/filing/" + filing_number + "/" + sked + "/";
       load_iframe(url);
     });
     reset_window();
     set_modal_body(sked, " on electronic filing " + filing_number);
+    $( "#dialog" ).dialog( "open" );
+    
   }
   
   function download_committee_data(committee_id, sked, committee_name) {
-    $('#confirm_download').unbind('click');
-    $('#confirm_download').on('click', function() {
+    $('#confirm_button').unbind('click');
+    $('#confirm_button').on('click', function() {
       url = "/download/committee/" + committee_id + "/"+ sked + "/";
       load_iframe(url);
     });
     reset_window();
     set_modal_body(sked, " by " + committee_name );
-    
+    $( "#dialog" ).dialog( "open" );
   }
-  
 
 
 </script>
