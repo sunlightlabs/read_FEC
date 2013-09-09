@@ -45,11 +45,11 @@ Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ fi
     <h4>Itemized Filing Data</h4>
 </div>
 <span class="amount_description">
-{% if filing.lines_present.A %}{{  filing.lines_present.A|intcomma }} Itemized contributions. <a class="link" href="{{ filing.get_skeda_url }}"> See contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_filing_data('{{ filing.fec_id }}','A');">Download file</a>{% endif %}
+{% if filing.lines_present.A %}{{  filing.lines_present.A|intcomma }} Itemized contributions. <a class="link" href="{{ filing.get_skeda_url }}"> See contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_filing_data('{{ filing.filing_number }}','A');">Download file</a>{% endif %}
 
-{% if filing.lines_present.B %}<br>{{  filing.lines_present.B|intcomma }} Itemized disbursements. <a class="link" href="{{ filing.get_skedb_url }}"> See disbursements</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_filing_data('{{ filing.fec_id }}','B');">Download file</a>{% endif %}
+{% if filing.lines_present.B %}<br>{{  filing.lines_present.B|intcomma }} Itemized disbursements. <a class="link" href="{{ filing.get_skedb_url }}"> See disbursements</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_filing_data('{{ filing.filing_number }}','B');">Download file</a>{% endif %}
 
-{% if filing.has_sked_e %}<br>{{  filing.lines_present.E|intcomma }} Independent Expenditures. <a class="link" href="{{ filing.get_skede_url }}"> See expenditures</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_filing_data('{{ filing.fec_id }}','E');">Download file</a>{% endif %}
+{% if filing.has_sked_e %}<br>{{  filing.lines_present.E|intcomma }} Independent Expenditures. <a class="link" href="{{ filing.get_skede_url }}"> See expenditures</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_filing_data('{{ filing.filing_number }}','E');">Download file</a>{% endif %}
 
 </span>
 
