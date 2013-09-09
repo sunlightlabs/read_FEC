@@ -17,7 +17,9 @@
  {% block rtmain %}
 
 <div class="module">
-
+  <b>Downloadable files: </b><a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name }}');">Disbursements</a>{% if independent_spending %}
+  &nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','E', '{{ committee.name }}');">Independent Expenditures</a>{% endif %}
+  
   <div class="numeric_summary">
 <span class="amount_description">Total receipts:</span>&nbsp;<span class="amount_dollars">{% if committee.total_receipts %}${{committee.total_receipts|intcomma}}{% else %}$0{% endif %}</span>
 
@@ -27,10 +29,8 @@
 
 <br><span class="amount_description">Cash on hand (as of {{ committee.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if committee.cash_on_hand %}${{committee.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
 
-<br><span class="amount_description">Downloads: <a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name }}');">Disbursements</a>{% if independent_spending %}
-&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','E', '{{ committee.name }}');">Independent Expenditures</a>{% endif %}
-
 </div>
+
 
 
 <p>Committee Type: "{{ committee.ctype }}" - {{ committee.display_type}} 
