@@ -23,14 +23,12 @@
 <p>
 Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.
 
-{% if  filing_data.lines_present.E %}<br>This filing also includes <a href="{{ filing_data.get_skede_url }}">{{  filing_data.lines_present.E|intcomma }} itemized independent expenditures</a>.{% endif %}
-</p>
+{% if filing_data.has_sked_e %}<br>This filing also includes <a href="{{ filing_data.get_skede_url }}">{{  filing_data.lines_present.E|intcomma }} itemized independent expenditures</a>.{% endif %}
 
 {% if too_many_to_display %}
-<p>There are more than 1,000 contributors itemized on this report; you can <a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','A');">download a file of them</a> or see the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission. </p>
+<br>There are more than 1,000 contributors itemized on this report; you can <a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','A');">download a file of them</a> or see the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.
 {% else %}
-<p>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.</p>
-{% endif %}
+<br>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.{% endif %}</p>
 {% if object_list %}
 <div class="overviewBar withNav withTip">
     <h4>Contributions</h4>
@@ -67,6 +65,10 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.
 </table>
 {% endif %}
 </div>
-  {% endblock %}
-  
+{% endblock %}
+
+{% block sitejs %}
+{{ block.super }}
+{% include "includes/file_download.js" %}
+{% endblock %}
 
