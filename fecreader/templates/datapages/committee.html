@@ -1,6 +1,14 @@
 {# committee details #}
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
+{% load staticfiles %}
+
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
+
+{{ block.super }}
+{% endblock sitecss %}
 
 {% block body_class %}{% endblock %}
 
@@ -19,7 +27,11 @@
 
 <br><span class="amount_description">Cash on hand (as of {{ committee.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if committee.cash_on_hand %}${{committee.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
 
+<br><span class="amount_description">Downloads: <a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name }}');">Disbursements</a>{% if independent_spending %}
+&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','E', '{{ committee.name }}');">Independent Expenditures</a>{% endif %}
+
 </div>
+
 
 <p>Committee Type: "{{ committee.ctype }}" - {{ committee.display_type}} 
   {% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}<a href="{{  committee.curated_candidate.district.get_absolute_url }}">{{ committee.curated_candidate.detailed_office}}</a>{% endif %}
@@ -164,6 +176,10 @@
 
 {% endif %}
 </div>
-  {% endblock %}
-  
+{% endblock %}
 
+
+{% block sitejs %}
+{{ block.super }}
+{% include "includes/file_download.js" %}
+{% endblock %}
