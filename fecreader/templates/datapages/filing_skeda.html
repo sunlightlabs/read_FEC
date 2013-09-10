@@ -19,7 +19,7 @@
  {% block rtmain %}
 
 <div class="module">
-  
+  <b>Alerts: </b><a class="link" href="javascript:submit_gotoscout('{{ filing.fec_id }}');">Get automatic alerts</a> when this committee files new campaign finance reports
   <div class="numeric_summary">
     <span class="amount_description">{% if filing_data.coverage_from_date %}Covers {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}{% endif %}</span>
     <br><span class="amount_description">Total receipts: </span> <span class="amount_dollars"><a class="link" href="{{ filing_data.get_skeda_url }}">${{ filing_data.tot_raised|intcomma }}</a></span>
@@ -78,5 +78,6 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.
 {% block sitejs %}
 {{ block.super }}
 {% include "includes/file_download.js" %}
+{% include "includes/go_to_scout.js" %}
 {% endblock %}
 

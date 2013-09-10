@@ -3,16 +3,19 @@
 {% load humanize %}
 {% load staticfiles %}
 
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
+
+{{ block.super }}
+{% endblock sitecss %}
+
 {% block sitejs %}
 <script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
-{# <script type="text/javascript" src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script> #}
+<script type="text/javascript" src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script> 
 
 {% endblock %}
 
-{% block sitecss %}
-{{ block.super }}
-
-{% endblock sitecss %}
 
 
 {% block body_class %}subscribe_form{% endblock %}
@@ -71,10 +74,30 @@
     </div>
 </div>
 
+
+<!-- ui-dialog -->
+<div id="confirm" title="Go to scout">
+  <div class="dialog-body"><span id="modal_body">You're being sent to <a class="link" href="https://scout.sunlightfoundation.com/">Scout</a>, Sunlight's notification tool, to subscribe to feeds for your selections. If you don't have an account with Scout you'll be prompted to create one.</span>
+  </div>
+</div>
+
+<div id="errormsg" title="Error">
+  <div class="dialog-body"><span id="error_body"></span>
+  </div>
+</div>
+
 <script type="text/javascript">
 var selected_committees = [];
 
+
+function open_error_dialogue(body_message) {
+  $('#error_body').html(body_message);
+  $('#errormsg').dialog( "open");
+}
+
+
 function get_amendment_list(form, include_new, include_amended) {
+  
 	var results = [];
 	var needshyphen = false;
 	if (include_new) {
@@ -133,7 +156,7 @@ function get_feed_url() {
 	}
 
 	if (needs_hyphen==false) {
-		alert("You haven't picked any forms. Please pick some forms and then submit.");
+		open_error_dialogue("You haven't picked any forms. Please pick some forms and then submit."); 
 		return false;
 	}
 	feedurl += "forms/" + form_list + "/";
@@ -196,14 +219,15 @@ function remove_from_selections(this_fecid) {
 function submit_add_to_array(this_fecid, this_name) {
 
 	if (selected_committees.length == 10) {
-		alert("No more than 10 committees can be selected.");
+		open_error_dialogue("No more than 10 committees can be selected."); 
+		
 		return;
 	}
 
 	// is it already in the array?
 	for (i=0; i<selected_committees.length; i++) {
 		if (selected_committees[i].fecid == this_fecid) {
-			alert(this_name + " is  already selected.");
+				open_error_dialogue(this_name + " is  already selected.");
 			return;
 		}
 	}
@@ -218,11 +242,7 @@ function submit_add_to_array(this_fecid, this_name) {
 
 function gotoscout(feedurl) {
 	scouturl = "http://scout.sunlightfoundation.com/import/feed?url=" + encodeURIComponent(feedurl);
-	var gotoscout = confirm("You're being sent to Scout to subscribe to feeds for your selections. If you don't have an account with Scout you'll be prompted to create one.");
-	if (gotoscout) {
-		window.location = scouturl;
-		return false;
-	}
+	window.location = scouturl;
 	return false;
 }
 
@@ -234,11 +254,49 @@ function submit_goto_scout() {
 
 
 $(document).ready(function () {
+  $( "#confirm_button" ).button();
+	
+  $( "#confirm" ).dialog({
+		autoOpen: false,
+		width: 400,
+  	buttons: [
+  		{
+  			text: "Ok",
+  			click: function() {
+  			  console.log("goto scout executed")
+    	    
+  				submit_goto_scout();
+  			}
+  		},
+  		{
+  			text: "Cancel",
+  			click: function() {
+  			  console.log("dialogue closed")
+  			  
+  				$( this ).dialog( "close" );
+  			}
+  		}
+  	]
+	});
+
+  $( "#errormsg" ).dialog({
+		autoOpen: false,
+		width: 400,
+  	buttons: [
+  		{
+  			text: "Ok",
+  			click: function() {
+  			  $( this ).dialog( "close" );
+  			}
+  		}
+  	]
+	});
 
 	$('#gotoscout').click(function() {
-			submit_goto_scout();
-	        return false;
-	    });
+			$( "#confirm" ).dialog( "open" );
+			return false;
+	  });
+	    
 
 	$("#searchbox").focus(function () {
 
@@ -255,7 +313,7 @@ $(document).ready(function () {
 		var searchterm = $("#searchbox")[0].value;
 
 		if ( (searchterm.length < 4) || ( searchterm == 'Committee or candidate' )) {
-			alert('Please enter at least 3 characters to search for!');
+			open_error_dialogue('Please enter at least 3 characters to search for!');
 			return false;
 		} else {
 			var searchurl = "/subscribe/committee_search/?name=" + encodeURI(searchterm)

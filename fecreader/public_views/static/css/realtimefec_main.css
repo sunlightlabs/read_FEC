@@ -354,6 +354,7 @@ th.sort.header:hover {
 
 .label-oppose { width: 60px; text-align: center; padding: 2px; background: #f27e01; color: black; text-transform: uppercase; font-size: 75%; }
 
+A.link { border: none; color: #0A6E92;}
 A.link:hover {text-decoration: underline}
 
 /* BUTTON RESET */

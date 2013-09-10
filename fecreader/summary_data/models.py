@@ -238,6 +238,11 @@ class Candidate_Overlay(models.Model):
         else:
             return "N"
     
+    def is_electronic_filer(self):
+        if self.office == 'S':
+            return False
+        else:
+            return True
     
     def detailed_office(self):
         if self.office == 'S':

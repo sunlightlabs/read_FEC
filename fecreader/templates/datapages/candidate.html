@@ -1,6 +1,12 @@
 {# committee details #}
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
+{% load staticfiles %}
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
+{{ block.super }}
+{% endblock sitecss %}
 
 {% block body_class %}{% endblock %}
 
@@ -9,7 +15,8 @@
  {% block rtmain %}
 
 <div class="module">
-
+  {% if candidate.is_electronic_filer %}<b>Alerts: </b><a class="link" href="javascript:submit_gotoscout_candidates('{% for committee in authorized_committee_list %}{{ committee.committee_id }}{% if not forloop.last %}-{% endif %}{% endfor %}');">Get automatic alerts</a> when this candidate files new campaign finance reports{% endif %}
+  
 <div class="numeric_summary">
 
 <span class="amount_description">Candidate Spending:</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
@@ -86,6 +93,11 @@
 </tbody>
 </table>
 </div>
-  {% endblock %}
-  
+{% endblock %}
+
+{% block sitejs %}
+{{ block.super }}
+<script src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+{% include "includes/go_to_scout.js" %}
+{% endblock %}
 
