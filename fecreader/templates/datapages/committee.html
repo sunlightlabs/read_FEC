@@ -17,8 +17,9 @@
  {% block rtmain %}
 
 <div class="module">
-  <b>Downloadable files: </b><a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name }}');">Disbursements</a>{% if independent_spending %}
+  {% if committee.is_electronic_filer %}<b>Downloadable files: </b><a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name }}');">Disbursements</a>{% if independent_spending %}
   &nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','E', '{{ committee.name }}');">Independent Expenditures</a>{% endif %}
+  {% endif %}
   
   <div class="numeric_summary">
 <span class="amount_description">Total receipts:</span>&nbsp;<span class="amount_dollars">{% if committee.total_receipts %}${{committee.total_receipts|intcomma}}{% else %}$0{% endif %}</span>

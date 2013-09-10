@@ -421,6 +421,9 @@ class Committee_Overlay(models.Model):
         else:
             return None
     
+    def is_electronic_filer(self):
+        return self.is_paper_filer == False
+    
     def curated_candidate_office(self):
         if self.curated_candidate:
             if self.curated_candidate.office == 'S':
