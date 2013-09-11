@@ -1,6 +1,6 @@
 import json
 
-from celeryproj.tasks import dump_filing_sked_celery, dump_committee_sked_celery
+from celeryproj.tasks import dump_filing_sked_celery, dump_committee_sked_celery, dump_candidate_sked_celery
 from celery.result import AsyncResult
 
 from django.shortcuts import redirect
@@ -13,13 +13,15 @@ def get_filing(request, filing_number, sked):
     task_id = celery_request.id
     return redirect('/download/build_file/%s/' % task_id)
     
-    
-
 def get_committee(request, committee_id, sked):
     celery_request = dump_committee_sked_celery.apply_async([sked,committee_id], queue='fast',routing_key="fast")
     task_id = celery_request.id
     return redirect('/download/build_file/%s/' % task_id)
     
+def get_candidate(request, candidate_id, sked):
+    celery_request = dump_candidate_sked_celery.apply_async([sked,candidate_id], queue='fast',routing_key="fast")
+    task_id = celery_request.id
+    return redirect('/download/build_file/%s/' % task_id)
         
 def build_file(request, task_id):
     # this is the page that gets shown while the file is downloading. It polls the status until it's done. 

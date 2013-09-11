@@ -43,6 +43,34 @@ def dump_committee_sked(sked_name, committee_number, destination_file):
     dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False and fec_alerts_new_filing.fec_id = '%s') to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, committee_number, destination_file)
     cursor.execute(dumpcmd);
 
+def dump_candidate_sked(sked_name, candidate_id, destination_file):
+    """
+    Blindly dump a csv file of a candidate's authorized committees, regardless of size. *Some filings are 200MB plus -- see #876048 or ACTBLUE's monthly stuff. 
+
+    The rule is a body line is superceded EITHER if it's parent filing is superceded, or if the line itself is superceded. F24's and F6's are superceded line by line--though perhaps that could be improved on. 
+
+    """
+
+    # break if we're given junk args. 
+    sked_name = sked_name.lower()
+    assert sked_name in ['a', 'b']
+    fieldlist = fields[sked_name]
+    datefieldkey = "%s_date" % (sked_name)
+    datefield = fields[datefieldkey]
+
+    connection = get_connection()
+    cursor = connection.cursor()
+    
+    ## first get the list of authorized committees. 
+    acc_query = "select committee_id from  summary_data_authorized_candidate_committees where candidate_id='%s'" % candidate_id
+    cursor.execute(acc_query);
+    results = cursor.fetchall()
+    committees = ["'" + x[0] + "'" for x in results]
+    committee_formatted_list = ", ".join(committees)
+    
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False and fec_alerts_new_filing.fec_id in (%s)) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, committee_formatted_list, destination_file)
+    cursor.execute(dumpcmd);
+
 def dump_all_sked(sked_name, destination_file):
     
 

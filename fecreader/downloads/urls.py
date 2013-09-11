@@ -5,6 +5,7 @@ from django.conf.urls.defaults import url, patterns
 urlpatterns = patterns('',
         url(r'^filing/(?P<filing_number>[\d]+)/(?P<sked>[ABE])/', 'downloads.views.get_filing'),
         url(r'^committee/(?P<committee_id>[\w\d]+)/(?P<sked>[ABE])/', 'downloads.views.get_committee'),
+        url(r'^candidate/(?P<candidate_id>[\w\d]+)/(?P<sked>[ABE])/', 'downloads.views.get_candidate'),
         url(r'^taskstatus/(?P<task_id>[\w\d\-]+)/', 'downloads.views.get_task_status'),
         url(r'^build_file/(?P<task_id>[\w\d\-]+)/', 'downloads.views.build_file'),
 

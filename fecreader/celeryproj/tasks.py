@@ -7,7 +7,7 @@ from datetime import datetime
 from celeryproj.celery import celery
 
 from formdata.utils.filing_body_processor import process_filing_body
-from formdata.utils.dump_utils import dump_filing_sked, dump_committee_sked
+from formdata.utils.dump_utils import dump_filing_sked, dump_committee_sked, dump_candidate_sked
 
 #sys.path.append('../../')
 
@@ -32,7 +32,17 @@ def dump_committee_sked_celery(sked_name, committee_number):
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
     dump_committee_sked(sked_name, committee_number, destination_file)
     return destination_url
-    
+
+
+@celery.task
+def dump_candidate_sked_celery(sked_name, candidate_id):
+    this_request_id = dump_committee_sked_celery.request.id
+    this_request_id = this_request_id.replace("-", "")
+    filename = "%ssked%s_%s.csv" % (candidate_id, sked_name, this_request_id)
+    destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
+    destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
+    dump_committee_sked(sked_name, candidate_id, destination_file)
+    return destination_url
 
 @celery.task
 def process_filing_body_celery(filingnum):
