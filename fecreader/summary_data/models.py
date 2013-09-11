@@ -1,8 +1,8 @@
 import datetime
 
 from django.db import models
+from django.utils.text import slugify
 
-#from django_localflavor_us.us_states import STATE_CHOICES
 from django.contrib.localflavor.us.us_states import STATE_CHOICES
 
 from ftpdata.models import Candidate
@@ -638,6 +638,9 @@ class Committee_Time_Summary(models.Model):
         else:
             url = "http://query.nictusa.com/cgi-bin/fecimg/?%s" % (self.com_id)
             return url
+    
+    def get_committee_url(self):
+        return "/committee/%s/%s/" % (  slugify(self.com_name), self.com_id)
         
     def get_skeda_url(self):
         if self.filing_number:

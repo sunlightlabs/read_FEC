@@ -1,11 +1,14 @@
-from django.db import models
 import re
 
 from pytz import timezone
 
+from django.utils.text import slugify
+from django.db import models
+
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
 from parsing.read_FEC_settings import FEC_HTML_LOCATION
+
 
 eastern = timezone('US/Eastern')
 
