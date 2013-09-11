@@ -8,8 +8,8 @@ from celeryproj.celery import celery
 
 from formdata.utils.filing_body_processor import process_filing_body
 from formdata.utils.dump_utils import dump_filing_sked, dump_committee_sked
-
-#sys.path.append('../../')
+import sys
+sys.path.append('../../')
 
 from fecreader.settings import CUSTOM_DOWNLOAD_DIR, CUSTOM_DOWNLOAD_URL
 
