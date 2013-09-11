@@ -38,7 +38,7 @@ def dump_committee_sked_celery(sked_name, committee_number):
 
 @celery.task
 def dump_candidate_sked_celery(sked_name, candidate_id):
-    this_request_id = dump_committee_sked_celery.request.id
+    this_request_id = dump_candidate_sked_celery.request.id
     this_request_id = this_request_id.replace("-", "")
     filename = "%ssked%s_%s.csv" % (candidate_id, sked_name, this_request_id)
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
