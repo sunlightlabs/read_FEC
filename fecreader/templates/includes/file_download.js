@@ -100,6 +100,16 @@
     $( "#dialog" ).dialog( "open" );
   }
 
+  function download_candidate_data(candidate_id, sked, candidate_name, detailed_office) {
+    $('#confirm_button').unbind('click');
+    $('#confirm_button').on('click', function() {
+      url = "/download/candidate/" + candidate_id + "/"+ sked + "/";
+      load_iframe(url);
+    });
+    reset_window();
+    set_modal_body(sked, " by campaign committees authorized by " + candidate_name + " in the race for " + detailed_office);
+    $( "#dialog" ).dialog( "open" );
+  }
 
 </script>
 <!-- end js include -->
