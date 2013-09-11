@@ -2,7 +2,6 @@ import re
 
 from pytz import timezone
 
-from django.utils.text import slugify
 from django.db import models
 
 from djorm_hstore.fields import DictionaryField

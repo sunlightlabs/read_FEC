@@ -15,7 +15,13 @@
  {% block rtmain %}
 
 <div class="module">
-  {% if candidate.is_electronic_filer %}<b>Alerts: </b><a class="link" href="javascript:submit_gotoscout_candidates('{% for committee in authorized_committee_list %}{{ committee.committee_id }}{% if not forloop.last %}-{% endif %}{% endfor %}');">Get automatic alerts</a> when this candidate files new campaign finance reports{% endif %}
+  {% if candidate.is_electronic_filer %}
+  <b>Downloadable files: </b><a class="link" href="javascript:download_candidate_data('{{ candidate.fec_id }}','A', '{{ candidate.name }}', '{{candidate.detailed_office }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_candidate_data('{{ candidate.fec_id }}','B', '{{ candidate.name }}', '{{candidate.detailed_office }}');">Disbursements</a>
+  <br>
+  <b>Alerts: </b><a class="link" href="javascript:submit_gotoscout_candidates('{% for committee in authorized_committee_list %}{{ committee.committee_id }}{% if not forloop.last %}-{% endif %}{% endfor %}');">Get automatic alerts</a> when this candidate files new campaign finance reports
+  
+  {% endif %}
+  
   
 <div class="numeric_summary">
 
@@ -97,7 +103,8 @@
 
 {% block sitejs %}
 {{ block.super }}
-<script src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+{% include "includes/file_download.js" %}
 {% include "includes/go_to_scout.js" %}
+
 {% endblock %}
 
