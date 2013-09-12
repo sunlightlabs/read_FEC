@@ -58,16 +58,25 @@
 
         <div class="form-row clearfix">
             <div class="form_spacer">
-                <label>Minimum expenditure:</label>
+                <label>Minimum amount:</label>
                 <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
             </div>
-
+            
             <div class="form_spacer">
-                <label>Outside spending group:</label>
+                <label>Outside group:</label>
                 <select name="outside_spender" data-placeholder="Pick a committee..." class="chosen-select" tabindex="2" id="committee_select" style="width:200px;">
                   <option value=""></option>
                   <option value="0">Show All</option>
                   {% for committee in outside_spenders %}<option 'value':'{{ committee.fec_id}}'>{{committee.name}}</option> {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form_spacer">
+                <label>Support/Oppose:</label>
+                <select name="support_oppse" data-placeholder="Pick a committee..." class="chosen-select" id="support_select" style="width:100px;">
+                  <option value="0">Show All</option>
+                  <option value="SUPPORT">Support Only</option>
+                  <option value="OPPOSE">Oppose Only</option>
                 </select>
             </div>
 
