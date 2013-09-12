@@ -46,7 +46,7 @@
 
             <div class="form_spacer">
                 <label>Candidate:</label>
-                <select data-placeholder="Pick a candidate..." name="candidate" class="chosen-select" tabindex="2" id="candidate_select" style="width:250px;">
+                <select data-placeholder="Pick a candidate..." name="candidate" class="chosen-select"  id="candidate_select" style="width:250px;">
                 </select>
             </div>
             
@@ -56,7 +56,7 @@
 
 
 
-        <div class="form-row clearfix">
+        <div class="form-row clearfix form-break">
             <div class="form_spacer">
                 <label>Minimum amount:</label>
                 <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
@@ -65,7 +65,6 @@
             <div class="form_spacer">
                 <label>Outside group:</label>
                 <select name="outside_spender" data-placeholder="Pick a committee..." class="chosen-select" tabindex="2" id="committee_select" style="width:200px;">
-                  <option value=""></option>
                   <option value="0">Show All</option>
                   {% for committee in outside_spenders %}<option 'value':'{{ committee.fec_id}}'>{{committee.name}}</option> {% endfor %}
                 </select>
@@ -73,7 +72,7 @@
             
             <div class="form_spacer">
                 <label>Support/Oppose:</label>
-                <select name="support_oppse" data-placeholder="Pick a committee..." class="chosen-select" id="support_select" style="width:100px;">
+                <select name="support_oppose" data-placeholder="Pick a committee..." class="chosen-select" id="support_select" style="width:100px;">
                   <option value="0">Show All</option>
                   <option value="SUPPORT">Support Only</option>
                   <option value="OPPOSE">Oppose Only</option>
@@ -166,7 +165,7 @@ pagination_size = {{ PAGINATE_BY }};
 
 
 function make_states() {
-  state_element = '<option value=""></option>';
+  state_element = '';
   for (var i = 0; i < states.length; i++) {
           state_element += '<option value="' + states[i].value + '">' + states[i].name + '</option>';
       }
@@ -176,7 +175,7 @@ function make_states() {
 }
 
 function reset_races(stateid) {
-  race_element = '<option value=""></option>';
+  race_element = '';
   for (var i = 0; i < races.length; i++) {
       if ( stateid==0 || races[i].state==stateid || races[i].state == 'ALL') {
           race_element += '<option value="' + races[i].value + '">' + races[i].name + '</option>';
@@ -188,7 +187,7 @@ function reset_races(stateid) {
 }
 
 function reset_candidates(stateid, raceid) {
-  candidate_element = '<option value=""></option>';
+  candidate_element = '';
   for (var i = 0; i < candidates.length; i++) {
       if ( stateid==0 || candidates[i].state==stateid || candidates[i].state == 'ALL') {
         if ( raceid==0 || candidates[i].raceid == raceid || candidates[i].state == 'ALL') {
