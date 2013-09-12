@@ -5,6 +5,7 @@ from api import views
 router = routers.DefaultRouter()
 router.register(r'new_filing', views.NFViewSet)
 router.register(r'committee', views.COViewSet)
+router.register(r'independent-expenditures', views.SkedEViewSet)
 
 
 urlpatterns = patterns('',

@@ -5,7 +5,7 @@ from django.db import connection
 from django.db.models import Q
 from django.template import RequestContext
 from django.shortcuts import redirect
-
+from django.contrib.localflavor.us.us_states import US_STATES
 
 from fec_alerts.models import new_filing, newCommittee
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate
@@ -18,6 +18,7 @@ from summary_data.utils.summary_utils import map_summary_form_to_dict
 from django.conf import settings
 from summary_data.utils.update_utils import get_update_time
 
+STATE_LIST = [{'name':x[1], 'abbrev':x[0]} for x in US_STATES]
 
 try:
     PAGINATE_BY = settings.REST_FRAMEWORK['PAGINATE_BY']
@@ -158,7 +159,25 @@ def pacs(request):
         'PAGINATE_BY':PAGINATE_BY,
         },
         context_instance=RequestContext(request)
-    )  
+    ) 
+
+def dynamic_ies(request):
+    districts = District.objects.filter(outside_spending__gt=1).order_by('state', 'office', 'office_district')
+    candidates = Candidate_Overlay.objects.filter(total_expenditures__gt=1).select_related('district').order_by('name')
+    outside_spenders = Committee_Overlay.objects.filter(total_indy_expenditures__gte=1000).order_by('name')
+    
+    return render_to_response('datapages/dynamic_ies.html', 
+        {
+        'STATE_LIST':STATE_LIST,
+        'title':'Newest Outside Expenditures',
+        'PAGINATE_BY':PAGINATE_BY,
+        'districts':districts,
+        'candidates':candidates,
+        'outside_spenders':outside_spenders,
+        },
+        context_instance=RequestContext(request)
+    )
+
 def new_committees(request):
     today = datetime.datetime.today()
     month_ago = today - datetime.timedelta(days=30)

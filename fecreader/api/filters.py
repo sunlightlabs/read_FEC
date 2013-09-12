@@ -3,6 +3,7 @@ import django_filters
 from datetime import date, timedelta
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay
+from formdata.models import SkedE
 from django.db.models import Q
 
 
@@ -34,6 +35,14 @@ class COFilter(django_filters.FilterSet):
     class Meta:
         model = Committee_Overlay
         fields = ['fec_id', 'name', 'slug', 'cycle', 'term_class', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype']
+
+class SkedEFilter(django_filters.FilterSet):
+    
+    min_spent = django_filters.NumberFilter(name='expenditure_amount', lookup_type='gte')
+    
+    class Meta:
+        model = SkedE
+        fields=('form_type', 'candidate_id_checked', 'candidate_party_checked', 'candidate_office_checked', 'candidate_state_checked', 'candidate_district_checked', 'support_oppose_checked', 'payee_state', 'expenditure_date_formatted', 'expenditure_amount')
 
 
 def periodTypeFilter(queryset, querydict):

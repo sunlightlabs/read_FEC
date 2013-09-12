@@ -1,6 +1,7 @@
 
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay
+from summary_data.models import Committee_Overlay, Candidate_Overlay
+from formdata.models import SkedE
 from rest_framework import serializers
 
 
@@ -16,6 +17,7 @@ class NFSerializer(serializers.HyperlinkedModelSerializer):
         model = new_filing
         fields = ('fec_id', 'committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'coverage_to_date', 'is_superpac', 'committee_designation', 'committee_type', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent', 'lines_present', 'form_name', 'skeda_url', 'spending_url', 'absolute_url', 'committee_url', 'process_time_formatted')
 
+
 class COSerializer(serializers.HyperlinkedModelSerializer):
     display_type = serializers.Field(source='display_type')
     candidate_url = serializers.Field(source='candidate_url')
@@ -28,3 +30,15 @@ class COSerializer(serializers.HyperlinkedModelSerializer):
         model = Committee_Overlay
         fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'candidate_office','candidate_name', 'candidate_url', 'display_type', 'committee_url')
         #depth = 1
+        
+class SkedESerializer(serializers.HyperlinkedModelSerializer):
+    payee_name_simplified = serializers.Field(source='payee_name_simplified')
+    support_oppose = serializers.Field(source='support_oppose')
+    get_candidate_url = serializers.Field(source='get_candidate_url')
+    get_committee_url = serializers.Field(source='get_committee_url')
+    short_office = serializers.Field(source='short_office')
+    candidate_name = serializers.Field(source='candidate_name_raw')
+    
+    class Meta:
+        model = SkedE
+        fields=('form_type', 'superceded_by_amendment', 'candidate_id_checked', 'candidate_name_checked', 'candidate_party_checked', 'candidate_office_checked', 'candidate_state_checked', 'candidate_district_checked', 'support_oppose_checked', 'committee_name', 'transaction_id', 'payee_organization_name', 'payee_street_1', 'payee_street_2', 'payee_city', 'payee_state', 'payee_zip', 'election_code', 'election_other_description', 'expenditure_date_formatted', 'expenditure_amount', 'expenditure_purpose_code', 'expenditure_purpose_descrip', 'date_signed_formatted', 'memo_code', 'memo_text_description')

@@ -3,14 +3,17 @@ from datetime import date
 
 from django.db.models import Sum, Count, Q
 
+from datetime import date
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay
+from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
-from api.serializers import NFSerializer, COSerializer
-from api.filters import NFFilter, COFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow
+from api.serializers import NFSerializer, COSerializer, SkedESerializer
+from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow
 
 
+CYCLE_START=date(2013,1,1)
 nf_orderable_fields = ['committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'committee_slug', 'party', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent']
 class NFViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -53,3 +56,24 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
         self.queryset =  multiCTypeFilter(self.queryset, self.request.GET)
         self.queryset =  candidateCommitteeSearchSlow(self.queryset, self.request.GET)
         return self.queryset
+        
+        
+
+
+skede_orderable_fields = ['expenditure_date_formatted', 'expenditure_amount', 'payee_state', 'committee_name', 'candidate_name_checked']
+
+class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows committee_overlays to be viewd.
+    """
+    queryset = SkedE.objects.filter(superceded_by_amendment=False, expenditure_date_formatted__gte=CYCLE_START).exclude(memo_code='X')
+    serializer_class = SkedESerializer
+    filter_class = SkedEFilter
+
+
+    def get_queryset(self):  
+        # Again, this seems like a pretty weird way to do this.       
+        self.queryset = orderingFilter(self.queryset, self.request.GET, skede_orderable_fields)
+        return self.queryset
+
+
