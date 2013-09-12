@@ -275,6 +275,20 @@ class Candidate_Overlay(models.Model):
                                                                   self.transparencydata_id)
 
 
+
+    def get_race_url(self):
+        url= ""
+        if self.office == 'H':
+            url="/race/%s/%s/%s/%s/" % (self.cycle, self.office, self.state, self.office_district)
+        elif self.office == 'S':
+            url= "/race/%s/%s/%s/%s/" % (self.cycle, self.office, self.state, self.term_class)
+        elif self.office == 'P':
+            url= "/race/%s/president/" % (self.cycle)
+
+        return url
+
+
+
   ## The US congress repo doesn't do a good job handling fec ids, so distill what we need into this model.
   ## Incumbents are populated from US Congress, and challengers from fec master file. The determination of 
   ## who is and who isn't a challenger is solely based on US congress, though this can be flipped through the admin. 
