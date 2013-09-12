@@ -31,7 +31,7 @@ class COSerializer(serializers.HyperlinkedModelSerializer):
         fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'candidate_office','candidate_name', 'candidate_url', 'display_type', 'committee_url')
         #depth = 1
         
-class SkedESerializer(serializers.HyperlinkedModelSerializer):
+class SkedESerializer(serializers.ModelSerializer):
     payee_name_simplified = serializers.Field(source='payee_name_simplified')
     support_oppose = serializers.Field(source='support_oppose')
     get_candidate_url = serializers.Field(source='get_candidate_url')
@@ -41,4 +41,4 @@ class SkedESerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = SkedE
-        fields=('form_type', 'superceded_by_amendment', 'candidate_id_checked', 'candidate_name_checked', 'candidate_party_checked', 'candidate_office_checked', 'candidate_state_checked', 'candidate_district_checked', 'support_oppose_checked', 'committee_name', 'transaction_id', 'payee_organization_name', 'payee_street_1', 'payee_street_2', 'payee_city', 'payee_state', 'payee_zip', 'election_code', 'election_other_description', 'expenditure_date_formatted', 'expenditure_amount', 'expenditure_purpose_code', 'expenditure_purpose_descrip', 'date_signed_formatted', 'memo_code', 'memo_text_description', 'filer_committee_id_number')
+        fields=('form_type', 'superceded_by_amendment', 'candidate_id_checked', 'candidate_name_checked', 'candidate_party_checked', 'candidate_office_checked', 'candidate_state_checked', 'candidate_district_checked', 'support_oppose_checked', 'committee_name', 'transaction_id', 'payee_organization_name', 'payee_street_1', 'payee_street_2', 'payee_city', 'payee_state', 'payee_zip', 'election_code', 'election_other_description', 'expenditure_date_formatted', 'expenditure_amount', 'expenditure_purpose_code', 'expenditure_purpose_descrip', 'date_signed_formatted', 'memo_code', 'memo_text_description', 'filer_committee_id_number', 'district_checked')

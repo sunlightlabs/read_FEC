@@ -42,16 +42,7 @@ class SkedEFilter(django_filters.FilterSet):
     
     class Meta:
         model = SkedE
-        fields=('form_type', 'candidate_id_checked', 'candidate_party_checked', 'candidate_office_checked', 'candidate_state_checked', 'candidate_district_checked', 'support_oppose_checked', 'payee_state', 'expenditure_date_formatted', 'expenditure_amount', 'filer_committee_id_number')
-
-def raceIDFilter(queryset, querydict):
-    try:
-        race_id = querydict['race_id']
-        queryset = queryset.filter(district_checked__pk = race_id)
-        
-    except KeyError:
-        pass
-    return queryset
+        fields=('form_type', 'candidate_id_checked', 'candidate_party_checked', 'candidate_office_checked', 'candidate_state_checked', 'candidate_district_checked', 'support_oppose_checked', 'payee_state', 'expenditure_date_formatted', 'expenditure_amount', 'filer_committee_id_number', 'district_checked')
         
 
 def periodTypeFilter(queryset, querydict):
