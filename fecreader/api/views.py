@@ -10,7 +10,7 @@ from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
 from api.serializers import NFSerializer, COSerializer, SkedESerializer
-from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow
+from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, raceIDFilter
 
 
 CYCLE_START=date(2013,1,1)
@@ -74,6 +74,9 @@ class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
         self.queryset = orderingFilter(self.queryset, self.request.GET, skede_orderable_fields)
+        
+        self.queryset =  raceIDFilter(self.queryset, self.request.GET)
+        
         return self.queryset
 
 

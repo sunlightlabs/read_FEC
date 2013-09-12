@@ -154,7 +154,7 @@ var races = [
 
 candidates = [
   {'name':'Show All', 'value':'0', 'state':'ALL'},
-  {% for candidate in candidates %}{ 'value':'{{ candidate.pk }}', 'name':'{{ candidate.name }} {{candidate.display_party }}', 'state':'{{ candidate.state }}', 'raceid':'{{candidate.district.pk}}'}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}  
+  {% for candidate in candidates %}{ 'value':'{{ candidate.fec_id }}', 'name':'{{ candidate.name }} {{candidate.display_party }}', 'state':'{{ candidate.state }}', 'raceid':'{{candidate.district.pk}}'}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}  
 ];
 
 
