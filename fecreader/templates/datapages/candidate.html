@@ -27,6 +27,8 @@
 
 <span class="amount_description">Candidate Spending:</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
 
+<br><span class="amount_description">Candidate Fundraising</span>&nbsp;<span class="amount_dollars">{% if candidate.total_contributions %}${{candidate.total_contributions|intcomma}}{% else %}$0{% endif %}</span>
+
 <br><span class="amount_description">Candidate's Cash (as of {{ candidate.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if candidate.cash_on_hand %}${{candidate.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
 
 <br><span class="amount_description">Outside support</span>&nbsp;<span class="amount_dollars">{% if candidate.expenditures_supporting %}${{candidate.expenditures_supporting|intcomma}}{% else %}$0{% endif %}</span>
@@ -64,6 +66,41 @@
 </table>
 
 {% endif %}
+
+{% if recent_report_list %}
+<div class="overviewBar withNav withTip">
+    <h4>Recent 24- and 48-hour filings</h4>
+</div>
+<p>Only filings made since the last monthly/quarterly report are shown</p>
+
+
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Filing ID (Type)</th>
+                <th>Coverage Date</th>
+                <th class="sort">Raised</th>
+                <th class="sort">Independent Expenditures</th>
+
+                
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in recent_report_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}">
+                          <td>{% if object.filing_number %}<a class="link" href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% endif %} </td>
+                          
+                          <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
+                          <td>{% if object.tot_raised %}{% if object.filing_number %}<a class="link" href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_ies %}{% if object.filing_number %}<a class="link" href="{{object.get_spending_url}}">{% endif %}${{ object.tot_ies|intcomma }}{% if object.tot_ies %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                           
+                        </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+{% endif %}
+
 
 <div class="overviewBar withNav withTip">
     <h4>Candidate Filings</h4>

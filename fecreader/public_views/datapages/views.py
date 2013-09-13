@@ -337,7 +337,7 @@ def committee(request, committee_id):
     committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id)
         
     title = committee_overlay.name
-    report_list = Committee_Time_Summary.objects.filter(com_id=committee_id, coverage_from_date__gte=this_cycle_start).order_by('coverage_through_date')
+    report_list = Committee_Time_Summary.objects.filter(com_id=committee_id, coverage_from_date__gte=this_cycle_start).order_by('-coverage_through_date')
     
     
     end_of_coverage_date = committee_overlay.cash_on_hand_date
@@ -375,7 +375,20 @@ def candidate(request, candidate_id):
     authorized_committee_list = Authorized_Candidate_Committees.objects.filter(candidate_id=candidate_id)
     committee_list = [x.get('committee_id') for x in authorized_committee_list.values('committee_id')]
     
-    report_list = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start).order_by('coverage_through_date')
+    report_list = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start).order_by('-coverage_through_date')
+    
+    
+    end_of_coverage_date = None
+    recent_report_list = None
+    if report_list:
+        end_of_coverage_date = report_list[0].coverage_through_date
+        
+    
+    if end_of_coverage_date:
+        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=end_of_coverage_date, form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
+    else:
+        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=this_cycle_start, form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
+    
     
     # are their outside groups who've spent for/against this candidate? 
     outside_spenders = Pac_Candidate.objects.filter(candidate=candidate_overlay, total_ind_exp__gte=1000).select_related('committee')
@@ -387,6 +400,7 @@ def candidate(request, candidate_id):
         'candidate':candidate_overlay,
         'authorized_committee_list':authorized_committee_list,
         'outside_spenders':outside_spenders,
+        'recent_report_list':recent_report_list,
         }, 
         context_instance=RequestContext(request)
     )

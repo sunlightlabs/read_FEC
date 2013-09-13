@@ -267,6 +267,8 @@ class SkedE(models.Model):
             return '%s-%s' % (self.candidate_state_checked, self.candidate_district_checked)
         else:
             return ""
+            
+
 
     
         
