@@ -235,10 +235,11 @@ class SkedE(models.Model):
             elif self.support_oppose_checked.upper() == 'O':
                 return '<div class="label-oppose">Oppose</div>'
             
-        elif self.support_oppose_code.upper() == 'S':
-            return '<div class="label-support">Support</div>'
-        elif self.support_oppose_code.upper() == 'O':
-            return '<div class="label-oppose">Oppose</div>'            
+        elif self.support_oppose_code
+            if self.support_oppose_code.upper() == 'S':
+                return '<div class="label-support">Support</div>'
+            elif self.support_oppose_code.upper() == 'O':
+                return '<div class="label-oppose">Oppose</div>'            
             
         return ""
     
