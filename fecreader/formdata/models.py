@@ -269,6 +269,16 @@ class SkedE(models.Model):
         else:
             return ""
             
+    def get_absolute_url(self):
+        return "/filing/%s/#%s" % (self.filing_number, self.transaction_id)
+        
+    def supporting_opposing(self):
+        support = 'naming'
+        if self.support_oppose_code == 'S':
+            support='supporting'
+        elif self.support_oppose_code == 'O':
+            support = 'opposing'    
+        return support
 
 
     

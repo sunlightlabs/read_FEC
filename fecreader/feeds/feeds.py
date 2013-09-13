@@ -1,9 +1,11 @@
+import datetime
 
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
 from django.shortcuts import get_object_or_404
 
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay
+from formdata.models import SkedE
 
 FEED_LENGTH = 30
 
@@ -110,3 +112,59 @@ class SuperpacsForms(FilingFeedBase):
     def title(self, obj):
         return "Super PAC filings -- forms: " + " ".join(self.form_list)
     
+class IEFeedBase(Feed):
+    description_template = 'feeds/independent_expenditure_description.html'
+
+    # What is this used for?
+    def link(self, obj):
+        return 'http://realtime.influenceexplorer.com/independent-expenditures/'
+
+    def description(self):
+        return "Recent independent expenditures"
+
+    def item_title(self, item):
+        
+        return  "%s - independent expenditure - %s %s" % (item.committee_name, item.supporting_opposing(), item.candidate_name_checked)
+
+    def item_pubdate(self, item):
+        thisdate = item.expenditure_date_formatted
+        return datetime.datetime(thisdate.year, thisdate.month, thisdate.day)
+
+    def title(self):
+        return "RECENT INDEPENDENT EXPENDITURES"
+
+
+class IEFeed(IEFeedBase): 
+    description_template = 'feeds/independent_expenditure_description.html'
+
+    def title(self):
+        return "RECENT FILINGS FEED" 
+
+    def get_object(self, request):
+        return "" 
+
+    def description(self, obj):
+        return "Recent independent expenditures"
+        
+    def items(self, obj):
+        return SkedE.objects.filter(superceded_by_amendment=False).order_by('-expenditure_date_formatted').select_related('district_checked')[:FEED_LENGTH]
+        
+class IEFeedMin(IEFeedBase): 
+    description_template = 'feeds/independent_expenditure_description.html'
+    feed_min = 0
+
+    def title(self):
+        return "RECENT FILINGS FEED" 
+
+    def get_object(self, request, min_spent):
+        print "Got min spent: %s" % (min_spent)
+        self.feed_min = int(min_spent)
+        return "" 
+
+    def description(self, obj):
+        return "Recent independent expenditures over $%s" % (self.feed_min) 
+
+    def items(self, obj):
+        #SkedE.objects.filter(superceded_by_amendment=False, expenditure_amount__gte=self.feed_min).order_by('-expenditure_date_formatted').select_related('district_checked')[:FEED_LENGTH]
+        return SkedE.objects.filter(superceded_by_amendment=False, expenditure_amount__gte=self.feed_min).order_by('-expenditure_date_formatted').select_related('district_checked')[:FEED_LENGTH]
+        
