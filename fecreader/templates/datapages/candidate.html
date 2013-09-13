@@ -27,7 +27,9 @@
 
 <span class="amount_description">Candidate Spending:</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
 
+<!-- wrong ?
 <br><span class="amount_description">Candidate Fundraising</span>&nbsp;<span class="amount_dollars">{% if candidate.total_contributions %}${{candidate.total_contributions|intcomma}}{% else %}$0{% endif %}</span>
+-->
 
 <br><span class="amount_description">Candidate's Cash (as of {{ candidate.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if candidate.cash_on_hand %}${{candidate.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
 
