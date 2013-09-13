@@ -26,7 +26,7 @@
 
 <div class="module">
 
-    <p class="tip">Find and filter the latest independent expenditures reported. Only races and candidates where independent expenditures of $1000 or more have been reported are given as menu choices.</p>
+    <p class="tip">Find and filter the latest independent expenditures reported. Only races and candidates where independent expenditures of $1000 or more have been reported are given as menu choices. Download a complete file of independent expenditures this cycle on the <a href="/downloads-index/">bulk downloads page</a>.</p>
 
 
     <div id="formdiv" class="clearfix">
@@ -34,19 +34,19 @@
         <div class="form-row clearfix ">
             <div class="form_spacer">
                 <label>State:</label>
-                <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="state_select" style="width:120px;">
+                <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="candidate_state_checked" style="width:120px;">
                 </select>
             </div>
 
             <div class="form_spacer">
                 <label>Race:</label>
-                <select data-placeholder="Pick a race..." name="race" class="chosen-select" tabindex="2" id="race_select" style="width:250px;">
+                <select data-placeholder="Pick a race..." name="race" class="chosen-select" tabindex="2" id="district_checked" style="width:250px;">
                 </select>
             </div>
 
             <div class="form_spacer">
                 <label>Candidate:</label>
-                <select data-placeholder="Pick a candidate..." name="candidate" class="chosen-select"  id="candidate_select" style="width:250px;">
+                <select data-placeholder="Pick a candidate..." name="candidate" class="chosen-select"  id="candidate_id_checked" style="width:250px;">
                 </select>
             </div>
             
@@ -173,8 +173,8 @@ function make_states() {
           state_element += '<option value="' + states[i].value + '">' + states[i].name + '</option>';
       }
 
-  $("#state_select").html(state_element);
-  $("#state_select").trigger("chosen:updated");
+  $("#candidate_state_checked").html(state_element);
+  $("#candidate_state_checked").trigger("chosen:updated");
 }
 
 function reset_races(stateid) {
@@ -185,8 +185,8 @@ function reset_races(stateid) {
         }
       }
 
-  $("#race_select").html(race_element);
-  $("#race_select").trigger("chosen:updated");
+  $("#district_checked").html(race_element);
+  $("#district_checked").trigger("chosen:updated");
 }
 
 function reset_candidates(stateid, raceid) {
@@ -198,8 +198,8 @@ function reset_candidates(stateid, raceid) {
         }
       }  
   }
-  $("#candidate_select").html(candidate_element);
-  $("#candidate_select").trigger("chosen:updated");
+  $("#candidate_id_checked").html(candidate_element);
+  $("#candidate_id_checked").trigger("chosen:updated");
 }
 
 function is_valid_number(a) {
@@ -236,21 +236,21 @@ function get_json_url() {
     query_string += "&min_spent=" + min_spent
   }
   
-  state_select = $("#state_select").val();
+  state_select = $("#candidate_state_checked").val();
   if (state_select.length > 0) {
     if (state_select != '0') {
       query_string += "&candidate_state_checked=" + state_select
     }
   }
   
-  race_select = $("#race_select").val();
+  race_select = $("#district_checked").val();
   if (race_select.length > 0) {
     if (race_select != '0') {
       query_string += "&district_checked=" + race_select
     }
   }
   
-  candidate_select = $("#candidate_select").val();
+  candidate_select = $("#candidate_id_checked").val();
   if (candidate_select.length > 0) {
     if (candidate_select != '0') {
       query_string += "&candidate_id_checked=" + candidate_select
@@ -284,9 +284,13 @@ function get_json_url() {
 }
 
 function reset_all_fields() {
-  $(".date_field,  .dollar_field, .dropdown_field").each(function( index ) {
+  $(".dollar_field").each(function( index ) {
     $(this).val("");
   });
+  $(".chosen_select").each(function( index ) {
+    $(this).val("0");
+  });  
+
   // default is filing order
   $("#ordering").val('-expenditure_date_formatted');
 }
@@ -467,15 +471,15 @@ $(document).ready(function() {
     make_states();
     
     
-    $("#race_select").chosen().change( function() {
-      console.log('race_chosen: ' + $("#race_select").val());
-      reset_candidates($("#state_select").val(), $("#race_select").val());
+    $("#district_checked").chosen().change( function() {
+      console.log('race_chosen: ' + $("#district_checked").val());
+      reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val());
     });
   
-    $("#state_select").chosen().change( function() {
-      console.log('state_chosen: ' + $("#state_select").val());
-      reset_candidates($("#state_select").val(), 0);
-      reset_races($("#state_select").val());
+    $("#candidate_state_checked").chosen().change( function() {
+      console.log('state_chosen: ' + $("#candidate_state_checked").val());
+      reset_candidates($("#candidate_state_checked").val(), 0);
+      reset_races($("#candidate_state_checked").val());
     });
     
     
@@ -498,7 +502,11 @@ $(document).ready(function() {
       var parts = elem.split('=');
       console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
       $("#" + parts[0]).val(parts[1]);
+      
+      
    });
+
+   $("#candidate_state_checked").trigger("chosen:updated");
 
    console.log("hashdict is " + hashdict);
 
