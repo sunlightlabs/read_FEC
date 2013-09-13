@@ -72,7 +72,7 @@ class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
 
 
     def get_queryset(self):  
-        # Again, this seems like a pretty weird way to do this.       
+        # Again, this seems like a pretty weird way to do this.               
         self.queryset = orderingFilter(self.queryset, self.request.GET, skede_orderable_fields)        
         return self.queryset
 
