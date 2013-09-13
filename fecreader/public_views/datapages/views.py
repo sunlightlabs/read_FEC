@@ -162,7 +162,7 @@ def pacs(request):
     ) 
 
 def dynamic_ies(request):
-    districts = District.objects.filter(outside_spending__gt=1).order_by('state', 'office', 'office_district')
+    districts = District.objects.filter(outside_spending__gt=1000).order_by('state', 'office', 'office_district')
     candidates = Candidate_Overlay.objects.filter(total_expenditures__gt=1).select_related('district').order_by('name')
     outside_spenders = Committee_Overlay.objects.filter(total_indy_expenditures__gte=1000).order_by('name')
     
