@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-from feeds import FilingFeed, FilingsFeed, FilingsFormFeed, FilingsForms, CommitteeFormsFeed, SuperpacsForms, IEFeed, IEFeedMin
+from feeds import FilingFeed, FilingsFeed, FilingsFormFeed, FilingsForms, CommitteeFormsFeed, SuperpacsForms, IEFeed, IEFeedMin, MixedFeed
 
 
 urlpatterns = patterns('',
@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^forms/(?P<form_types>[\w\d\-]+)/$', FilingsForms()),
     url(r'^superpacs\/forms/(?P<form_types>[\w\d\-]+)/$', SuperpacsForms()),
     url(r'^independent-expenditures\/$', IEFeed()),
-    url(r'^independent-expenditures\/(?P<min_spent>[\d]+)/$', IEFeedMin()),      
+    url(r'^independent-expenditures\/(?P<min_spent>[\d]+)/$', IEFeedMin()),
+    url(r'^race/(?P<election_year>\d\d\d\d)\/(?P<office>\w)\/(?P<state>\w\w)\/(?P<office_descriptor>\d+)\/', MixedFeed())
     
 )
