@@ -1,16 +1,16 @@
 import datetime
+import pytz
 
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
 from django.shortcuts import get_object_or_404
 from django import template
-from django.utils import timezone
 
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay, District, Candidate_Overlay
 from formdata.models import SkedE
 
 FEED_LENGTH = 30
-timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())
+nyt = pytz.timezone('America/New_York')
 
 class FilingFeedBase(Feed):
     description_template = 'feeds/fec_filing_description.html'
@@ -268,7 +268,7 @@ class MixedFeed(Feed):
             description = self.ie_description_template.render(template.Context({'obj': se}))
             title = "%s - independent expenditure - %s %s" % (se.committee_name, se.supporting_opposing(), se.candidate_name_checked)
             thisdate = se.expenditure_date_formatted
-            pubdate = datetime.datetime(thisdate.year, thisdate.month, thisdate.day)
+            pubdate = datetime.datetime(thisdate.year, thisdate.month, thisdate.day, 0, 0, 0, 0, nyt).astimezone(utc)
             skede_array.append({'pubdate': pubdate, 'title':title, 'description':description, 'link':se.get_absolute_url()})
         
         # now combine the array, sort them by pubdate, and return the top ones
