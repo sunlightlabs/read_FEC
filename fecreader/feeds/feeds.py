@@ -3,11 +3,14 @@ import datetime
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
 from django.shortcuts import get_object_or_404
 from django import template
+from django.utils import timezone
+
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay, District, Candidate_Overlay
 from formdata.models import SkedE
 
 FEED_LENGTH = 30
+timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())
 
 class FilingFeedBase(Feed):
     description_template = 'feeds/fec_filing_description.html'
