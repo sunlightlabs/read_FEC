@@ -268,7 +268,7 @@ class MixedFeed(Feed):
             description = self.ie_description_template.render(template.Context({'obj': se}))
             title = "%s - independent expenditure - %s %s" % (se.committee_name, se.supporting_opposing(), se.candidate_name_checked)
             thisdate = se.expenditure_date_formatted
-            pubdate = datetime.datetime(thisdate.year, thisdate.month, thisdate.day, 0, 0, 0, 0, nyt).astimezone(utc)
+            pubdate = datetime.datetime(thisdate.year, thisdate.month, thisdate.day, 0, 0, 0, 0, nyt)
             skede_array.append({'pubdate': pubdate, 'title':title, 'description':description, 'link':se.get_absolute_url()})
         
         # now combine the array, sort them by pubdate, and return the top ones
