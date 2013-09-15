@@ -133,7 +133,18 @@ class District(models.Model):
             url= "/race/%s/president/" % (self.cycle)
         
         return url
-            
+        
+    def get_feed_url(self):
+        url= ""
+        if self.office == 'H':
+            url="/feeds/race/%s/%s/%s/%s/" % (self.election_year, self.office, self.state, self.office_district)
+        elif self.office == 'S':
+            url= "/feeds/race/%s/%s/%s/%s/" % (self.election_year, self.office, self.state, self.term_class)
+        elif self.office == 'P':
+            url= "/feeds/race/%s/president/" % (self.election_year)
+
+        return url
+        
     def race_name(self):
         name = ""
         if self.office == 'H':

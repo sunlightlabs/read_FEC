@@ -1,14 +1,25 @@
 {# race details #}
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
+{% load staticfiles %}
+
 
 {% block body_class %}{% endblock %}
 
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
+
+{{ block.super }}
+{% endblock sitecss %}
+  
 {% block pagetitle %}{{ title }} {% endblock %}
 
  {% block rtmain %}
 
 <div class="module">
+
+<br><b>Alerts: </b><a class="link" href="javascript:submit_gotoscout_race('{{ race.get_feed_url }}');">Get automatic alerts</a> whenever a candidate in this race files an electronic report, or is targeted by an independent expenditure
 
 <div class="numeric_summary">
 <span class="amount_description">Total candidate fundraising:</span>&nbsp;<span class="amount_dollars">{% if race.candidate_raised %}${{race.candidate_raised|intcomma}}{% else %}$0{% endif %}</span>
@@ -95,4 +106,10 @@
 
 
 </div>
+{% endblock %}
+
+{% block sitejs %}
+{{ block.super }}
+{% include "includes/file_download.js" %}
+{% include "includes/go_to_scout.js" %}
 {% endblock %}
