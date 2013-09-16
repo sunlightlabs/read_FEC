@@ -190,6 +190,8 @@ REST_FRAMEWORK = {
 FILING_SCRAPE_KEY = 'scrape_electronic_filings'
 COMMITTEES_SCRAPE_KEY = 'committee_scrape'
 BULK_EXPORT_KEY = 'bulk_export'
+SUMMARY_EXPORT_KEY = 'summary_export'
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
