@@ -6,7 +6,7 @@ from django.db.models import Sum
 
 
 from summary_data.utils.summary_utils import summarize_committee_periodic_webk, summarize_committee_periodic_electronic
-from summary_data.models import Candidate_Overlay, Candidate_Time_Summary, Authorized_Candidate_Committees, Committee_Time_Summary
+from summary_data.models import Candidate_Overlay, Candidate_Time_Summary, Authorized_Candidate_Committees, Committee_Time_Summary, Committee_Overlay
 
 class Command(BaseCommand):
     help = "Redo the summaries of *all candidates* - not just those that need it"
@@ -28,6 +28,8 @@ class Command(BaseCommand):
             
             
             if all_summaries:
+                ## Get most recent data from the time summary reports. But for totals that include recent stuff, use committee summaries.
+                
                 most_recent_report = all_summaries[0]
                 
                 recent_reports = all_summaries.filter(coverage_from_date=most_recent_report.coverage_from_date, coverage_through_date=most_recent_report.coverage_through_date)
@@ -42,21 +44,22 @@ class Command(BaseCommand):
                 candidate.cash_on_hand = recent_sums['cash_on_hand_end']
                 candidate.outstanding_loans = recent_sums['outstanding_loans']
                 
-                
-                # get data for all reports
-                sums = all_summaries.aggregate(tot_contrib=Sum('tot_contrib'), tot_disburse=Sum('tot_disburse'), tot_receipts=Sum('tot_receipts'), tot_non_ite_contrib=Sum('tot_non_ite_contrib'))
-                
-                for i in sums:
-                    if not sums[i]:
-                        sums[i] = 0
-                
-                candidate.total_contributions = sums['tot_contrib']
-                candidate.total_unitemized = sums['tot_non_ite_contrib']
-                candidate.total_disbursements = sums['tot_disburse']
-                candidate.total_receipts = sums['tot_receipts']
-                
-                if not candidate.has_contributions and candidate.total_contributions > 0:
-                    candidate.has_contributions = True
-                
-                candidate.save()
             
+            authorized_committees = Committee_Overlay.objects.filter(fec_id__in=committee_list)
+            sums = authorized_committees.aggregate(tot_contrib=Sum('total_contributions'), tot_disburse=Sum('total_disbursements'), tot_receipts=Sum('total_receipts'), tot_non_ite_contrib=Sum('total_unitemized'))
+            
+            
+            for i in sums:
+                if not sums[i]:
+                    sums[i] = 0
+            
+            candidate.total_contributions = sums['tot_contrib']
+            candidate.total_unitemized = sums['tot_non_ite_contrib']
+            candidate.total_disbursements = sums['tot_disburse']
+            candidate.total_receipts = sums['tot_receipts']
+            
+            if not candidate.has_contributions and candidate.total_contributions > 0:
+                candidate.has_contributions = True
+            
+            candidate.save()
+        
