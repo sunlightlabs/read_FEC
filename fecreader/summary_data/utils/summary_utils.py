@@ -83,8 +83,12 @@ def write_all_candidates(file_name):
     for candidate in candidates.values():
         
         csvwriter.writerow(candidate)
-        
-    
+
+
+def write_all_webks(file_name):
+    webks = WebK.objects.filter(cycle='2014')
+    write_webk_csv(webks, file_name)
+
 
 def summarize_committee_periodic_webk(committee_id, force_update=False):
     # Populate the Committee_Time_Summary with webk data. Only do this for the senate. 
