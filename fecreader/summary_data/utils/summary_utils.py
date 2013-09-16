@@ -69,6 +69,22 @@ def write_webk_csv(webk_list, file_name):
         csvwriter.writerow(this_webk)
 
 
+def write_all_candidates(file_name):
+    outfile = open(file_name, 'w')
+    field_list = ['is_incumbent','cycle','not_seeking_reelection','other_office_sought','other_fec_id','name','pty','party','fec_id','pcc','election_year','state','office','office_district','term_class','total_receipts','total_contributions','total_disbursements','outstanding_loans','cash_on_hand','cash_on_hand_date','total_expenditures','expenditures_supporting','expenditures_opposing']
+    human_readable_field_list = ['is_incumbent', 'cycle ', 'not_seeking_reelection', 'other_office_sought ', 'other_fec_id ', 'name', 'pty ', 'party ', 'fec_id ', 'pcc ', 'election_year', 'state', 'office', 'office_district', 'term_class', 'total_receipts', 'total_contributions', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'total_independent_expenditures', 'independent_expenditures_supporting', 'independent_expenditures_opposing']
+    header = ",".join(field_list)
+    human_header = ",".join(human_readable_field_list)
+    outfile.write(human_header + "\n")
+    #outfile.write(header + "\n")
+    csvwriter = csv.DictWriter(outfile, field_list, restval='', extrasaction='ignore')
+    # calling values on this--dunno about efficiency. 
+    candidates = Candidate_Overlay.objects.all()
+    for candidate in candidates.values():
+        
+        csvwriter.writerow(candidate)
+        
+    
 
 def summarize_committee_periodic_webk(committee_id, force_update=False):
     # Populate the Committee_Time_Summary with webk data. Only do this for the senate. 
