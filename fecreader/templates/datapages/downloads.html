@@ -11,13 +11,20 @@
 {% block pagetitle %}{{ title }}{% endblock %}
 
  {% block rtmain %}
- 
+
 <div class="module">
+ <p>All files are provided as gzipped .csv files. The detailed contribution and disbursements files are quite large. All files are regenerated several times a day--the most recent update was at {{ update_time }}</p> 
+  <div class="overviewBar withNav withTip">
+      <h4>Summary Files</h4>
+  </div>
+  <ul class="downloadable_files"><li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/candidates.csv.gz">Candidate Summary File</a></li>
+  </ul>
+  <p>The candidate summary file only includes information for candidates we believe to be running in an election held after Jan. 1, 2013. Because many candidates from previous cycles still have committees, this file will contain fewer candidates than data available elsewhere. These files include current independent spending totals for and against the candidates, as well as fundraising totals from 48-hour reports (which cover contributions of $1,000 or more received in the 20 days before an election).</p>
+
 
   <div class="overviewBar withNav withTip">
-      <h4>Schedule Files</h4>
+      <h4>Detailed Files of Line-Item Transactions</h4>
   </div>
-    <p>All files are provided as gzipped .csv files and can be quite large. They are regenerated several times a day--the most recent update was at {{ update_time }}</p> 
     
   <ul class="downloadable_files"><li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/skeda.csv.gz">Schedule A</a> - Itemized Contributions ($200+)</li>
   <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/skedb.csv.gz">Schedule B</a> - Itemized Disbursements</li>
