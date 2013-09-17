@@ -90,3 +90,22 @@ def dump_all_sked(sked_name, destination_file):
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
     print "elapsed time for dumping sked %s: %s" % (sked_name, elapsed_time)
+    
+def dump_big_contribs(destination_file):
+    # This is contributions to super-pacs greater than $5,000 + reported contributions to non-committees greater than $5,000, plus line 17 (other federal receipts) of $5,000 or more to hybrid pacs (see http://www.fec.gov/press/Press2011/20111006postcarey.shtml). Valid 'other federal receipts' incurred by the hybrid pac of $5,000 plus will also show up in this line... 
+
+    sked_name = 'a'
+    fieldlist = fields[sked_name]
+    datefieldkey = "%s_date" % (sked_name)
+    datefield = fields[datefieldkey]
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    # need to join to get the committee name. 
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE (memo_code isnull or not memo_code = 'X') and ( (committee_type in ('I', 'O', 'U')) or (committee_type in ('V', 'W') and upper(left(formdata_skeda.form_type, 4)) = 'SA17')) and superceded_by_amendment=False and contribution_amount >= 5000 and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
+    #print dumpcmd
+    start = time.time()
+    result = cursor.execute(dumpcmd);
+    elapsed_time = time.time() - start
+    print "elapsed time for dumping big contribs: %s" % ( elapsed_time)
