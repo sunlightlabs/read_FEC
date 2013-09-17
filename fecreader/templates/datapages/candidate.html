@@ -3,6 +3,10 @@
 {% load humanize %}
 {% load staticfiles %}
 
+
+{# because we allow various slugs in, try to get this straight #}
+{% block canonicalurl %}{{ candidate.get_absolute_url }}{% endif %}{% endblock %}
+
 {% block sitecss %}
 <link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
 {{ block.super }}
