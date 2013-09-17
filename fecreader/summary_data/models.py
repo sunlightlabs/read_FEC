@@ -301,7 +301,7 @@ class Candidate_Overlay(models.Model):
         return url
 
     def get_filtered_ie_url(self):
-        return "/outside-spending/#?ordering=-expenditure_date_formatted&candidate_id=%s" % self.fec_id
+        return "/outside-spending/#?ordering=-expenditure_date_formatted&candidate_id_checked=%s" % self.fec_id
 
 
   ## The US congress repo doesn't do a good job handling fec ids, so distill what we need into this model.
