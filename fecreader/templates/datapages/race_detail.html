@@ -67,6 +67,41 @@
           {% endfor %}
         </tbody>
 </table>
+
+
+{% if recent_ies %}
+<div class="overviewBar withNav withTip">
+    <h4>Recent Independent Expenditures</h4>
+</div>
+<p>The most recent independent expenditures of $5,000 or more targeting candidates in this race are listed below. <a href="{{race.get_filtered_ie_url}}">See all of this race's independent expenditures</a>.</p>
+
+<table id="mainPageTable" class="sortable">
+  <thead>
+    <tr>
+      <th class="sort">Candidate</th>
+      <th>Support<br>Oppose</th>
+      <th class="sort">Payee</th>
+      <th class="sort">Amount</th>
+      <th class="sort">Date</th>
+      <th class="sort">Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for object in recent_ies %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>{% if object.candidate_checked %}<a class="link" href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
+        <td>{{ object.support_oppose|safe}}</td>
+        <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
+        <td>${{ object.expenditure_amount|intcomma}}</td>
+        <td>{{ object.expenditure_date_formatted|date:"Y-m-d"}}</td>
+        <td>{% if object.expenditure_purpose_descrip %}{{ object.expenditure_purpose_descrip}}{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
 {% endif %}
 <p id="notseekingreelection">* Not seeking reelection to this office</p>
 
@@ -102,6 +137,8 @@
 </table>
 
 {% endif %}
+
+
 
 
 

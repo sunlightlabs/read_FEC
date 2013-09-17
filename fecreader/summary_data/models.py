@@ -155,6 +155,8 @@ class District(models.Model):
             name= "Presidential Race"
         return name
             
+    def get_filtered_ie_url(self):
+        return "/outside-spending/#?ordering=-expenditure_date_formatted&district_checked=%s" % self.pk
 
 
 class Candidate_Overlay(models.Model):
@@ -552,6 +554,9 @@ class Committee_Overlay(models.Model):
             return "Backs Republicans"
         else:
             return "Unassigned"
+            
+    def get_filtered_ie_url(self):
+        return "/outside-spending/#?ordering=-expenditure_date_formatted&filer_committee_id_number=%s" % (self.fec_id)
 
 
 
