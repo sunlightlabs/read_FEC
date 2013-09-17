@@ -28,7 +28,7 @@
 
  <p>
    {% if filing_data.is_amendment %}<b>This filing is an amendment!</b>{% if filing_data.amends_filing %} See an earlier version here <a href="{{ filing_data.original_filing_url }}se">Filing #{{ filing_data.amends_filing }}</a>.{% endif %}<br>{% endif %}
-   {% if filing_data.is_superceded %}<b>This filing has been amended by another filing!</b> See a newer version of this filing at <a href="/filings/{{ filing_data.amended_by }}/SE/">Filing #{{ filing_data.amended_by }}</a>.<br>{% endif %}
+   {% if filing_data.is_superceded %}<b>This filing has been amended by another filing!</b> See a newer version of here <a href="/filings/{{ filing_data.amended_by }}/SE/">Filing #{{ filing_data.amended_by }}</a>.<br>{% endif %}
  Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.
 
 
