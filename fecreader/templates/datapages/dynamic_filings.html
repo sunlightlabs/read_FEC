@@ -173,7 +173,7 @@
 <script id="row-template" type="text/x-handlebars-template" >
    <tr class="{{ class }}">
         <td><a href="{{ absolute_url}}">{{ filing_number }}</a> {{ form_name }}</td>
-        <td><a href="{{ committee_url}}">{{ committee_name}}</a></td>
+        <td><a href="{{ committee_url}}">{{& committee_name}}</a></td>
         <td>{{{ mddyy coverage_from_date }}} - {{{ mddyy coverage_to_date }}}</td>
         <td><a href="{{ skeda_url}}">${{{ addcommas tot_raised }}}</a></td>
         <td><a href="{{ spending_url}}">${{{ addcommas tot_spent }}}</a></td>
