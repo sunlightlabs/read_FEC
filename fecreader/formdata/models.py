@@ -280,8 +280,18 @@ class SkedE(models.Model):
             support = 'opposing'    
         return support
 
-
-    
+    def get_race_url(self):
+        if self.candidate_office_checked == 'H':
+            return "/race/%s/%s/%s/%s/" % ('2014', self.candidate_office_checked, self.candidate_state_checked, self.candidate_district_checked)
+        elif self.candidate_office_checked == 'S' and self.district_checked:
+            return "/race_id/%s/" % (self.district_checked.pk)
+            
+        elif self.candidate_office == 'H':
+            return "/race/%s/%s/%s/%s/" % ('2014', self.candidate_office, self.candidate_state, self.candidate_district)
+            
+            
+        elif self.candidate_office == 'S' and self.district_checked:
+            return "/race_id/%s/" % (self.district_checked.pk)
         
 class OtherLine(models.Model):
     # additional fields 
