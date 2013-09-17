@@ -25,13 +25,13 @@
       <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a class="link" href="{{filing.get_spending_url}}">${{ filing.tot_spent|intcomma }}</a></span>      
       <br><span class="amount_description">Originally filed {{ filing.process_time}}</span>
     </div>
-    {% if filing.is_amendment %}<b>This filing is an amendment!</b> See an earlier version of this filing at <a href="/filing/{{ filing.amends_filing }}/">Filing #{{ filing.amends_filing }}.{% endif %}<br></a>
-    {% if filing.is_superceded %}<b>This filing has been amended by another filing!</b> See a newer version of this filing at <a href="/filing/{{ filing.amended_by }}/">Filing #{{ filing.amended_by }}</a>.<br>{% endif %}
+    {% if filing.is_amendment %}<b>This filing is an amendment!</b>{% if filing.amends_filing %} See an earlier version here <a href="{{ filing.original_filing_url }}">Filing #{{ filing.amends_filing }}</a>.{% endif %}<br>{% endif %}
+    {% if filing.is_superceded %}<b>This filing has been amended by another filing!</b> See a newer version of this filing at <a href="/filings/{{ filing.amended_by }}/">Filing #{{ filing.amended_by }}</a>.<br>{% endif %}
       
-Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See the <a href="{{ filing.FEC_url }}">original electronic report</a>.
+Type: {{ filing.form_type }}: {{ filing.get_form_name }}. See this report <a href="{{ filing.FEC_url }}"> at the FEC</a>.
 
 {% if committee %}
-{% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ committee.curated_candidate.detailed_office}}{% endif %}
+{% if committee.curated_candidate %}<br>This committee supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}{{ committee.curated_candidate.detailed_office}}{% endif %}
 {% endif %}
 
 

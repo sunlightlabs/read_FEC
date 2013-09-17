@@ -219,6 +219,11 @@ class new_filing(models.Model):
     def __unicode__(self):
         return "%s formed %s" % (self.get_form_name(), self.filed_date)
         
+    def original_filing_url(self):
+        if self.amends_filing >= 835788:
+            return "/filings/%s/" % self.amends_filing
+        else:
+            return self.get_fec_url()
         
 # field names taken directly from metadata, except where noted http://www.fec.gov/finance/disclosure/metadata/metadataforcommitteesummary.shtml
 # date fields are imported as they appear, but parsed into coverage_from_date and coverage_through_date. 
