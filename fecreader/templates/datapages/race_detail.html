@@ -78,6 +78,7 @@
 <table id="mainPageTable" class="sortable">
   <thead>
     <tr>
+      <th class="sort">Committee</th>
       <th class="sort">Candidate</th>
       <th>Support<br>Oppose</th>
       <th class="sort">Payee</th>
@@ -89,6 +90,7 @@
     <tbody>
       {% for object in recent_ies %}
       <tr class="{% cycle 'odd' 'even' %}">
+        <td><a href="{{object.get_committee_url}}">{{ object.committee_name }}</a></td>
         <td>{% if object.candidate_checked %}<a class="link" href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
         <td>{{ object.support_oppose|safe}}</td>
         <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
