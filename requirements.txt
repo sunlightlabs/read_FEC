@@ -24,9 +24,12 @@ celery
 # brisket stuff
 django_compressor
 
-# may get versioning;
-# The base template lives here, and needs to be inherited from
--e git+https://github.com/sunlightlabs/dryrub.git#egg=dryrub
+# main branch
+# -e git+https://github.com/sunlightlabs/dryrub.git#egg=dryrub
+# oldnav branch
+-e git+https://github.com/sunlightlabs/dryrub.git@oldnav#egg=dryrub
+
+# from other branch
 
 # api
 djangorestframework
