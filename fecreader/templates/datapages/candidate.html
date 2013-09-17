@@ -42,11 +42,45 @@
 
 <p>{% if candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %} <a href="{{ candidate.district.get_absolute_url }}">{{ candidate.detailed_office}}</a>. {{candidate.next_election}}
 <br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>{% if not forloop.last %}&nbsp;|&nbsp;{% endif %}{% endfor %}
+
+{% if recent_ies %}
+<div class="overviewBar withNav withTip">
+    <h4>Recent Independent Expenditures</h4>
+</div>
+<p>The most recent independent expenditures of $5,000 or more supporting or opposing this candidate are listed below. <a href="{{candidate.get_filtered_ie_url}}">See all independent expenditures supporting or opposing this candidate</a>.</p>
+
+<table id="mainPageTable" class="sortable">
+  <thead>
+    <tr>
+      <th class="sort">Candidate</th>
+      <th>Support<br>Oppose</th>
+      <th class="sort">Payee</th>
+      <th class="sort">Amount</th>
+      <th class="sort">Date</th>
+      <th class="sort">Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for object in recent_ies %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>{% if object.candidate_checked %}<a class="link" href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
+        <td>{{ object.support_oppose|safe}}</td>
+        <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
+        <td>${{ object.expenditure_amount|intcomma}}</td>
+        <td>{{ object.expenditure_date_formatted|date:"Y-m-d"}}</td>
+        <td>{% if object.expenditure_purpose_descrip %}{{ object.expenditure_purpose_descrip}}{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
 {% if outside_spenders %}
 <div class="overviewBar withNav withTip">
     <h4>Outside groups supporting or opposing this candidate</h4>
 </div>
-<p>Committees supporting or opposing this candidate with independent expenditures of $1,000 or more are listed below.</p>
+<p>Committees supporting or opposing this candidate with independent expenditures of $1,000 or more are listed below. <a href="{{candidate.get_filtered_ie_url}}">See all independent expenditures targeting this candidate</a>.</p>
 
 <table id="mainPageTable" class="sortable">
   <thead>

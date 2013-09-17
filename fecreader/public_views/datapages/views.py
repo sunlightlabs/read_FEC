@@ -137,6 +137,10 @@ def senate_race(request, cycle, state, term_class):
     title = race.race_name()
     candidates = Candidate_Overlay.objects.filter(district=race)
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=1000).select_related('committee', 'candidate')
+    candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
+    
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
+    
     
     return render_to_response('datapages/race_detail.html', 
         {
@@ -144,6 +148,7 @@ def senate_race(request, cycle, state, term_class):
         'title':title,
         'race':race,
         'outside_spenders':outside_spenders,
+        'recent_ies':recent_ies,
         },
         context_instance=RequestContext(request)
     )
@@ -398,6 +403,11 @@ def candidate(request, candidate_id):
     # are their outside groups who've spent for/against this candidate? 
     outside_spenders = Pac_Candidate.objects.filter(candidate=candidate_overlay, total_ind_exp__gte=1000).select_related('committee')
     
+    recent_ies = None
+    if outside_spenders:
+        recent_ies = SkedE.objects.filter(candidate_checked=candidate_overlay, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
+    
+    
     return render_to_response('datapages/candidate.html',
         {
         'title':title,
@@ -406,6 +416,7 @@ def candidate(request, candidate_id):
         'authorized_committee_list':authorized_committee_list,
         'outside_spenders':outside_spenders,
         'recent_report_list':recent_report_list,
+        'recent_ies':recent_ies,
         }, 
         context_instance=RequestContext(request)
     )
