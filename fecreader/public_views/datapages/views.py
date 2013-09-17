@@ -109,7 +109,7 @@ def races(request):
     )
 
 # this is a fallback--the IE api doesn't know the senate term classes, so can't create the full race url. It does have the raceid though. The full fix is to make the ie api include the senate term class, but...
-def race_id_redirect(race_id):
+def race_id_redirect(request, race_id):
     race = get_object_or_404(District, pk=race_id)
     return redirect(race.get_abolute_url())
 
