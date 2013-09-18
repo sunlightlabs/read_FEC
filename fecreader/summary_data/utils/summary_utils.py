@@ -136,6 +136,7 @@ def summarize_committee_periodic_webk(committee_id, force_update=False):
                 this_summary.save()
         
         except Committee_Time_Summary.DoesNotExist:
+            print "Creating webk for %s: %s - %s" % (wk.com_nam, wk.coverage_from_date, wk.coverage_through_date)
             Committee_Time_Summary.objects.create(
                 com_id=committee_id,
                 coverage_from_date=wk.coverage_from_date,
