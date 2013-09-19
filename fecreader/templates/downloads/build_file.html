@@ -35,8 +35,8 @@
      <script type="text/javascript" >
      var thisint;
      file_is_ready = false;
-     seconds_waited = 0;
-     timeout = 15;
+     poll_intervals_waited = 0;
+     timeout = 30;
      var task_id = "{{ task_id }}";
      var poll_url = "/download/taskstatus/" + task_id + "/";
 
@@ -47,11 +47,9 @@
      }
      
      function poll_for_results() {
-       seconds_waited++;
-       console.log("polled for results: " + seconds_waited);
+       poll_intervals_waited++;
        
        $.getJSON( poll_url, function( json ) {
-       console.log( "JSON Data: " + json );
        if (json['done']) {
          stop_all();
          result_url = json['result']
@@ -62,14 +60,14 @@
        
        });
        
-       if (seconds_waited > timeout) {
+       if (poll_intervals_waited > timeout) {
          console.log("Timed out")
          stop_all();
          $("#message").html('<p>Couldn\'t build this file. Please try again later.');
        }
      }
      $(document).ready(function() {
-         thisint = self.setInterval(function(){poll_for_results()},2000);
+         thisint = self.setInterval(function(){poll_for_results()},2500);
 
       });
     
