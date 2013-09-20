@@ -55,7 +55,6 @@ def dump_filing_sked_celery(sked_name, filing_number):
 @celery.task
 def dump_committee_sked_celery(sked_name, committee_number):
     cache_key = "%s_sked%s" % (committee_number, sked_name)
-    cached_url = 
     
     this_request_id = dump_committee_sked_celery.request.id
     this_request_id = this_request_id.replace("-", "")
