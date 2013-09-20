@@ -32,8 +32,9 @@
 <br><span class="amount_description">Candidate spending plus outside spending</span>&nbsp;<span class="amount_dollars">{% if race.total_spending %}${{race.total_spending|intcomma}}{% else %}$0{% endif %}</span>
 
 </div>
-<p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})</p>
-{% if race.open_seat %}<br><b>This is an open seat</b>{% endif %}
+<p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})
+{% if race.open_seat %}<br><b>This is an open seat</b>{% endif %}</p>
+
 
 <div class="overviewBar withNav withTip">
     <h4>Candidates</h4>
