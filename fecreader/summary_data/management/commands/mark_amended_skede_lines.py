@@ -4,7 +4,7 @@ management command that makes sure all superceded sked e filings are listed as s
 
 from django.core.management.base import BaseCommand, CommandError
 from formdata.models import SkedE
-from summary_data.models import new_filing
+from fec_alerts.models import new_filing
 from django.db import connection
 
 class Command(BaseCommand):
