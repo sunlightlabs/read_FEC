@@ -33,7 +33,7 @@
 
 </div>
 <p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})</p>
-
+{% if race.open_seat %}<br><b>This is an open seat</b>{% endif %}
 
 <div class="overviewBar withNav withTip">
     <h4>Candidates</h4>
