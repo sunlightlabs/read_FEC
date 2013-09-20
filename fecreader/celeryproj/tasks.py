@@ -24,7 +24,7 @@ r = redis.StrictRedis(host='localhost', port=6379, db=CACHE_DB)
 
 def set_cachekey(key, value):
     r.set(key, value)
-    r.expire(key, TTL)
+    r.expire(key, CACHE_TTL)
 
 def gzip_file(destination_file):
     gzip_cmd = "gzip -f %s" % (destination_file)
