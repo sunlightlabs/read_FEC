@@ -13,5 +13,4 @@ router.register(r'independent-expenditures', views.SkedEViewSet)
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^skededownloads/$', downloads.SkedEDownload.as_view(), name='list_of_countries'),
 )
