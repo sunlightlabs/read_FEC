@@ -11,9 +11,9 @@ class DistrictAdmin(admin.ModelAdmin):
             'fields': ('cycle','state', 'office', 'office_district', 'incumbent_name', 'incumbent_pty', 'incumbent_party', 'election_year'),
                    
         }),
-
     )
-    
+    search_fields=['incumbent_name', 'state']
+    list_display=['office', 'state', 'incumbent_name', 'office_district', 'term_class']
 admin.site.register(District, DistrictAdmin) 
     
     
