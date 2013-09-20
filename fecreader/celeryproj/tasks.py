@@ -40,7 +40,7 @@ def dump_filing_sked_celery(sked_name, filing_number):
         print "file cache hit: " + cache_key
         return result
     
-    print print "file cache miss: " + cache_key
+    print "file cache miss: " + cache_key
     this_request_id = str(dump_filing_sked_celery.request.id)
     this_request_id = this_request_id.replace("-", "")
     filename = "filing%ssked%s_%s.csv" % (filing_number, sked_name, this_request_id)
