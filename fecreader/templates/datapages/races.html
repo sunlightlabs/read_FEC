@@ -33,7 +33,7 @@ Show: <select name="filter_display" class="dropdown_field" id="candidate_filter"
                   <tr class="{% cycle 'odd' 'even' %}">
                       <td class="district">({{object.office}}) <a href="{{ object.get_absolute_url }}">{{ object.district_formatted }}</a></td>
                       <td>{{object.incumbent_name}} ({{object.incumbent_party}})</td>
-                      <td>{% if open_seat %}Y{% else %}N{% endif %}</td>
+                      <td>{% if object.open_seat %}Y{% else %}N{% endif %}</td>
                       <td>{{ object.election_year }}</td>
                       <td>{% if object.candidate_raised %}${{ object.candidate_raised|intcomma }}{% else %}$0{% endif %}</td>
                       <td>{% if object.candidate_spending %}${{ object.candidate_spending|intcomma }}{% else %}$0{% endif %}</td>
