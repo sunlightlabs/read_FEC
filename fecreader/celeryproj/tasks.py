@@ -10,10 +10,17 @@ from formdata.utils.filing_body_processor import process_filing_body
 from formdata.utils.dump_utils import dump_filing_sked, dump_committee_sked, dump_candidate_sked
 
 import sys
+import os
 sys.path.append('../../')
 
 
 from fecreader.settings import CUSTOM_DOWNLOAD_DIR, CUSTOM_DOWNLOAD_URL
+
+def gzip_file(destination_file):
+    gzip_cmd = "gzip -f %s" % (destination_file)
+    filename_zipped = destination_file + ".gz"
+    proc = os.system(gzip_cmd)
+    return filename_zipped
 
 @celery.task
 def dump_filing_sked_celery(sked_name, filing_number):
@@ -23,6 +30,8 @@ def dump_filing_sked_celery(sked_name, filing_number):
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
     dump_filing_sked(sked_name, filing_number, destination_file)
+    gzip_file(destination_file)
+    destination_url = destination_url + ".gz"
     return destination_url
 
 @celery.task
@@ -33,6 +42,8 @@ def dump_committee_sked_celery(sked_name, committee_number):
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
     dump_committee_sked(sked_name, committee_number, destination_file)
+    gzip_file(destination_file)
+    destination_url = destination_url + ".gz"
     return destination_url
 
 
@@ -44,6 +55,8 @@ def dump_candidate_sked_celery(sked_name, candidate_id):
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
     dump_candidate_sked(sked_name, candidate_id, destination_file)
+    gzip_file(destination_file)
+    destination_url = destination_url + ".gz"
     return destination_url
 
 @celery.task
