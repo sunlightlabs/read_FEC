@@ -1,14 +1,17 @@
 from django.conf.urls import patterns, url, include
 from rest_framework import routers
-from api import views
+from api import views, downloads
 
 router = routers.DefaultRouter()
 router.register(r'new_filing', views.NFViewSet)
 router.register(r'committee', views.COViewSet)
 router.register(r'independent-expenditures', views.SkedEViewSet)
+#router.register(r'skededownloads', downloads.MyView)
+
 
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^skededownloads/$', downloads.SkedEDownload.as_view(), name='list_of_countries'),
 )

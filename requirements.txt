@@ -33,6 +33,10 @@ django_compressor
 
 # api
 djangorestframework
+
+# experimenting with this for csv support:
+djangorestframework-csv
+
 django-filter
 django-debug-toolbar
 south
