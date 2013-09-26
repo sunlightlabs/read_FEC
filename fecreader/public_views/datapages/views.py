@@ -18,7 +18,12 @@ from summary_data.utils.summary_utils import map_summary_form_to_dict
 from django.conf import settings
 from summary_data.utils.update_utils import get_update_time
 
+from django.views.decorators.cache import cache_page
+
 STATE_LIST = [{'name':x[1], 'abbrev':x[0]} for x in US_STATES]
+LONG_CACHE_TIME = 60 * 10
+SHORT_CACHE_TIME = 60 * 2
+
 
 try:
     PAGINATE_BY = settings.REST_FRAMEWORK['PAGINATE_BY']
@@ -56,6 +61,7 @@ def candidates(request):
         context_instance=RequestContext(request)
     )
 """
+@cache_page(LONG_CACHE_TIME)
 def senate(request):
 
     title="Senate - Cycle Summary"
@@ -74,6 +80,7 @@ def senate(request):
         context_instance=RequestContext(request)
     )
 
+@cache_page(LONG_CACHE_TIME)
 def house(request):
 
     title="House - Cycle Summary"
@@ -91,7 +98,7 @@ def house(request):
         context_instance=RequestContext(request)
     )
 
-
+@cache_page(LONG_CACHE_TIME)
 def races(request):
 
     title="Race-wide spending totals"
@@ -113,6 +120,7 @@ def race_id_redirect(request, race_id):
     race = get_object_or_404(District, pk=race_id)
     return redirect(race.get_absolute_url())
 
+@cache_page(LONG_CACHE_TIME)
 def house_race(request, cycle, state, district):
     race = get_object_or_404(District, cycle=cycle, state=state, office_district=district, office='H')
     title = race.race_name()
@@ -134,7 +142,7 @@ def house_race(request, cycle, state, district):
         context_instance=RequestContext(request)
     )
     
-    
+@cache_page(LONG_CACHE_TIME)
 def senate_race(request, cycle, state, term_class):
     race = get_object_or_404(District, cycle=cycle, state=state, term_class=term_class, office='S')
     title = race.race_name()
@@ -155,7 +163,8 @@ def senate_race(request, cycle, state, term_class):
         },
         context_instance=RequestContext(request)
     )
-
+    
+@cache_page(SHORT_CACHE_TIME)
 def newest_filings(request):
     return render_to_response('datapages/dynamic_filings.html', 
         {
@@ -164,7 +173,8 @@ def newest_filings(request):
         },
         context_instance=RequestContext(request)
     )
-     
+
+@cache_page(LONG_CACHE_TIME)
 def pacs(request):
     return render_to_response('datapages/dynamic_pacs.html', 
         {
@@ -174,6 +184,7 @@ def pacs(request):
         context_instance=RequestContext(request)
     ) 
 
+@cache_page(LONG_CACHE_TIME)
 def dynamic_ies(request):
     districts = District.objects.filter(outside_spending__gt=1000).order_by('state', 'office', 'office_district')
     candidates = Candidate_Overlay.objects.filter(total_expenditures__gt=1).select_related('district').order_by('name')
@@ -190,7 +201,8 @@ def dynamic_ies(request):
         },
         context_instance=RequestContext(request)
     )
-
+    
+@cache_page(LONG_CACHE_TIME)
 def new_committees(request):
     today = datetime.datetime.today()
     month_ago = today - datetime.timedelta(days=30)
@@ -237,6 +249,7 @@ def about(request):
         context_instance=RequestContext(request)
     )
 
+@cache_page(LONG_CACHE_TIME)
 def outside_spending(request):
     
     
@@ -255,6 +268,7 @@ def outside_spending(request):
         context_instance=RequestContext(request)
     )
 
+@cache_page(LONG_CACHE_TIME)
 def filing(request, filing_num):
     filing = get_object_or_404(new_filing, filing_number=filing_num)
     committee = None
@@ -275,7 +289,8 @@ def filing(request, filing_num):
         }, 
         context_instance=RequestContext(request)
     )
-    
+
+@cache_page(LONG_CACHE_TIME)
 def filings_skeda(request, filing_num):
     filing_data = get_object_or_404(new_filing, filing_number=filing_num)
     title="Contributions, <a href=\"%s\">%s</a> filing #<a href=\"%s\">%s</a>" % (filing_data.get_committee_url(), filing_data.committee_name, filing_data.get_absolute_url(), filing_num)
@@ -298,7 +313,7 @@ def filings_skeda(request, filing_num):
         }, 
         context_instance=RequestContext(request)
     )
-
+@cache_page(LONG_CACHE_TIME)
 def filings_skedb(request, filing_num):
     filing_data = get_object_or_404(new_filing, filing_number=filing_num)
     title="Disbursements, <a href=\"%s\">%s</a> filing #<a href=\"%s\">%s</a>" % (filing_data.get_committee_url(), filing_data.committee_name, filing_data.get_absolute_url(), filing_num)
@@ -321,7 +336,7 @@ def filings_skedb(request, filing_num):
         }, 
         context_instance=RequestContext(request)
     )
-
+@cache_page(LONG_CACHE_TIME)
 def filings_skede(request, filing_num):
     filing_data = get_object_or_404(new_filing, filing_number=filing_num)
     title="Independent Expenditures, <a href=\"%s\">%s</a> filing #<a href=\"%s\">%s</a>" % (filing_data.get_committee_url(), filing_data.committee_name, filing_data.get_absolute_url(), filing_num)
@@ -345,7 +360,7 @@ def filings_skede(request, filing_num):
         context_instance=RequestContext(request)
     )
 
-
+@cache_page(LONG_CACHE_TIME)
 def committee(request, committee_id):
     committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id)
         
@@ -380,7 +395,7 @@ def committee(request, committee_id):
         context_instance=RequestContext(request)
     )
     
-
+@cache_page(LONG_CACHE_TIME)
 def candidate(request, candidate_id):
     candidate_overlay = get_object_or_404(Candidate_Overlay, fec_id=candidate_id)
     title = "%s (%s) " % (candidate_overlay.name, candidate_overlay.party)
@@ -423,7 +438,7 @@ def candidate(request, candidate_id):
         }, 
         context_instance=RequestContext(request)
     )
-
+@cache_page(LONG_CACHE_TIME)
 def subscribe(request):
     return render_to_response('datapages/subscribe.html',
         {
@@ -431,7 +446,7 @@ def subscribe(request):
         }, 
         context_instance=RequestContext(request)
     )
-
+@cache_page(LONG_CACHE_TIME)
 def committee_search_html(request): 
     params = request.GET
     committees = None
