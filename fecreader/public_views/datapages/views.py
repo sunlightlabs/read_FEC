@@ -73,7 +73,7 @@ def candidates(request):
 def senate(request):
 
     title="Senate - Cycle Summary"
-    explanatory_text="Fundraising totals are from 1/1/13 through the present for current senators and senate candidates who reported having $1,000 or more. Only candidates actually running in the current cycle who have filed a statement of candidacy are included. If we've included anyone who isn't running--or missed anyone who is, please let us know."
+    explanatory_text="Fundraising totals are since the beginning of the election cycle (Jan. 1, 2013) for current U.S. senators and Senate candidates who reported having $1,000 or more. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
@@ -92,7 +92,7 @@ def senate(request):
 def house(request):
 
     title="House - Cycle Summary"
-    explanatory_text="Fundraising totals are for the entire cycle for current house members and house candidates who reported having $1,000 or more. Only candidates actually running in the current cycle who have filed a statement of candidacy are included. If we've included anyone who isn't running--or missed anyone who is, please let us know."
+    explanatory_text="Fundraising totals are for the entire election cycle for current U.S. House members and House candidates who reported having $1,000 or more. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
     legislators = Candidate_Overlay.objects.filter(office='H').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)) 
@@ -110,7 +110,7 @@ def house(request):
 def races(request):
 
     title="Race-wide spending totals"
-    explanatory_text="District totals are based on the most recent information available, but different political groups report this on different schedules. Super PACs must reported independent expenditures within 48- or 24-hours, but candidate committees only report this quarterly."
+    explanatory_text="District totals (ie. House and Senate races) are based on the most recent information available, but different political groups report to the FEC on different schedules. Super PACs must report independent expenditures within 48- or 24-hours, but candidate committees only disclose on a quarterly basis. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
 
     districts = District.objects.all()
 
@@ -178,6 +178,7 @@ def newest_filings(request):
         {
         'title':'Newest Filings',
         'PAGINATE_BY':PAGINATE_BY,
+        'explanatory_text':'Find and filter the latest electronic filings made by political committees to the Federal Election Commission. Use the tabs below to review what PACs and candidates raised and spent to date.',
         },
         context_instance=RequestContext(request)
     )
@@ -186,7 +187,8 @@ def newest_filings(request):
 def pacs(request):
     return render_to_response('datapages/dynamic_pacs.html', 
         {
-        'title':'PAC summaries',
+        'explanatory_text':'Find and filter committee summary information for the entire election cycle (since Jan. 1, 2013). Review how much groups raised and spent, their debts and cash on hand. Click the committee name to see filings.',
+        'title':'Political action committee summaries',
         'PAGINATE_BY':PAGINATE_BY,
         },
         context_instance=RequestContext(request)
@@ -201,7 +203,8 @@ def dynamic_ies(request):
     return render_to_response('datapages/dynamic_ies.html', 
         {
         'STATE_LIST':STATE_LIST,
-        'title':'Newest Outside Expenditures',
+        'title':'Outside Expenditures',
+        'explanatory_text':'Find and filter the latest independent expenditures reported. Only races and candidates that have reported independent expenditures of $1,000 or more are given as menu choices. Download a complete file of independent expenditures made since Jan. 1, 2013, on the <a href="/downloads-index/">bulk downloads page</a>. ',
         'PAGINATE_BY':PAGINATE_BY,
         'districts':districts,
         'candidates':candidates,
@@ -217,7 +220,7 @@ def new_committees(request):
     committees=newCommittee.objects.filter(date_filed__gte=month_ago).order_by('-date_filed')
     return render_to_response('datapages/new_committees.html', {
                 'object_list':committees,
-                'explanatory_text':'These are committees formed within the last 30 days. It may take several days after a PAC is formed for details to be posted.',
+                'explanatory_text':'These are political committees formed within the last 30 days. It may take several days after a PAC is formed for details to be posted. Click the arrow on the column headers to sort by date, type or name.',
                 'title':'New Committees'
                 }, 
                 context_instance=RequestContext(request)
@@ -248,7 +251,7 @@ def downloads(request):
 
 def about(request):
 
-    title="About Real Time FEC Data" 
+    title="About Realtime Federal Campaign Finance Data" 
 
     return render_to_response('datapages/about.html',
         {

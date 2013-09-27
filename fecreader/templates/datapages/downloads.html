@@ -13,14 +13,15 @@
  {% block rtmain %}
 
 <div class="module">
- <p>All files are provided as gzipped .csv files. The detailed contribution and disbursements files are quite large. All files are regenerated several times a day--the most recent update was at {{ update_time }}</p> 
+ <p>All files are provided as gzipped .csv files. The detailed contribution and disbursements files are quite large. (You may need to right-click the file name (in blue) to download the data). All files are regenerated several times a day--the most recent update was at {{ update_time }}</p> 
+ <p>If you need assistance using this data or are in need of a customized dataset, please <a href="mailto:realtimefec@sunlightfoundation.com">contact us</a>. Members of the media should contact Sunlight’s Media Director Liz Bartolomeo at 202-742-1520 ext. 226.</p>
   <div class="overviewBar withNav withTip">
       <h4>Summary Files</h4>
   </div>
   <ul class="downloadable_files"><li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/candidates.csv.gz">Candidate Summary File</a></li>
   <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/all_webk.csv.gz">Committee Report Summary File</a></li>
   </ul>
-  <p>The candidate summary file only includes information for candidates we believe to be running in an election held after Jan. 1, 2013. Because many candidates from previous cycles still have committees, this file will contain fewer candidates than data available elsewhere. These files include current independent spending totals for and against the candidates, as well as fundraising totals from 48-hour reports (which cover contributions of $1,000 or more received in the 20 days before an election).</p>
+  <p>The candidate summary file only includes information for candidates we believe to be running in a federal election held after Jan. 1, 2013. Because many candidates from previous cycles still have committees, this file will contain fewer candidates than data available elsewhere. These files include current independent spending totals for and against the candidates, as well as fundraising totals from 48-hour reports (covering contributions of $1,000 or more received in the 20 days before an election).</p>
 
   <div class="overviewBar withNav withTip">
       <h4>Super PAC Files</h4>
@@ -28,7 +29,7 @@
   <ul class="downloadable_files">
 <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/superpac_contribs.csv.gz">Super PAC contributions</a></li>
 </ul>
-<p>The contributions file includes contributions of $5,000+ to super PACs, hybrid super PACs and to independent expenditure only groups. Because there's no special form for hybrid super PACs to use, these groups list all donations to their 'non-contribution account' on line 17, in the 'other federal receipts' section. This file includes all 'other federal receipts' of $5,000 or more, regardless of whether they are specifically earmarked for the non-contribution account.</p>
+<p>The contributions file includes contributions of $5,000+ to super PACs, hybrid super PACs and to independent expenditure only groups. Because there's no special form for hybrid super PACs to use, these groups list all donations to their "non-contribution account" on line 17, in the "other federal receipts" section of their <a href="http://www.fec.gov/pdf/forms/fecfrm3x.pdf">FEC F3X form</a>. This file includes all "other federal receipts" of $5,000 or more for hybrid super PAC, regardless of whether they are specifically earmarked for the non-contribution account.</p>
 
 
   <div class="overviewBar withNav withTip">
@@ -40,7 +41,8 @@
   <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/bulk/skede.csv.gz">Schedule E</a> - Independent Expenditures</li>
   </ul>
 
-  <p>These files consist of transactions dated 1/1/2013 or later that have been itemized on electronic filings. They include every line in every electronic filing that hasn't been superceded by an amended version of the filing and hasn't been given a memo code of 'X'. ['X' memo codes indicate that the data has been sub-itemized]. Senate committees, including the Democratic and Republican National Senate Committees--which are required to file paper records with the senate clerk's office--are not included. Experimental senate electronic filings are not included, though we hope to add them in the near future.</p>
+  <p>These files consist of transactions from Jan. 1, 2013, or later that are itemized on electronic filings. They include every line in every electronic filing that hasn't been superseded by an amended version of the filing and hasn't been given a memo code of "X". ("X" memo codes indicate that the data has been sub-itemized.) Senate committees, including the  national Republican and Democratic senatorial committees--which are required to file paper records with the senate clerk's office--are not included. Voluntary senate electronic filings, which the FEC processes on an "experimental" basis, are not included, though we hope to add them in the near future.</p>
+  <p><b>NEED LINK TO DATA DICTIONARIES HERE</b></p>
   <p>For ease of use, a few non-standard schedules are included--they can be identified within the bulk files in the 'form_type' field.
     <ul class="download_bullets"><li>Line F57--independent expenditures made by a non-committee (typically these are individuals, businesses or 501(c)(4)'s)--are included on schedule E.</li>
       <li>Line F65--contributions of $1,000 or more given to candidate committees less than 20 days before an election and which are required to be reported within 48-hours of receipt--are included as if they were received on schedule A. These line items, however, are removed once a post-election report covering this time period is received</li>
@@ -49,10 +51,15 @@
       <li>Line F132/133--contributions and refunds to a presidential inaugural committee--are included in schedule A. Lines F133--refunds--are always given as negative. </li>
 </ul>
   </p>
-  <p>
-    <br>
-    <br><b>DATA DICTIONARIES: TK</b>
-</p>
+
+  <div class="overviewBar withNav withTip">
+      <h4>Data Dictionaries for bulk files</h4>
+  </div>
+  
+  <div class="overviewBar withNav withTip">
+      <h4>Line type</h4>
+  </div>
+  
 
 </div>
 {% endblock %}

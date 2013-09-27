@@ -20,7 +20,7 @@ boto
 supervisor
 redis
 celery
-
+django-redis
 # brisket stuff
 django_compressor
 

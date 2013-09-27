@@ -20,7 +20,6 @@
 {% block rtmain %}
 
 <div class="module">
-   <p class="tip">Find and filter committee summary information for the entire cycle.</p>
 
    <div id="formdiv" class="clearfix">
         <div class="form-row clearfix">
@@ -92,7 +91,7 @@
 
 
 <div>
-<div id="result_description"><b></b></div>
+<!-- <div id="result_description"><b></b></div> -->
 <div id="display_info"></div>
 <div class="load_next" style="float: right; width: 200px;"></div>
 <div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>
@@ -341,7 +340,7 @@ function loadjson(jsonurl) {
                  $( ".load_next" ).html("");
                }
 
-               $( "#result_description" ).html("<b>This is a text description of the results shown below.</b>")
+               //$( "#result_description" ).html("<b>This is a text description of the results shown below.</b>")
 
                if (previous != null) {
                  $( ".load_previous" ).html( "<a href=\"javascript:load_previous('" + previous + "');\">previous page<\/a>");
