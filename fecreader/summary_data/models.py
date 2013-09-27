@@ -158,6 +158,8 @@ class District(models.Model):
     def get_filtered_ie_url(self):
         return "/outside-spending/#?ordering=-expenditure_date_formatted&district_checked=%s" % self.pk
 
+    class Meta:
+        ordering = ['state', '-office', 'office_district']
 
 class Candidate_Overlay(models.Model):
     ## This is the human verified field -- see legislators.models.incumbent_challenger
