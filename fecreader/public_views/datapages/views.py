@@ -21,20 +21,28 @@ from summary_data.utils.update_utils import get_update_time
 from django.views.decorators.cache import cache_page
 
 STATE_LIST = [{'name':x[1], 'abbrev':x[0]} for x in US_STATES]
-LONG_CACHE_TIME = 60 * 10
-SHORT_CACHE_TIME = 60 * 2
+
 
 
 try:
     PAGINATE_BY = settings.REST_FRAMEWORK['PAGINATE_BY']
-except KeyError:
-    print "Missing rest framework default pagination size. "
+except:
+    print "Missing rest framework default pagination size. Using default."
     PAGINATE_BY = 100
 
 try:
     BULK_EXPORT_KEY  = settings.BULK_EXPORT_KEY
-except KeyError:
+except AttributeError:
     print "Missing bulk dowload key -- please enter a BULK_EXPORT_KEY in settings.py"
+
+try:
+    LONG_CACHE_TIME = settings.LONG_CACHE_TIME
+    SHORT_CACHE_TIME = settings.SHORT_CACHE_TIME
+except AttributeError:
+    print "Missing cache times; using defaults"
+    LONG_CACHE_TIME = 60
+    SHORT_CACHE_TIME = 30
+
 
 def newbase(request):
     return render_to_response('datapages/realtime_base.html', {}, context_instance=RequestContext(request))
