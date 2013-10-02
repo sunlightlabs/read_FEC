@@ -443,6 +443,7 @@ class Committee_Overlay(models.Model):
                                    ('Z', 'National Party Organization') ])  
 
     # make nulls sort last
+    objects = models.Manager()
     nulls_last_objects = NullsLastManager()
 
     class Meta:

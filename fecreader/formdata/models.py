@@ -222,6 +222,7 @@ class SkedE(models.Model):
     memo_text_description = models.CharField(max_length=100, blank=True, null=True)
     
     # make nulls sort last
+    objects = models.Manager()
     nulls_last_objects = NullsLastManager()
 
     def payee_name_simplified(self):
