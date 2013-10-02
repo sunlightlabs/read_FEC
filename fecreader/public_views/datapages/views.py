@@ -178,7 +178,7 @@ def newest_filings(request):
         {
         'title':'Newest Filings',
         'PAGINATE_BY':PAGINATE_BY,
-        'explanatory_text':'Find and filter the latest electronic filings made by political committees to the Federal Election Commission. Use the tabs below to review what PACs and candidates raised and spent to date.',
+        'explanatory_text':'Find and filter the latest electronic filings made to the Federal Election Commission. Use the tabs below to filter and sort the type of filings showed.',
         },
         context_instance=RequestContext(request)
     )

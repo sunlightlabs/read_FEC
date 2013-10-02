@@ -57,7 +57,7 @@
       data_type = "independent expenditures itemized"
     }
     
-    string = "You're about to download a .csv file of " + data_type + source + ". Some files may be quite large. Are you sure you want to continue?";
+    string = "You're about to download a .csv file of " + data_type + source + ". You can find data dictionaries and more<a href='/about/#data_dictionaries' target='null' class='link'> in the data dictionaries section of the about page</a>.<br><br>Some files may be quite large. Are you sure you want to continue?";
     
     $('#modal_body').html(string);
   }

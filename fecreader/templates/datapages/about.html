@@ -53,22 +53,42 @@
       <div class="overviewBar withNav withTip" id="schedule_modifications">
           <h4>How Real-Time Data is Collected</h4>
       </div>
-      <p><b>Sunlight regularly downloads and processes the newest electronic filings received by the FEC.</b> Typically reports appear on this site within 20 minutes or less of being filed. Different types of campaign finance data are reported on different schedules, however. For instance, independent expenditures over $1,000 must be reported within 24 hours. And during the last 20 days before an election, House candidates must report receipt of contributions of $1,000 or more within 48 hours (Senate candidates also file these reports, but do so on paper). Data from these immediate reports is included on Real-Time FEC on a rolling basis.</p>
+      <p>Sunlight regularly downloads and processes the newest electronic filings received by the FEC. Typically reports appear on this site within 20 minutes or less of being filed. Different types of campaign finance data are reported on different schedules, however. For instance, independent expenditures over $1,000 must be reported within 24 hours. And during the last 20 days before an election, House candidates must report receipt of contributions of $1,000 or more within 48 hours (Senate candidates also file these reports, but do so on paper). Data from these immediate reports is included on Real-Time FEC on a rolling basis.</p>
 
       <p>In the interest of timely disclosure, campaign finance law allows PACs to report estimated expenses in 24- and 48-hour reports. The data from these fast turnaround reports is then re-reported, in final form, in their monthly or quarterly filings. As these reports are received, Sunlight’s Real-Time FEC removes the original estimates.</p>
 
-      <p><b>Campaign finance law also allow PACs to amend their earlier filings at any time.</b> It's not uncommon for committees to amend their reports years later. Only the current version of a report is used in calculating totals and presented on committee and candidate pages. However, the earlier reports are available by searching the <a href="/newest-filings/">newest filings</a> page, and itemizations can still be viewed and downloaded.</p>
+      <p>Campaign finance law also allow PACs to amend their earlier filings at any time. It's not uncommon for committees to amend their reports years later. Only the current version of a report is used in calculating totals and presented on committee and candidate pages. However, the earlier reports are available by searching the <a href="/newest-filings/">newest filings</a> page, and itemizations can still be viewed and downloaded.</p>
 
-      <p><b>Reporting frequency varies widely.</b> Committees not authorized by candidates only file contributor information in monthly or quarterly reports. In off-election years, quarterly filers only file twice a year. For example, a $5,000 contribution received Jan. 1, 2013, wouldn't be reported until July 31. Other groups never disclose donors. Campaign finance laws don't require outside groups, such as 501(c)(4) nonprofits, to say who is funding them.</p>
+      <p>Reporting frequency varies widely. Committees not authorized by candidates only file contributor information in monthly or quarterly reports. In off-election years, quarterly filers only file twice a year. For example, a $5,000 contribution received Jan. 1, 2013, wouldn't be reported until July 31. Other groups never disclose donors. Campaign finance laws don't require outside groups, such as 501(c)(4) nonprofits, to say who is funding them.</p>
 
-      <p><b>Paper filers are handled differently.</b> Although electronic filing began more than a decade ago, senate candidate committees (including the national Republican and Democratic senatorial committees) file their reports on paper. At taxpayer expense, these reports are converted into digital format by the FEC. Sunlight’s Real-Time FEC does not include line items from these committees, but it does provide summary data about these committees as soon as it is available--typically three to seven days after the paper filings are received. Some senators file electronically on a voluntary basis. Currently these reports are not included, but we hope to add them in the near future. We also plan to add itemized contributions to senate committees as well, though these aren't immediately available.</p>
+      <p>Paper filers are handled differently. Although electronic filing began more than a decade ago, senate candidate committees (including the national Republican and Democratic senatorial committees) file their reports on paper. At taxpayer expense, these reports are converted into digital format by the FEC. Sunlight’s Real-Time FEC does not include line items from these committees, but it does provide summary data about these committees as soon as it is available--typically three to seven days after the paper filings are received. Some senators file electronically on a voluntary basis. Currently these reports are not included, but we hope to add them in the near future. We also plan to add itemized contributions to senate committees as well, though these aren't immediately available.</p>
       
-      
-      <div class="overviewBar withNav withTip" id="schedule_modifications">
-      <h4>Schedule Modifications</h4>
-  </div>
-  <p>Because this data is taken directly from electronic forms submitted to the FEC, the best way to understand the data layout is by reviewing the forms used by political committees. Copies of these forms <a href="http://www.fec.gov/info/forms.shtml">are available here</a>. Typically, contributions of $200 or more are itemized on "schedule A"; campaign spending is itemized on "schedule B" and independent expenditures are itemized on "schedule E". (Independent expenditures are campaign spending by an unaffiliated political group, like a super PAC or a social welfare non-profit; for more <a href="http://www.fec.gov/pages/brochures/indexp.shtml">read the FEC's guide</a>.) Additionally, committee loan information is itemized on schedules C and D and coordinated spending by party committees is itemized on Schedule F, although as of now <a href="/">realtime.influenceexplorer.com</a> only offers downloadable files of schedules A, B and E.</p>
-  <p>For ease of use, a few non-standard schedules are included--they can be identified within the bulk files in the 'form_type' field.
+
+<div class="overviewBar withNav withTip" id="data_dictionaries">
+    <h4>Data Dictionaries</h4>
+</div>
+<p>These files include variable names, a brief description and the source of the data (sunlight or the FEC). But because the data source of these files are individual line items, the line_type variable is the key to understanding what each itemization means. Different forms use the same line types in different ways, and the same data may appear on different line items depending on who's filing the report. See the <a href="#line_types">line type reference</a> below. Additionally, some fast-turnaround forms allow reporting of contributions and disbursements on different schedules. Whenever possible, these have been included in the appropriate schedules. For more see <a href="#schedule_modifications">schedule modifications</a> below. 
+  <ul class="download_bullets">
+    <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/documentation/skedadocs.csv">Schedule A</a></li>
+    <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/documentation/skedbdocs.csv">Schedule B</a></li>
+    <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/documentation/skededocs.csv">Schedule E</a></li>
+  </ul>
+</p>
+<div class="overviewBar withNav withTip" id="line_types">
+    <h4>Line Type Reference</h4>
+</div>
+<p>These files include detailed information about what different itemized line types mean. For instance, contributions from PACs to house candidates are itemized on line 11C of Schedula A, whereas contributions from PACs to presidential candidates are itemized on line 17C of schedule A. These files include the full line type, as it appears in the file, as well as the line number, as it appears on the source form. They also show which types of filers complete these line items and which types of forms are used. Finally, a column called "Multiple Uses" includes an X for lines that mean different things in different filings. In general this is rare, and many of the conflicting uses of line types come from convention committee forms. But data users should be aware of this potential ambiguity before using this data. The best way to make sense of these line types is to reference the <a href="http://www.fec.gov/info/forms.shtml">source forms</a> that this data is filed on, or read more below in the <a href="#form_types">form type section</a>.</p>
+<ul class="download_bullets">
+  <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/documentation/skeda_linetypes.csv">Schedule A line types</a></li>
+  <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/documentation/skedb_linetypes.csv">Schedule B line types</a></li>
+  <li><a href="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/documentation/skede_linetypes.csv">Schedule E line types</a></li>
+</ul>
+
+<div class="overviewBar withNav withTip" id="schedule_modifications">
+  <h4>Schedule Modifications</h4>
+</div>
+  <p>This data is taken directly from electronic forms submitted to the FEC; for more see the <a href="#form_types">form types</a> section below. Typically, contributions of $200 or more are itemized on "schedule A"; campaign spending is itemized on "schedule B" and independent expenditures are itemized on "schedule E". (Independent expenditures are campaign spending by an unaffiliated political group, like a super PAC or a social welfare non-profit; for more <a href="http://www.fec.gov/pages/brochures/indexp.shtml">read the FEC's guide</a>.) Additionally, committee loan information is itemized on schedules C and D and coordinated spending by party committees is itemized on Schedule F, although as of now <a href="/">realtime.influenceexplorer.com</a> only offers downloadable files of schedules A, B and E.</p>
+  <p>For ease of use, a few non-standard schedules are included--they can be identified within the bulk files by the 'line_type' fields below.
     <ul class="download_bullets"><li>Line F57--independent expenditures made by a non-committee (typically these are individuals, businesses or 501(c)(4)'s)--are included on schedule E.</li>
       <li>Line F65--contributions of $1,000 or more given to candidate committees less than 20 days before an election and which are required to be reported within 48-hours of receipt--are included as if they were received on schedule A. These line items, however, are removed once a post-election report covering this time period is received</li>
       <li>Line F56--contributions to non-committees (typically these are individuals, businesses or 501(c)(4)'s) that do not have to legally report contributions are included on schedule A. Line 56's received on 24/48-hour reports are replaced when a quarterly report covering the time period they were reported in is received.</li>
@@ -76,9 +96,32 @@
       <li>Line F132/133--contributions and refunds to a presidential inaugural committee--are included in schedule A. Lines F133--refunds--are always given as negative. </li>
 </ul>
   </p>
-  <p>
-    <br><b>DATA DICTIONARIES: TK</b>
-</p>
+
+  
+<div class="overviewBar withNav withTip" id="form_types">
+    <h4>Form Types</h4>
+</div>
+<p>All data received electronically by the FEC comes in on forms, though not all forms are processed by realtime campaign finance. </p>
+<p>Forms come in three "flavors": new forms, amended forms, and termination forms. Often--but not always--a letter representing the form type is appended to the form type to represent it's flavor; "A" for amended report, "N" for new report and "T" for termination report. Thus, a form type of "F3XN" is a new form F3X; a form "F3T" is the termination report of a candidate committee. For more details, see the <a href="http://www.fec.gov/info/forms.shtml">FEC's forms page</a>, which also includes links to the instructions filers are given for completing the forms. 
+<ul class="download_bullets">
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm1.pdf" class="link">Form F1</a>: This is a statement of organization used to register campaign committees. These are captured but not processed. </li>
+    <li><a href="http://www.fec.gov/pdf/forms/fecfrm1m.pdf" class="link">Form F1M</a>: Notification of multicandidate status filed by parties and PACs. These are captured but not processed. </li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm2.pdf" class="link">Form F2</a>: This is a statement of candidacy filed by a candidate for office. These are captured but not processed. </li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm3.pdf" class="link">Form F3</a>: This is a report of receipts and disbursements for House and Senate candidates' authorized campaign committees (includes Schedules A - D). These are processed.</li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm3l.pdf" class="link">Form F3L</a>: Report of contributions bundled by Lobbyists/Registrants and Lobbyist/Registrant PACs. This form is used by candidates, party committees and Leadership PACs to disclose bundled contributions forwarded by or credited to lobbyists, registrants and their PACs. This is captured, but not processed. The actual contributions included in these reports are also reported on F3/F3P reports. </li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm3p.pdf" class="link">Form F3P</a>: This is a report of receipts and disbursements for Presidential candidates' authorized campaign committees. These are processed.</li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm3x.pdf" class="link">Form F3X</a>: This is a report of receipts and disbursements for all other PACs. These are processed.</li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm4.pdf" class="link">Form F4</a>: This is a report of receipts and disbursements filed by committees or organizations supporting a national nominating convention. These are processed, but their reporting structure differs somewhat from other report of receipts and disbursements. </li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm5.pdf" class="link">Form F5</a>: This report is used by non-committee filers to report independent expenditures. These groups--which are typically 501(c)(4) "social welfare" nonprofits--may also report donors, but they are not required to. These forms are used for both 24- and 48-hour reporting, as well as quarterly reports. These forms are processed.</li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm6.pdf" class="link">Form F6</a>: This is used to disclose the receipt of last-minute contributions of $1,000 or more. Filed by candidates in the final twenty days before an election, this must be filed within 48-hours of receiving the contributions. These are processed.</li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm8.pdf" class="link">Form F8</a>: These are filed by committees attempting to settle debts for less than the full amount owed. These are captured but not processed.
+  </li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm9.pdf" class="link">Form F9</a>: These are 24-hour notice forms used to report electioneering communications. These are captured but not processed. Electioneering typically occurs later in the election cycle; we will begin processing these shortly.
+  </li>
+  <li><a href="http://www.fec.gov/pdf/forms/fecfrm13.pdf" class="link">Form F13</a>: These are reports of donations from an inaugural committee. These are processed.</li>  
+  <li>Form F24</a>: These are 24-hour notice reports of independent expenditures made by PACs. They are processed.</li>   
+  <li>Form F99</a>: Miscellaneous documents. These are text statements made by FEC filers. These are captured but not processed.</li> 
+</ul>           
 
 </div>
 {% endblock %}
