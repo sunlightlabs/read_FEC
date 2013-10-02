@@ -18,7 +18,7 @@
  {% block rtmain %}
 
  <div class="module">
-
+   <b>Downloadable file: </b><a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','B');">All schedule B disbursements itemized on this filing</a><br>
    <b>Alerts: </b><a class="link" href="javascript:submit_gotoscout('{{ filing.fec_id }}');">Get automatic alerts</a> when this committee files new campaign finance reports
    <div class="numeric_summary">
      <span class="amount_description">{% if filing_data.coverage_from_date %}Covers {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}{% endif %}</span>
@@ -43,7 +43,6 @@
 <div class="overviewBar withNav withTip">
     <h4>Disbursements</h4>
 </div>
-<a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','B');">Download a .csv file</a> of all itemized disbursements listed below.
 <table id="mainPageTable" class="sortable">
             <thead>
               <tr>
