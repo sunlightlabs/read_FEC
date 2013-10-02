@@ -18,12 +18,11 @@ Show: <select name="filter_display" class="dropdown_field" id="candidate_filter"
 <table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
-                      <th class="sort">District</th>
-                      <th class="sort">Incumbent</th>
+                      <th class="sort">District - Incumbent</th>
                       <th class="sort">Open Seat?</th>
                       <th class="sort">Election Year</th>
-                      <th class="sort">Candidate Fundraising</th>
-                      <th class="sort">Candidate Spending</th>
+                      <th class="sort">All Candidates' Fundraising</th>
+                      <th class="sort">All Candidates' Spending</th>
                       <th class="sort">Outside Spending</th>
                       <th class="sort">Total Spending</th>
                   </tr>
@@ -31,8 +30,7 @@ Show: <select name="filter_display" class="dropdown_field" id="candidate_filter"
               <tbody>
                 {% for object in races %}
                   <tr class="{% cycle 'odd' 'even' %}">
-                      <td class="district">({{object.office}}) <a href="{{ object.get_absolute_url }}">{{ object.district_formatted }}</a></td>
-                      <td>{{object.incumbent_name}} ({{object.incumbent_party}})</td>
+                      <td class="district">({{object.office}}) <a href="{{ object.get_absolute_url }}">{{ object.district_formatted }}</a> - {{object.incumbent_name}} ({{object.incumbent_party}})</td>
                       <td>{% if object.open_seat %}Y{% else %}N{% endif %}</td>
                       <td>{{ object.election_year }}</td>
                       <td>{% if object.candidate_raised %}${{ object.candidate_raised|intcomma }}{% else %}$0{% endif %}</td>
