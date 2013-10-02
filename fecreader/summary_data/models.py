@@ -7,6 +7,8 @@ from django.contrib.localflavor.us.us_states import STATE_CHOICES
 
 from ftpdata.models import Candidate
 from legislators.models import Legislator
+from api.nulls_last_queryset import NullsLastManager
+
 
 STATE_CHOICES_DICT = dict(STATE_CHOICES)
 
@@ -440,6 +442,8 @@ class Committee_Overlay(models.Model):
                                    ('Y', 'Qualified Party'),
                                    ('Z', 'National Party Organization') ])  
 
+    # make nulls sort last
+    nulls_last_objects = NullsLastManager()
 
     class Meta:
         unique_together = (("cycle", "fec_id"),)

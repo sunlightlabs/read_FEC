@@ -22,7 +22,7 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows new filings to be viewed.
     """
-    queryset = new_filing.objects.all()
+    queryset = new_filing.nulls_last_objects.all()
     serializer_class = NFSerializer
     filter_class = NFFilter
     
@@ -48,7 +48,7 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows committee_overlays to be viewed.
     """
-    queryset = Committee_Overlay.objects.all().select_related('curated_candidate')
+    queryset = Committee_Overlay.nulls_last_objects.all().select_related('curated_candidate')
     serializer_class = COSerializer
     filter_class = COFilter
     
@@ -71,7 +71,7 @@ class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
     """
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
     
-    queryset = SkedE.objects.filter(superceded_by_amendment=False, expenditure_date_formatted__gte=CYCLE_START).exclude(memo_code='X')
+    queryset = SkedE.nulls_last_objects.filter(superceded_by_amendment=False, expenditure_date_formatted__gte=CYCLE_START).exclude(memo_code='X')
     serializer_class = SkedESerializer
     filter_class = SkedEFilter
     

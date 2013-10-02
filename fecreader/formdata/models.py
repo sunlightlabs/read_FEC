@@ -12,6 +12,7 @@ from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
 
 from summary_data.models import District, Candidate_Overlay
+from api.nulls_last_queryset import NullsLastManager
 
 
 # field sizes are based on v8.0 specs, generally
@@ -219,7 +220,9 @@ class SkedE(models.Model):
     date_signed_formatted = models.DateField(null=True, help_text="Populated from parsing raw field")
     memo_code = models.CharField(max_length=1, blank=True, null=True)
     memo_text_description = models.CharField(max_length=100, blank=True, null=True)
-
+    
+    # make nulls sort last
+    nulls_last_objects = NullsLastManager()
 
     def payee_name_simplified(self):
         if self.payee_organization_name:

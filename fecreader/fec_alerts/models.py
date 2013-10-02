@@ -7,6 +7,8 @@ from django.db import models
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
 from parsing.read_FEC_settings import FEC_HTML_LOCATION
+from api.nulls_last_queryset import NullsLastManager
+
 
 
 eastern = timezone('US/Eastern')
@@ -130,6 +132,9 @@ class new_filing(models.Model):
     is_f5_quarterly=models.BooleanField(default=False)
     
     objects = HStoreManager()
+    
+    # make nulls sort last
+    nulls_last_objects = NullsLastManager()
 
     # also appears in the committee_time_summary model--normalize this.     
     def get_fec_url(self):
