@@ -36,7 +36,7 @@
 {% if race.open_seat %}<br><b>This is an open seat</b>{% endif %}</p>
 
 
-<div class="overviewBar withNav withTip">
+<div class="overviewBar withNav withTip" id="candidates">
     <h4>Candidates</h4>
 </div>
 
@@ -71,7 +71,7 @@
 
 
 {% if recent_filings %}
-<div class="overviewBar withNav withTip">
+<div class="overviewBar withNav withTip" id="recent_filings">
     <h4>Most recent candidate committee filings</h4>
 </div>
 <p>Committee registration changes and filings superseded by amended reports are excluded.</p>
@@ -97,7 +97,7 @@
                           <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
                           <td>{% if object.tot_raised %}{% if object.filing_number %}<a class="link" href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
                           <td>{% if object.tot_spent %}{% if object.filing_number %}<a class="link" href="{{object.get_spending_url}}">{% endif %}${{ object.tot_spent|intcomma }}{% if object.tot_spent %}</a>{% endif %}{% else %}$0{% endif %}</td>
-                          <td>${% if object.coh_end %}{{ object.coh_end|intcomma }}{% else %}{% endif %}</td>
+                          <td>{% if object.coh_end %}${{ object.coh_end|intcomma }}{% else %}{% endif %}</td>
                            
                         </tr>
                   {% endfor %}
