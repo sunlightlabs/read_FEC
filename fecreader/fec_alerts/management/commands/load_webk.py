@@ -6,7 +6,7 @@ from dateutil.parser import parse as dateparse
 
 from django.core.management.base import BaseCommand
 from parsing.read_FEC_settings import FTP_DATA_DIR, CYCLE
-from fec_alerts.models import WebK
+from fec_alerts.models import WebK, webk_blacklist
 
 
 two_digit_cycle = "14"
@@ -35,7 +35,11 @@ def readfile(filelocation):
     reader = csv.DictReader(fh)
     count = 0
     for row in reader:
-    
+        
+        # ignore blacklisted webks
+        if row['com_id'] in webk_blacklist:
+            continue
+        
         #print "handling %s (%s) %s to %s" % (row['com_nam'], row['com_id'], row['cov_sta_dat'], row['cov_end_dat'])
         row['cycle'] = str(CYCLE)
         try:
