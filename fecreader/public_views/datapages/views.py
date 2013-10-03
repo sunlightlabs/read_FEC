@@ -209,7 +209,7 @@ def dynamic_ies(request):
         {
         'STATE_LIST':STATE_LIST,
         'title':'Outside Expenditures',
-        'explanatory_text':'Find and filter the latest independent expenditures reported. Only races and candidates that have reported independent expenditures of $1,000 or more are given as menu choices. Download a complete file of independent expenditures made since Jan. 1, 2013, on the <a href="/downloads-index/">bulk downloads page</a>. ',
+        'explanatory_text':'Find and filter the latest independent expenditures reported. Only races and candidates that have reported independent expenditures of $1,000 or more are given as menu choices. Download a complete file of independent expenditures made since Jan. 1, 2013, on the <a href="/download-index/">bulk downloads page</a>. ',
         'PAGINATE_BY':PAGINATE_BY,
         'districts':districts,
         'candidates':candidates,
