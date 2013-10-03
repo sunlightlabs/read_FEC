@@ -70,6 +70,43 @@
 </table>
 
 
+{% if recent_filings %}
+<div class="overviewBar withNav withTip">
+    <h4>Most recent candidate committee filings</h4>
+</div>
+
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Filing ID (Type)</th>
+                <th>Candidate</th>
+                <th>Coverage Date</th>
+                <th class="sort">Raised</th>
+                <th class="sort">Spent</th>
+                <th class="sort">Cash on hand</th>
+
+                
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in recent_filings %}    
+                      <tr class="{% cycle 'odd' 'even' %}">
+                          <td>{% if object.filing_number %}<a class="link" href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% endif %} </td>
+                          <td><a href="{{ object.get_committee_url}}">{{ object.committee_name }}</a></td>
+                          
+                          <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
+                          <td>{% if object.tot_raised %}{% if object.filing_number %}<a class="link" href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_spent %}{% if object.filing_number %}<a class="link" href="{{object.get_spending_url}}">{% endif %}${{ object.tot_spent|intcomma }}{% if object.tot_spent %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                          <td>${% if object.coh_end %}{{ object.coh_end|intcomma }}{% else %}{% endif %}</td>
+                           
+                        </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+{% endif %}
+
+
 {% if recent_ies %}
 <div class="overviewBar withNav withTip">
     <h4>Recent Independent Expenditures</h4>
@@ -105,8 +142,9 @@
 
 {% endif %}
 
+
+
 {% endif %}
-<p id="notseekingreelection">* Not seeking reelection to this office</p>
 
 {% if outside_spenders %}
 <div class="overviewBar withNav withTip">

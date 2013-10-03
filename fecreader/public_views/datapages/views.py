@@ -132,12 +132,16 @@ def race_id_redirect(request, race_id):
 def house_race(request, cycle, state, district):
     race = get_object_or_404(District, cycle=cycle, state=state, office_district=district, office='H')
     title = race.race_name()
-    candidates = Candidate_Overlay.objects.filter(district=race)
+    candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True)
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
-    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
+    committees = Committee_Overlay.objects.filter(curated_candidate__in=candidates)
+    committee_ids = [x.get('fec_id') for x in committees.values('fec_id')]
+    recent_filings = new_filing.objects.filter(fec_id__in=committee_ids, is_superceded=False).order_by('-coverage_to_date')[:5]
+    print recent_filings
     
     return render_to_response('datapages/race_detail.html', 
         {
@@ -146,6 +150,7 @@ def house_race(request, cycle, state, district):
         'race':race,
         'outside_spenders':outside_spenders,
         'recent_ies':recent_ies,
+        'recent_filings':recent_filings,
         },
         context_instance=RequestContext(request)
     )
@@ -154,11 +159,11 @@ def house_race(request, cycle, state, district):
 def senate_race(request, cycle, state, term_class):
     race = get_object_or_404(District, cycle=cycle, state=state, term_class=term_class, office='S')
     title = race.race_name()
-    candidates = Candidate_Overlay.objects.filter(district=race)
+    candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True)
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
-    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
     
     return render_to_response('datapages/race_detail.html', 
