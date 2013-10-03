@@ -140,7 +140,7 @@ def house_race(request, cycle, state, district):
     
     committees = Committee_Overlay.objects.filter(curated_candidate__in=candidates)
     committee_ids = [x.get('fec_id') for x in committees.values('fec_id')]
-    recent_filings = new_filing.objects.filter(fec_id__in=committee_ids, is_superceded=False).order_by('-coverage_to_date')[:5]
+    recent_filings = new_filing.objects.filter(fec_id__in=committee_ids, is_superceded=False).exclude(coverage_to_date__isnull=True).order_by('-coverage_to_date')[:5]
     print recent_filings
     
     return render_to_response('datapages/race_detail.html', 
