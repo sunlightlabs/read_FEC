@@ -56,7 +56,7 @@ class CommitteeFormsFeed(FilingFeedBase):
 
     def get_object(self, request, committee_id, form_types):
         self.form_list=form_types.split("-")
-        return get_object_or_404(Committee, fec_id=committee_id) 
+        return get_object_or_404(Committee_Overlay, fec_id=committee_id) 
 
     def items(self, obj):
         return new_filing.objects.filter(fec_id=obj.fec_id, form_type__in=self.form_list).order_by('-process_time')[:FEED_LENGTH]
