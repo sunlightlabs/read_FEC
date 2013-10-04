@@ -1,7 +1,7 @@
 {% load humanize %}
 {% if obj.tot_raised %}
   {% if obj.lines_present.A %}<a href="http://realtime.influenceexplorer.com{{ obj.get_skeda_url }}">{% endif %}Total receipts{% if  obj.lines_present.A %}</a>{% endif %} of <b>${{ obj.tot_raised|intcomma }}</b>. 
-{% if obj.lines_present.B %}<a href="http://realtime.influenceexplorer.com{{ obj.get_skedb_url }}">{% endif %}Total spending{% if obj.lines_present.B %}</a>{% endif %} of <b>${{ obj.tot_spent|intcomma }}</b>.{% if obj.coh_end %} Cash on hand was <b>${{ obj.coh_end|intcomma }}{% endif %}</b>.
+{% if obj.lines_present.B %}<a href="http://realtime.influenceexplorer.com{{ obj.get_skedb_url }}">{% endif %}Total spending{% if obj.lines_present.B %}</a>{% endif %} of <b>${{ obj.tot_spent|intcomma }}</b>.{% if obj.coh_end %} Cash on hand was <b>${{ obj.coh_end|intcomma }}.</b>{% endif %}
 {% endif %}
 
 {% if obj.coverage_from_date %}<br>Covering <b>{{ obj.coverage_from_date|date:"N j, Y"}} through {{ obj.coverage_to_date|date:"N j, Y" }}</b>. {% endif %}Originally filed {{ obj.process_time}}
