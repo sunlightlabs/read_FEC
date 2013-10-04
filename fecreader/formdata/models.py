@@ -274,7 +274,7 @@ class SkedE(models.Model):
             return ""
             
     def get_absolute_url(self):
-        return "/filing/%s/#%s" % (self.filing_number, self.transaction_id)
+        return "/filings/%s/#%s" % (self.filing_number, self.transaction_id)
         
     def supporting_opposing(self):
         support = 'naming'
