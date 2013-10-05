@@ -168,6 +168,7 @@ INSTALLED_APPS = (
     'south',
     'dryrub',
     'downloads',
+    'rothenberg',
 )
 
 REST_FRAMEWORK = {
