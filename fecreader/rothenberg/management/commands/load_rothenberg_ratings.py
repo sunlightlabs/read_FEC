@@ -13,8 +13,8 @@ from django.conf import settings
 ROTHENBERG_HOUSE_FILE  = settings.ROTHENBERG_HOUSE_FILE
 ROTHENBERG_SENATE_FILE  = settings.ROTHENBERG_SENATE_FILE
 
-#ROTHENBERG_HOUSE_FILE = "rothenberg/data/house.xml"
-#ROTHENBERG_SENATE_FILE = "rothenberg/data/senate.xml"
+# ROTHENBERG_HOUSE_FILE = "rothenberg/data/house.xml"
+# ROTHENBERG_SENATE_FILE = "rothenberg/data/senate.xml"
 
 def parse_senate_line(elt):
     result = {}
