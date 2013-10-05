@@ -2,7 +2,7 @@
 
 # Download rating files, and back them up to a timestamped backup dir
 
-datadir=/Users/jfenton/github-whitelabel/read_FEC/fecreader/rothenberg/data
+datadir=/projects/realtimefec/src/realtimefec/fecreader/rothenberg/data
 
 now=$(date +"%m-%d-%Y-%H-%M")
 
