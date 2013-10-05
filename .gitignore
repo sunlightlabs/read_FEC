@@ -3,7 +3,7 @@ local_FEC_settings.py
 mongo_settings.py
 *cheatsheet*
 *.DS_Store
-
+*.xml
 *.py[cod]
 
 # C extensions
