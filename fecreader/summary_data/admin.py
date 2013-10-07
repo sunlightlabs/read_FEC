@@ -5,7 +5,7 @@ class DistrictAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ("Human-verified data", {
-            'fields': ('next_election_date','next_election_code', 'special_election_scheduled', 'open_seat'),
+            'fields': ('next_election_date','next_election_code', 'special_election_scheduled', 'open_seat', 'district_notes'),
         }),
         ("From FEC", {
             'fields': ('cycle','state', 'office', 'office_district', 'incumbent_name', 'incumbent_pty', 'incumbent_party', 'election_year'),

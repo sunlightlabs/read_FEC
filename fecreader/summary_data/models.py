@@ -101,7 +101,13 @@ class District(models.Model):
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     # should we include electioneering? 
     electioneering_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-
+    
+    # This is pulled from the rothenberg app periodically
+    rothenberg_rating_id = models.IntegerField(null=True)
+    rothenberg_rating_text = models.CharField(null=True, max_length=63)
+    rothenberg_update_time = models.DateTimeField(null=True)
+    
+    district_notes = models.TextField(null=True, blank=True, help_text="Mostly intended to note special elections, but...")
     
     def district_formatted(self):
         if self.office == 'S':
@@ -116,6 +122,10 @@ class District(models.Model):
             
         return ""
 
+    def get_rothenberg_link(self):
+        # They don't have links to individual districts, but instead just link to states. Provide link back to them as a courtesy. 
+        state_slug = STATE_CHOICES_DICT[self.state].lower().replace(' ','-')
+        return "http://rothenbergpoliticalreport.com/state/" + state_slug
             
     def __unicode__(self):
         if self.office == 'P':
