@@ -132,7 +132,7 @@ def race_id_redirect(request, race_id):
 def house_race(request, cycle, state, district):
     race = get_object_or_404(District, cycle=cycle, state=state, office_district=district, office='H')
     title = race.race_name()
-    candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True)
+    candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('-total_receipts')
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
@@ -159,7 +159,7 @@ def house_race(request, cycle, state, district):
 def senate_race(request, cycle, state, term_class):
     race = get_object_or_404(District, cycle=cycle, state=state, term_class=term_class, office='S')
     title = race.race_name()
-    candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True)
+    candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('-total_receipts')
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
