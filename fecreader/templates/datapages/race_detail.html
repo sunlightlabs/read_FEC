@@ -34,7 +34,7 @@
 </div>
 <p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})
 {% if race.open_seat %}<br><b>This is an open seat</b>{% endif %}
-{% if race.rothenberg_rating_text %}<br>The <a href="{{ race.get_rothenberg_link }}" class="link">Rothenberg political report</a> considers this seat: <b>{{ race.rothenberg_rating_text}}</b>{% endif %}
+{% if race.rothenberg_rating_text %}<br>The <a href="{{ race.get_rothenberg_link }}" class="link">Rothenberg Political Report</a> considers this seat: <b>{{ race.rothenberg_rating_text}}</b>{% endif %}
 </p>
 {% if race.district_notes %}<p><b>Note:</b> {{ race.district_notes|safe }}</p>
 {% endif %}
