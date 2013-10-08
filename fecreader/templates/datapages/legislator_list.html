@@ -39,7 +39,7 @@ Show <select name="filter_display" class="dropdown_field" id="candidate_filter" 
                       <a href="{{object.get_absolute_url}}">{{object.name}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
                       <td class="incumbency">{{object.incumbency_status }}</td>
                       <td>{{object.pty}}</td>
-                      <td>{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</td>
+                      <td><a href="{{ object.district.get_absolute_url}}">{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</a></td>
                       <td>{{ object.election_year }}</td>
                       <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
                       <td>${{ object.cash_on_hand|intcomma }}</td>
