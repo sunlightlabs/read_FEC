@@ -252,7 +252,7 @@
     
     $(document).ready(function(){
         initialize_map();
-         $.getJSON("http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/cd113_geojson/{{ race.get_district_fips}}.geojson", function(json){
+         $.getJSON("http://realtime.influenceexplorer.com/geojson/cd113_geojson/{{ race.get_district_fips}}.geojson", function(json){
             add_shape(json);
         });
     });
