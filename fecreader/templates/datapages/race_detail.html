@@ -9,7 +9,7 @@
 
 {% block js %}
 {{ block.super }}
-{% if race.is_house_district %}
+{% if race.display_map %}
 <script type="text/javascript" src="{% static 'realtimefec/js/leaflet.js' %}"></script>
 
 <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.3"></script>
@@ -52,7 +52,7 @@
 
 </div>
 <div class="right_bar">
-{% if race.is_house_district %}
+{% if race.display_map %}
 <div id="toner-lite" class="map_div"></div>
 <div class="map_attribution">Map tiles by <a href="http://stamen.com">Stamen Design</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>.</div>
 {% endif %}

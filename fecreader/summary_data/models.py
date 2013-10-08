@@ -173,8 +173,11 @@ class District(models.Model):
             return None
     
     
-    def is_house_district(self):
-        return self.office=='H'
+    def display_map(self):
+        if self.office=='H':
+            if self.state not in ['AK']:
+                return True
+        return False
     
     
     def district_formatted(self):
