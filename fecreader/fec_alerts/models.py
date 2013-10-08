@@ -218,6 +218,19 @@ class new_filing(models.Model):
         
     def process_time_formatted(self):
         return self.process_time.astimezone(eastern).strftime("%m/%d %I:%M %p")
+        
+    def get_total_debts(self):
+        if self.form_type.startswith('F3'):
+            try:
+                result = self.header_data['col_a_debts_by']
+                if result:
+                    return float(result)
+                else:
+                    return None
+            except KeyError:
+                return None
+        else:
+            return None
             
     class Meta:
         ordering = ('-filing_number', )

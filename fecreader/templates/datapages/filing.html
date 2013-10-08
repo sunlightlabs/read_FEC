@@ -22,7 +22,8 @@
     <div class="numeric_summary">
       <span class="amount_description">{% if filing.coverage_from_date %}Covers {{ filing.coverage_from_date|date:"N j, Y"}} through {{ filing.coverage_to_date|date:"N j, Y" }}{% endif %}</span>
       <br><span class="amount_description">Total receipts: </span> <span class="amount_dollars"><a class="link" href="{{ filing.get_skeda_url }}">${{ filing.tot_raised|intcomma }}</a></span>
-      <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a class="link" href="{{filing.get_spending_url}}">${{ filing.tot_spent|intcomma }}</a></span>      
+      <br><span class="amount_description">Total spending:</span> <span class="amount_dollars"><a class="link" href="{{filing.get_spending_url}}">${{ filing.tot_spent|intcomma }}</a></span>  
+      {% if filing.get_total_debts %}<br><span class="amount_description">Outstanding debts:</span> <span class="amount_dollars">${{ filing.get_total_debts|intcomma }}</a></span>{% endif %}      
       <br><span class="amount_description">Originally filed {{ filing.process_time}}</span>
     </div>
     {% if filing.is_amendment %}<b>This filing is an amendment!</b>{% if filing.amends_filing %} See an earlier version here <a href="{{ filing.original_filing_url }}">Filing #{{ filing.amends_filing }}</a>.{% endif %}<br>{% endif %}
