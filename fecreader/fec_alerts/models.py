@@ -224,7 +224,7 @@ class new_filing(models.Model):
             try:
                 result = self.header_data['col_a_debts_by']
                 if result:
-                    return float(result)
+                    return int(round(float(result)))
                 else:
                     return None
             except KeyError:
@@ -232,6 +232,19 @@ class new_filing(models.Model):
         else:
             return None
             
+    def get_cash_on_hand(self):
+        if self.form_type.startswith('F3'):
+            try:
+                result = self.header_data['col_a_cash_on_hand_close_of_period']
+                if result:
+                    return int(round(float(result)))
+                else:
+                    return None
+            except KeyError:
+                return None
+        else:
+            return None
+    
     class Meta:
         ordering = ('-filing_number', )
 
