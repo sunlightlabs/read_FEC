@@ -7,9 +7,21 @@
 {% block body_class %}{% endblock %}
 
 
+{% block js %}
+{{ block.super }}
+{% if race.is_house_district %}
+<script type="text/javascript" src="{% static 'realtimefec/js/leaflet.js' %}"></script>
+
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.3"></script>
+
+
+
+{% endif %}
+{% endblock %}
+
 {% block sitecss %}
 <link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
-
+<link rel="stylesheet" href="{% static 'realtimefec/css/leaflet.css' %}" />
 {{ block.super }}
 {% endblock sitecss %}
   
@@ -18,26 +30,38 @@
  {% block rtmain %}
 
 <div class="module">
-
-<br><b>Alerts: </b><a class="link" href="javascript:submit_gotoscout_race('{{ race.get_feed_url }}');">Get automatic alerts</a> whenever a candidate in this race files an electronic report, or is targeted by an independent expenditure
-
-<div class="numeric_summary">
-<span class="amount_description">Total candidate fundraising:</span>&nbsp;<span class="amount_dollars">{% if race.candidate_raised %}${{race.candidate_raised|intcomma}}{% else %}$0{% endif %}</span>
+<div>
+<div class="left_bar">
+<p><b>Alerts: </b><a class="link" href="javascript:submit_gotoscout_race('{{ race.get_feed_url }}');">Get automatic alerts</a> whenever a candidate in this race files an electronic report, or is targeted by an independent expenditure</p>
+  
+<p><span class="amount_description">Total candidate fundraising:</span>&nbsp;<span class="amount_dollars">{% if race.candidate_raised %}${{race.candidate_raised|intcomma}}{% else %}$0{% endif %}</span>
 
 <br><span class="amount_description">Total candidate spending:</span>&nbsp;<span class="amount_dollars">{% if race.candidate_spending %}${{race.candidate_spending|intcomma}}{% else %}$0{% endif %}</span>  
 
-<br><span class="amount_description">Total outside spending</span>&nbsp;<span class="amount_dollars">{% if race.outside_spending %}${{race.outside_spending|intcomma}}{% else %}$0{% endif %}</span>
+<br><span class="amount_description">Total outside spending:</span>&nbsp;<span class="amount_dollars">{% if race.outside_spending %}${{race.outside_spending|intcomma}}{% else %}$0{% endif %}</span>
 
 
-<br><span class="amount_description">Candidate spending plus outside spending</span>&nbsp;<span class="amount_dollars">{% if race.total_spending %}${{race.total_spending|intcomma}}{% else %}$0{% endif %}</span>
-
-</div>
+<br><span class="amount_description">Candidate + outside spending:</span>&nbsp;<span class="amount_dollars">{% if race.total_spending %}${{race.total_spending|intcomma}}{% else %}$0{% endif %}</span>
+</p>
 <p>Incumbent: {{race.incumbent_name}} ({{race.incumbent_party}})
 {% if race.open_seat %}<br><b>This is an open seat</b>{% endif %}
-{% if race.rothenberg_rating_text %}<br>The <a href="{{ race.get_rothenberg_link }}" class="link">Rothenberg Political Report</a> considers this seat: <b>{{ race.rothenberg_rating_text}}</b>{% endif %}
+{% if race.rothenberg_rating_text %}<br><a href="{{ race.get_rothenberg_link }}" class="link">Rothenberg Political Report</a> rates this seat: <b>{{ race.rothenberg_rating_text}}</b>{% endif %}
 </p>
 {% if race.district_notes %}<p><b>Note:</b> {{ race.district_notes|safe }}</p>
 {% endif %}
+
+</div>
+<div class="right_bar">
+{% if race.is_house_district %}
+<div id="toner-lite" class="map_div"></div>
+<div class="map_attribution">Map tiles by <a href="http://stamen.com">Stamen Design</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>.</div>
+{% endif %}
+</div>
+<div style="clear:both;">
+</div>
+
+
+
 
 <div class="overviewBar withNav withTip" id="candidates">
     <h4>Candidates</h4>
@@ -187,10 +211,51 @@
 
 
 </div>
+
+
 {% endblock %}
 
 {% block sitejs %}
 {{ block.super }}
 {% include "includes/file_download.js" %}
 {% include "includes/go_to_scout.js" %}
+<script type="text/javascript">
+  var map;
+
+  function style(feature) {
+		return {
+			weight: 2,
+			opacity: 1,
+			color: '#000',
+			fillOpacity: 0.5,
+			fillColor: '#922',
+		};
+	}
+  
+  function initialize_map() {
+        var layer = "toner-lite";
+        map = new L.Map(layer, {
+            center: new L.LatLng(39.31838912886969, -94.919),
+            zoom: 3,
+            // Put attribution in text--it doesn't fit here
+            attributionControl: false,
+        });
+        var this_layer = new L.StamenTileLayer(layer);
+        map.addLayer(this_layer);
+    }
+    function add_shape(data) {
+      geojson_layer = L.geoJson(data, {style: style});
+  		geojson_layer.addTo(map);
+  		geojson_layer.bindPopup("{{ race.state}} District {{ race.district }}");
+      map.fitBounds(geojson_layer.getBounds());
+    }
+    
+    $(document).ready(function(){
+        initialize_map();
+         $.getJSON("http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/cd113_geojson/{{ race.get_district_fips}}.geojson", function(json){
+            add_shape(json);
+        });
+    });
+</script>
+
 {% endblock %}

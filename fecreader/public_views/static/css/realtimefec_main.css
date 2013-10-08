@@ -360,5 +360,25 @@ A.link:hover {text-decoration: underline}
 /* BUTTON RESET */
 .textBtn {
     text-indent:0px;
-    
+}
+
+.left_bar {
+    width: 450px; 
+    float: left;
+}
+
+.right_bar {
+    width: 410px; 
+    float:right;
+}
+
+.map_div {
+    width: 410px; 
+    border: 1px solid black; 
+    height:250px;
+}
+
+.map_attribution {
+    font-size:11px; 
+    float:right;
 }

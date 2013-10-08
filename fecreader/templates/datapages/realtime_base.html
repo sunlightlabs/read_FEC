@@ -5,7 +5,6 @@
 {% block sitecss %}
 <link rel="stylesheet" href="{% static 'realtimefec/css/realtimefec_main.css' %}" />
 {% endblock sitecss %}
-
 {% block main %}
 {% block subnavitems %}
 
@@ -35,7 +34,7 @@
 <div class="module RT clearfix">
        <h3>{% block title %}{{ title|safe }} {% endblock %}</h3>
        <div id="timestamp">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div>
-       <p>{{ explanatory_text|safe }}</p>
+       {% if explanatory_text %}<p>{{ explanatory_text|safe }}</p>{% endif %}
 
 </div>
 

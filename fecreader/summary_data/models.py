@@ -8,7 +8,7 @@ from django.contrib.localflavor.us.us_states import STATE_CHOICES
 from ftpdata.models import Candidate
 from legislators.models import Legislator
 from api.nulls_last_queryset import NullsLastManager
-
+from data_references import STATES_FIPS_DICT
 
 STATE_CHOICES_DICT = dict(STATE_CHOICES)
 
@@ -57,6 +57,58 @@ committee_designation_hash = {'A':'Authorized by Candidate',
                             'B': 'Lobbyist/Registrant PAC',
                             'D': 'Leadership PAC'
                             }
+STATES_FIPS_DICT = {
+    'WA':'53',
+    'VA':'51',
+    'DE':'10',
+    'DC':'11',
+    'WI':'55',
+    'WV':'54',
+    'HI':'15',
+    'FL':'12',
+    'WY':'56',
+    'NH':'33',
+    'NJ':'34',
+    'NM':'35',
+    'TX':'48',
+    'LA':'22',
+    'NC':'37',
+    'ND':'38',
+    'NE':'31',
+    'TN':'47',
+    'NY':'36',
+    'PA':'42',
+    'CA':'06',
+    'NV':'32',
+    'CO':'08',
+    'AK':'02',
+    'AL':'01',
+    'AR':'05',
+    'VT':'50',
+    'IL':'17',
+    'GA':'13',
+    'IN':'18',
+    'IA':'19',
+    'OK':'40',
+    'AZ':'04',
+    'ID':'16',
+    'CT':'09',
+    'ME':'23',
+    'MD':'24',
+    'MA':'25',
+    'OH':'39',
+    'UT':'49',
+    'MO':'29',
+    'MN':'27',
+    'MI':'26',
+    'RI':'44',
+    'KS':'20',
+    'MT':'30',
+    'MS':'28',
+    'SC':'45',
+    'KY':'21',
+    'OR':'41',
+    'SD':'46'}
 
 # There are many different data sets that are updated. Keep track of them here.
 # options are "scrape_electronic_filings", "scrape_new_committees",...
@@ -108,6 +160,22 @@ class District(models.Model):
     rothenberg_update_time = models.DateTimeField(null=True)
     
     district_notes = models.TextField(null=True, blank=True, help_text="Mostly intended to note special elections, but...")
+    
+    def get_district_fips(self):
+        if self.office == 'S':
+            return None
+        elif self.office == 'H':
+            state_fips = STATES_FIPS_DICT[self.state]
+            district = self.office_district
+            district = district.zfill(2)
+            return state_fips + district
+        else:
+            return None
+    
+    
+    def is_house_district(self):
+        return self.office=='H'
+    
     
     def district_formatted(self):
         if self.office == 'S':
