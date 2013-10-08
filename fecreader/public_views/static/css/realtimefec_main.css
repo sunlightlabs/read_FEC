@@ -382,3 +382,5 @@ A.link:hover {text-decoration: underline}
     font-size:11px; 
     float:right;
 }
+/* force the dialog to be on top */
+.ui-dialog { z-index: 1000 !important ;}
