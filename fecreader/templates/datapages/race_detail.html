@@ -73,12 +73,12 @@
         <tr id="titles">
             <th class="sort">Candidate (Party)</th>
             <th class="sort">Incumbent</th>
-        
+            <th class="sort">Cash on hand</th>
+            <th>Cash on hand date</th>
             <th class="sort">Candidate Fundraising</th>
             <th class="sort">Candidate Spending</th>
             <th class="sort">Outside Spending For</th>
             <th class="sort">Outside Spending Against</th>
-            <th class="sort">Total Outside Spending</th>
         </tr>
       </thead>
       <tbody>
@@ -86,11 +86,13 @@
           <tr class="{% cycle 'odd' 'even' %}">
               <td><a href="{{object.get_absolute_url}}">{{object.name}} ({{object.party}})</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
               <td class="incumbency">{{object.incumbency_status }}</td>
+              <td>${{ object.cash_on_hand|intcomma }}</td>
+              <td>{{ object.cash_on_hand_date|date:"n/j/y" }}</td>
               <td>${{ object.total_receipts|intcomma }}</td>
               <td>${{ object.total_disbursements|intcomma }}</td>
               <td>{% if object.expenditures_supporting %}${{ object.expenditures_supporting|intcomma }}{% else %}$0{% endif %}</td>
               <td>{% if object.expenditures_opposing %}${{ object.expenditures_opposing|intcomma }}{% else %}$0{% endif %}</td>
-              <td>{% if object.total_expenditures %}${{ object.total_expenditures|intcomma }}{% else %}$0{% endif %}</td>
+              
           </tr>
           {% endfor %}
         </tbody>
