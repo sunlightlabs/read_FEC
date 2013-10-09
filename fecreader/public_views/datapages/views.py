@@ -183,7 +183,7 @@ def newest_filings(request):
         {
         'title':'Newest Filings',
         'PAGINATE_BY':PAGINATE_BY,
-        'explanatory_text':'Find and filter the latest electronic filings made to the Federal Election Commission. Use the tabs below to filter and sort the type of filings showed.',
+        'explanatory_text':'Find and filter the latest electronic campaign finance filings made to the Federal Election Commission. Use the tabs below to filter and sort the type of filings showed.',
         },
         context_instance=RequestContext(request)
     )
