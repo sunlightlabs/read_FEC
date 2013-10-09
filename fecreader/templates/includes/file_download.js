@@ -64,7 +64,7 @@
   
   function load_iframe(url) {
     console.log("loading iframe");
-    iframe_html = '<iframe width="500" scrolling="no" height="100" frameborder="0" src="' + url + '" seamless="seamless">';
+    iframe_html = '<iframe width="500" scrolling="no" height="160" frameborder="0" src="' + url + '" seamless="seamless">';
     $('#download_div').html(iframe_html)
     $('#confirmation_buttons').hide();
     $('#modal_body').hide();    

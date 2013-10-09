@@ -256,7 +256,7 @@ def downloads(request):
 
 def about(request):
 
-    title="About Realtime Federal Campaign Finance Data" 
+    title="About Realtime Federal Campaign Finance" 
 
     return render_to_response('datapages/about.html',
         {
