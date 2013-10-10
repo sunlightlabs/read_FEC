@@ -123,6 +123,7 @@ def races(request):
 
     return render_to_response('datapages/races.html',
         {
+        'STATE_LIST':STATE_LIST,
         'title':title,
         'explanatory_text':explanatory_text,
         'races':districts,

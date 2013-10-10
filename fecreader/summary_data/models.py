@@ -172,7 +172,12 @@ class District(models.Model):
         else:
             return None
     
-    
+    def rothenberg_rating_short(self):
+        if self.rothenberg_rating_id == 9:
+            return 'Safe Republican'
+        elif self.rothenberg_rating_id == 5:
+            return 'Safe Democrat'
+        return self.rothenberg_rating_text
     def display_map(self):
         if self.office=='H':
             if self.state not in ['AK']:

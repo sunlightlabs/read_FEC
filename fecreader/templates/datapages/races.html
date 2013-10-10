@@ -1,6 +1,12 @@
 {# list districts #}
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
+{% load staticfiles %}
+
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+{% endblock sitecss %}
 
 {% block body_class %}{% endblock %}
 
@@ -9,17 +15,29 @@
 {% block rtmain %}
 
 <div class="module">
-Show: <select name="filter_display" class="dropdown_field" id="candidate_filter" style="width:200px;">
-    <option value='all'>House and Senate races</option>
-    <option value='senate'>only Senate races</option>
-    <option value='house'>only House races</option>
-  </select></p>
-  
+  <p>
+Show: <select name="filter_display" class="dropdown_field chosen-select" id="candidate_filter" tabindex="2" style="width:200px;">
+    <option value='0'>House and Senate races</option>
+    <option value='S'>only Senate races</option>
+    <option value='H'>only House races</option>
+  </select>&nbsp;&nbsp;
+  State:
+  <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="candidate_state_checked" style="width:120px;">
+  </select>&nbsp;&nbsp;
+  Rothenberg ratings <select name="rating_filter" class="dropdown_field chosen-select" id="rating_filter" tabindex="2" style="width:200px;">
+      <option value='0'>All races</option>
+      <option value='126'>Toss-up races</option>
+      <option value='12637'>Toss-ups and leaners</option>
+    </select>
+    
+  <p>
+    
 <table id="mainPageTable" class="sortable">
             <thead>
                   <tr id="titles">
                       <th class="sort">District - Incumbent</th>
                       <th class="sort">Open Seat?</th>
+                      <th class="sort">Rothenberg Rating</th>
                       <th class="sort">Election Year</th>
                       <th class="sort">All Candidates' Fundraising</th>
                       <th class="sort">All Candidates' Spending</th>
@@ -29,9 +47,10 @@ Show: <select name="filter_display" class="dropdown_field" id="candidate_filter"
               </thead>
               <tbody>
                 {% for object in races %}
-                  <tr class="{% cycle 'odd' 'even' %}">
+                  <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
                       <td class="district">({{object.office}}) <a href="{{ object.get_absolute_url }}">{{ object.district_formatted }}</a> - {{object.incumbent_name}} ({{object.incumbent_party}})</td>
                       <td>{% if object.open_seat %}Y{% else %}N{% endif %}</td>
+                      <td>{{ object.rothenberg_rating_short }}</td>
                       <td>{{ object.election_year }}</td>
                       <td>{% if object.candidate_raised %}${{ object.candidate_raised|intcomma }}{% else %}$0{% endif %}</td>
                       <td>{% if object.candidate_spending %}${{ object.candidate_spending|intcomma }}{% else %}$0{% endif %}</td>
@@ -45,23 +64,73 @@ Show: <select name="filter_display" class="dropdown_field" id="candidate_filter"
 </table>
 
 </div>
+<script type="text/javascript" src="{% static 'realtimefec/js/chosen.jquery.min.js' %}"></script>
 
 <script type="text/javascript" >
 
 
-$(document).ready(function() {
-    $( "#candidate_filter" ).val("all");
-    $( "#candidate_filter" )
-    .bind( "change", function() {
-      selected = $(this).val();
-      console.log("select changed: " + selected);
-      if (selected == 'all') {
-        show_all();
-      } else if (selected == 'senate') {
-        hide_house();
-      } else if (selected == 'house') {
-        hide_senate();
+var states = [
+  {'name':'Show All', 'value':'0'},
+  {% for state in STATE_LIST %}{ 'value':'{{ state.abbrev}}', 'name':'{{state.name}}'}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}
+]
+
+
+function make_states() {
+  state_element = '';
+  for (var i = 0; i < states.length; i++) {
+          state_element += '<option value="' + states[i].value + '">' + states[i].name + '</option>';
       }
+
+  $("#candidate_state_checked").html(state_element);
+  $("#candidate_state_checked").trigger("chosen:updated");
+}
+
+
+
+function apply_filters() {
+  state_selected = $("#candidate_state_checked").val();
+  rating_selected = $("#rating_filter").val();
+  chamber_selected = $("#candidate_filter").val();
+  console.log("Filtering on: state=" + state_selected + " rating: " + rating_selected + " chamber_selected: " + chamber_selected);
+  
+  
+  $("#mainPageTable > tbody > tr").each(function(index) {    
+    cell_text = $(this).find('td.district').text().trim();
+    chamber = cell_text.substring(1,2);
+    state = cell_text.substring(4,6);
+    rating_id = $(this).attr('id');
+    
+    display = false;
+    //console.log(index + " chamber " +chamber + " state" +  state+ "  race_id" + race_id + " rating_id " + rating_id  )
+    if (state_selected == 0 || state_selected == state) {
+      if (chamber_selected == '0' || chamber_selected == chamber) {
+        if (rating_selected == '0' || rating_selected.indexOf(rating_id) >= 0 ) {
+          display = true;
+        }
+      }
+    }
+    if (display) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+    
+    
+    //console.log(index + " cell_text " + cell_text + " state: " + state_text + " race_id: " + race_id + " fec_id: " + fec_id );
+  });
+}
+
+
+$(document).ready(function() {
+  
+  $('.chosen-select'  ).chosen({disable_search_threshold: 10});
+  make_states();
+  
+    $( "#candidate_filter" ).val("0");
+    
+    $( ".chosen-select" )
+    .bind( "change", function() {
+      apply_filters();
       var sorting = [[7,1]]; 
       // sort on the seventh column 
       $("#mainPageTable").trigger("sorton",[sorting]);
@@ -70,35 +139,8 @@ $(document).ready(function() {
     });
 });
 
-function show_all() {
-   $("#mainPageTable > tbody > tr").each(function(index) {
-        $(this).show();
-      })
-}
 
-function hide_house() {
-    $("#mainPageTable > tbody > tr").each(function(index) {
-      cell_text = $(this).find('td.district').text().trim();
-      if (cell_text.substring(0,2) == '(H') {
-        $(this).hide();
-      } else {
-        $(this).show();
-      }
-      });
 
-}
-
-function hide_senate() {
-    $("#mainPageTable > tbody > tr").each(function(index) {
-      cell_text = $(this).find('td.district').text().trim();
-      if (cell_text.substring(0,2) == '(S') {
-        $(this).hide();
-      } else {
-        $(this).show();
-      }
-      });
-
-}
 
 </script>
 
