@@ -76,11 +76,14 @@ def senate(request):
     explanatory_text="Fundraising totals are since the beginning of the election cycle (Jan. 1, 2013) for current U.S. senators and Senate candidates who reported having $1,000 or more. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
+    districts = District.objects.filter(office='S')
 
     legislators = Candidate_Overlay.objects.filter(office='S').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)).select_related('district')
 
-    return render_to_response('datapages/legislator_list.html',
+    return render_to_response('datapages/senate_legislator_list.html',
         {
+        'STATE_LIST':STATE_LIST,
+        'districts':districts,
         'object_list':legislators,
         'title':title,
         'explanatory_text':explanatory_text,
@@ -96,12 +99,16 @@ def house(request):
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
     legislators = Candidate_Overlay.objects.filter(office='H').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)).select_related('district')
+    
+    districts = District.objects.filter(office='H')
 
-    return render_to_response('datapages/legislator_list.html',
+    return render_to_response('datapages/house_legislator_list.html',
         {
         'object_list':legislators,
         'title':title,
         'explanatory_text':explanatory_text,
+        'STATE_LIST':STATE_LIST,
+        'districts':districts,
         }, 
         context_instance=RequestContext(request)
     )

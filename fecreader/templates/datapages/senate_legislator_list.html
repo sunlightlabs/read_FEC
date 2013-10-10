@@ -1,0 +1,256 @@
+{# list of current legislators, either house or senate or something #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+
+
+{% block sitecss %}
+{{ block.super }}
+{# <link rel="stylesheet" href="{% static 'realtimefec/css/jquery-ui-1.10.3.custom.min.css' %}" /> #}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+
+{% endblock sitecss %}
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }} {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+  
+<p>
+Show: <select name="filter_display" class="dropdown_field chosen-select" id="candidate_filter" style="width:200px;">
+  <option value='all'>challengers and incumbents</option>
+  <option value='incumbents'>only incumbents</option>
+  <option value='challengers'>only challengers</option>
+</select>
+</p>
+<p>
+      State:
+      <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="candidate_state_checked" style="width:120px;">
+      </select>
+
+      Race:
+      <select data-placeholder="Pick a race..." name="race" class="chosen-select" tabindex="2" id="district_checked" style="width:250px;">
+      </select>
+
+      Candidate:
+      <select data-placeholder="Pick a candidate..." name="candidate" class="chosen-select"  id="candidate_id_checked" style="width:250px;">
+      </select>
+</p>
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                      <th class="sort">Legislator</th>
+                      <th class="sort">Incumbent</th>
+                      <th class="sort">Party</th>
+                      <th class="sort">District</th>
+                      <th class="sort">Election Year</th>
+                      <th class="sort">Report Date</th>
+                      <th class="sort">Cash on hand</th>
+                      <th class="sort">Raised </th>
+                      <th class="sort">Spent</th>
+                      <th class="sort">Debts</th>
+
+                  </tr>
+              </thead>
+              <tbody>
+                {% for object in object_list %}
+                  <tr class="{% cycle 'odd' 'even' %}" id="{{ object.district.pk}}-{{object.fec_id}}">
+                      <td class="lawmakerName">
+                      <a href="{{object.get_absolute_url}}">{{object.name}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
+                      <td class="incumbency">{{object.incumbency_status }}</td>
+                      <td>{{object.pty}}</td>
+                      <td class="cell_state"><a href="{{ object.district.get_absolute_url}}">{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</a></td>
+                      <td>{{ object.election_year }}</td>
+                      <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
+                      <td>${{ object.cash_on_hand|intcomma }}</td>
+                      <td>${{ object.total_receipts|intcomma }}</td>
+                      <td>${{ object.total_disbursements|intcomma }}</td>
+                      <td>{% if object.outstanding_loans %}${{ object.outstanding_loans|intcomma }}{% else %}$0{% endif %}</td>                  </tr>
+                {% endfor %}
+                 
+</tbody>
+</table>
+<p id="notseekingreelection">* Not seeking reelection to this office</p>
+</div>
+<script type="text/javascript" src="{% static 'realtimefec/js/chosen.jquery.min.js' %}"></script>
+
+
+<script type="text/javascript" >
+
+
+var states = [
+  {'name':'Show All', 'value':'0'},
+  {% for state in STATE_LIST %}{ 'value':'{{ state.abbrev}}', 'name':'{{state.name}}'}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}
+]
+
+var races = [ 
+  {'name':'Show All', 'value':'0', 'state':'ALL'},
+  {% for district in districts %}{ 'value':'{{ district.pk }}', 'name':'{{ district.race_name}}', 'state':'{{ district.state }}'}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}
+];
+
+
+candidates = [
+  {'name':'Show All', 'value':'0', 'state':'ALL'},
+  {% for candidate in object_list %}{ 'value':'{{ candidate.fec_id }}', 'name':'{{ candidate.name }} {{candidate.display_party }}', 'state':'{{ candidate.state }}', 'raceid':'{{candidate.district.pk}}', 'incumbent':'{{candidate.is_incumbent}}'}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}  
+];
+
+
+function make_states() {
+  state_element = '';
+  for (var i = 0; i < states.length; i++) {
+          state_element += '<option value="' + states[i].value + '">' + states[i].name + '</option>';
+      }
+
+  $("#candidate_state_checked").html(state_element);
+  $("#candidate_state_checked").trigger("chosen:updated");
+}
+
+function reset_races(stateid) {
+  race_element = '';
+  for (var i = 0; i < races.length; i++) {
+      if ( stateid==0 || races[i].state==stateid || races[i].state == 'ALL') {
+          race_element += '<option value="' + races[i].value + '">' + races[i].name + '</option>';
+        }
+      }
+
+  $("#district_checked").html(race_element);
+  $("#district_checked").trigger("chosen:updated");
+}
+
+function reset_candidates(stateid, raceid, incumbency) {
+  candidate_element = '';
+  for (var i = 0; i < candidates.length; i++) {
+      if ( stateid==0 || candidates[i].state==stateid || candidates[i].state == 'ALL') {
+        if ( raceid==0 || candidates[i].raceid == raceid || candidates[i].state == 'ALL') {
+          if ( incumbency=='all' || candidates[i].value==0 ||( incumbency=='incumbents' && candidates[i].incumbent == 'True') || ( incumbency=='challengers' && candidates[i].incumbent == 'False')) {
+              candidate_element += '<option value="' + candidates[i].value + '">' + candidates[i].name + '</option>';
+          } 
+        }
+      }  
+  }
+  $("#candidate_id_checked").html(candidate_element);
+  $("#candidate_id_checked").trigger("chosen:updated");
+}
+
+function reset_all_fields() {
+
+  $(".chosen_select").each(function( index ) {
+    $(this).val("0");
+  });  
+}
+
+
+$(document).ready(function() {
+  
+  $('.chosen-select'  ).chosen({disable_search_threshold: 10});
+  // Add the initial options
+  reset_candidates(0,0, 'all');
+  reset_races(0);
+  make_states();
+  
+  
+  $("#district_checked").chosen().change( function() {
+    console.log('race_chosen: ' + $("#district_checked").val());
+    reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val(), $("#candidate_filter").val());
+  });
+
+  $("#candidate_state_checked").chosen().change( function() {
+    console.log('state_chosen: ' + $("#candidate_state_checked").val());
+    reset_candidates($("#candidate_state_checked").val(), 0, $("#candidate_filter").val());
+    reset_races($("#candidate_state_checked").val());
+  });
+  
+  $("#candidate_filter").chosen().change( function() {
+    console.log('incumbency chosen: ' + $("#candidate_filter").val());
+    reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val(), $("#candidate_filter").val());
+    
+  });
+  
+  
+    $( "#candidate_filter" ).val("all");
+    
+    $( ".chosen-select" )
+    .bind( "change", function() {
+      apply_filters();
+      var sorting = [[6,1]]; 
+      // sort on the first column 
+      $("#mainPageTable").trigger("sorton",[sorting]);
+      
+      
+    });
+});
+
+
+function apply_filters() {
+  state_selected = $("#candidate_state_checked").val(), 
+  race_selected = $("#district_checked").val(), 
+  candidate_id_selected = $("#candidate_id_checked").val()
+  incumbency_selected = $("#candidate_filter").val()
+  console.log("Filtering on: state=" + state_selected + " race: " + race_selected + " candidate_id: " + candidate_id_selected + " incumbency_selected: " + incumbency_selected);
+  
+  $("#mainPageTable > tbody > tr").each(function(index) {
+    cell_text = $(this).find('td.incumbency').text().trim();
+    state_text = $(this).find('td.cell_state').text().substring(0,2);
+    id = $(this).attr('id')
+    id_pieces = id.split("-");
+    race_id = id_pieces[0];
+    fec_id = id_pieces[1];
+    
+    display = false;
+    if (incumbency_selected == 'all' || incumbency_selected=='incumbents' && cell_text=='Y' || incumbency_selected=='challengers' && cell_text=='N') {
+      if (state_selected == 0 || state_selected == state_text) {
+        if (race_selected == 0 || race_selected == race_id) {
+          if (candidate_id_selected == 0 || candidate_id_selected == fec_id) {
+            display = true;
+          }
+        }
+      }
+    }
+    if (display) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+    //console.log(index + " cell_text " + cell_text + " state: " + state_text + " race_id: " + race_id + " fec_id: " + fec_id );
+  });
+}
+
+function show_all() {
+   $("#mainPageTable > tbody > tr").each(function(index) {
+        $(this).show();
+      })
+}
+
+function hide_challengers() {
+    $("#mainPageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.incumbency').text().trim();
+      if (cell_text == 'N') {
+        console.log(index + " " + cell_text);
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+function hide_incumbents() {
+    $("#mainPageTable > tbody > tr").each(function(index) {
+      cell_text = $(this).find('td.incumbency').text().trim();
+      if (cell_text == 'Y') {
+        console.log(index + " " + cell_text);
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+      });
+
+}
+
+</script>
+
+{% endblock %}
+  
