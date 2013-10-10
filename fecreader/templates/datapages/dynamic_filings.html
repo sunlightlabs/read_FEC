@@ -43,7 +43,7 @@
             
             <div class="form_spacer">
                 <label>Candidate:</label>
-                <select data-placeholder="Pick a candidate..."tabindex="2" name="candidate_id" id="candidate_id"  class="dropdown_field_long chosen-select">
+                <select data-placeholder="Pick a house candidate..."tabindex="2" name="candidate_id" id="candidate_id"  class="dropdown_field_long chosen-select">
                     <option value=''>Any Candidate</option>
                     {% for candidate in candidates %}
                     <option value='{{ candidate.fec_id}}'>{{ candidate.name }} {{ candidate.display_party}} {{ candidate.short_office }}</option>
