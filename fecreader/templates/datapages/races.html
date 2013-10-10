@@ -17,9 +17,9 @@
 <div class="module">
   <p>
 Show: <select name="filter_display" class="dropdown_field chosen-select" id="candidate_filter" tabindex="2" style="width:200px;">
-    <option value='0'>House and Senate races</option>
-    <option value='S'>only Senate races</option>
-    <option value='H'>only House races</option>
+    <option value='0'>House And Senate Races</option>
+    <option value='S'>Only Senate Races</option>
+    <option value='H'>Only House Races</option>
   </select>&nbsp;&nbsp;
   State:
   <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="candidate_state_checked" style="width:120px;">
@@ -48,7 +48,7 @@ Show: <select name="filter_display" class="dropdown_field chosen-select" id="can
               <tbody>
                 {% for object in races %}
                   <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
-                      <td class="district">({{object.office}}) <a href="{{ object.get_absolute_url }}">{{ object.district_formatted }}</a> - {{object.incumbent_name}} ({{object.incumbent_party}})</td>
+                      <td class="district">({{object.office}}) <a href="{{ object.get_absolute_url }}" class="link">{{ object.district_formatted }}</a> - {{object.incumbent_name}} ({{object.incumbent_party}})</td>
                       <td>{% if object.open_seat %}Y{% else %}N{% endif %}</td>
                       <td>{{ object.rothenberg_rating_short }}</td>
                       <td>{{ object.election_year }}</td>

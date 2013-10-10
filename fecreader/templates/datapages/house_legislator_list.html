@@ -21,9 +21,9 @@
   
 <p>
 Show: <select name="filter_display" class="dropdown_field chosen-select" id="candidate_filter" style="width:200px;">
-  <option value='all'>challengers and incumbents</option>
-  <option value='incumbents'>only incumbents</option>
-  <option value='challengers'>only challengers</option>
+  <option value='all'>Challengers And Incumbents</option>
+  <option value='incumbents'>Only Incumbents</option>
+  <option value='challengers'>Only Challengers</option>
 </select>
 </p>
 <p>
@@ -59,10 +59,10 @@ Show: <select name="filter_display" class="dropdown_field chosen-select" id="can
                 {% for object in object_list %}
                   <tr class="{% cycle 'odd' 'even' %}" id="{{ object.district.pk}}-{{object.fec_id}}">
                       <td class="lawmakerName">
-                      <a href="{{object.get_absolute_url}}">{{object.name}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
+                      <a href="{{object.get_absolute_url}}" class="link">{{object.name}}</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
                       <td class="incumbency">{{object.incumbency_status }}</td>
                       <td>{{object.pty}}</td>
-                      <td class="cell_state"><a href="{{ object.district.get_absolute_url}}">{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</a></td>
+                      <td class="cell_state"><a href="{{ object.district.get_absolute_url}}"  class="link">{{ object.state}}{% if object.office_district %}-{{object.office_district}}{% endif %}</a></td>
                       <td>{{ object.election_year }}</td>
                       <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
                       <td>${{ object.cash_on_hand|intcomma }}</td>
