@@ -10,7 +10,7 @@ from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
 from api.serializers import NFSerializer, COSerializer, SkedESerializer
-from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow
+from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch
 from rest_framework_csv import renderers as r
 from rest_framework.settings import api_settings
 from paginated_csv_renderer import PaginatedCSVRenderer
@@ -38,6 +38,8 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
         self.queryset = reportTypeFilter(self.queryset, self.request.GET)
         self.queryset = periodTypeFilter(self.queryset, self.request.GET)
         self.queryset = filingTimeFilter(self.queryset, self.request.GET)
+        self.queryset = committeeSearchSlow(self.queryset, self.request.GET)
+        self.queryset = candidateidSearch(self.queryset, self.request.GET)
         
         return self.queryset
         

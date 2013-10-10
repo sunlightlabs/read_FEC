@@ -218,6 +218,7 @@ th.sort.header:hover {
     width: 320px;
     }
 
+
 .dollar_field {
     width:105px;
     padding:2px;
@@ -232,7 +233,14 @@ th.sort.header:hover {
     width:100px;
     padding:0px;
     }
+    
+.dropdown_super_narrow {
+    width:120px;
+}
 
+.dropdown_slightly_narrow {
+    width:160px;
+}
 .pagination_container {
     padding-top:0px;
     padding-bottom:0px;
@@ -384,3 +392,4 @@ A.link:hover {text-decoration: underline}
 }
 /* force the dialog to be on top */
 .ui-dialog { z-index: 1000 !important ;}
+

@@ -179,8 +179,10 @@ def senate_race(request, cycle, state, term_class):
     
 @cache_page(SHORT_CACHE_TIME)
 def newest_filings(request):
+    candidates = Candidate_Overlay.objects.all().order_by('name')
     return render_to_response('datapages/dynamic_filings.html', 
         {
+        'candidates':candidates,
         'title':'Newest Filings',
         'PAGINATE_BY':PAGINATE_BY,
         'explanatory_text':'Find and filter the latest electronic campaign finance filings made to the Federal Election Commission. Use the tabs below to filter and sort the type of filings showed.',

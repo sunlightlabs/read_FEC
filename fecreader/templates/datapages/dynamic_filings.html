@@ -12,6 +12,8 @@
 {% block sitecss %}
 {{ block.super }}
 {# <link rel="stylesheet" href="{% static 'realtimefec/css/jquery-ui-1.10.3.custom.min.css' %}" /> #}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+
 {% endblock sitecss %}
 
 
@@ -36,44 +38,47 @@
         </div>
 
         <div class="form-row clearfix form-break">
+
+            
+            
             <div class="form_spacer">
-                <label>Committee Type:</label>
-                <select name="committee_type" class="dropdown_field" id="committee_class">
-                    <option value=''>All</option>
-                    <option value='H'>House</option>
-                    <option value='S'>Senate</option>
-                    <option value='HSP'>Any Candidate</option>
-                    <option value='UOVW'>Super PACs (including hybrids)</option>
-                    <option value='UO'>Super PACs (NOT including hybrids)</option>
-                    <option value='P'>Presidential</option>
-                    <option value='E'>Electioneering Communication</option>
-                    <option value='XYZ'>Party Committees</option>
-                    <option value='I'>Non Committees</option>
-                    <option value='C'>Communication Cost</option>
+                <label>Candidate:</label>
+                <select data-placeholder="Pick a candidate..."tabindex="2" name="candidate_id" id="candidate_id"  class="dropdown_field_long chosen-select">
+                    <option value=''>Any Candidate</option>
+                    {% for candidate in candidates %}
+                    <option value='{{ candidate.fec_id}}'>{{ candidate.name }} {{ candidate.display_party}} {{ candidate.short_office }}</option>
+                    {% endfor %}
                 </select>
             </div>
-
+            
             <div class="form_spacer">
-                <label>Filing:</label>
-                <select name="form_type" class="dropdown_field_long" id="report_type">
-                    <option value=''>All</option>
-                    <option value='monthly'>Monthly/quarterly reports</option>
-                    <option value='ies'>Independent/coordinated expenditures</option>
-                    <option value='F6'>48-hour notice of contributions/loans received</option>
-                    <option value='F9'>24-hour notice of electioneering communications</option>
-                    <option value='F2'>Statement of candidacy</option>
-                    <option value='F4'>Convention committee report</option>
-                    <option value='F13'>Inaugural committee report</option>
-
-                </select>
+                <label>Committee: </label>
+                <input type="text"  id="search_term" name="search_term" class="text_field"></input>
+                
             </div>
-        </div>
-
 
         <div class="form-row clearfix">
+          
+          <div class="form_spacer">
+              <label>Committee type:</label>
+              <select name="committee_type" id="committee_class" class="dropdown_super_narrow">
+                  <option value=''>All</option>
+                  <option value='H'>House</option>
+                  <option value='S'>Senate</option>
+                  <option value='HSP'>Any Candidate</option>
+                  <option value='UOVW'>Super PACs (including hybrids)</option>
+                  <option value='UO'>Super PACs (NOT including hybrids)</option>
+                  <option value='P'>Presidential</option>
+                  <option value='E'>Electioneering Communication</option>
+                  <option value='XYZ'>Party Committees</option>
+                  <option value='I'>Non Committees</option>
+                  <option value='C'>Communication Cost</option>
+              </select>
+            </div>
+          
             <div class="form_spacer">
                 <label>Date filed:</label>
-                <select name="time_range" class="dropdown_field_narrow" id="time_range">
+                <select name="time_range" id="time_range" class="dropdown_super_narrow">
                   <option value='day'>today</option>
                   <option value='week'>last 7 days</option>
                   <option value='cycle'>entire cycle</option>
@@ -81,8 +86,8 @@
             </div>
 
             <div class="form_spacer">
-                <label>Period covered:</label>
-                <select name="form_type" class="dropdown_field" id="period_type">
+                <label>Time covered:</label>
+                <select name="form_type" id="period_type" class="dropdown_super_narrow">
                     <option value=''>All</option>
                     <option value='Q1'>Quarterly: Q1</option>
                     <option value='Q2'>Quarterly: Q2</option>
@@ -108,14 +113,25 @@
 
 
         <div class="form-row clearfix">
+          <div class="form_spacer">
+          
+              <label>Filing Type:</label>
+              <select name="form_type" id="report_type" style="width:150px;">
+                  <option value=''>All</option>
+                  <option value='monthly'>Monthly/quarterly reports</option>
+                  <option value='ies'>Independent/coordinated expenditures</option>
+                  <option value='F6'>48-hour notice of contributions/loans received</option>
+                  <option value='F9'>24-hour notice of electioneering communications</option>
+                  <option value='F2'>Statement of candidacy</option>
+                  <option value='F4'>Convention committee report</option>
+                  <option value='F13'>Inaugural committee report</option>
+
+              </select>
+          </div>
+          
             <div class="form_spacer">
                 <label>Minimum raised:</label>
                 <input type="text" class="dollar_field" id="min_raised" name="min_raised"></input>
-            </div>
-
-            <div class="form_spacer">
-                <label>Minimum spent:</label>
-                <input type="text" class="dollar_field" id="min_spent" name="min_spent"></input>
             </div>
 
             <div class="form_spacer">
@@ -183,6 +199,9 @@
 </script>
 {% endverbatim %}
 
+<script type="text/javascript" src="{% static 'realtimefec/js/chosen.jquery.min.js' %}"></script>
+
+
 <script type="text/javascript">
 // The api doesn't tell us the pagenumber
 pagenumber = 1;
@@ -218,10 +237,10 @@ function validate_fields() {
 function get_json_url() {
   query_string = "?ordering=" + $("#ordering").val();
 
-  min_spent = $("#min_spent").val();
-  if (min_spent.length > 0) {
-    query_string += "&min_spent=" + min_spent
-  }
+  //min_spent = $("#min_spent").val();
+  //if (min_spent.length > 0) {
+  //  query_string += "&min_spent=" + min_spent
+  //}
 
   min_raised = $("#min_raised").val();
   if (min_raised.length > 0) {
@@ -237,6 +256,7 @@ function get_json_url() {
   if (committee_class.length>0) {
     query_string += "&committee_class=" + committee_class;
   }
+  
 
   time_range = $('#time_range').val();
   if (time_range.length>0) {
@@ -246,6 +266,18 @@ function get_json_url() {
   report_type = $('#report_type').val();
   if (report_type.length>0) {
     query_string += "&report_type=" + report_type;
+  }
+  
+  search_term = $('#search_term').val();
+  if (search_term.length>4) {
+    query_string += "&search_term=" + search_term;
+  } else {
+    $('#search_term').val("");
+  }
+  
+  candidate_id = $('#candidate_id').val();
+  if (candidate_id.length>0) {
+    query_string += "&candidate_id=" + candidate_id;
   }
 
   period_type = $('#period_type').val();
@@ -473,6 +505,9 @@ function addMustacheHelpers() {
 }
 
 $(document).ready(function() {
+      
+    $('.chosen-select'  ).chosen({disable_search_threshold: 10});
+    
     addMustacheHelpers();
 
     $( "#load_button" )

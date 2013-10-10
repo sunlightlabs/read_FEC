@@ -2,7 +2,7 @@ import django_filters
 
 from datetime import date, timedelta
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay
+from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees
 from formdata.models import SkedE
 from django.db.models import Q
 
@@ -155,6 +155,29 @@ def orderingFilter(queryset, querydict, fields):
     
     return queryset
     
+def committeeSearchSlow(queryset, querydict):
+    """
+    Table scan--maybe some sorta dropdown in front of this? 
+    """
+    try:
+        search_term = querydict['search_term']
+        queryset = queryset.filter(committee_name__icontains=search_term)
+
+    except KeyError:
+        pass
+    return queryset
+
+def candidateidSearch(queryset, querydict):
+    try:
+        candidate_id = querydict['candidate_id']
+        authorized_committee_list = Authorized_Candidate_Committees.objects.filter(candidate_id=candidate_id)
+        committee_list = [x.get('committee_id') for x in authorized_committee_list.values('committee_id')]
+        queryset = queryset.filter(fec_id__in=committee_list)
+
+    except KeyError:
+        pass
+    return queryset
+        
 def filingTimeFilter(queryset, querydict):
     try:
         time_range=querydict['time_range']
