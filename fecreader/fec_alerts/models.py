@@ -10,7 +10,8 @@ from parsing.read_FEC_settings import FEC_HTML_LOCATION
 from api.nulls_last_queryset import NullsLastManager
 
 # This committee files paper filings that appear inaccurate.
-webk_blacklist = ['C00507947']
+# C00547109 files both paper and electronic
+webk_blacklist = ['C00507947', 'C00547109']
 
 
 eastern = timezone('US/Eastern')
