@@ -487,7 +487,13 @@ $(document).ready(function() {
     .bind( "click", function() {
       button_load();
     });
-
+    
+    $("#min_spent").keydown(function(event){
+      if(event.keyCode == 13){
+        button_load();
+      }
+    });
+min_spent
 
 
    reset_all_fields();

@@ -422,6 +422,11 @@ $(document).ready(function() {
         button_load();
       });
 
+    $("#search_term, #min_coh, #min_raised, #min_spent").keydown(function(event){
+      if(event.keyCode == 13){
+        button_load();
+      }
+    });
 
    reset_all_fields();
 

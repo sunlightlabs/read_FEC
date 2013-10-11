@@ -505,6 +505,7 @@ function addMustacheHelpers() {
 }
 
 $(document).ready(function() {
+  
       
     $('.chosen-select'  ).chosen({disable_search_threshold: 10});
     
@@ -515,8 +516,12 @@ $(document).ready(function() {
       button_load();
     });
 
-
-
+    $("#search_term, #min_coh, #min_raised").keydown(function(event){
+      if(event.keyCode == 13){
+        button_load();
+      }
+    });
+    
    reset_all_fields();
 
    windowhash = window.location.hash;
