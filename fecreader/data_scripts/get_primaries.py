@@ -10,16 +10,16 @@ setup_environ(settings)
 
 from summary_data.models import District, Candidate_Overlay
 
-fundraising_threshold = 50000
+fundraising_threshold = 25000
 
-for office in ['H', 'S']:
+for office in ['H']:
     # Ignore open seats
-    races = District.objects.filter(office=office, open_seat=False)
+    races = District.objects.filter(office=office, open_seat=False).order_by('incumbent_party')
 
     for race in races:
         incumbent_party = race.incumbent_party
         primary_challengers = Candidate_Overlay.objects.filter(district=race, is_incumbent=False, party=incumbent_party, total_receipts__gte=fundraising_threshold).exclude(not_seeking_reelection=True)
         if primary_challengers:
-            print "\n\nFound credible challenger to %s %s - %s %s %s" % (race.incumbent_name, race.incumbent_party, race.state, race.office, race.office_district)
+            print "\n\nFound credible challenger to %s (%s) - rating: %s - %s %s %s" % (race.incumbent_name, race.incumbent_party, race.rothenberg_rating_text ,race.state, race.office, race.office_district)
             for challenger in primary_challengers:
                 print "\tchallenger: %s (%s) %s" % (challenger.name, challenger.party, challenger.total_receipts)
