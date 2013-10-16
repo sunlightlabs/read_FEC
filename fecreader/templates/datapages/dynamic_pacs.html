@@ -93,7 +93,7 @@
 
 <div>
 <!-- <div id="result_description"><b></b></div> -->
-<div id="display_info"></div>
+<span id="display_info"></span><span id="csv_info" class="tip"></span>
 <div class="load_next" style="float: right; width: 200px;"></div>
 <div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>
 <div style="clear:both;"></div>
@@ -367,6 +367,19 @@ function loadjson(jsonurl) {
                   resultrows.push(html);
                };
                $( "#maintablebody" ).html( resultrows.join(""));
+               
+               if (data_loaded.count <  1000) {
+                   var page_re = /&*page=\d+/i;
+                   var format_re = /&*format=json/i;
+                   var csvurl = jsonurl.replace(page_re, '').replace(format_re, '') + "&format=csv";
+                   console.log("csv url is: " + csvurl);
+                   csv_string = ' Download a <a href="' + csvurl + '">csv file of all results</a>.';
+                   $( "#csv_info" ).html(csv_string);
+
+                } else {
+                  $( "#csv_info" ).html("");
+                }
+                
                // rerun tablesorter
                remove_tablesorter();
 
