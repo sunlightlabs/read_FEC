@@ -85,7 +85,7 @@
             </div>
 
             <div class="form_spacer">
-                <label>Time covered:</label>
+                <label>Period:</label>
                 <select name="form_type" id="period_type" class="dropdown_super_narrow">
                     <option value=''>All</option>
                     <option value='Q1'>Quarterly: Q1</option>
@@ -108,6 +108,15 @@
                     <option value='M12'>Monthly: Dec.</option>
                 </select>
             </div>
+            <div class="form_spacer">
+                <label>Year:</label>
+                <select name="year_covered" id="year_covered" class="dropdown_super_narrow" style="width: 100px;">
+                    <option value=''>All</option>
+                    <option value='2013'>2013</option>
+                    <option value='2012'>2012</option>
+                </select>
+            </div>
+                        
         </div>
 
 
@@ -150,13 +159,22 @@
                     <option value='committee_name'>committee name</option>
                 </select>
             </div>
+            <div class="form_spacer">
+                <label>Amendments:</label>
+                <select name="is_superceded" class="dropdown_field_narrow" id="is_superceded" style="width: 100px;">
+                    <option value=''>All</option>
+                    <option value='False'>only final versions</option>
+                    <option value='True'>only amended originals</option>
 
+                </select>
+            </div>
             <input type="button" value="Filter Filings" id="load_button" />
         </div>
         
     </div>
 
-    <div id="display_info"></div>
+    <span id="display_info"></span><span id="csv_info" class="tip"></span>
+    
     <div class="pagination_container">
         <div class="load_next" style="float: right; width: 200px;"></div>
         <div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>
@@ -257,12 +275,21 @@ function get_json_url() {
     query_string += "&committee_class=" + committee_class;
   }
   
+  year_covered =  $("#year_covered").val();
+  if (year_covered.length>0) {
+    query_string += "&year_covered=" + year_covered;
+  }
 
   time_range = $('#time_range').val();
   if (time_range.length>0) {
     query_string += "&time_range=" + time_range;
   }
-
+  
+  is_superceded = $('#is_superceded').val();
+  if (is_superceded.length>0) {
+    query_string += "&is_superceded=" + is_superceded;
+  }
+  
   report_type = $('#report_type').val();
   if (report_type.length>0) {
     query_string += "&report_type=" + report_type;
@@ -295,7 +322,7 @@ function get_json_url() {
 }
 
 function reset_all_fields() {
-  $(".date_field,  .dollar_field, .dropdown_field").each(function( index ) {
+  $(".date_field,  .dollar_field, .dropdown_field, .dropdown_super_narrow").each(function( index ) {
     $(this).val("");
   });
   // default is filing order
@@ -423,8 +450,7 @@ function loadjson(jsonurl) {
                next =  data_loaded.next;
                previous = data_loaded.previous;
 
-               $( "#result_description" ).html("<b>This is a text description of the results shown below</b>")
-
+              
 
                if (next != null) {
                  $( ".load_next" ).html( "<a href=\"javascript:load_next('" + next + "');\">next page<\/a>");
@@ -463,7 +489,19 @@ function loadjson(jsonurl) {
                // This doesn't work sometimes, and also isn't needed in others. wtf?
                // addCommaParser()
                $(".sortable").tablesorter({ widgets: ['zebra']});
-
+               
+               if (numresults < 5000) {
+                  var page_re = /&*page=\d+/i;
+                  var format_re = /&*format=json/i;
+                  var csvurl = jsonurl.replace(page_re, '').replace(format_re, '') + "&format=csv";
+                  console.log("csv url is: " + csvurl);
+                  csv_string = ' Download a <a href="' + csvurl + '">csv file of all results</a>.';
+                  $( "#csv_info" ).html(csv_string);
+                  
+               } else {
+                 $( "#csv_info" ).html("");
+               }
+               
             });
 
 }
@@ -532,8 +570,6 @@ $(document).ready(function() {
       console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
       $("#" + parts[0]).val(parts[1]);
    });
-
-   console.log("hashdict is " + hashdict);
 
    button_load();
 

@@ -22,7 +22,7 @@ class NFFilter(django_filters.FilterSet):
 
     class Meta:
         model = new_filing
-        fields = ['fec_id', 'committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'coverage_to_date', 'is_superpac', 'committee_designation', 'committee_type', 'committee_slug', 'party', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent', 'lines_present']
+        fields = ['fec_id', 'committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'coverage_to_date', 'is_superpac', 'committee_designation', 'committee_type', 'committee_slug', 'party', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent', 'lines_present', 'is_superceded']
         
 
 class COFilter(django_filters.FilterSet):
@@ -44,6 +44,15 @@ class SkedEFilter(django_filters.FilterSet):
         model = SkedE
         fields=('form_type', 'candidate_id_checked', 'candidate_party_checked', 'candidate_office_checked', 'candidate_state_checked', 'candidate_district_checked', 'support_oppose_checked', 'payee_state', 'expenditure_date_formatted', 'expenditure_amount', 'filer_committee_id_number', 'district_checked')
         
+def yearFilter(queryset, querydict):
+    try:
+        year=int(querydict['year_covered'])
+        queryset = queryset.filter(Q(coverage_from_date__gte=date(year,1,1), coverage_to_date__lte=date(year,12,31)))
+    
+    except (KeyError, ValueError):
+        pass
+    return queryset
+    
 
 def periodTypeFilter(queryset, querydict):
     try:

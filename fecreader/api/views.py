@@ -10,7 +10,7 @@ from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
 from api.serializers import NFSerializer, COSerializer, SkedESerializer
-from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch
+from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch, yearFilter
 from rest_framework_csv import renderers as r
 from rest_framework.settings import api_settings
 from paginated_csv_renderer import PaginatedCSVRenderer
@@ -22,18 +22,29 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows new filings to be viewed.
     """
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
+    
+    
     queryset = new_filing.nulls_last_objects.all()
     serializer_class = NFSerializer
     filter_class = NFFilter
     
-    
+    def get_paginate_by(self):
+            """
+            Use smaller pagination for json/html than csv
+            """
+            if self.request.accepted_renderer.format == ('csv'):
+                return 5000
+            return 100
     
     def get_queryset(self):  
         # It seems like there should be a better way to chain filters together than this
         # the django-rest-framework viewset approach appear to allow just one filter though
         # so just apply these filters before the filter_class sees it. 
         
+
         self.queryset = orderingFilter(self.queryset, self.request.GET, nf_orderable_fields)
+        self.queryset = yearFilter(self.queryset, self.request.GET)
         self.queryset =  multiCommitteeTypeFilter(self.queryset, self.request.GET)
         self.queryset = reportTypeFilter(self.queryset, self.request.GET)
         self.queryset = periodTypeFilter(self.queryset, self.request.GET)
@@ -50,11 +61,21 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows committee_overlays to be viewed.
     """
+    
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
+    
     queryset = Committee_Overlay.nulls_last_objects.all().select_related('curated_candidate')
     serializer_class = COSerializer
     filter_class = COFilter
     
-
+    def get_paginate_by(self):
+            """
+            Use smaller pagination for json/html than csv
+            """
+            if self.request.accepted_renderer.format == ('csv'):
+                return 5000
+            return 100
+            
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
         self.queryset = orderingFilter(self.queryset, self.request.GET, co_orderable_fields)
@@ -82,7 +103,7 @@ class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
             Use smaller pagination for json/html than csv
             """
             if self.request.accepted_renderer.format == ('csv'):
-                return 1000
+                return 5000
             return 100
 
     def get_queryset(self):  
