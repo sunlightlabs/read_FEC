@@ -153,43 +153,73 @@ $(document).ready(function() {
   
   
   $("#district_checked").chosen().change( function() {
-    console.log('race_chosen: ' + $("#district_checked").val());
+    //console.log('race_chosen: ' + $("#district_checked").val());
     reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val(), $("#candidate_filter").val());
   });
 
   $("#candidate_state_checked").chosen().change( function() {
-    console.log('state_chosen: ' + $("#candidate_state_checked").val());
+    //console.log('state_chosen: ' + $("#candidate_state_checked").val());
     reset_candidates($("#candidate_state_checked").val(), 0, $("#candidate_filter").val());
     reset_races($("#candidate_state_checked").val());
   });
   
   $("#candidate_filter").chosen().change( function() {
-    console.log('incumbency chosen: ' + $("#candidate_filter").val());
+    //console.log('incumbency chosen: ' + $("#candidate_filter").val());
     reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val(), $("#candidate_filter").val());
     
   });
   
+  windowhash = window.location.hash;
+  $.each(windowhash.substr(2).split('&'), function(i, elem) {
+     var parts = elem.split('=');
+     //console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
+     $("#" + parts[0]).val(parts[1]);
+     $("#" + parts[0]).trigger("chosen:updated");
+  });
+  reset_races($("#candidate_state_checked").val());
+  reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val(), $("#candidate_filter").val());
   
-    $( "#candidate_filter" ).val("all");
-    
-    $( ".chosen-select" )
-    .bind( "change", function() {
-      apply_filters();
-      var sorting = [[6,1]]; 
-      // sort on the first column 
-      $("#mainPageTable").trigger("sorton",[sorting]);
-      
-      
-    });
+  apply_filters();
+  
+  $( ".chosen-select" )
+  .bind( "change", function() {
+    apply_filters();
+  });
 });
 
 
 function apply_filters() {
-  state_selected = $("#candidate_state_checked").val(), 
-  race_selected = $("#district_checked").val(), 
-  candidate_id_selected = $("#candidate_id_checked").val()
-  incumbency_selected = $("#candidate_filter").val()
-  console.log("Filtering on: state=" + state_selected + " race: " + race_selected + " candidate_id: " + candidate_id_selected + " incumbency_selected: " + incumbency_selected);
+  candidate_state_checked = $("#candidate_state_checked").val(), 
+  district_checked = $("#district_checked").val(), 
+  candidate_id_checked = $("#candidate_id_checked").val()
+  candidate_filter = $("#candidate_filter").val()
+  
+
+  query_string = "?";
+  
+  // todo - standardize var names / ids to just iterate over this. The below is dumb. 
+  
+  var query_args = {"candidate_state_checked":candidate_state_checked, "district_checked":district_checked, "candidate_id_checked":candidate_id_checked, "candidate_filter":candidate_filter}
+  var num_params = 0;
+  for (var key in query_args) {
+    //console.log("key is: " + key + "value is " + query_args[key]);
+    if (key.length > 0 && query_args[key] != 0) {
+      if (num_params > 0) {
+        query_string += "&";
+      }
+      query_string += key + "=" + query_args[key];
+      num_params++;
+    }
+  }
+  
+  
+  //console.log("num params=" + num_params);
+  //"&district_checked=" + district_checked + "&candidate_id_checked=" + candidate_id_checked + "&candidate_filter=" + candidate_filter
+  if (num_params > 0) {
+    window.location.hash = query_string;  
+  }
+  
+  //console.log("Filtering on: state=" + candidate_state_checked + " race: " + district_checked + " candidate_id: " + candidate_id_checked + " incumbency_selected: " + candidate_filter);
   
   $("#mainPageTable > tbody > tr").each(function(index) {
     cell_text = $(this).find('td.incumbency').text().trim();
@@ -200,10 +230,10 @@ function apply_filters() {
     fec_id = id_pieces[1];
     
     display = false;
-    if (incumbency_selected == 'all' || incumbency_selected=='incumbents' && cell_text=='Y' || incumbency_selected=='challengers' && cell_text=='N') {
-      if (state_selected == 0 || state_selected == state_text) {
-        if (race_selected == 0 || race_selected == race_id) {
-          if (candidate_id_selected == 0 || candidate_id_selected == fec_id) {
+    if (candidate_filter == 'all' || candidate_filter=='incumbents' && cell_text=='Y' || candidate_filter=='challengers' && cell_text=='N') {
+      if (candidate_state_checked == 0 || candidate_state_checked == state_text) {
+        if (district_checked == 0 || district_checked == race_id) {
+          if (candidate_id_checked == 0 || candidate_id_checked == fec_id) {
             display = true;
           }
         }
@@ -216,38 +246,9 @@ function apply_filters() {
     }
     //console.log(index + " cell_text " + cell_text + " state: " + state_text + " race_id: " + race_id + " fec_id: " + fec_id );
   });
-}
-
-function show_all() {
-   $("#mainPageTable > tbody > tr").each(function(index) {
-        $(this).show();
-      })
-}
-
-function hide_challengers() {
-    $("#mainPageTable > tbody > tr").each(function(index) {
-      cell_text = $(this).find('td.incumbency').text().trim();
-      if (cell_text == 'N') {
-        console.log(index + " " + cell_text);
-        $(this).hide();
-      } else {
-        $(this).show();
-      }
-      });
-
-}
-
-function hide_incumbents() {
-    $("#mainPageTable > tbody > tr").each(function(index) {
-      cell_text = $(this).find('td.incumbency').text().trim();
-      if (cell_text == 'Y') {
-        console.log(index + " " + cell_text);
-        $(this).hide();
-      } else {
-        $(this).show();
-      }
-      });
-
+  var sorting = [[6,1]]; 
+  // sort on the first column 
+  $("#mainPageTable").trigger("sorton",[sorting]);
 }
 
 </script>
