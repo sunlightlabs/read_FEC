@@ -451,11 +451,11 @@ function addMustacheHelpers() {
     );
   });
 
-  Handlebars.registerHelper('support_oppose_checked', function(object) {
+  Handlebars.registerHelper('support_oppose_div', function(object) {
     var return_string = "";
-    if (object_cleaned=='S') {
+    if (object=='S') {
       return_string = '<div class="label-support">Support</div>';
-    } else if (object_cleaned=='O') {
+    } else if (object=='O') {
       return_string = '<div class="label-oppose">Oppose</div>';
     }
     
