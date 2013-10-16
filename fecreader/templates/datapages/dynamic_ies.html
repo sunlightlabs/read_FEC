@@ -92,7 +92,7 @@
         </div>
     </div>
 
-    <div id="display_info"></div>
+    <span id="display_info"></span><span id="csv_info" class="tip"></span>
     <div class="pagination_container">
         <div class="load_next" style="float: right; width: 200px;"></div>
         <div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>
@@ -125,7 +125,7 @@
 <script id="row-template" type="text/x-handlebars-template" >
    <tr class="{{ class }}">
         <td><a href="{{ committee_url }}">{{& committee_name }}</a></th>
-        <td>{{{ support_oppose }}}</td>
+        <td>{{{ support_oppose_div support_oppose_code }}}</td>
         <td><a href="{{ candidate_url }}">{{ candidate_name }}</a></td>
         <td><a href="{{ race_url }}">{{ short_office }}</a></td>
         <td>{{ payee_name_simplified }} - {{ payee_city}}, {{ payee_state}} {{ contributor_zip}} </td>
@@ -409,13 +409,19 @@ function loadjson(jsonurl) {
                };
                $( "#maintablebody" ).html( resultrows.join(""));
                
-               /// We're no longer using client-side sorting on this. 
-               // rerun tablesorter
-               //remove_tablesorter();
+               
+               
+               if (data_loaded.count <  1000) {
+                   var page_re = /&*page=\d+/i;
+                   var format_re = /&*format=json/i;
+                   var csvurl = jsonurl.replace(page_re, '').replace(format_re, '') + "&format=csv";
+                   console.log("csv url is: " + csvurl);
+                   csv_string = ' Download a <a href="' + csvurl + '">csv file of all results</a>.';
+                   $( "#csv_info" ).html(csv_string);
 
-               // This doesn't work sometimes, and also isn't needed in others. wtf?
-               // addCommaParser()
-               //$(".sortable").tablesorter({ widgets: ['zebra']});
+                } else {
+                  $( "#csv_info" ).html("");
+                }
 
             });
 
@@ -443,6 +449,17 @@ function addMustacheHelpers() {
     return new Handlebars.SafeString(
       roundwCommas(object)
     );
+  });
+
+  Handlebars.registerHelper('support_oppose_checked', function(object) {
+    var return_string = "";
+    if (object_cleaned=='S') {
+      return_string = '<div class="label-support">Support</div>';
+    } else if (object_cleaned=='O') {
+      return_string = '<div class="label-oppose">Oppose</div>';
+    }
+    
+    return new Handlebars.SafeString(return_string);
   });
 
   Handlebars.registerHelper('mddyy', function(object) {
