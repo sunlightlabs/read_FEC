@@ -19,7 +19,7 @@ def print_candidate_details(candidate, is_incumbent=False):
     returnstring = ""
     if (is_incumbent):
         returnstring += "<b>Incumbent:</b>"
-    returnstring += """<a href="http://realtime.influenceexplorer.com%s">%s (%s)</a>Total raised: $%s  Cash on hand: $%s (as of %s) """ % (candidate.get_absolute_url(), candidate.name, candidate.party,  humanize.intcomma(candidate.total_receipts), humanize.intcomma(candidate.cash_on_hand), candidate.cash_on_hand_date)
+    returnstring += """<a href="http://realtime.influenceexplorer.com%s">%s (%s)</a>Total raised: $%s  Cash on hand: $%s (as of %s) """ % (candidate.get_absolute_url(), candidate.name, candidate.party,  humanize.intcomma(candidate.total_receipts), humanize.intcomma(candidate.cash_on_hand), candidate.cash_on_hand_date.strftime("%m/%d"))
     return returnstring
     
 def print_district(district):
