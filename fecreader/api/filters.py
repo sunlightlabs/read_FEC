@@ -207,8 +207,14 @@ def multiCommitteeTypeFilter(queryset, querydict):
     try:
         committee_class = querydict['committee_class']
         committee_class = committee_class.upper()
-        committee_type_list = list(committee_class)
-        queryset = queryset.filter(committee_type__in=committee_type_list)
+        if committee_class == 'J':
+            queryset = queryset.filter(committee_designation=committee_class)
+        elif committee_class == 'L':
+            # a D commmittee type is a delegate, so use L instead.
+            queryset = queryset.filter(committee_designation='D')
+        else:
+            committee_type_list = list(committee_class)
+            queryset = queryset.filter(committee_type__in=committee_type_list)
         
     except KeyError:
         pass
