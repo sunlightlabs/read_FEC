@@ -492,7 +492,7 @@ function loadjson(jsonurl) {
                // addCommaParser()
                $(".sortable").tablesorter({ widgets: ['zebra']});
                
-               if (data_loaded.count <  1000) {
+               if (data_loaded.count <  2000) {
                   var page_re = /&*page=\d+/i;
                   var format_re = /&*format=json/i;
                   var csvurl = jsonurl.replace(page_re, '').replace(format_re, '') + "&format=csv";

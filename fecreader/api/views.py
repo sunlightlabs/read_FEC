@@ -34,7 +34,7 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
             Use smaller pagination for json/html than csv
             """
             if self.request.accepted_renderer.format == ('csv'):
-                return 1000
+                return 2000
             return 100
     
     def get_queryset(self):  
@@ -73,7 +73,7 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
             Use smaller pagination for json/html than csv
             """
             if self.request.accepted_renderer.format == ('csv'):
-                return 1000
+                return 2000
             return 100
             
     def get_queryset(self):  
@@ -103,7 +103,7 @@ class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
             Use smaller pagination for json/html than csv
             """
             if self.request.accepted_renderer.format == ('csv'):
-                return 1000
+                return 2000
             return 100
 
     def get_queryset(self):  
