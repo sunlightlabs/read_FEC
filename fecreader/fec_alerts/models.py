@@ -365,3 +365,6 @@ class WebK(models.Model):
     uni_oth_ref_or_reb = models.DecimalField(max_digits=14, decimal_places=2, blank=True, null=True, help_text="Unitemized other Refunds or Rebates")
     uni_ref_or_reb = models.DecimalField(max_digits=14, decimal_places=2, blank=True, null=True, help_text="Unitemized Refunds or Rebates")
     org_tp = models.CharField(max_length=1, null=True, help_text="Organization Type")
+    
+    create_time = models.DateTimeField(auto_now_add=True, null=True, help_text="This is the time that we created the webk, not the time FEC added it.")
+    
