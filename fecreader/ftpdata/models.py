@@ -46,7 +46,7 @@ class Candidate(models.Model):
 class Committee(models.Model):
     cycle = models.PositiveIntegerField()
     cmte_id = models.CharField(max_length=9)
-    cmte_name = models.CharField(max_length=200)
+    cmte_name = models.CharField(max_length=200, null=True)
     tres_nm = models.CharField(max_length=90, blank=True, null=True)
     cmte_st1 = models.CharField(max_length=34, blank=True, null=True)
     cmte_st2 = models.CharField(max_length=34, blank=True, null=True)
