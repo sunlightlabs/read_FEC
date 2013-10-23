@@ -193,7 +193,7 @@ def newest_filings(request):
         'candidates':candidates,
         'title':'Newest Filings',
         'PAGINATE_BY':PAGINATE_BY,
-        'explanatory_text':'Find and filter the latest electronic campaign finance filings made to the Federal Election Commission. Use the tabs below to filter and sort the type of filings showed. For more details, see the <a href="/about/" class="link">about page</a>.<br><b>Senate candidates do not file electronic reports.</b>',
+        'explanatory_text':'Find and filter the latest electronic campaign finance filings made to the Federal Election Commission. Use the tabs below to filter and sort the type of filings showed. Only House candidates who have raised money are shown in the candidate dropdown menu.  For more details, see the <a href="/about/#newest_filings" class="link">about page</a>.<br><b>Senate candidates do not file electronic reports.</b>',
         },
         context_instance=RequestContext(request)
     )
@@ -202,7 +202,7 @@ def newest_filings(request):
 def pacs(request):
     return render_to_response('datapages/dynamic_pacs.html', 
         {
-        'explanatory_text':'Find and filter committee summary information for the entire election cycle (since Jan. 1, 2013). Review how much groups raised and spent, their debts and cash on hand. Click the committee name to see filings.',
+        'explanatory_text':'Find and filter committee summary information for the entire election cycle (since Jan. 1, 2013). Review how much groups raised and spent, their debts and cash on hand. Click the committee name to see filings. For more, see a <a href="/about/#pacs">more detailed explanation</a>.',
         'title':'Political action committee summaries',
         'PAGINATE_BY':PAGINATE_BY,
         },
@@ -219,7 +219,7 @@ def dynamic_ies(request):
         {
         'STATE_LIST':STATE_LIST,
         'title':'Outside Expenditures',
-        'explanatory_text':'Find and filter the latest independent expenditures reported. Only races and candidates that have reported independent expenditures of $1,000 or more are given as menu choices. Download a complete file of independent expenditures made since Jan. 1, 2013, on the <a href="/download-index/">bulk downloads page</a>. ',
+        'explanatory_text':'Find and filter the latest independent expenditures reported. Only races and candidates that have reported independent expenditures of $1,000 or more are given as menu choices. For more, see a <a href="/about/#outside-spending">more detailed explanation</a>.',
         'PAGINATE_BY':PAGINATE_BY,
         'districts':districts,
         'candidates':candidates,

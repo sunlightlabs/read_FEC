@@ -416,7 +416,7 @@ function loadjson(jsonurl) {
                    var format_re = /&*format=json/i;
                    var csvurl = jsonurl.replace(page_re, '').replace(format_re, '') + "&format=csv";
                    console.log("csv url is: " + csvurl);
-                   csv_string = ' Download a <a href="' + csvurl + '">csv file of all results</a>.';
+                   csv_string = ' Download a <a href="' + csvurl + '">csv file of all '+ roundwCommas(data_loaded.count) +' results</a>.';
                    $( "#csv_info" ).html(csv_string);
 
                 } else {
