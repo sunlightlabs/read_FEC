@@ -194,16 +194,37 @@ th.sort.header:hover {
 
 #load_button {
     width: 150px;
-    height:25px;
-    padding: 2px;
+    height:36px;
+    padding:8px 2px;
     font-size: 14px;
     background-color: #006186;
     color: #FFF;
     font-style: bold;
+    border: 1px solid #DCDCD8;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    float:right;
     }
 
-.dropdown_field, .dropdown_field_narrow, .dollar_field,  .date_field, .text_field  {
-    margin-right: 30px;
+#load_button:hover, #load_button:focus {
+    background-color: #FFF;
+    outline: none;
+    color: #006186;
+    }
+
+#load_button:active {
+    color: #006186;
+    outline: none;
+    background-color: #F5F4F4;
+    }
+
+#load_button[disabled],
+#load_button[disabled]:hover,
+#load_button[disabled]:active {
+    color: #666666;
+    outline: none;
+    background-color: #F5F4F4;
     }
 
 .dropdown_field {
@@ -233,7 +254,7 @@ th.sort.header:hover {
     width:100px;
     padding:0px;
     }
-    
+
 .dropdown_super_narrow {
     width:120px;
 }
@@ -328,7 +349,7 @@ th.sort.header:hover {
 #alertSettings {
     padding-left: 20px;
     }
-    
+
 /*  more jf styles  */
 
 
@@ -354,7 +375,7 @@ th.sort.header:hover {
     padding-start: 40px;
     font-family: Georgia,Serif;
     font-style: italic;
-    font-size: 18px; 
+    font-size: 18px;
     line-height:30px;
 }
 
@@ -371,23 +392,23 @@ A.link:hover {text-decoration: underline}
 }
 
 .left_bar {
-    width: 450px; 
+    width: 450px;
     float: left;
 }
 
 .right_bar {
-    width: 410px; 
+    width: 410px;
     float:right;
 }
 
 .map_div {
-    width: 410px; 
-    border: 1px solid black; 
+    width: 410px;
+    border: 1px solid black;
     height:250px;
 }
 
 .map_attribution {
-    font-size:11px; 
+    font-size:11px;
     float:right;
 }
 /* force the dialog to be on top */
