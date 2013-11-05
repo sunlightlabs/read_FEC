@@ -20,6 +20,6 @@ class Command(BaseCommand):
     
 
     def handle(self, *args, **options):
-        skedelines = SkedE.objects.filter(committee_slug__isnull=True).order_by('filing_number')
+        skedelines = SkedE.objects.filter(committee_name__isnull=True).order_by('filing_number')
         for this_line in skedelines:
             attach_committee_to_skedeline(this_line)
