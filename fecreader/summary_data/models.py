@@ -613,17 +613,19 @@ class Committee_Overlay(models.Model):
             return 'N'
 
     def filing_frequency_text(self):
-        if (self.filing_frequency.upper()=='M'):
-            return "Monthly"
-        if (self.filing_frequency.upper()=='Q'):
-            return "Quarterly"
-        if (self.filing_frequency.upper()=='T'):
-            return "Terminated"
-        if (self.filing_frequency.upper()=='W'):
-            return "Waived"
-        if (self.filing_frequency.upper()=='A'):
-            return "Administratively Terminated"            
-
+        if (self.filing_frequency):
+            if (self.filing_frequency.upper()=='M'):
+                return "Monthly"
+            if (self.filing_frequency.upper()=='Q'):
+                return "Quarterly"
+            if (self.filing_frequency.upper()=='T'):
+                return "Terminated"
+            if (self.filing_frequency.upper()=='W'):
+                return "Waived"
+            if (self.filing_frequency.upper()=='A'):
+                return "Administratively Terminated"            
+        else:
+            return "Unknown"
 
 
     def display_type(self):
