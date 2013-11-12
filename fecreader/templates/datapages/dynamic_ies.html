@@ -228,33 +228,33 @@ function validate_fields() {
 function get_json_url() {
   query_string = "?ordering=" + $("#ordering").val();
 
-  min_spent = $("#min_spent").val();
+  var min_spent = $("#min_spent").val();
   if (min_spent.length > 0) {
     query_string += "&min_spent=" + min_spent
   }
   
-  state_select = $("#candidate_state_checked").val();
+  var state_select = $("#candidate_state_checked").val();
   if (state_select.length > 0) {
     if (state_select != '0') {
       query_string += "&candidate_state_checked=" + state_select
     }
   }
   
-  race_select = $("#district_checked").val();
+  var race_select = $("#district_checked").val();
   if (race_select.length > 0) {
     if (race_select != '0') {
       query_string += "&district_checked=" + race_select
     }
   }
   
-  candidate_select = $("#candidate_id_checked").val();
+  var candidate_select = $("#candidate_id_checked").val();
   if (candidate_select.length > 0) {
     if (candidate_select != '0') {
       query_string += "&candidate_id_checked=" + candidate_select
     }
   } 
 
-  support_select = $("#support_oppose_checked").val();
+  var support_select = $("#support_oppose_checked").val();
   if (support_select.length > 0) {
     if (support_select != '0') {
       query_string += "&support_oppose_checked=" + support_select
@@ -263,7 +263,7 @@ function get_json_url() {
 
 
 
-  committee_select = $("#filer_committee_id_number").val();
+  var committee_select = $("#filer_committee_id_number").val();
   if (committee_select.length > 0) {
     if (committee_select != '0') {
       query_string += "&filer_committee_id_number=" + committee_select
