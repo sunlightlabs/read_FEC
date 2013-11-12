@@ -262,27 +262,27 @@ function get_json_url() {
   //  query_string += "&min_spent=" + min_spent
   //}
 
-  min_raised = $("#min_raised").val();
+  var min_raised = $("#min_raised").val();
   if (min_raised.length > 0) {
     query_string += "&min_raised=" + min_raised
   }
 
-  min_coh = $("#min_coh").val();
+  var min_coh = $("#min_coh").val();
   if (min_coh.length > 0) {
     query_string += "&min_coh=" + min_coh
   }
 
-  committee_class =  $("#committee_class").val();
+  var committee_class =  $("#committee_class").val();
   if (committee_class.length>0) {
     query_string += "&committee_class=" + committee_class;
   }
   
-  year_covered =  $("#year_covered").val();
+  var year_covered =  $("#year_covered").val();
   if (year_covered.length>0) {
     query_string += "&year_covered=" + year_covered;
   }
 
-  time_range = $('#time_range').val();
+  var time_range = $('#time_range').val();
   if (time_range.length>0) {
     query_string += "&time_range=" + time_range;
   }
@@ -292,12 +292,12 @@ function get_json_url() {
     query_string += "&is_superceded=" + is_superceded;
   }
   
-  report_type = $('#report_type').val();
+  var report_type = $('#report_type').val();
   if (report_type.length>0) {
     query_string += "&report_type=" + report_type;
   }
   
-  search_term = $('#search_term').val();
+  var search_term = $('#search_term').val();
   if (search_term.length>4) {
     query_string += "&search_term=" + search_term;
   } else {
@@ -309,7 +309,7 @@ function get_json_url() {
     query_string += "&candidate_id=" + candidate_id;
   }
 
-  period_type = $('#period_type').val();
+  var period_type = $('#period_type').val();
   if (period_type.length>0) {
     query_string += "&period_type=" + period_type;
   }
