@@ -195,27 +195,27 @@ function roundwCommas(nStr) {
 function get_json_url() {
   query_string = "?ordering=" + $("#ordering").val();
 
-  min_spent = $("#min_spent").val();
+  var min_spent = $("#min_spent").val();
   if (min_spent.length > 0) {
     query_string += "&min_spent=" + min_spent
   }
 
-  search_term = $("#search_term").val();
+  var search_term = $("#search_term").val();
   if (search_term.length > 0) {
     query_string += "&search_term=" + search_term
   }
 
-  min_raised = $("#min_raised").val();
+  var min_raised = $("#min_raised").val();
   if (min_raised.length > 0) {
     query_string += "&min_raised=" + min_raised
   }
 
-  min_coh = $("#min_coh").val();
+  var min_coh = $("#min_coh").val();
   if (min_coh.length > 0) {
     query_string += "&min_coh=" + min_coh
   }
 
-  committee_class =  $("#committee_class").val();
+  var committee_class =  $("#committee_class").val();
   if (committee_class.length>0) {
     query_string += "&committee_class=" + committee_class;
   }
