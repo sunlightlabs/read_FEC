@@ -185,14 +185,15 @@ $(document).ready(function() {
 
 
 function apply_filters() {
-  var state_selected = $("#candidate_state_checked").val(), 
-  var race_selected = $("#district_checked").val(), 
-  var candidate_id_selected = $("#candidate_id_checked").val()
-  var incumbency_selected = $("#candidate_filter").val()
+  var state_selected = $("#candidate_state_checked").val();
+  var race_selected = $("#district_checked").val();
+  var candidate_id_selected = $("#candidate_id_checked").val();
+  var incumbency_selected = $("#candidate_filter").val();
   //console.log("Filtering on: state=" + state_selected + " race: " + race_selected + " candidate_id: " + candidate_id_selected + " incumbency_selected: " + incumbency_selected);
   
   $("#mainPageTable > tbody > tr").each(function(index) {
-    var cell_text = $(this).find('td.incumbency').text().trim();
+    var cell_text = $(this).find('td.incumbency').text();
+    cell_text = $.trim(cell_text);
     var state_text = $(this).find('td.cell_state').text().substring(0,2);
     var id = $(this).attr('id')
     id_pieces = id.split("-");
@@ -226,7 +227,8 @@ function show_all() {
 
 function hide_challengers() {
     $("#mainPageTable > tbody > tr").each(function(index) {
-      cell_text = $(this).find('td.incumbency').text().trim();
+      var cell_text = $(this).find('td.incumbency').text()
+      cell_text = $.trim(cell_text);
       if (cell_text == 'N') {
         //console.log(index + " " + cell_text);
         $(this).hide();
@@ -239,7 +241,8 @@ function hide_challengers() {
 
 function hide_incumbents() {
     $("#mainPageTable > tbody > tr").each(function(index) {
-      cell_text = $(this).find('td.incumbency').text().trim();
+      var cell_text = $(this).find('td.incumbency').text()
+      cell_text = $.trim(cell_text);
       if (cell_text == 'Y') {
         //console.log(index + " " + cell_text);
         $(this).hide();

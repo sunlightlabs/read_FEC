@@ -233,7 +233,8 @@ function apply_filters() {
   }
   
   $("#mainPageTable > tbody > tr").each(function(index) {
-    var cell_text = $(this).find('td.incumbency').text().trim();
+    var cell_text = $(this).find('td.incumbency').text();
+    cell_text = $.trim(cell_text);
     var state_text = $(this).find('td.cell_state').text().substring(0,2);
     var id = $(this).attr('id')
     id_pieces = id.split("-");
