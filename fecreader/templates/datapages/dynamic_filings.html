@@ -287,7 +287,7 @@ function get_json_url() {
     query_string += "&time_range=" + time_range;
   }
   
-  is_superceded = $('#is_superceded').val();
+  var is_superceded = $('#is_superceded').val();
   if (is_superceded.length>0) {
     query_string += "&is_superceded=" + is_superceded;
   }
@@ -304,7 +304,7 @@ function get_json_url() {
     $('#search_term').val("");
   }
   
-  candidate_id = $('#candidate_id').val();
+  var candidate_id = $('#candidate_id').val();
   if (candidate_id.length>0) {
     query_string += "&candidate_id=" + candidate_id;
   }
