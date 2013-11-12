@@ -159,7 +159,7 @@ $(document).ready(function() {
   
   $.each(windowhash.substr(2).split('&'), function(i, elem) {
      var parts = elem.split('=');
-     console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
+     //console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
      $("#" + parts[0]).val(String(parts[1]));
      $("#" + parts[0]).trigger("chosen:updated");
      hashdict[parts[0]]=parts[1]
@@ -167,9 +167,9 @@ $(document).ready(function() {
   
   //$("#district_checked").val("1806");
   //$("#district_checked").trigger("chosen:updated");
-  console.log("val just set is: " + $("#district_checked").val());
+  //console.log("val just set is: " + $("#district_checked").val());
   
-  console.log("hashdict is " + hashdict + " district checked= " + hashdict['district_checked']);
+  //console.log("hashdict is " + hashdict + " district checked= " + hashdict['district_checked']);
   
   
   //reset_races($("#candidate_state_checked").val());  
@@ -180,18 +180,18 @@ $(document).ready(function() {
   
   
   $("#district_checked").chosen().change( function() {
-     console.log('race_chosen: ' + $("#district_checked").val());
+     //console.log('race_chosen: ' + $("#district_checked").val());
      reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val(), $("#candidate_filter").val());
    });
 
    $("#candidate_state_checked").chosen().change( function() {
-     console.log('state_chosen: ' + $("#candidate_state_checked").val());
+     //console.log('state_chosen: ' + $("#candidate_state_checked").val());
      reset_candidates($("#candidate_state_checked").val(), 0, $("#candidate_filter").val());
      reset_races($("#candidate_state_checked").val());
    });
 
    $("#candidate_filter").chosen().change( function() {
-     console.log('incumbency chosen: ' + $("#candidate_filter").val());
+     //console.log('incumbency chosen: ' + $("#candidate_filter").val());
      reset_candidates($("#candidate_state_checked").val(), $("#district_checked").val(), $("#candidate_filter").val());
 
    });
@@ -210,14 +210,14 @@ function apply_filters() {
   candidate_id_checked = $("#candidate_id_checked").val();
   candidate_filter = $("#candidate_filter").val();
   
-  console.log("Filtering on: state=" + candidate_state_checked + " race: " + district_checked + " candidate_id: " + candidate_id_checked + " incumbency_selected: " + candidate_filter);
+  //console.log("Filtering on: state=" + candidate_state_checked + " race: " + district_checked + " candidate_id: " + candidate_id_checked + " incumbency_selected: " + candidate_filter);
 
   query_string = "?";
     
   var query_args = {"candidate_state_checked":candidate_state_checked, "district_checked":district_checked, "candidate_id_checked":candidate_id_checked, "candidate_filter":candidate_filter}
   var num_params = 0;
   for (var key in query_args) {
-    console.log("querystring - key is: " + key + "value is " + query_args[key]);
+    //console.log("querystring - key is: " + key + "value is " + query_args[key]);
     if (key.length > 0 && query_args[key] != 0) {
       if (num_params > 0) {
         query_string += "&";
