@@ -185,10 +185,10 @@ $(document).ready(function() {
 
 
 function apply_filters() {
-  state_selected = $("#candidate_state_checked").val(), 
-  race_selected = $("#district_checked").val(), 
-  candidate_id_selected = $("#candidate_id_checked").val()
-  incumbency_selected = $("#candidate_filter").val()
+  var state_selected = $("#candidate_state_checked").val(), 
+  var race_selected = $("#district_checked").val(), 
+  var candidate_id_selected = $("#candidate_id_checked").val()
+  var incumbency_selected = $("#candidate_filter").val()
   //console.log("Filtering on: state=" + state_selected + " race: " + race_selected + " candidate_id: " + candidate_id_selected + " incumbency_selected: " + incumbency_selected);
   
   $("#mainPageTable > tbody > tr").each(function(index) {
