@@ -233,9 +233,9 @@ function apply_filters() {
   }
   
   $("#mainPageTable > tbody > tr").each(function(index) {
-    cell_text = $(this).find('td.incumbency').text().trim();
-    state_text = $(this).find('td.cell_state').text().substring(0,2);
-    id = $(this).attr('id')
+    var cell_text = $(this).find('td.incumbency').text().trim();
+    var state_text = $(this).find('td.cell_state').text().substring(0,2);
+    var id = $(this).attr('id')
     id_pieces = id.split("-");
     race_id = id_pieces[0];
     fec_id = id_pieces[1];
