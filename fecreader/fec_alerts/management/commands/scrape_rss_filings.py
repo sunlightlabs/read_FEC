@@ -120,7 +120,9 @@ class Command(BaseCommand):
         # old URL
         #rss_url = "http://query.nictusa.com/rss/newfilings.rss"
         # This was moved here, approximately 9/21/12
-        rss_url = "http://fecapps.nictusa.com/rss/generate?preDefinedFilingType=ALL"
+        #rss_url = "http://fecapps.nictusa.com/rss/generate?preDefinedFilingType=ALL"
+        rss_url = "http://efilingapps.fec.gov/rss/generate?preDefinedFilingType=ALL"
+        
         my_logger.info('SCRAPE_DAILY_FILINGS - starting regular run')
         headers = {'User-Agent': USER_AGENT}   
         data = None       
