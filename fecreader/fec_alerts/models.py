@@ -141,7 +141,7 @@ class new_filing(models.Model):
 
     # also appears in the committee_time_summary model--normalize this.     
     def get_fec_url(self):
-        url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
+        url = "http://docquery.fec.gov/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
         return url
     
     def get_skeda_url(self):
@@ -169,7 +169,7 @@ class new_filing(models.Model):
         return url
         
     def fec_all_filings(self):
-        url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
+        url = "http://docquery.fec.gov/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
         return url
         
     def get_form_name(self):

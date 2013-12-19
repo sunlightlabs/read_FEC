@@ -594,9 +594,9 @@ class Committee_Overlay(models.Model):
     def fec_all_filings(self):
         url = ""
         if self.is_paper_filer:
-            url = "http://query.nictusa.com/cgi-bin/fecimg/?%s" % (self.fec_id)
+            url = "http://docquery.fec.gov/cgi-bin/fecimg/?%s" % (self.fec_id)
         else:
-            url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
+            url = "http://docquery.fec.gov/cgi-bin/dcdev/forms/%s/" % (self.fec_id)
 
         return url
 
@@ -770,7 +770,7 @@ class Committee_Time_Summary(models.Model):
         if self.filing_number:
             return "/filings/%s/" % (self.filing_number)
         else:
-            url = "http://query.nictusa.com/cgi-bin/fecimg/?%s" % (self.com_id)
+            url = "http://docquery.fec.gov/cgi-bin/fecimg/?%s" % (self.com_id)
             return url
     
     def get_committee_url(self):
@@ -791,10 +791,10 @@ class Committee_Time_Summary(models.Model):
     def get_fec_url(self):
         
         if self.filing_number:
-            url = "http://query.nictusa.com/cgi-bin/dcdev/forms/%s/%s/" % (self.com_id, self.filing_number)
+            url = "http://docquery.fec.gov/cgi-bin/dcdev/forms/%s/%s/" % (self.com_id, self.filing_number)
             return url
         else:
-            url = "http://query.nictusa.com/cgi-bin/fecimg/?%s" % (self.com_id)
+            url = "http://docquery.fec.gov/cgi-bin/fecimg/?%s" % (self.com_id)
             return url
 
 # reference table. Has these relationships for everyone. We're not building candidate overlays for other cycles.
