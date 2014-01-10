@@ -123,7 +123,7 @@ def dump_big_non_indiv_contribs(destination_file):
 
     # need to join to get the committee name. 
     dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE (memo_code isnull or not memo_code = 'X') and ( (committee_type in ('I', 'O', 'U') and upper(formdata_skeda.form_type) = 'SA11AI') or (committee_type in ('V', 'W') and upper(left(formdata_skeda.form_type, 4)) = 'SA17')) and contributor_organization_name <> '' and superceded_by_amendment=False and contribution_amount >= 1000 and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
-    print dumpcmd
+    #print dumpcmd
     start = time.time()
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
