@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.template import RequestContext
 from django.shortcuts import redirect
 from django.contrib.localflavor.us.us_states import US_STATES
+from django.db.models import Sum
 
 from fec_alerts.models import new_filing, newCommittee
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate
@@ -438,8 +439,12 @@ def candidate(request, candidate_id):
         end_of_coverage_date = report_list[0].coverage_through_date
         
     
+    recent_report_total = 0
     if end_of_coverage_date:
         recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=end_of_coverage_date, form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
+        if recent_report_list:
+            recent_report_total = recent_report_list.aggregate(spending_total=Sum('tot_raised'))['spending_total']
+        
     else:
         recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=this_cycle_start, form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
     
@@ -461,6 +466,7 @@ def candidate(request, candidate_id):
         'outside_spenders':outside_spenders,
         'recent_report_list':recent_report_list,
         'recent_ies':recent_ies,
+        'recent_report_total':recent_report_total,
         }, 
         context_instance=RequestContext(request)
     )

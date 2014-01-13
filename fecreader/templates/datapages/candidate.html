@@ -29,13 +29,13 @@
   
 <div class="numeric_summary">
 
-<span class="amount_description">Candidate Spending:</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
+<span class="amount_description">Candidate Spending (as of {{ candidate.cash_on_hand_date|date:"n/j/Y" }}):</span>&nbsp;<span class="amount_dollars">{% if candidate.total_disbursements %}${{candidate.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
 
 <!-- wrong ?
 <br><span class="amount_description">Candidate Fundraising</span>&nbsp;<span class="amount_dollars">{% if candidate.total_contributions %}${{candidate.total_contributions|intcomma}}{% else %}$0{% endif %}</span>
 -->
 
-<br><span class="amount_description">Candidate's Cash (as of {{ candidate.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if candidate.cash_on_hand %}${{candidate.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
+<br><span class="amount_description">Candidate's Cash (as of {{ candidate.cash_on_hand_date|date:"n/j/Y" }})</span>&nbsp;<span class="amount_dollars">{% if candidate.cash_on_hand %}${{candidate.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
 
 <br><span class="amount_description">Outside support</span>&nbsp;<span class="amount_dollars">{% if candidate.expenditures_supporting %}${{candidate.expenditures_supporting|intcomma}}{% else %}$0{% endif %}</span>
 
@@ -113,7 +113,7 @@
 <div class="overviewBar withNav withTip">
     <h4>Recent 24- and 48-hour filings</h4>
 </div>
-<p>Only filings made since the last monthly/quarterly report are shown</p>
+<p>Only filings made since the last monthly/quarterly report are shown. A total of $ {{ recent_report_total|intcomma}} has been reported raised in the filings shown below.</p>
 
 
 <table id="mainPageTable" class="sortable">
