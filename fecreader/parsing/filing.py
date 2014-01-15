@@ -74,7 +74,7 @@ class filing(object):
             self.headers['form'] = clean_entry(summary_line[0])
             self.headers['fec_id'] = clean_entry(summary_line[1])
             self.headers['report_num'] = None
-        except KeyError:
+        except IndexError:
             return False
         
         # amendment number - not sure what version it starts in. 
