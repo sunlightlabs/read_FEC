@@ -48,6 +48,7 @@ class filing(object):
     filing_amended = None
     page_read = None
     headers = {}
+    
 
     # logger's not implemented.
     def __init__(self, filing_number, logger=None):
@@ -59,7 +60,7 @@ class filing(object):
         self.fh = open(self.local_file_location, 'r')
         self.header_row = self.fh.readline().rstrip('\n')
         self.form_row = self.fh.readline().rstrip('\n')
-        self._parse_headers()
+        self.is_error = not self._parse_headers()
         
 
 
@@ -69,9 +70,12 @@ class filing(object):
         summary_line = utf8_clean(self.form_row).split(delimiter)
 
         # These are always consistent
-        self.headers['form'] = clean_entry(summary_line[0])
-        self.headers['fec_id'] = clean_entry(summary_line[1])
-        self.headers['report_num'] = None
+        try:
+            self.headers['form'] = clean_entry(summary_line[0])
+            self.headers['fec_id'] = clean_entry(summary_line[1])
+            self.headers['report_num'] = None
+        except KeyError:
+            return False
         
         # amendment number - not sure what version it starts in. 
         if len(summary_line) > 6:
@@ -114,6 +118,7 @@ class filing(object):
             self.is_amendment = False
 
         self.headers['is_amendment'] = self.is_amendment
+        return True
 
 
     def get_headers(self):

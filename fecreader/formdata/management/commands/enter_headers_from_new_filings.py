@@ -27,6 +27,7 @@ class Command(BaseCommand):
             result_header = None
             try: 
                 result_header = process_new_filing(filing, fp=fp, filing_time=filing.process_time, filing_time_is_exact=True)
+            ## It seems like the FEC's response is now to give a page not found response instead of a 500 error or something. The result is that the except no longer seems to apply. 
             except IOError:
                 # if the file's missing, keep running. 
                 print "MISSING FILING: %s" % (filing.filing_number)  

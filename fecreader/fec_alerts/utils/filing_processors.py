@@ -71,6 +71,9 @@ def process_new_filing(thisnewfiling, fp=None, filing_time=None, filing_time_is_
         
     #print "Processing filing %s" % (filingnum)
     f1 = filing(thisnewfiling.filing_number)
+    if f1.is_error:
+        return False
+        
     form = f1.get_form_type()
     version = f1.get_version()
 
