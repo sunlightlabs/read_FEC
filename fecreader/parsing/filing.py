@@ -125,6 +125,10 @@ class filing(object):
         """Get a dictionary of file data"""
         return self.headers
 
+    def is_error(self):
+        """Was there an error?"""
+        return self.is_error
+
     def get_first_row(self):
         return(utf8_clean(self.form_row).split(delimiter))
 
