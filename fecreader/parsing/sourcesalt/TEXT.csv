@@ -1,4 +1,4 @@
-canonical,^8.0|7.0|6.4|6.3|6.2|6.1,,^5.3,,^5.2|5.1|5.0,,^3,
+canonical,^8.1|8.0|7.0|6.4|6.3|6.2|6.1,,^5.3,,^5.2|5.1|5.0,,^3,
 rec_type,1,REC TYPE,1,REC TYPE,1,REC TYPE,1,REC TYPE
 filer_committee_id_number,2,FILER COMMITTEE ID NUMBER,2,FORM TYPE,2,FORM TYPE,2,FORM TYPE
 transaction_id,3,TRANSACTION ID NUMBER,,,,,,
