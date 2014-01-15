@@ -125,7 +125,7 @@ class filing(object):
         """Get a dictionary of file data"""
         return self.headers
 
-    def is_error(self):
+    def get_error(self):
         """Was there an error?"""
         return self.is_error
 
