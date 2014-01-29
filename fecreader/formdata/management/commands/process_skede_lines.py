@@ -71,28 +71,31 @@ def attach_ie_target(skedeline):
     candidate_id = skedeline.candidate_id_number    
     
     # If there's a candidate id, enter the data from the overlay
-    if skedeline.expenditure_date_formatted >= cycle_start:
+    if skedeline.expenditure_date_formatted:
+        if skedeline.expenditure_date_formatted >= cycle_start:
         
-        if candidate_id:
-            result = set_data_from_candidate_id(skedeline, candidate_id)
+            if candidate_id:
+                result = set_data_from_candidate_id(skedeline, candidate_id)
             
-            if result:
-                return True
+                if result:
+                    return True
+    
+            else:
+    
+                # if we're still here, try a fuzzy match
+    
+                fuzzy_match_result = fuzzy_match_candidate(skedeline)
+                if fuzzy_match_result:
+                    return True
+        
+                # fall back on data that's already there. 
+                set_data_from_self(skedeline)
+                return False
     
         else:
-    
-            # if we're still here, try a fuzzy match
-    
-            fuzzy_match_result = fuzzy_match_candidate(skedeline)
-            if fuzzy_match_result:
-                return True
-        
-            # fall back on data that's already there. 
-            set_data_from_self(skedeline)
+            # don't care about the out of cycle stuff.
             return False
-    
     else:
-        # don't care about the out of cycle stuff.
         return False
 
 
