@@ -19,7 +19,7 @@
  {% block rtmain %}
 
 <div class="module">
-  <b>Downloadable file: </b><a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','A');">All schedule A contributions itemized on this filing</a><br>
+  <b>Downloadable file: </b><a class="link" href="javascript:download_filing_data('{{ filing_data.filing_number }}','A');">All schedule A receipts itemized on this filing</a><br>
   <b>Alerts: </b><a class="link" href="javascript:submit_gotoscout('{{ filing.fec_id }}');">Get automatic alerts</a> when this committee files new campaign finance reports
   <div class="numeric_summary">
     <span class="amount_description">{% if filing_data.coverage_from_date %}Covers {{ filing_data.coverage_from_date|date:"N j, Y"}} through {{ filing_data.coverage_to_date|date:"N j, Y" }}{% endif %}</span>
@@ -46,7 +46,7 @@ Type: {{ filing_data.form_type }}: {{ filing_data.get_form_name }}.
 <br>Read the <a href="{{ filing_data.FEC_url }}">full report</a> at the Federal Election Commission.{% endif %}</p>
 {% if object_list %}
 <div class="overviewBar withNav withTip">
-    <h4>Contributions</h4>
+    <h4>Receipts</h4>
 </div>
 
 <table id="mainPageTable" class="sortable">
