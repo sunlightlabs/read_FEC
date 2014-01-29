@@ -58,7 +58,7 @@ class line_parser(object):
                 found_version = True
 
         if not found_version:
-            raise Exception("Can't find data to parse line type=%s version=%s" % (self.form_type, version))
+            raise Exception("Can't find data to parse line type=%s version=%s" % (self.form, version))
 
         line_dict = {}
         for column in self.column_locations_dict[regex_key]:

@@ -159,6 +159,8 @@
                     <option value='-tot_raised'>total raised</option>
                     <option value='-tot_spent'>total spent</option>
                     <option value='committee_name'>committee name</option>
+                    <option value='-new_loans'>new loans</option>
+
                 </select>
             </div>
             <div class="form_spacer">
@@ -191,6 +193,7 @@
                   <th >Raised</th>
                   <th >Spent</th>
                   <th >Cash on hand</th>
+                  <th >New Loans</th>
                   <th >Filing Date</th>
                 </tr>
           </thead>
@@ -213,6 +216,7 @@
         <td><a href="{{ skeda_url}}" class="link">${{{ addcommas tot_raised }}}</a></td>
         <td><a href="{{ spending_url}}" class="link">${{{ addcommas tot_spent }}}</a></td>
         <td>${{{ addcommas coh_end }}}</td>
+        <td>${{{ addcommas new_loans }}}</td>
         <td>{{ process_time_formatted }}</td>
     </tr>
 
