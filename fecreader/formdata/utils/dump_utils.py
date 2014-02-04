@@ -110,8 +110,8 @@ def dump_big_contribs(destination_file):
     # need to join to get the committee name. 
     
     
-    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE (memo_code isnull or not memo_code = 'X') and committee_type in ('I', 'O', 'U', 'V', 'W') and superceded_by_amendment=False and contribution_amount >= 5000 and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
-    print dumpcmd
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE (memo_code isnull or not memo_code = 'X') and committee_type in ('I', 'O', 'U', 'V', 'W') and superceded_by_amendment=False and contribution_amount >= 10000 and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
+    #print dumpcmd
     start = time.time()
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
@@ -129,8 +129,8 @@ def dump_big_non_indiv_contribs(destination_file):
     cursor = connection.cursor()
 
     # need to join to get the committee name. 
-    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE (memo_code isnull or not memo_code = 'X') and committee_type in ('I', 'O', 'U', 'V', 'W')  and contributor_organization_name <> '' and superceded_by_amendment=False and contribution_amount >= 1000 and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
-    print dumpcmd
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE (memo_code isnull or not memo_code = 'X') and committee_type in ('I', 'O', 'U', 'V', 'W')  and contributor_organization_name <> '' and superceded_by_amendment=False and contribution_amount >= 10000 and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
+    #print dumpcmd
     start = time.time()
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
