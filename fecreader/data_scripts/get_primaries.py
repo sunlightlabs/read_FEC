@@ -10,7 +10,7 @@ setup_environ(settings)
 
 from summary_data.models import District, Candidate_Overlay
 
-fundraising_threshold = 25000
+fundraising_threshold = 100000
 
 for office in ['H']:
     # Ignore open seats
