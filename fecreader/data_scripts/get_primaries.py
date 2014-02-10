@@ -22,4 +22,4 @@ for office in ['H']:
         if primary_challengers:
             print "\n\nFound credible challenger to %s (%s) - rating: %s - %s %s %s" % (race.incumbent_name, race.incumbent_party, race.rothenberg_rating_text ,race.state, race.office, race.office_district)
             for challenger in primary_challengers:
-                print "\tchallenger: %s (%s) %s" % (challenger.name, challenger.party, challenger.total_receipts)
+                print "\tchallenger: %s (%s) total raised: %s cash on hand %s (as of %s)" % (challenger.name, challenger.party, challenger.total_receipts, challenger.cash_on_hand, challenger.cash_on_hand_date )
