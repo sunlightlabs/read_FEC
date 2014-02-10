@@ -43,7 +43,7 @@ for state in ['CA', 'LA', 'WA']:
             print "Office =%s District =%s incumbent=%s incumbent party = %s rating: %s (%s)" % (race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.rothenberg_rating_text, race.rothenberg_rating_id)
             
             for candidate in candidates:
-                print "\tcandidate: %s party: %s incumbent: %s (%s) total raised: %s cash on hand %s (as of %s)" % (candidate.name, candidate.party, candidate.is_incumbent, candidate.total_receipts, candidate.cash_on_hand, candidate.cash_on_hand_date )
+                print "\tcandidate: %s party: %s incumbent: %s total raised: %s cash on hand %s (as of %s)" % (candidate.name, candidate.party, candidate.is_incumbent, candidate.total_receipts, candidate.cash_on_hand, candidate.cash_on_hand_date )
             print "\n\n"
             
     
