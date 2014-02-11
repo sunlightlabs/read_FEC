@@ -36,16 +36,20 @@ for state in ['CA', 'LA', 'WA']:
             candidates = candidates.filter(total_receipts__gte=senate_fundraising_threshold)
             
 
-        
-        if len(candidates) > 1:
+        # There are two berths, so its competitive only if there are three spots
+        if len(candidates) > 2:
             comment_print("Multiple candidates found !")
 
-            print "Office =%s District =%s incumbent=%s incumbent party = %s rating: %s (%s)" % (race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.rothenberg_rating_text, race.rothenberg_rating_id)
+            print "State=%s Office =%s District =%s incumbent=%s incumbent party = %s is open %s rating: %s (%s)" % (race.state, race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.open_seat,  race.rothenberg_rating_text, race.rothenberg_rating_id)
             
             for candidate in candidates:
                 print "\tcandidate: %s party: %s incumbent: %s total raised: %s cash on hand %s (as of %s)" % (candidate.name, candidate.party, candidate.is_incumbent, candidate.total_receipts, candidate.cash_on_hand, candidate.cash_on_hand_date )
             print "\n\n"
             
     
-    
+## all other states
+
+races = District.objects.filter(election_year=2014).exclude(state__in=['CA', 'WA', 'LA'])
+
+
     
