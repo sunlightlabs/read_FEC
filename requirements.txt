@@ -24,10 +24,8 @@ django-redis
 # brisket stuff
 django_compressor
 
-# main branch
-# -e git+https://github.com/sunlightlabs/dryrub.git#egg=dryrub
-# oldnav branch
--e git+https://github.com/sunlightlabs/dryrub.git@oldnav#egg=dryrub
+
+-e git+https://github.com/sunlightlabs/dryrub.git@e2fa28624d0c516e620f7ae64158ca06cd28ac8f#egg=dryrub
 
 # from other branch
 
