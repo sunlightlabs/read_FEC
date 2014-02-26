@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for candidate in race.candidates %}
+                {% for object in race.candidates %}
                 <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
                     <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }}</a></td>
                     <td>{% if object.incumbency_status %}Y{% else %}N{% endif %}</td>
@@ -54,7 +54,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for candidate in race.candidates %}
+                {% for object in race.candidates %}
                 <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
                     <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }}</a></td>
                     <td>{% if object.incumbency_status %}Y{% else %}N{% endif %}</td>
