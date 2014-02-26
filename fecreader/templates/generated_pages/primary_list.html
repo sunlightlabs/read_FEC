@@ -1,4 +1,16 @@
 
+
+Senate races
+{% for race in races.senate %}
+<div id="race">
+
+{{ race.race.state}}    {{ race.race.incumbent_name }} {{ race.race.incumbent_party}} {{race.race.open_seat }}  {{ race.race.rothenberg_rating_text }}
+
+
+</div>
+{% endfor %}
+
+
 House races
 
 {% for race in races.house %}
@@ -6,7 +18,3 @@ House races
 {% endfor %}
 
 
-Senate races
-{% for race in races.senate %}
-{{ race.race.state}}    {{ race.race.incumbent_name }} {{ race.race.incumbent_party}} {{race.race.open_seat }}  {{ race.race.rothenberg_rating_text }}
-{% endfor %}
