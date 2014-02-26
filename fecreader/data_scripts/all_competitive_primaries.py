@@ -106,7 +106,11 @@ for race in races:
                 competitive_races['senate'].append(this_race_object)            
 
 print "primaries are: %s" % competitive_races
-c = Context({"races": competitive_races})
+
+senate_races = sorted(competitive_races['senate'], key=lambda x: x['race'].state)
+house_races = sorted(competitive_races['house'], key=lambda x: (x['race'].state, x['race'].office_district ))
+
+c = Context({"house_races": house_races, "senate_races":senate_races})
 this_template = get_template('generated_pages/primary_list.html')
 result = this_template.render(c)
 print result
