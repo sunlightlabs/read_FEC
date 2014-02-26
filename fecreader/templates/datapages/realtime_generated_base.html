@@ -1,0 +1,61 @@
+{% extends "dryrub/base.html" %}
+{% load timestamp %}
+{% load staticfiles %}
+
+
+{% block head_analytics %}
+<script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-1265484-62']);
+            _gaq.push(['_setDomainName', 'influenceexplorer.com']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+{% endblock %}
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/realtimefec_main.css' %}" />
+{% endblock sitecss %}
+{% block main %}
+{% block subnavitems %}
+
+
+<div id="contentHeader" class="clearfix">
+    <h2 class="RTh2">Realtime Federal Campaign Finance</h2>
+        <ul class="content-header-links">
+            <li class="last"><a href="/alerts/">Get Alerts About New Filings</a></li>
+            <li><a href="/download-index/">Bulk Data Downloads</a></li>
+            <li><a href="/about/">About</a></li>
+        </ul>
+    </h2>
+</div>
+<nav id="rt_nav" class="realtimesubnav clearfix">
+    <ul>
+        <li class="first"><a href="/newest-filings/">Newest Filings</a></li>
+        <li><a href="/new-committees/">New Committees</a></li>
+        <li><a href="/outside-spending/">Outside Spending</a></li>
+        <li><a href="/pacs/">PAC Summaries</a></li>
+        <li><a href="/house/">House</a></li>
+        <li><a href="/senate/">Senate</a></li>
+        <li class="last"><a href="/races/">Races</a></li>
+    </ul>
+{% endblock %}
+</nav>
+
+{% block rtmain_generated %}
+
+<div class="module RT clearfix">
+       <h3>{% block title %}{{ title|safe }} {% endblock %}</h3>
+       <div id="timestamp">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div>
+       {% if explanatory_text %}<p>{{ explanatory_text|safe }}</p>{% endif %}
+
+</div>
+
+{% endblock %}
+
+{% endblock %}
