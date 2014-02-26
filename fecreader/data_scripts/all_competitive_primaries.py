@@ -12,10 +12,10 @@ setup_environ(settings)
 from summary_data.models import District, Candidate_Overlay
 
 house_fundraising_threshold = 100000
-senate_fundraising_threshold = 200000
+senate_fundraising_threshold = 500000
 
-house_cash_on_hand_threshold = 20000
-senate_cash_on_hand_threshold = 40000
+house_cash_on_hand_threshold = 30000
+senate_cash_on_hand_threshold = 50000
 
 def comment_print(message):
     print "###  " + message + "\n"
@@ -65,7 +65,7 @@ for race in races:
         
     for party in ['D', 'R']:
         party_candidates = candidates.filter(party=party)
-        if len(party_candidates) > 2:
+        if len(party_candidates) > 1:
             print "State=%s Office =%s District =%s incumbent=%s incumbent party = %s is open %s rating: %s (%s)" % (race.state, race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.open_seat,  race.rothenberg_rating_text, race.rothenberg_rating_id)
             
             for candidate in party_candidates:
