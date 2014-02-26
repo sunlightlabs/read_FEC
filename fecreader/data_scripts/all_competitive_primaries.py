@@ -38,6 +38,7 @@ competitive_races = {}
 competitive_races['senate']=[]
 competitive_races['house']=[]
 
+party_hash = {'D':'Democratic', 'R':'Republican'}
 
 comment_print("Dealing with jungle primary states")
 
@@ -67,6 +68,7 @@ for state in ['CA', 'LA', 'WA']:
                 print "\tcandidate: %s party: %s incumbent: %s total raised: %s cash on hand %s (as of %s)" % (candidate.name, candidate.party, candidate.is_incumbent, candidate.total_receipts, candidate.cash_on_hand, candidate.cash_on_hand_date )
                 this_race_object['candidates'].append(candidate)
             print "\n\n"
+            this_race_object['party']='Jungle'
             if race.office == 'H':
                 competitive_races['house'].append(this_race_object)
             else:
@@ -100,6 +102,7 @@ for race in races:
                 this_race_object['candidates'].append(candidate)
                 
             print "\n\n"
+            this_race_object['party'] = party_hash[party] 
             if race.office == 'H':
                 competitive_races['house'].append(this_race_object)
             else:

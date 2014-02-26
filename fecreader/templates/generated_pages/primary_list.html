@@ -1,20 +1,69 @@
 
+<div class="module RT clearfix">
+       <h3>Competitive primaries</h3>
+       <div id="timestamp"><strong>Last update:</strong> Feb. 26, 2014 | 2:46 p.m.</div>
+       <p>This is a list of competitive primaries.</p>
 
-Senate races
+</div>
+
+<h3>SENATE RACES</H3>
 {% for race in senate_races %}
-<div id="race">
-
-{{ race.race.state}}    {{ race.race.incumbent_name }} {{ race.race.incumbent_party}} {{race.race.open_seat }}  {{ race.race.rothenberg_rating_text }}
-
+<div class="senate_race">
+  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
+  <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
+  <table id="mainPageTable">
+              <thead>
+                    <tr id="titles">                      
+                        <th>Name</th>
+                        <th>Incumbent</th>
+                        <th>Cash on Hand</th>
+                        <th>Cash on Hand Date</th>
+                        <th>Total Fundraising (2013-14)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for candidate in race.candidates %}
+                <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
+                    <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }}</a></td>
+                    <td>{% if object.incumbency_status %}Y{% else %}N{% endif %}</td>
+                    <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
+                    <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
+                    <td>${% if object.total_receipts %}{{ object.total_receipts|intcomma }}{% else %}0{% endif %}</td>
+                    </tr>
+                {% endfor %}
+  </table>
 
 </div>
 {% endfor %}
 
 
-House races
-
+<h3>HOUSE RACES</H3>
 {% for race in house_races %}
-{{ race.race.state}}   {{ race.race.office_district}} {{ race.race.incumbent_name }} {{ race.race.incumbent_party}} {{race.race.open_seat }}  {{ race.race.rothenberg_rating_text }}
+<div class="house_race">
+  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }}-{{ race.race.office_district }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
+  <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
+  <table id="mainPageTable">
+              <thead>
+                    <tr id="titles">                      
+                        <th>Name</th>
+                        <th>Incumbent</th>
+                        <th>Cash on Hand</th>
+                        <th>Cash on Hand Date</th>
+                        <th>Total Fundraising (2013-14)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for candidate in race.candidates %}
+                <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
+                    <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }}</a></td>
+                    <td>{% if object.incumbency_status %}Y{% else %}N{% endif %}</td>
+                    <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
+                    <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
+                    <td>${% if object.total_receipts %}{{ object.total_receipts|intcomma }}{% else %}0{% endif %}</td>
+                    </tr>
+                {% endfor %}
+  </table>
+</div>
 {% endfor %}
 
 
