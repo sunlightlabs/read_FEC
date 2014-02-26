@@ -3,7 +3,7 @@
 <div class="module RT clearfix">
        <h3>Competitive primaries</h3>
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
-       <p>This is a list of competitive primaries.</p>
+       <p>This is a list of primary races that, based on money raised by candidates, may be competitive. This list omits races that will have competitive general elections, but not primaries. There's not a precise way to calculate this, of course, so view this list skeptically. In general we consider candidates viable if they are an incumbent seeking reelection, or they have raised $100,000 for a house race and have $50,000 in the bank, or have raised $300,000 for a senate race and have $150,000 in the bank. We only consider "open" primaries (those in California, Louisiana and Washington) to be competitive if there are three or more viable candidates vying for two berths to the general election.</p>
        <p>Jump to <a href="#house-races">house races</a>.</p>
        
 
@@ -13,7 +13,7 @@
 <h3>SENATE RACES</H3>
 {% for race in senate_races %}
 <div class="senate_race">
-  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
+  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }}</a> {{ race.party }} Senate Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
   <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. Incumbent: {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
   <table id="mainPageTable">
               <thead>
@@ -29,7 +29,7 @@
                 {% for object in race.candidates %}
                 <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
                     <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }}</a></td>
-                    <td>{% if object.incumbency_status %}Y{% else %}N{% endif %}</td>
+                    <td>{{ object.incumbency_status }}</td>
                     <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
                     <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
                     <td>${% if object.total_receipts %}{{ object.total_receipts|intcomma }}{% else %}0{% endif %}</td>

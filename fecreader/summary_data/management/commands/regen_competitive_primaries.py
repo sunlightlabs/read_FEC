@@ -6,6 +6,7 @@ from django.template import Template
 from django.template.loader import get_template
 from django.template import Context
 from django.conf import settings
+from django.db.models import Q
 
 from summary_data.models import District, Candidate_Overlay
 
@@ -52,9 +53,9 @@ class Command(BaseCommand):
         
                 candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('-cash_on_hand')
                 if race.office == 'H':
-                    candidates = candidates.filter(total_receipts__gte=house_fundraising_threshold,cash_on_hand__gte=house_cash_on_hand_threshold)
+                    candidates = candidates.filter(Q(total_receipts__gte=house_fundraising_threshold,cash_on_hand__gte=house_cash_on_hand_threshold)|Q(is_incumbent=True))
                 else:
-                    candidates = candidates.filter(total_receipts__gte=senate_fundraising_threshold,cash_on_hand__gte=senate_cash_on_hand_threshold)
+                    candidates = candidates.filter(Q(total_receipts__gte=senate_fundraising_threshold,cash_on_hand__gte=senate_cash_on_hand_threshold)|Q(is_incumbent=True))
             
 
                 # There are two berths, so its competitive only if there are three spots
@@ -69,7 +70,7 @@ class Command(BaseCommand):
                         print "\tcandidate: %s party: %s incumbent: %s total raised: %s cash on hand %s (as of %s)" % (candidate.name, candidate.party, candidate.is_incumbent, candidate.total_receipts, candidate.cash_on_hand, candidate.cash_on_hand_date )
                         this_race_object['candidates'].append(candidate)
                     print "\n\n"
-                    this_race_object['party']='Jungle'
+                    this_race_object['party']='Open*'
                     if race.office == 'H':
                         competitive_races['house'].append(this_race_object)
                     else:
@@ -85,9 +86,9 @@ class Command(BaseCommand):
     
             candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('-cash_on_hand')
             if race.office == 'H':
-                candidates = candidates.filter(total_receipts__gte=house_fundraising_threshold,cash_on_hand__gte=house_cash_on_hand_threshold)
+                candidates = candidates.filter(Q(total_receipts__gte=house_fundraising_threshold,cash_on_hand__gte=house_cash_on_hand_threshold)|Q(is_incumbent=True))
             else:
-                candidates = candidates.filter(total_receipts__gte=senate_fundraising_threshold,cash_on_hand__gte=senate_cash_on_hand_threshold)
+                candidates = candidates.filter(Q(total_receipts__gte=senate_fundraising_threshold,cash_on_hand__gte=senate_cash_on_hand_threshold)|Q(is_incumbent=True))
         
             for party in ['D', 'R']:
                 party_candidates = candidates.filter(party=party)
