@@ -2,16 +2,19 @@
 
 <div class="module RT clearfix">
        <h3>Competitive primaries</h3>
-       <div id="timestamp"><strong>Last update:</strong> Feb. 26, 2014 | 2:46 p.m.</div>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
        <p>This is a list of competitive primaries.</p>
+       <p>Jump to <a href="#house-races">house races</a>.</p>
+       
 
 </div>
 
+<div class="module" id="senate-races">
 <h3>SENATE RACES</H3>
 {% for race in senate_races %}
 <div class="senate_race">
   <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
-  <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
+  <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. Incumbent: {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
   <table id="mainPageTable">
               <thead>
                     <tr id="titles">                      
@@ -36,13 +39,14 @@
 
 </div>
 {% endfor %}
+</div>
 
-
+<div class="module" id="house-races">
 <h3>HOUSE RACES</H3>
 {% for race in house_races %}
 <div class="house_race">
   <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }}-{{ race.race.office_district }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
-  <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
+  <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. Incumbent: {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
   <table id="mainPageTable">
               <thead>
                     <tr id="titles">                      
@@ -57,7 +61,7 @@
                 {% for object in race.candidates %}
                 <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
                     <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }}</a></td>
-                    <td>{% if object.incumbency_status %}Y{% else %}N{% endif %}</td>
+                    <td>{{ object.incumbency_status }}</td>
                     <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
                     <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
                     <td>${% if object.total_receipts %}{{ object.total_receipts|intcomma }}{% else %}0{% endif %}</td>
@@ -66,5 +70,6 @@
   </table>
 </div>
 {% endfor %}
+</div>
 
 
