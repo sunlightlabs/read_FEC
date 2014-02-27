@@ -43,6 +43,7 @@ def set_data_from_candidate_id(skedeline, candidate_id):
         return True
 
     except Candidate_Overlay.DoesNotExist:
+        print "Missing candidate overlay for %s filing %s" % (candidate_id, skedeline.filing_number)
         return False
         
 
@@ -72,7 +73,7 @@ def attach_ie_target(skedeline):
     
     # If there's a candidate id, enter the data from the overlay
     if skedeline.expenditure_date_formatted:
-        if skedeline.expenditure_date_formatted >= cycle_start or skedeline.expenditure_date_formatted == None:
+        if not skedeline.expenditure_date_formatted <= cycle_start:
         
             if candidate_id:
                 result = set_data_from_candidate_id(skedeline, candidate_id)
