@@ -34,7 +34,7 @@ class Command(BaseCommand):
             except Candidate_Overlay.DoesNotExist:
                 continue
             
-            except MultipleObjectsReturned:
+            except Candidate_Overlay.MultipleObjectsReturned:
                 print "Warning, multiple candidates found: %s" % (candidate_id['candidate_id_checked'])
                 # should log this somewhere... 
                 continue
