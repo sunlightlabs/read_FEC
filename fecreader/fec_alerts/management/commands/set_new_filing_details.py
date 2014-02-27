@@ -8,8 +8,8 @@ from summary_data.models import Committee_Overlay
 
 def dateparse_notnull(datestring):
     """ dateparse returns today if given an empty string. Don't do that. """
-    datestring = datestring.strip()
     if datestring:
+        datestring = datestring.strip()
         return dateparse(datestring)
     else:
         return None

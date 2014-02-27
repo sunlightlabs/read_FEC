@@ -6,7 +6,7 @@ sys.path.append('../../')
 
 from parsing.filing import filing
 from parsing.form_parser import form_parser, ParserMissingError
-from form_mappers import *
+from fec_alerts.utils.form_mappers import *
 
 from write_csv_to_db import CSV_dumper
 

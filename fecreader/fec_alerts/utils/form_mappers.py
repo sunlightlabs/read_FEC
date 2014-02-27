@@ -190,14 +190,29 @@ def skede_from_skededict(data_dict, filing_number, header_row_id, is_amended, cd
     data_dict['header_id'] = header_row_id
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['filing_number'] = filing_number
-
-    if data_dict['expenditure_date']:
+        
+    ## The switch from v.8 to v.8.1 added a 'dissemination date' though it kept the expenditure date.
+    ## We now prefer the dissemination date, but fall back to the expenditure date if it's not available.
+    ## The spec says that not having either is an error, so... 
+    
+    datefound = False
+    try: 
+        data_dict['expenditure_date_formatted'] = dateparse(data_dict['dissemination_date'])
+        datefound = True
+    except ValueError:
+        pass
+    except KeyError:
+        pass
+        
+    if not datefound:
         try:
             data_dict['expenditure_date_formatted'] = dateparse(data_dict['expenditure_date'])
+            datefound = True
         except ValueError:
-            # if we can't parse the date, just ignore it. 
             pass
-
+        except KeyError:
+            pass
+    
 
     data_dict['expenditure_amount'] = validate_decimal(data_dict['expenditure_amount'])
     data_dict['calendar_y_t_d_per_election_office'] = validate_decimal(data_dict['calendar_y_t_d_per_election_office'])
