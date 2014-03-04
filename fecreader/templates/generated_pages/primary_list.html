@@ -1,4 +1,11 @@
 {% load humanize %}
+{% load staticfiles %}
+
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+{% endblock sitecss %}
+
 
 <div class="module RT clearfix">
        <h3>Competitive primaries</h3>
@@ -9,8 +16,125 @@
 
 </div>
 
+<script type="text/javascript" src="{% static 'realtimefec/js/chosen.jquery.min.js' %}"></script>
+
+<!-- start filter  -->
+
+<div class="module">
+  <p>
+Show: <select name="filter_display" class="dropdown_field chosen-select" id="candidate_filter" tabindex="2" style="width:100px;">
+    <option value='0'>All Races</option>
+    <option value='S'>Only Senate</option>
+    <option value='H'>Only House</option>
+  </select>&nbsp;&nbsp;
+  State:
+  <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="candidate_state_checked" style="width:100px;">
+  </select>&nbsp;&nbsp;
+  Rothenberg rating: <select name="rating_filter" class="dropdown_field chosen-select" id="rating_filter" tabindex="2" style="width:150px;">
+      <option value='0'>All races</option>
+      <option value='126'>Toss-up races</option>
+      <option value='12637'>Toss-ups and leaners</option>
+      <option value='45'>Democrat favored / safe Democrat</option>
+      <option value='28'>Republican favored / safe Republican</option>
+      
+    </select>
+    
+    &nbsp;&nbsp;
+    Party: <select name="party_filter" class="dropdown_field chosen-select" id="party_filter" tabindex="2" style="width:140px;">
+        <option value='0'>All primaries</option>
+        <option value='Republican'>Republican primaries</option>
+        <option value='Democratic'>Democratic primaries</option>
+        <option value='Open*'>Open primaries</option>
+
+      </select>
+    
+  <p>
+    
+
+</div>
+
+<script type="text/javascript" >
+
+var states = [
+  {'name':'Show All', 'value':'0'},
+  { 'value':'AL', 'name':'Alabama'}, { 'value':'AK', 'name':'Alaska'}, { 'value':'AZ', 'name':'Arizona'}, { 'value':'AR', 'name':'Arkansas'}, { 'value':'CA', 'name':'California'}, { 'value':'CO', 'name':'Colorado'}, { 'value':'CT', 'name':'Connecticut'}, { 'value':'DE', 'name':'Delaware'}, { 'value':'DC', 'name':'District of Columbia'}, { 'value':'FL', 'name':'Florida'}, { 'value':'GA', 'name':'Georgia'}, { 'value':'HI', 'name':'Hawaii'}, { 'value':'ID', 'name':'Idaho'}, { 'value':'IL', 'name':'Illinois'}, { 'value':'IN', 'name':'Indiana'}, { 'value':'IA', 'name':'Iowa'}, { 'value':'KS', 'name':'Kansas'}, { 'value':'KY', 'name':'Kentucky'}, { 'value':'LA', 'name':'Louisiana'}, { 'value':'ME', 'name':'Maine'}, { 'value':'MD', 'name':'Maryland'}, { 'value':'MA', 'name':'Massachusetts'}, { 'value':'MI', 'name':'Michigan'}, { 'value':'MN', 'name':'Minnesota'}, { 'value':'MS', 'name':'Mississippi'}, { 'value':'MO', 'name':'Missouri'}, { 'value':'MT', 'name':'Montana'}, { 'value':'NE', 'name':'Nebraska'}, { 'value':'NV', 'name':'Nevada'}, { 'value':'NH', 'name':'New Hampshire'}, { 'value':'NJ', 'name':'New Jersey'}, { 'value':'NM', 'name':'New Mexico'}, { 'value':'NY', 'name':'New York'}, { 'value':'NC', 'name':'North Carolina'}, { 'value':'ND', 'name':'North Dakota'}, { 'value':'OH', 'name':'Ohio'}, { 'value':'OK', 'name':'Oklahoma'}, { 'value':'OR', 'name':'Oregon'}, { 'value':'PA', 'name':'Pennsylvania'}, { 'value':'RI', 'name':'Rhode Island'}, { 'value':'SC', 'name':'South Carolina'}, { 'value':'SD', 'name':'South Dakota'}, { 'value':'TN', 'name':'Tennessee'}, { 'value':'TX', 'name':'Texas'}, { 'value':'UT', 'name':'Utah'}, { 'value':'VT', 'name':'Vermont'}, { 'value':'VA', 'name':'Virginia'}, { 'value':'WA', 'name':'Washington'}, { 'value':'WV', 'name':'West Virginia'}, { 'value':'WI', 'name':'Wisconsin'}, { 'value':'WY', 'name':'Wyoming'}
+]
+
+
+function make_states() {
+  state_element = '';
+  for (var i = 0; i < states.length; i++) {
+          state_element += '<option value="' + states[i].value + '">' + states[i].name + '</option>';
+      }
+
+  $("#candidate_state_checked").html(state_element);
+  $("#candidate_state_checked").trigger("chosen:updated");
+}
+
+
+
+function apply_filters() {
+  
+  state_selected = $("#candidate_state_checked").val();
+  rating_selected = $("#rating_filter").val();
+  chamber_selected = $("#candidate_filter").val();
+  party_selected = $("#party_filter").val();
+  
+  
+  
+  $(".primary_race").each(function(index) {    
+    race_id = this.id;
+    [chamber, state, rating, party] = race_id.split("-");
+    
+    display = true;
+    if (chamber_selected != 0 && chamber_selected != chamber) {
+      display = false;
+    };
+    if (party_selected != 0 && party_selected != party) {
+      display = false;
+    };
+    if (state_selected != 0 && state_selected != state) {
+      display = false;
+    };
+    if (rating_selected != 0 && rating_selected.indexOf(rating) < 0) {
+      display = false;
+    };
+    
+    
+    if (display) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+    
+  });
+}
+
+
+$(document).ready(function() {
+  
+  $('.chosen-select'  ).chosen({disable_search_threshold: 10});
+  make_states();
+  
+    $( "#candidate_filter" ).val("0");
+    
+    $( ".chosen-select" )
+    .bind( "change", function() {
+      apply_filters();
+      
+      
+    });
+});
+
+
+
+
+</script>
+
+<!-- end filter  -->
+
+
 <div class="module" id="senate-races">
-<h3>SENATE RACES</H3>
 {% for race in senate_races %}
 <div class="senate_race" id="S-{{ race.race.state }}-{{ race.race.rothenberg_rating_id }}-{{ race.party }}">
   <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }} Senate</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
@@ -47,10 +171,9 @@
 </div>
 
 <div class="module" id="house-races">
-<h3>HOUSE RACES</H3>
 {% for race in house_races %}
-<div class="house_race" id="S-{{ race.race.state }}-{{ race.race.rothenberg_rating_id }}-{{ race.party }}">
-  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }}-{{ race.race.office_district }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
+<div class="house_race" id="H-{{ race.race.state }}-{{ race.race.rothenberg_rating_id }}-{{ race.party }}">
+  <h3><a href={{race.race.get_absolute_url}}>House {{ race.race.state }}-{{ race.race.office_district }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %}</h3>
   <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. Incumbent: {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
   <table id="mainPageTable">
               <thead>
