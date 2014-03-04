@@ -5,8 +5,8 @@
 <div class="module RT clearfix">
        <h3>Competitive primaries</h3>
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
-       <p>This is a list of primary contests to watch, which Sunlight has compiled by following the money: It includes primary races that feature at least two viable candidates. Sunlight defines a viable candidate as the incumbent or a challenger who<br>&nbsp;&nbsp;&bull; As of the end of 2013, had raised at least $100,000 and had at least $50,000 in the bank for House races<br>&nbsp;&nbsp;&bull; Or had raised $300,000 and had $150,000 in the bank for Senate races.
-         <br>We consider "open" primaries (those in California, Louisiana and Washington where candidates of all parties run in the same contest) competitive if there are three or more viable candidates vying for one of the two general election berths. House races are listed below senate races; <a href="#house-races">jump to house races.</a>
+       <p>This is a list of <b>primary</b> contests to watch based solely on fundraising. It includes primary races that feature at least two viable candidates. Sunlight defines a viable candidate as the incumbent or a challenger who<br>&nbsp;&nbsp;&bull; As of the end of 2013, had raised at least $100,000 and had at least $50,000 in the bank for House races<br>&nbsp;&nbsp;&bull; Or had raised $300,000 and had $150,000 in the bank for Senate races.
+         <br>We consider "open" primaries (those in California, Louisiana and Washington where candidates of all parties run in the same contest) competitive if there are three or more viable candidates vying for one of the two general election berths. House races are listed below senate races; <a href="#house-races">jump to house races.</a> For a list of all races, including those without competitive primaries, see our <a href="/races/">races</a> page.
          </p>
        
 </div>
@@ -25,7 +25,7 @@ Show: <select name="filter_display" class="dropdown_field chosen-select" id="can
   State:
   <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="candidate_state_checked" style="width:100px;">
   </select>&nbsp;&nbsp;
-  Rothenberg rating: <select name="rating_filter" class="dropdown_field chosen-select" id="rating_filter" tabindex="2" style="width:150px;">
+  <a href="http://rothenbergpoliticalreport.com/">Rothenberg rating</a>&dagger;: <select name="rating_filter" class="dropdown_field chosen-select" id="rating_filter" tabindex="2" style="width:150px;">
       <option value='0'>All races</option>
       <option value='126'>Toss-up races</option>
       <option value='12637'>Toss-ups and leaners</option>
@@ -42,6 +42,7 @@ Show: <select name="filter_display" class="dropdown_field chosen-select" id="can
         <option value='Open*'>Open primaries</option>
 
       </select>
+      <br>&dagger;Rothenberg ratings refer to the seats' competitiveness in the general election, not the primary.
       </p>
   
     
