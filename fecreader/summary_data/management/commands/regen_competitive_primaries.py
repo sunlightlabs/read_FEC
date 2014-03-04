@@ -79,8 +79,11 @@ class Command(BaseCommand):
             
     
         ## all other states
-
+        
         races = District.objects.filter(election_year=2014).exclude(state__in=['CA', 'WA', 'LA'])
+
+        ## manually exclude florida 13 -- we should be doing this a different way. 
+        races = races.exclude(state='FL',office_district='13')
 
         for race in races:
     
