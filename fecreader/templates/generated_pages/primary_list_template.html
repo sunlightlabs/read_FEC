@@ -1,6 +1,8 @@
 {% extends "datapages/realtime_generated_base.html" %}
+{% load staticfiles %}
 
 {% block sitecss %}
+{{ block.super }}
 <link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
 {% endblock sitecss %}
 
