@@ -79,7 +79,13 @@ function apply_filters() {
   
   $(".primary_race").each(function(index) {    
     race_id = this.id;
-    [chamber, state, rating, party] = race_id.split("-");
+    
+    //#@$$ javascript
+    var race_elements = race_id.split("-");
+    var chamber = race_elements[0];
+    var state = race_elements[1];
+    var rating = race_elements[2];
+    var party = race_elements[3];
     
     display = true;
     if (chamber_selected != 0 && chamber_selected != chamber) {
