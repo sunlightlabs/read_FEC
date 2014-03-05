@@ -118,7 +118,7 @@ def house(request):
 def races(request):
 
     title="Race-wide spending totals"
-    explanatory_text="District totals (ie. House and Senate races) are based on the most recent information available, but different political groups report to the FEC on different schedules. Super PACs must report independent expenditures within 48- or 24-hours, but candidate committees only disclose on a quarterly basis. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
+    explanatory_text="District totals (ie. House and Senate races) are based on the most recent information available, but different political groups report to the FEC on different schedules. Super PACs must report independent expenditures within 48- or 24-hours, but candidate committees only disclose on a quarterly basis. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer. <br>For primary contests see our list of <a href='/competitive-primaries/'>competitive primaries</a>."
 
     districts = District.objects.all()
 
