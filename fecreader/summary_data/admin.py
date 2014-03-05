@@ -1,5 +1,6 @@
 from django.contrib import admin
-from models import District, Candidate_Overlay, Election, Election_Candidate, SubElection
+from models import District, Candidate_Overlay
+#Election, Election_Candidate, SubElection
 
 class DistrictAdmin(admin.ModelAdmin):
     
@@ -35,6 +36,7 @@ class Candidate_OverlayAdmin(admin.ModelAdmin):
     
 admin.site.register(Candidate_Overlay, Candidate_OverlayAdmin)
 
+"""
 class ElectionAdmin(admin.ModelAdmin):
     
     fieldsets = (
@@ -89,3 +91,5 @@ class Election_CandidateAdmin(admin.ModelAdmin):
     search_fields=['candidate']
     
 admin.site.register(Election_Candidate, Election_CandidateAdmin)
+
+"""

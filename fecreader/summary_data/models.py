@@ -3,7 +3,11 @@ import datetime
 from django.db import models
 from django.utils.text import slugify
 
-from django.contrib.localflavor.us.us_states import STATE_CHOICES
+#from django.contrib.localflavor.us.us_states import STATE_CHOICES
+
+## new style requires
+## pip install https://github.com/django/django-localflavor-us/zipball/master
+from django_localflavor_us.us_states import STATE_CHOICES
 
 from ftpdata.models import Candidate
 from legislators.models import Legislator
@@ -12,7 +16,7 @@ from data_references import STATES_FIPS_DICT
 
 STATE_CHOICES_DICT = dict(STATE_CHOICES)
 
-ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('R', 'Runoff'), ('SP', 'Special Primary'), ('SR', 'Special Runoff'), ('SG', 'Special General'), ('O', 'Other'))
+ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('PR', 'Primary Runoff'), ('GR', 'General Runoff'), ('SP', 'Special Primary'), ('OR', 'Special Primary Runoff'), ('SG', 'Special General'), ('SR', 'Special General Runoff'), ('O', 'Other'))
 
 type_hash_full={'C': 'Communication Cost',
           'D': 'Delegate',
@@ -666,7 +670,7 @@ class Committee_Overlay(models.Model):
 
 
 
-
+"""
 
 # This represents either a regular or a special election -- see subelection below. 
 class Election(models.Model):
@@ -742,6 +746,7 @@ class SubElection_Candidate(models.Model):
     def __unicode__(self):
         return "CANDIDATE: %s RACE:%s" % (self.candidate, self.race)
 
+"""
 
 ## summary helpers:
 
