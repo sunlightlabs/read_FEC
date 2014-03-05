@@ -3,11 +3,11 @@ import datetime
 from django.db import models
 from django.utils.text import slugify
 
-#from django.contrib.localflavor.us.us_states import STATE_CHOICES
+from django.contrib.localflavor.us.us_states import STATE_CHOICES
 
 ## new style requires
 ## pip install https://github.com/django/django-localflavor-us/zipball/master
-from django_localflavor_us.us_states import STATE_CHOICES
+#from django_localflavor_us.us_states import STATE_CHOICES
 
 from ftpdata.models import Candidate
 from legislators.models import Legislator
