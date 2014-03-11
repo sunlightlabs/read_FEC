@@ -801,6 +801,10 @@ class DistrictWeekly(models.Model):
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True, help_text="The 'main' day that polls are open; this is what determines the 20-day pre election report, for example.")
     
+    # This is the week number in terms of the isocalendar week number--weeks end on sunday. 
+    # (year, week, day) = datetime.date(2014,3,5).isocalendar()
+    # cycle_week_number = (52*(year-2013)) + week    
+    cycle_week_number = models.IntegerField(null=True, blank=True, help_text="Not applicable for webk")    
     coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
