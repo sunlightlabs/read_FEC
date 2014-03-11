@@ -579,7 +579,6 @@ class ElectionSummary(models.Model):
     coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
 
 
 # This represents either a regular or a special election
@@ -631,7 +630,6 @@ class Election(models.Model):
     coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     
  
     def __unicode__(self):
@@ -795,4 +793,14 @@ class State_Aggregate(models.Model):
 
     def get_absolute_url(self):
         return "/state/%s/" % (self.state)
+
+class DistrictWeekly(models.Model):
+    # weekly summary of race activity. Maybe truncate at $1000 or more? 
+    district = models.ForeignKey('District')
+    # what day did the primary start? If this is a general election, when did the primaries for this election start? 
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True, help_text="The 'main' day that polls are open; this is what determines the 20-day pre election report, for example.")
     
+    coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
