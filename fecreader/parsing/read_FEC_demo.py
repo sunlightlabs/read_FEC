@@ -11,7 +11,7 @@ filingnumbers=(767585, 800502, 808218, 842576, 841933)
 for filingnum in filingnumbers:
     # read from cache if it's available; by default it won't save to cache
     f1 = filing(filingnum, True)
-    f1.download()
+    #f1.download()
     formtype = f1.get_form_type()
     version = f1.version
 

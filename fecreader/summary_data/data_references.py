@@ -1,3 +1,7 @@
+STATE_CHOICES = (('AL', 'Alabama'), ('AK', 'Alaska'), ('AS', 'American Samoa'), ('AZ', 'Arizona'), ('AR', 'Arkansas'), ('AA', 'Armed Forces Americas'), ('AE', 'Armed Forces Europe'), ('AP', 'Armed Forces Pacific'), ('CA', 'California'), ('CO', 'Colorado'), ('CT', 'Connecticut'), ('DE', 'Delaware'), ('DC', 'District of Columbia'), ('FL', 'Florida'), ('GA', 'Georgia'), ('GU', 'Guam'), ('HI', 'Hawaii'), ('ID', 'Idaho'), ('IL', 'Illinois'), ('IN', 'Indiana'), ('IA', 'Iowa'), ('KS', 'Kansas'), ('KY', 'Kentucky'), ('LA', 'Louisiana'), ('ME', 'Maine'), ('MD', 'Maryland'), ('MA', 'Massachusetts'), ('MI', 'Michigan'), ('MN', 'Minnesota'), ('MS', 'Mississippi'), ('MO', 'Missouri'), ('MT', 'Montana'), ('NE', 'Nebraska'), ('NV', 'Nevada'), ('NH', 'New Hampshire'), ('NJ', 'New Jersey'), ('NM', 'New Mexico'), ('NY', 'New York'), ('NC', 'North Carolina'), ('ND', 'North Dakota'), ('MP', 'Northern Mariana Islands'), ('OH', 'Ohio'), ('OK', 'Oklahoma'), ('OR', 'Oregon'), ('PA', 'Pennsylvania'), ('PR', 'Puerto Rico'), ('RI', 'Rhode Island'), ('SC', 'South Carolina'), ('SD', 'South Dakota'), ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'), ('VI', 'Virgin Islands'), ('VA', 'Virginia'), ('WA', 'Washington'), ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming'))
+
+STATE_CHOICES_DICT = dict(STATE_CHOICES)
+
 STATES_FIPS_DICT = {
     'WA':'53',
     'VA':'51',
@@ -50,3 +54,49 @@ STATES_FIPS_DICT = {
     'KY':'21',
     'OR':'41',
     'SD':'46'}
+
+ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('PR', 'Primary Runoff'), ('GR', 'General Runoff'), ('SP', 'Special Primary'), ('OR', 'Special Primary Runoff'), ('SG', 'Special General'), ('SR', 'Special General Runoff'), ('O', 'Other'))
+
+type_hash_full={'C': 'Communication Cost',
+          'D': 'Delegate',
+          'E': 'Electioneering Communication',
+          'H': 'House',
+          'I': 'Not a Committee',
+          'N': 'Non-Party, Non-Qualified',
+          'O': 'Super PAC',
+          'P': 'Presidential',
+          'Q': 'Qualified, Non-Party',
+          'S': 'Senate',
+          'U': 'Single candidate super PAC',
+          'V': 'Hybrid super PAC - Nonqualified',
+          'W': 'Hybrid super PAC - Qualified',
+          'X': 'Non-Qualified Party',
+          'Y': 'Qualified Party',
+          'Z': 'National Party Organization',
+          }
+
+type_hash={'C': 'Communication Cost',
+        'D': 'Delegate',
+        'E': 'Electioneering',
+        'H': 'House',
+        'I': 'Expenditure Only',
+        'N': 'PAC',
+        'O': 'Super PAC',
+        'P': 'Presidential',
+        'Q': 'PAC',
+        'S': 'Senate',
+        'U': 'Single candidate super PAC',
+        'V': 'Hybrid super PAC',
+        'W': 'Hybrid super PAC',
+        'X': 'Party PAC',
+        'Y': 'Party PAC',
+        'Z': 'National Party PAC',
+        }
+
+committee_designation_hash = {'A':'Authorized by Candidate',
+                            'J': 'Joint Fund Raiser',
+                            'P': 'Principal Committee of Candidate',
+                            'U': 'Unauthorized',
+                            'B': 'Lobbyist/Registrant PAC',
+                            'D': 'Leadership PAC'
+                            }
