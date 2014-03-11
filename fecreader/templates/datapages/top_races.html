@@ -1,0 +1,32 @@
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }}{% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+<p>Only races with more than $1,000 reported in outside spending are shown.</p><br>
+{% if previous_week_number %}<a href="/top-races/week/{{ previous_week_number}}/">Previous Week{% endif %}
+{% if following_week_number %}&nbsp;|&nbsp;<a href="/top-races/week/{{ following_week_number}}/">Following Week{% endif %}
+  
+{% for obj in weeklysummaries %}
+<div style="margin-top: 40px;">
+
+<span style="font-size:18px;"><a href={{obj.district.get_absolute_url}}> {{ obj.district.race_name }}</a> {% if obj.district.open_seat %}(OPEN SEAT){% endif %}</span><br>
+<b>Rothenberg Rating: {{ obj.district.rothenberg_rating_text }}. Incumbent: {{ obj.district.incumbent_name }} ({{ obj.district.incumbent_party}}) </b><br>
+<span style="font-size:16px;">Total Outside Spending, {{obj.start_date|date:"m/d"}}-{{obj.end_date|date:"m/d"}}: ${{obj.outside_spending|intcomma}}</span>
+<br><a href="{{ obj.district.get_filtered_ie_url}}">See all outside expenditures</a>
+<br>
+
+
+
+</div>
+{% endfor %}
+
+</div>
+{% endblock %}
+  

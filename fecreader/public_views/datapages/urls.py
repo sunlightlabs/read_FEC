@@ -29,6 +29,8 @@ urlpatterns = patterns('',
         url(r'^race/(?P<cycle>\d\d\d\d)\/S\/(?P<state>\w\w)\/(?P<term_class>\d+)\/', 'public_views.datapages.views.senate_race'),
         url(r'^race_id/(?P<race_id>\d+)\/$', 'public_views.datapages.views.race_id_redirect'),
         url(r'^competitive-primaries\/$', TemplateView.as_view(template_name='generated_pages/primary_list_template.html')),
+        url(r'^top-races\/week\/(\d+)\/$','public_views.datapages.views.top_races'),
+        url(r'^top-races\/$','public_views.datapages.views.top_current_races'),
 #        url(r'^race/(?P<cycle>\d\d\d\d)\/president\/', 'public_views.datapages.views.presidential_race'),
 
 )

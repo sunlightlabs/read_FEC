@@ -9,7 +9,7 @@ from django.contrib.localflavor.us.us_states import US_STATES
 from django.db.models import Sum
 
 from fec_alerts.models import new_filing, newCommittee
-from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate
+from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate, DistrictWeekly
 this_cycle = '2014'
 this_cycle_start = datetime.date(2013,1,1)
 from formdata.models import SkedA, SkedB, SkedE
@@ -18,6 +18,8 @@ from summary_data.utils.summary_utils import map_summary_form_to_dict
 #senate_ids =  [ senator['fec_id'] for senator in senate_crosswalk if senator['fec_id'] ]
 from django.conf import settings
 from summary_data.utils.update_utils import get_update_time
+from summary_data.utils.weekly_update_utils import get_week_number, get_week_start, get_week_end
+
 
 from django.views.decorators.cache import cache_page
 
@@ -501,7 +503,52 @@ def committee_search_html(request):
         }
     )
 
+@cache_page(LONG_CACHE_TIME)
+def top_races(request, week_number): 
+    week_start = get_week_start(int(week_number))
+    week_start_formatted = week_start.strftime('%m/%d')
+    week_end = get_week_end(int(week_number))
+    week_end_formatted = week_end.strftime('%m/%d, %Y')
 
+    weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gte=1000).order_by('-outside_spending')[:5]
+    title = "Top races by outside spending, %s-%s<br>" % (week_start_formatted, week_end_formatted)
+    previous_week_number = None
+    following_week_number = None
+    if int(week_number) > 1:
+        previous_week_number = int(week_number) - 1
+    if int(week_number) < get_week_number(datetime.date.today()):
+        following_week_number = int(week_number) + 1
+    
+    return render_to_response('datapages/top_races.html',
+        {
+        'title':title,
+        'week_start':week_start,
+        'week_end':week_end,
+        'weeklysummaries':weeklysummaries,
+        'previous_week_number':previous_week_number,
+        'following_week_number':following_week_number,
+        }
+    )
 
+@cache_page(LONG_CACHE_TIME)
+def top_current_races(request): 
+    week_number = get_week_number(datetime.date.today())
+    week_start = get_week_start(int(week_number))
+    week_start_formatted = week_start.strftime('%m/%d')
+    week_end = get_week_end(int(week_number))
+    week_end_formatted = week_end.strftime('%m/%d, %Y')
+    previous_week_number = int(week_number) - 1
+
+    weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gt=1000).order_by('-outside_spending')[:5]
+    title = "Top races by outside spending, %s-%s<br>" % (week_start_formatted, week_end_formatted)
+    return render_to_response('datapages/top_races.html',
+        {
+        'previous_week_number':previous_week_number,
+        'title':title,
+        'week_start':week_start,
+        'week_end':week_end,
+        'weeklysummaries':weeklysummaries,
+        }
+    )
 
     

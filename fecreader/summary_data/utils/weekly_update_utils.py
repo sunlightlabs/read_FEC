@@ -14,11 +14,11 @@ def get_week_number(thedate):
 
 def get_week_end(week_number):
     # last sunday of the week
-    return cycle_iso_start + timedelta(days=(week_number)*7-1)
+    return (cycle_iso_start + timedelta(days=(week_number)*7-1))
 
 def get_week_start(week_number):
     # first monday of the week
-    return cycle_iso_start + timedelta(days=(week_number-1)*7)
+    return (cycle_iso_start + timedelta(days=(week_number-1)*7))
     
 def summarize_week(week_number):
     week_start = get_week_start(week_number)
