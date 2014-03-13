@@ -74,11 +74,11 @@ special_house_elections = [
     {'state':'LA', 'district':'05', 'elections': {'P': d(2013,8,21), 'G':d(2013,10,19), 'GR':d(2013,11,16) }},
     {'state':'MA', 'district':'05', 'elections': {'P': d(2013,10,15), 'G':d(2013,12,10) }},
     {'state':'MO', 'district':'08', 'elections': {'G': d(2013,6,4) }},
-    {'state':'SC', 'district':'01', 'elections': {'P': d(2014,6,3), 'G':d(2013,5,7), 'PR':d(2013,4,2) }}
+    {'state':'SC', 'district':'01', 'elections': {'P': d(2013,6,3), 'G':d(2013,5,7), 'PR':d(2013,4,2) }}
 ]
 
 special_senate_elections = [
-    {'state':'OK', 'term_class':'3', 'elections': {'P': d(2014,4,22), 'G':d(2014,6,24) }},
+    {'state':'OK', 'term_class':'3', 'elections': {'P': d(2014,6,24), 'G':d(2014,11,4), 'SR':d(2014,8,26) }},
     {'state':'MA', 'term_class':'2', 'elections': {'P': d(2013,5,30), 'G':d(2013,6,25) }},
     {'state':'NJ', 'term_class':'2', 'elections': {'P': d(2013,8,13), 'G':d(2013,10,16) }}
 ]
