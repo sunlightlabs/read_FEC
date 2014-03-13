@@ -6,7 +6,7 @@
        <h3>Competitive primaries</h3>
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
        <p>This is a list of <b>primary</b> contests to watch based solely on fundraising. It includes primary races that feature at least two viable candidates. Sunlight defines a viable candidate as the incumbent or a challenger who<br>&nbsp;&nbsp;&bull; As of the end of 2013, had raised at least $100,000 and had at least $50,000 in the bank for House races<br>&nbsp;&nbsp;&bull; Or had raised $300,000 and had $150,000 in the bank for Senate races.
-         <br>We consider "open" primaries (those in California, Louisiana and Washington where candidates of all parties run in the same contest) competitive if there are three or more viable candidates vying for one of the two general election berths. House races are listed below senate races; <a href="#house-races">jump to house races.</a> For a list of all races, including those without competitive primaries, see our <a href="/races/">races</a> page.
+         <br>We consider "open" primaries (those in California, Louisiana and Washington where candidates of all parties run in the same contest) competitive if there are three or more viable candidates vying for one of the two general election berths. House races are listed below senate races. For a list of all races, including those without competitive primaries, see our <a href="/races/">races</a> page.
          </p>
        
 </div>
@@ -136,10 +136,10 @@ $(document).ready(function() {
 <!-- end filter  -->
 
 
-<div class="module" id="senate-races">
-{% for race in senate_races %}
-<div class="primary_race" id="S-{{ race.race.state }}-{{ race.race.rothenberg_rating_id }}-{{ race.party }}"> 
-  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.state }} Senate</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %} {% if race.primary_date %}- {{ race.primary_date|date:"N j"}} {% endif %}</h3>
+<div class="module" id="races">
+{% for race in races %}
+<div class="primary_race" id="{{ race.race.office}}-{{ race.race.state }}-{{ race.race.rothenberg_rating_id }}-{{ race.party }}"> 
+  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.race_name }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %} {% if race.primary_date %}- {{ race.primary_date|date:"N j"}} {% endif %}</h3>
   
   <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. Incumbent: {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
   <table id="mainPageTable">
@@ -173,39 +173,7 @@ $(document).ready(function() {
 {% endfor %}
 </div>
 
-<div class="module" id="house-races">
-{% for race in house_races %}
-<div class="primary_race" id="H-{{ race.race.state }}-{{ race.race.rothenberg_rating_id }}-{{ race.party }}">
-  <h3><a href={{race.race.get_absolute_url}}>House {{ race.race.state }}-{{ race.race.office_district }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %} {% if race.primary_date %}- {{ race.primary_date|date:"N j"}} {% endif %}</h3>
-  <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. Incumbent: {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
-  <table id="mainPageTable">
-              <thead>
-                    <tr id="titles">                      
-                        <th>Name (Party)</th>
-                        <th>Incumbent</th>
-                        <th>Cash on Hand</th>
-                        <th>Cash on Hand Date</th>
-                        <th>Total Fundraising (2013-14)</th>
-                        <th>Outside support (2013-14)</th>
-                        <th>Outside opposition (2013-14)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for object in race.candidates %}
-                <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
-                    <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }} ({{object.party}})</a></td>
-                    <td>{{ object.incumbency_status }}</td>
-                    <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
-                    <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
-                    <td>${% if object.total_receipts %}{{ object.total_receipts|intcomma }}{% else %}0{% endif %}</td>
-                    <td>${% if object.expenditures_supporting %}{{ object.expenditures_supporting|intcomma }}{% else %}0{% endif %}</td>
-                    <td>${% if object.expenditures_opposing %}{{ object.expenditures_opposing|intcomma }}{% else %}0{% endif %}</td>
-                    
-                    </tr>
-                {% endfor %}
-  </table>
-</div>
-{% endfor %}
+
 * "Open" primaries -- also known as "jungle" primaries -- allow candidates from both parties to compete.
 </div>
 

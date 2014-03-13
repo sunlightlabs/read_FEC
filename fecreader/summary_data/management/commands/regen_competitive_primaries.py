@@ -37,8 +37,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         competitive_races = {}
-        competitive_races['senate']=[]
-        competitive_races['house']=[]
+        competitive_races['all']=[]
 
         party_hash = {'D':'Democratic', 'R':'Republican'}
 
@@ -81,9 +80,9 @@ class Command(BaseCommand):
                     print "\n\n"
                     this_race_object['party']='Open*'
                     if race.office == 'H':
-                        competitive_races['house'].append(this_race_object)
+                        competitive_races['all'].append(this_race_object)
                     else:
-                        competitive_races['senate'].append(this_race_object)
+                        competitive_races['all'].append(this_race_object)
                 
             
     
@@ -124,17 +123,13 @@ class Command(BaseCommand):
                 
                     print "\n\n"
                     this_race_object['party'] = party_hash[party] 
-                    if race.office == 'H':
-                        competitive_races['house'].append(this_race_object)
-                    else:
-                        competitive_races['senate'].append(this_race_object)            
+                    competitive_races['all'].append(this_race_object)            
 
 
-        senate_races = sorted(competitive_races['senate'], key=lambda x: x['primary_date'])
-        house_races = sorted(competitive_races['house'], key=lambda x: (x['primary_date'], x['race'].office_district ))
+        races = sorted(competitive_races['all'], key=lambda x: (x['primary_date'], x['race'].office_district ))
 
         update_time = datetime.now()
-        c = Context({"update_time": update_time, "house_races": house_races, "senate_races":senate_races})
+        c = Context({"update_time": update_time, "races": races})
         this_template = get_template('generated_pages/primary_list.html')
         result = this_template.render(c)
         template_path = PROJECT_ROOT + "/../templates/generated_pages/primary_content.html"
