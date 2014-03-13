@@ -139,7 +139,7 @@ $(document).ready(function() {
 <div class="module" id="races">
 {% for race in races %}
 <div class="primary_race" id="{{ race.race.office}}-{{ race.race.state }}-{{ race.race.rothenberg_rating_id }}-{{ race.party }}"> 
-  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.race_name }}</a> {{ race.party }} Primary {% if race.race.open_seat %}(OPEN SEAT){% endif %} {% if race.primary_date %}- {{ race.primary_date|date:"N j"}} {% endif %}</h3>
+  <h3><a href={{race.race.get_absolute_url}}>{{ race.race.race_name }}</a> {{ race.party }} {{ race.type }} {% if race.race.open_seat %}(OPEN SEAT){% endif %} {% if race.primary_date %}- {{ race.primary_date|date:"N j"}} {% endif %}</h3>
   
   <b>Rothenberg Rating: {{ race.race.rothenberg_rating_text }}. Incumbent: {{ race.race.incumbent_name }} ({{ race.race.incumbent_party}}) </b>
   <table id="mainPageTable">

@@ -65,6 +65,8 @@ class Command(BaseCommand):
                     comment_print("Multiple candidates found !")
                     this_race_object = {}
                     this_race_object['race'] = race
+                    this_race_object['type'] = "primary"
+                    
                     
                     try:
                         primary_election = Election.objects.get(district=race, election_code='P', cycle='2014')
@@ -72,7 +74,12 @@ class Command(BaseCommand):
                         
                         # ignore primary elections that have already been held
                         if  primary_election.election_date < today:
-                            continue
+                            try:
+                                primary_runoff_election = Election.objects.get(district=race, election_code='PR', cycle='2014', election_date__gte=today)
+                                this_race_object['type'] = 'primary runoff'
+                            except Election.DoesNotExist:
+                                # No primary
+                                continue
                         
                         
                     except ElectionSummary.DoesNotExist:
@@ -113,6 +120,7 @@ class Command(BaseCommand):
                 if len(party_candidates) > 1:
                     this_race_object = {}
                     this_race_object['race'] = race
+                    this_race_object['type'] = "primary"
                     this_race_object['candidates'] = []
                     
                     try:
