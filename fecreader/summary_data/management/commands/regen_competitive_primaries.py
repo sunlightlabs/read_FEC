@@ -121,8 +121,8 @@ class Command(BaseCommand):
                         competitive_races['senate'].append(this_race_object)            
 
 
-        senate_races = sorted(competitive_races['senate'], key=lambda x: x['race'].state)
-        house_races = sorted(competitive_races['house'], key=lambda x: (x['race'].state, x['race'].office_district ))
+        senate_races = sorted(competitive_races['senate'], key=lambda x: x['primary_date'])
+        house_races = sorted(competitive_races['house'], key=lambda x: (x['primary_date'], x['race'].office_district ))
 
         update_time = datetime.now()
         c = Context({"update_time": update_time, "house_races": house_races, "senate_races":senate_races})
