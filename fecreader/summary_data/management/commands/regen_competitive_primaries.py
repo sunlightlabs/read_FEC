@@ -1,6 +1,6 @@
 # How many primaries will be hard-fought?
 
-from datetime import datetime
+from datetime import datetime, date
 
 from django.template import Template
 from django.template.loader import get_template
@@ -18,6 +18,8 @@ senate_fundraising_threshold = 300000
 
 house_cash_on_hand_threshold = 50000
 senate_cash_on_hand_threshold = 150000
+
+today = date.today()
 
 PROJECT_ROOT = settings.PROJECT_ROOT
 
@@ -67,6 +69,12 @@ class Command(BaseCommand):
                     try:
                         primary_election = Election.objects.get(district=race, election_code='P', cycle='2014')
                         this_race_object['primary_date'] = primary_election.election_date
+                        
+                        # ignore primary elections that have already been held
+                        if  primary_election.election_date < today:
+                            continue
+                        
+                        
                     except ElectionSummary.DoesNotExist:
                         print "Missing primary election for %s" % (race)
                         pass
@@ -79,10 +87,9 @@ class Command(BaseCommand):
                         this_race_object['candidates'].append(candidate)
                     print "\n\n"
                     this_race_object['party']='Open*'
-                    if race.office == 'H':
-                        competitive_races['all'].append(this_race_object)
-                    else:
-                        competitive_races['all'].append(this_race_object)
+                    
+                    competitive_races['all'].append(this_race_object)
+                    
                 
             
     
@@ -111,9 +118,17 @@ class Command(BaseCommand):
                     try:
                         primary_election = Election.objects.get(district=race, election_code='P', cycle='2014')
                         this_race_object['primary_date'] = primary_election.election_date
+                        
+                        # ignore primary elections that have already been held
+                        if  primary_election.election_date < today:
+                            continue
+                            
+                            
                     except ElectionSummary.DoesNotExist:
                         print "Missing primary election for %s" % (race)
                         pass
+                    
+                    
                     
                     print "State=%s Office =%s District =%s incumbent=%s incumbent party = %s is open %s rating: %s (%s)" % (race.state, race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.open_seat,  race.rothenberg_rating_text, race.rothenberg_rating_id)
             
