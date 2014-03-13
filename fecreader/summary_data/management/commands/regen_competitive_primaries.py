@@ -8,7 +8,7 @@ from django.template import Context
 from django.conf import settings
 from django.db.models import Q
 
-from summary_data.models import District, Candidate_Overlay
+from summary_data.models import District, Candidate_Overlay, Election
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -99,7 +99,14 @@ class Command(BaseCommand):
                     this_race_object = {}
                     this_race_object['race'] = race
                     this_race_object['candidates'] = []
-            
+                    
+                    try:
+                        primary_election = ElectionSummary.objects.get(district=race, election_code='P', cycle='2014')
+                        this_race_object['primary_date'] = primary_election.election_date
+                    except ElectionSummary.DoesNotExist:
+                        print "Missing primary election for %s" % (race)
+                        pass
+                    
                     print "State=%s Office =%s District =%s incumbent=%s incumbent party = %s is open %s rating: %s (%s)" % (race.state, race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.open_seat,  race.rothenberg_rating_text, race.rothenberg_rating_id)
             
                     for candidate in party_candidates:
