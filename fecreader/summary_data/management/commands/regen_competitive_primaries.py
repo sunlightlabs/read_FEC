@@ -77,6 +77,8 @@ class Command(BaseCommand):
                             try:
                                 primary_runoff_election = Election.objects.get(district=race, election_code='PR', cycle='2014', election_date__gte=today)
                                 this_race_object['type'] = 'primary runoff'
+                                this_race_object['primary_date'] = primary_runoff_election.election_date
+                                
                             except Election.DoesNotExist:
                                 # No primary
                                 continue
@@ -132,6 +134,7 @@ class Command(BaseCommand):
                             try:
                                 primary_runoff_election = Election.objects.get(district=race, election_code='PR', cycle='2014', election_date__gte=today)
                                 this_race_object['type'] = 'primary runoff'
+                                this_race_object['primary_date'] = primary_runoff_election.election_date
                             except Election.DoesNotExist:
                                 # No primary
                                 continue
