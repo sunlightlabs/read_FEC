@@ -35,7 +35,7 @@ class District(models.Model):
     election_year = models.IntegerField(blank=True, null=True, help_text="When is the next general election going to take place--enter this even when we don't know the election date")
     next_election_date = models.DateField(blank=True, null=True)
     next_election_code = models.CharField(max_length=2, blank=True, null=True, choices=ELECTION_TYPE_CHOICES) # General, Primary, Runoff, SP=special primary, SR=special runoff, SG=special general, Caucus, Other
-    special_election_scheduled = models.NullBooleanField(default=False, null=True, help_text="Is there a special election scheduled ahead of the next regularly scheduled election?")
+    special_election_scheduled = models.NullBooleanField(default=False, null=True, help_text="Is there a special election scheduled ahead of the next regularly scheduled election? This should be *false* if a special election has already been held this cycle")
     open_seat = models.NullBooleanField(default=False, null=True, help_text="is the incumbent stepping down")
     # nice to have: hist
     dem_frac_historical = models.FloatField(null=True, help_text="What fraction of the time since 2000 has this seat been occupied by democrats")
@@ -569,14 +569,14 @@ class Committee_Overlay(models.Model):
 
 # This is the summary of an entire election--it's either special or normal. A normal election will be related to a primary and a general--and any associated runoffs. The scheduled runoff dates in this model are just the dates that *could* happen; the primary_runoff_needed and general_runoff_needed flags actually say whether one happened. 
 class ElectionSummary(models.Model):
-    district = models.ForeignKey('District')
+    district = models.ForeignKey('District', editable=False)
     incumbent_name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
     incumbent_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
     
-    election_winner = models.ForeignKey('Candidate_Overlay', null=True)
+    election_winner = models.ForeignKey('Candidate_Overlay', null=True, blank=True)
     # alter table summary_data_electionsummary alter column election_winner_id drop not null;
     
-    election_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
+    # election_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     election_year = models.IntegerField(help_text="the year the general election is taking place; populate this even when we don't know election date. ")
     election_date = models.DateField(null=True, help_text="The 'main' day that polls are open; this is what determines the 20-day pre election report, for example.")
@@ -599,6 +599,8 @@ class ElectionSummary(models.Model):
     outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
 
+    def __unicode__(self):
+        return "%s (%s) - %s (%s)" % (self.district, self.election_summary_code, self.district.incumbent_name, self.district.incumbent_party)
 
 # This is a single day that people vote--could be a primary, a primary runoff, a general, a general runoff, a special primary, a special primary runoff, a special general, or a special general runoff. 
 class Election(models.Model):
@@ -606,10 +608,12 @@ class Election(models.Model):
     district = models.ForeignKey('District')
     election = models.ForeignKey('ElectionSummary')
     
+    # This is only populated if there is a single winner ? I guess this should be a many-to-many field ? 
     election_winner = models.ForeignKey('Candidate_Overlay', null=True)
     # alter table summary_data_election alter column election_winner_id drop not null;
     
-    election_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
+    # We just have a primary election -- its too hard to say whether outside money is involved in a particular side of a primary
+    # election_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
     
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     election_year = models.IntegerField(help_text="the year the general election is taking place; populate this even when we don't know election date. ")

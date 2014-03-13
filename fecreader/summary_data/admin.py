@@ -1,6 +1,5 @@
 from django.contrib import admin
-from models import District, Candidate_Overlay
-#Election, Election_Candidate, SubElection
+from models import District, Candidate_Overlay, ElectionSummary
 
 class DistrictAdmin(admin.ModelAdmin):
     
@@ -36,60 +35,14 @@ class Candidate_OverlayAdmin(admin.ModelAdmin):
     
 admin.site.register(Candidate_Overlay, Candidate_OverlayAdmin)
 
-"""
-class ElectionAdmin(admin.ModelAdmin):
+class ElectionSummaryAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ("Human-verified data", {
-            'fields': ('open_seat',),
-            
+            'fields': ('election_winner','primary_runoff_needed', 'general_runoff_needed'),
         }),
-        ("Mostly autopopulated", {
-            'fields': ('election_code', 'incumbent_name','incumbent_party', 'election_year', 'state', 'term_class','office', 'office_district'),
-                   
-        }),
-        
     )
-    search_fields=['incumbent_name', 'state']
-    
-admin.site.register(Election, ElectionAdmin)
+    search_fields=['district__incumbent_name']
 
-# For SubElectionAdmin class, if needed
-# 'primary_party', 'primary_contested', 'election_date','election_voting_start_date', 'election_voting_end_date',
+admin.site.register(ElectionSummary, ElectionSummaryAdmin)
 
-class SubElectionAdmin(admin.ModelAdmin):
-    
-    fieldsets = (
-        ("Human-verified data", {
-            'fields': ('election_date','election_voting_start_date', 'election_voting_end_date'),
-            
-        }),
-        ("Mostly autopopulated", {
-            'fields': ('subelection_code', 'primary_party', 'is_contested'),
-                   
-        }),
-        
-    )
-    search_fields=['incumbent_name', 'state']
-    
-admin.site.register(SubElection, SubElectionAdmin)
-
-
-class Election_CandidateAdmin(admin.ModelAdmin):
-    readonly_fields = ('candidate','race')
-    fieldsets = (
-        ("Autopopulated", {
-            'fields': ('candidate', 'race'),
-                   
-        }),
-        ("Non-fec data", {
-            'fields': ('is_sole_winner','advance_to_runoff', 'is_loser', 'vote_percent', 'vote_number'),
-            
-        }),
-        
-    )
-    search_fields=['candidate']
-    
-admin.site.register(Election_Candidate, Election_CandidateAdmin)
-
-"""
