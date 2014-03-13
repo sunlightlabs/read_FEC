@@ -101,7 +101,7 @@ class Command(BaseCommand):
                     this_race_object['candidates'] = []
                     
                     try:
-                        primary_election = ElectionSummary.objects.get(district=race, election_code='P', cycle='2014')
+                        primary_election = Election.objects.get(district=race, election_code='P', cycle='2014')
                         this_race_object['primary_date'] = primary_election.election_date
                     except ElectionSummary.DoesNotExist:
                         print "Missing primary election for %s" % (race)
