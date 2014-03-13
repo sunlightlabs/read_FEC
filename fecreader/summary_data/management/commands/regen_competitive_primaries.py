@@ -58,11 +58,20 @@ class Command(BaseCommand):
                     candidates = candidates.filter(Q(total_receipts__gte=senate_fundraising_threshold,cash_on_hand__gte=senate_cash_on_hand_threshold)|Q(is_incumbent=True))
             
 
+
                 # There are two berths, so its competitive only if there are three spots
                 if len(candidates) > 2:
                     comment_print("Multiple candidates found !")
                     this_race_object = {}
                     this_race_object['race'] = race
+                    
+                    try:
+                        primary_election = Election.objects.get(district=race, election_code='P', cycle='2014')
+                        this_race_object['primary_date'] = primary_election.election_date
+                    except ElectionSummary.DoesNotExist:
+                        print "Missing primary election for %s" % (race)
+                        pass
+                    
                     this_race_object['candidates'] = []
                     print "State=%s Office =%s District =%s incumbent=%s incumbent party = %s is open %s rating: %s (%s)" % (race.state, race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.open_seat,  race.rothenberg_rating_text, race.rothenberg_rating_id)
             
