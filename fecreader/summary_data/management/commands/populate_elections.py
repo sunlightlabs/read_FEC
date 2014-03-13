@@ -1,82 +1,130 @@
+""" Ugliness to create elections; there are tons of special cases. In general we don't create runoffs here, only record the dates they might happen, since they only take place if needed. Which is something we might wanna just ignore. """
+
+from datetime import date
 from django.core.management.base import BaseCommand, CommandError
+ 
 
-# Creates races from districts, and from special elections 
+election_day_2014 = date(2014,11,4)
+cycle_start = date(2013,1,1)
 
-from summary_data.utils.senate_crosswalk import senate_crosswalk
-from summary_data.utils.house_crosswalk import house_crosswalk
 from summary_data.models import *
-from legislators.models import Legislator, Term
-from summary_data.utils.session_data import senate_special_elections, house_special_elections
+from summary_data.election_dates import election_dates_2014, special_house_elections, special_senate_elections
 
+def pop_normal_elections():
+    districts = District.objects.filter(election_year=2014).exclude(state__in=['AS', 'GU', 'PR', 'VI', 'MP'])
+    for d in districts:
+        this_state = d.state
+        state_data = election_dates_2014[this_state]
+        print this_state, state_data
+        has_primary_runoff = False
+        primary_runoff_date = None
+        has_general_runoff = False
+        general_runoff_date = None
+        if state_data['has_runoff'] == 1:
+            has_primary_runoff = True
+            primary_runoff_date = state_data['runoff']
+        
+        if this_state in ['LA', 'GA']:
+            has_general_runoff = True
+            if this_state == 'LA':
+                general_runoff_date = date(2014,12,6)
+            else:
+                # How can georgia hold a general runoff election after the date that reps would be sworn in? 
+                # See court order:
+                # http://www.scribd.com/doc/163441428/Court-Order-Regarding-Georgia-2014-Election-Calendar-changes
+                # This would require a third candidate getting a sizeable chunk of the vote, so it's not a likely outcome, I guess
+                general_runoff_date = date(2015,1,6)
+        
+        election_summary, created = ElectionSummary.objects.get_or_create(district=d, election_summary_code='N', defaults={
+        'cycle':'2014',
+        'election_year':2014,
+        'election_date':election_day_2014,
+        })
+        # now create the primary and general elections
+        
+        # the start date for the general election is the primary. But this might be wrong if there is a runoff. 
+        # We don't yet know whether there *will* be a runoff. 
+        
+        for election_code in ['P', 'G']:
+            print election_code
 
-def pop_house_elections():
-    # get all house districts
-    cycle = '2014'
-    house_districts = District.objects.filter(office='H')
+            if election_code == 'P':
+                if this_state == 'LA':
+                    continue
+                start_date = cycle_start
+                election_date = state_data['primary']
+                
+            else:
+                if this_state == 'LA':
+                    start_date = cycle_start
+                else:
+                    start_date = state_data['primary']
+                election_date = election_day_2014
+            obj, created = Election.objects.get_or_create(district=d, election=election_summary, election_code=election_code,
+                defaults={
+                    'cycle':'2014',
+                    'election_year':2014,
+                    'start_date':start_date,
+                    'election_date':election_date,                    
+                })
     
-    # make regularly scheduled elections
-    for hd in house_districts:
-        this_election, created = Election.objects.get_or_create(district=hd, cycle=cycle, election_year=2014, open_seat=hd.open_seat, incumbent_name=hd.incumbent_name, incumbent_pty=hd.incumbent_pty, incumbent_party=hd.incumbent_party, state=hd.state, office='H', office_district=hd.office_district, election_code='N')
+def process_special_election(election, chamber):
+    district = None
+    this_state = election['state']
+
+    try:
+        if chamber=='H':
+            district = District.objects.get(state=election['state'], office_district=election['district'], office=chamber)
+        else:
+            district = District.objects.get(state=election['state'], term_class=election['term_class'], office=chamber)
+    except District.DoesNotExist:
+        print "**** Missing district: %s" % election
+        return None
+
+
+    print "Creating election summary %s, %s" % (this_state, election)
+    
+    election_summary, created = ElectionSummary.objects.get_or_create(district=district, election_summary_code='S', defaults={
+        'cycle':'2014',
+        'election_year':2014,
+        'election_date':election_day_2014,
+    })
+    # now create the primary and general elections
+    # Give up on election start dates. It's a mess for these. 
+    # Will be added in a subsequent script. 
+    
+    for key in election['elections']:
+        election_code = key
+        election_date = election['elections'][key]
+        if key not in ['P', 'G']:
+            continue
         
-        for election_code in ['P', 'G']:
-            # make primary and general elections for 2014 cycle:
-            if election_code == 'P':
-                for primary_party in ['D', 'R']:
-                    subelection, created = SubElection.objects.get_or_create(parentElection=this_election, primary_party=primary_party, subelection_code='P')
-
-            else:
-                subelection, created = SubElection.objects.get_or_create(parentElection=this_election, subelection_code='G')
-
-    # add special elections
-    for se in house_special_elections:
-        hd= District.objects.get(state=se['state'], office_district=se['office_district'], office='H')
-        primary_party = se.get('primary_party')
-        election, created = Election.objects.get_or_create(district=hd, cycle=cycle, election_year=se['election_year'], open_seat=hd.open_seat, incumbent_name=hd.incumbent_name, incumbent_pty=hd.incumbent_pty, incumbent_party=hd.incumbent_party, state=hd.state, office='H', office_district=hd.office_district, election_code='S')
-            
-        subelection, created = SubElection.objects.get_or_create(parentElection=election, primary_party=primary_party, subelection_code=se['election_code'], election_date=se['election_date'])
+        print election_code, election_date
+        election_date = election_date
         
+        # these files use P for primary -- but that's really a special primary; ditto for G -> SG
+        if election_code == 'P':
+            election_code = 'SP'
+        if election_code == 'G':
+            election_code = 'SG'
         
-def pop_senate_elections():
-    # get all senate districts
+        obj, created = Election.objects.get_or_create(district=district, election=election_summary, election_code=election_code,
+            defaults={
+                'cycle':'2014',
+                'election_year':2014,
+                'election_date':election_date,
+            })
 
-    senate_districts = District.objects.filter(office='S')
+def pop_special_elections():
+    for election in special_house_elections:
+        process_special_election(election, 'H')
+    for election in special_senate_elections:
+        process_special_election(election, 'S')
 
-    # make regularly scheduled elections
-    for sd in senate_districts:
-        this_election, created = Election.objects.get_or_create(district=sd, cycle=sd.cycle, election_year=sd.election_year, open_seat=sd.open_seat, incumbent_name=sd.incumbent_name, incumbent_pty=sd.incumbent_pty, incumbent_party=sd.incumbent_party, state=sd.state, office='S', term_class=sd.term_class, election_code='N')
-        
-        for election_code in ['P', 'G']:
-            if election_code == 'P':
-                for primary_party in ['D', 'R']:
-                    subelection, created = SubElection.objects.get_or_create(parentElection=this_election, primary_party=primary_party, subelection_code='P')
-                    
-            else:
-                subelection, created = SubElection.objects.get_or_create(parentElection=this_election, subelection_code='G')
 
-    # add special elections
-    for se in senate_special_elections:
-        primary_party=se.get('primary_party')
-
-        
-        sd= District.objects.get(state=se['state'], term_class=se['term_class'], office='S')
-        election, created = Election.objects.get_or_create(district=sd, cycle=se['cycle'], election_year=se['election_year'], open_seat=sd.open_seat, incumbent_name=sd.incumbent_name, incumbent_pty=sd.incumbent_pty, incumbent_party=sd.incumbent_party, state=sd.state, office='S', term_class=se['term_class'], election_code='S')
-        subelection, created = SubElection.objects.get_or_create(parentElection=election, primary_party=primary_party, subelection_code=se['election_code'], election_date=se['election_date'])
-
-def populate_election_candidates():
-    # Doesn't handle special elections
-    elections = Election.objects.filter(election_code='N')
-    for election in elections:
-        district = election.district
-        print "election %s district: %s" % (election, district)
-        candidates = Candidate_Overlay.objects.filter(district=district, election_year=election.election_year)
-        for candidate in candidates:
-            print "Found candidate %s" % candidate
-            ec, created = Election_Candidate.objects.get_or_create(candidate=candidate, race=election)
 
 class Command(BaseCommand):
  
     def handle(self, *args, **options): 
-        pop_house_elections()
-        pop_senate_elections() 
-        populate_election_candidates()
-               
+        pop_normal_elections()
+        pop_special_elections()

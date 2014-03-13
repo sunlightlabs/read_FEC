@@ -57,6 +57,8 @@ STATES_FIPS_DICT = {
 
 ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('PR', 'Primary Runoff'), ('GR', 'General Runoff'), ('SP', 'Special Primary'), ('OR', 'Special Primary Runoff'), ('SG', 'Special General'), ('SR', 'Special General Runoff'), ('O', 'Other'))
 
+ELECTION_TYPE_DICT = {'G':'general' ,'P':'primary', 'PR': 'runoff (primary election)', 'GR':'runoff (general election)', 'SP':'(primary) special election', 'OR':'runoff (primary, special election)', 'SG':'special election (general)', 'SR':'runoff, special general', 'O':'other'}
+
 type_hash_full={'C': 'Communication Cost',
           'D': 'Delegate',
           'E': 'Electioneering Communication',

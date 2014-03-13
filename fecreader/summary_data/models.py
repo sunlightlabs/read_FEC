@@ -6,7 +6,7 @@ from django.utils.text import slugify
 from ftpdata.models import Candidate
 from legislators.models import Legislator
 from api.nulls_last_queryset import NullsLastManager
-from data_references import STATES_FIPS_DICT, STATE_CHOICES_DICT, STATE_CHOICES, ELECTION_TYPE_CHOICES, type_hash_full, type_hash, committee_designation_hash
+from data_references import STATES_FIPS_DICT, STATE_CHOICES_DICT, STATE_CHOICES, ELECTION_TYPE_CHOICES, ELECTION_TYPE_DICT, type_hash_full, type_hash, committee_designation_hash
 
 # There are many different data sets that are updated. Keep track of them here.
 # options are "scrape_electronic_filings", "scrape_new_committees",...
@@ -143,6 +143,12 @@ class District(models.Model):
             
     def get_filtered_ie_url(self):
         return "/outside-spending/#?ordering=-expenditure_date_formatted&district_checked=%s" % self.pk
+        
+    def next_election(self):
+        if self.next_election_code:
+            return ELECTION_TYPE_DICT[self.next_election_code]
+        else:
+            return ""
 
     class Meta:
         ordering = ['state', '-office', 'office_district']
@@ -561,18 +567,31 @@ class Committee_Overlay(models.Model):
         return "/outside-spending/#?ordering=-expenditure_date_formatted&filer_committee_id_number=%s" % (self.fec_id)
 
 
-# This is the summary of an entire election--so primary, general, and any runoffs. 
+# This is the summary of an entire election--it's either special or normal. A normal election will be related to a primary and a general--and any associated runoffs. The scheduled runoff dates in this model are just the dates that *could* happen; the primary_runoff_needed and general_runoff_needed flags actually say whether one happened. 
 class ElectionSummary(models.Model):
     district = models.ForeignKey('District')
     incumbent_name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
     incumbent_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
     
-    election_winner = models.ForeignKey('Candidate_Overlay')
+    election_winner = models.ForeignKey('Candidate_Overlay', null=True)
+    # alter table summary_data_electionsummary alter column election_winner_id drop not null;
+    
     election_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     election_year = models.IntegerField(help_text="the year the general election is taking place; populate this even when we don't know election date. ")
     election_date = models.DateField(null=True, help_text="The 'main' day that polls are open; this is what determines the 20-day pre election report, for example.")
     election_summary_code = models.CharField(max_length=2, blank=True, null=True, choices=ELECTION_TYPE_CHOICES) # N=Normal, S=Special
+    
+    
+    has_primary_runoff = models.NullBooleanField(default=False,help_text="Is there a primary runoff election possible?")
+    primary_runoff_date = models.DateField(null=True, help_text="Leave this blank if a primary runoff isn't possible.")
+    primary_runoff_needed = models.NullBooleanField(default=False,help_text="Is there a primary runoff taking place?")
+    
+    # General runoffs are only a Louisiana thing; also maybe georgia? 
+    has_general_runoff = models.NullBooleanField(default=False,help_text="Is there a general runoff election possible?")
+    general_runoff_date =  models.DateField(null=True, help_text="Leave this blank if there is no general runoff election possible.")
+    general_runoff_needed = models.NullBooleanField(default=False,help_text="Is there a general runoff taking place?")
+    
     
     candidate_raised = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     candidate_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
@@ -581,49 +600,29 @@ class ElectionSummary(models.Model):
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
 
 
-# This represents either a regular or a special election
+# This is a single day that people vote--could be a primary, a primary runoff, a general, a general runoff, a special primary, a special primary runoff, a special general, or a special general runoff. 
 class Election(models.Model):
     
     district = models.ForeignKey('District')
     election = models.ForeignKey('ElectionSummary')
     
-    incumbent_name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
-    incumbent_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
+    election_winner = models.ForeignKey('Candidate_Overlay', null=True)
+    # alter table summary_data_election alter column election_winner_id drop not null;
     
-    election_winner = models.ForeignKey('Candidate_Overlay')
     election_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
-    
     
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     election_year = models.IntegerField(help_text="the year the general election is taking place; populate this even when we don't know election date. ")
-    ## Only populate the primary party if it's a primary. Use 'O' for 'Open' primary. 
-    primary_party = models.CharField(max_length=1, blank=True, null=True, help_text="If this is a primary, what party is it for? Leave empty for a general election.") 
-      
     # what day did the primary start? If this is a general election, when did the primaries for this election start? 
     start_date = models.DateField(null=True)
     
-    election_date = models.DateField(null=True, help_text="The 'main' day that polls are open; this is what determines the 20-day pre election report, for example.")
-    has_open_voting_period = models.NullBooleanField(default=False,help_text="Is there a period of time that this election runs for--or, functinally, did we enter a start and end date.")
-    election_voting_start_date = models.DateField(null=True, help_text="The day that voting starts, be it by mail or whatever. Not sure we really care about this. ")
-    election_voting_end_date = models.DateField(null=True, help_text="The day that voting ends--this is probably the election date")
+    election_date = models.DateField(null=True, help_text="The 'main' day that polls are open; this is what determines the 20-day pre election report, for example.")    
     
     election_code = models.CharField(max_length=2, blank=True, null=True, choices=ELECTION_TYPE_CHOICES) 
     
     election_other_description = models.CharField(max_length=20, blank=True, null=True, help_text="FEC field; required if election code is 'O' for other")
-
-    is_contested = models.NullBooleanField(default=False,help_text="Is there at least one candidate running?")
-        
-    seat_redistricted = models.BooleanField(default=False,help_text="Has the district changed since the last election? If so, don't compare current race to prior")
-    seat_isnew = models.BooleanField(default=False,help_text="Is this an entirely new district--that is, this district didn't exist last cycle")
-    open_seat = models.BooleanField(default=False,help_text="Is the incumbent not running?")
-    state = models.CharField(max_length=2, blank=True, null=True, help_text="US for president")
-    office = models.CharField(max_length=1, null=True,
-                              choices=(('H', 'House'), ('S', 'Senate'), ('P', 'President'))
-                              )
-                              
-    office_district = models.CharField(max_length=2, blank=True, null=True, help_text="'00' for at-large congress, senate, president") 
-    term_class = models.IntegerField(blank=True, null=True, help_text="1,2 or 3. Pulled from US Congress repo. Only applies to senators.")
     
+    is_contested = models.NullBooleanField(default=False,help_text="Is there at least one candidate running?")
     
     candidate_raised = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     candidate_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
