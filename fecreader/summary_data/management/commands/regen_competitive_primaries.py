@@ -129,7 +129,12 @@ class Command(BaseCommand):
                         
                         # ignore primary elections that have already been held
                         if  primary_election.election_date < today:
-                            continue
+                            try:
+                                primary_runoff_election = Election.objects.get(district=race, election_code='PR', cycle='2014', election_date__gte=today)
+                                this_race_object['type'] = 'primary runoff'
+                            except Election.DoesNotExist:
+                                # No primary
+                                continue
                             
                             
                     except ElectionSummary.DoesNotExist:
