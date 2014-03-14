@@ -111,7 +111,7 @@ class Command(BaseCommand):
 
         for race in races:
     
-            candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('-cash_on_hand')
+            candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).exclude(candidate_status__in=['W', 'LP']).order_by('-cash_on_hand')
             if race.office == 'H':
                 candidates = candidates.filter(Q(total_receipts__gte=house_fundraising_threshold,cash_on_hand__gte=house_cash_on_hand_threshold)|Q(is_incumbent=True))
             else:

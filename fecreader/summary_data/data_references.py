@@ -59,6 +59,13 @@ ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('PR', 'Primary Run
 
 ELECTION_TYPE_DICT = {'G':'general' ,'P':'primary', 'PR': 'runoff (primary election)', 'GR':'runoff (general election)', 'SP':'(primary) special election', 'OR':'runoff (primary, special election)', 'SG':'special election (general)', 'SR':'runoff, special general', 'O':'other'}
 
+CANDIDATE_STATUS_CHOICES = (('W', 'Dropped out of race'),('LP', 'lost in primary'), ('PR', 'lost in primary runoff'), ('G', 'lost in general'), ('GR', 'lost in general runoff'), ('SP', 'lost in special primary'), ('SR', 'lost in special runoff'), ('SG', 'lost in special general'), ('SX', 'lost in special general runoff'))
+
+CANDIDATE_STATUS_DICT = {'LP':'lost in primary','PR':'lost in primary runoff', 'G':'lost in general', 'GR':'lost in general runoff', 'SP':'lost in special primary', 'SR':'lost in special runoff', 'SG':'lost in special general', 'SX':'lost in special general runoff', 'W': 'Dropped out of race'}
+
+
+
+
 type_hash_full={'C': 'Communication Cost',
           'D': 'Delegate',
           'E': 'Electioneering Communication',

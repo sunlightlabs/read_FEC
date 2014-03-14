@@ -6,7 +6,7 @@ from django.utils.text import slugify
 from ftpdata.models import Candidate
 from legislators.models import Legislator
 from api.nulls_last_queryset import NullsLastManager
-from data_references import STATES_FIPS_DICT, STATE_CHOICES_DICT, STATE_CHOICES, ELECTION_TYPE_CHOICES, ELECTION_TYPE_DICT, type_hash_full, type_hash, committee_designation_hash
+from data_references import STATES_FIPS_DICT, STATE_CHOICES_DICT, STATE_CHOICES, ELECTION_TYPE_CHOICES, ELECTION_TYPE_DICT, CANDIDATE_STATUS_CHOICES, CANDIDATE_STATUS_DICT, type_hash_full, type_hash, committee_designation_hash
 
 # There are many different data sets that are updated. Keep track of them here.
 # options are "scrape_electronic_filings", "scrape_new_committees",...
@@ -134,9 +134,9 @@ class District(models.Model):
     def race_name(self):
         name = ""
         if self.office == 'H':
-            name="%s House Race, District %s, %s" % (STATE_CHOICES_DICT[self.state], self.office_district, self.election_year)
+            name="%s House Race, District %s, %s" % (STATE_CHOICES_DICT[self.state], self.office_district)
         elif self.office == 'S':
-            name= "%s Senate Race, %s" % (STATE_CHOICES_DICT[self.state], self.election_year)
+            name= "%s Senate Race, %s" % (STATE_CHOICES_DICT[self.state])
         elif self.office == 'P':
             name= "Presidential Race"
         return name
@@ -185,7 +185,7 @@ class Candidate_Overlay(models.Model):
     term_class = models.IntegerField(blank=True, null=True, help_text="1,2 or 3. Pulled from US Congress repo. Only applies to senators.")
     bio_blurb = models.TextField(null=True, blank=True, help_text="Very short; mainly intended for non-incumbents who no one's heard of. If someone is running for senate who previosly served in the house, note it here.")
     cand_ici = models.CharField(max_length=1, null=True, choices=(('I','Incumbent'), ('C', 'Challenger'), ('O', 'Open Seat')))
-    candidate_status = models.CharField(max_length=2, blank=True, null=True, help_text="D=declared, U=undeclared, but has a committee raising money for the race. If they have neither a committee nor a statement of candidacy, probably shouldn't be in here. Apparently one can do the committee as a 527 org with the IRS--haven't seen this yet. ")
+    candidate_status = models.CharField(max_length=2, blank=True, null=True, choices=CANDIDATE_STATUS_CHOICES, help_text="leave this blank until an election has been held--this is really a 'how did they lose' type of field.")
     
     
     
@@ -573,7 +573,7 @@ class ElectionSummary(models.Model):
     incumbent_name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
     incumbent_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
     
-    election_winner = models.ForeignKey('Candidate_Overlay', null=True, blank=True)
+    election_winner = models.ForeignKey('Candidate_Overlay', null=True, blank=True, help_text="This is only for the winner of the whole election--do not enter a primary winner here!")
     # alter table summary_data_electionsummary alter column election_winner_id drop not null;
     
     # election_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more")
