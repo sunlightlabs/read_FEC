@@ -134,7 +134,7 @@ class District(models.Model):
     def race_name(self):
         name = ""
         if self.office == 'H':
-            name="%s House Race, District %s, %s" % (STATE_CHOICES_DICT[self.state], self.office_district)
+            name="%s House Race, District %s" % (STATE_CHOICES_DICT[self.state], self.office_district)
         elif self.office == 'S':
             name= "%s Senate Race, %s" % (STATE_CHOICES_DICT[self.state])
         elif self.office == 'P':
