@@ -31,6 +31,8 @@ urlpatterns = patterns('',
         url(r'^competitive-primaries\/$', TemplateView.as_view(template_name='generated_pages/primary_list_template.html')),
         url(r'^top-races\/week\/(\d+)\/$','public_views.datapages.views.top_races'),
         url(r'^top-races\/$','public_views.datapages.views.top_current_races'),
+        url(r'^election-calendar\/$','public_views.datapages.views.election_calendar'),
+
 #        url(r'^race/(?P<cycle>\d\d\d\d)\/president\/', 'public_views.datapages.views.presidential_race'),
 
 )

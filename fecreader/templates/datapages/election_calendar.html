@@ -1,0 +1,25 @@
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }} {% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+<p>This shows the dates of all possible elections we are aware of; election dates may change, so double check with local authorities.. Runoff elections are only held if there is a need for them.</p><br>
+ 
+{% for obj in elections_by_day %}
+<div style="margin-top: 40px;">
+<span style="font-size:18px;">{{ obj.date|date:"N j, Y"}}</span><br>
+{% for election in obj.list %}
+{{ election.statename|safe }} {{ election.type }}<br>
+{% endfor %}
+</div>
+{% endfor %}
+
+</div>
+{% endblock %}
+  

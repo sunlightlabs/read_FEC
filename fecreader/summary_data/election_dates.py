@@ -1,4 +1,9 @@
 from datetime import date as d
+from data_references import ELECTION_TYPE_DICT, STATE_CHOICES_DICT
+from itertools import groupby
+
+
+election_day_2014 = d(2014,11,4)
 
 # these are the base election dates; the general election is 11/4/2014; georgia and lousiana have runoffs
 #But there are modifications... 
@@ -38,7 +43,6 @@ election_dates_2014 = {
     'NY': {'runoff': '', 'primary': d(2014, 6, 24), 'has_runoff': '0'},
     'OK': {'runoff': d(2014, 8, 26), 'primary': d(2014, 6, 24), 'has_runoff': '1'},
     'UT': {'runoff': '', 'primary': d(2014, 6, 24), 'has_runoff': '0'},
-    'VI': {'runoff': '', 'primary': d(2014, 8, 2), 'has_runoff': '0'},
     'KS': {'runoff': '', 'primary': d(2014, 8, 5), 'has_runoff': '0'},
     'MI': {'runoff': '', 'primary': d(2014, 8, 5), 'has_runoff': '0'},
     'MO': {'runoff': '', 'primary': d(2014, 8, 5), 'has_runoff': '0'},
@@ -53,7 +57,6 @@ election_dates_2014 = {
     'AZ': {'runoff': '', 'primary': d(2014, 8, 26), 'has_runoff': '0'},
     'FL': {'runoff': '', 'primary': d(2014, 8, 26), 'has_runoff': '0'},
     'VT': {'runoff': '', 'primary': d(2014, 8, 26), 'has_runoff': '0'},
-    'GU': {'runoff': '', 'primary': d(2014, 8, 30), 'has_runoff': '0'},
     'DE': {'runoff': '', 'primary': d(2014, 9, 9), 'has_runoff': '0'},
     'MA': {'runoff': '', 'primary': d(2014, 9, 9), 'has_runoff': '0'},
     'NH': {'runoff': '', 'primary': d(2014, 9, 9), 'has_runoff': '0'},
@@ -84,4 +87,63 @@ special_senate_elections = [
 ]
 
 
+all_election_dict = []
+for primary in election_dates_2014:
+    primary_date = election_dates_2014[primary]['primary']
+    if election_dates_2014[primary]['primary']:
+        all_election_dict.append({'type':'primary', 'date':election_dates_2014[primary]['primary'], 'state':primary})
+    if election_dates_2014[primary]['has_runoff'] == 1:
+        this_election_data = {'type':'primary runoff', 'date':election_dates_2014[primary]['runoff'], 'state':primary}
+        all_election_dict.append(this_election_data)
+
+def add_specials(special_election_data, electiondict, chamber):
+    for special in special_election_data:
+        for election_type in ['P', 'G', 'PR', 'GR']:
+            try:
+                election_date = special['elections'][election_type]
+                # translate special election types. This should go somewhere else. 
+                if election_type == 'P':
+                    election_type = 'SP'
+                elif election_type == 'G':
+                    election_type = 'SG'
+                elif election_type == 'PR':
+                    election_type = 'OR'
+                elif election_type == 'GR':
+                    election_type = 'SR'
+                
+                if chamber == 'H':
+                    election_name = "House district " + special['district'] + " " + ELECTION_TYPE_DICT[election_type] 
+                else:
+                    election_name = "Senate " +  ELECTION_TYPE_DICT[election_type]                     
+                this_election_data = {'type':election_name, 'date':election_date, 'state':special['state']}
+                electiondict.append(this_election_data)
+            except KeyError:
+                pass
+                
+    return electiondict
+
+all_election_dict = add_specials(special_senate_elections, all_election_dict, 'S')
+all_election_dict = add_specials(special_house_elections, all_election_dict, 'H')
+
+# add general primary
+all_election_dict.append({'type':'federal general election', 'date':election_day_2014, 'state':'<b>All states</b>'})
+
+# add general runoffs 
+all_election_dict.append({'type':'general runoff', 'date':d(2014,12,6), 'state':'LA'})
+all_election_dict.append({'type':'general runoff', 'date':d(2015,1,6), 'state':'GA'})
+
+# add state names
+for i in xrange(len(all_election_dict)):
+    try:
+        all_election_dict[i]['statename'] = STATE_CHOICES_DICT[all_election_dict[i]['state']]
+    except KeyError:
+        all_election_dict[i]['statename'] = all_election_dict[i]['state']
+        
+# order by date
+all_election_dict =  sorted(all_election_dict, key=lambda x: (x['date'], x['state'] ))
+
+elections_by_day = []
+for key, group in groupby(all_election_dict, lambda x: x['date']):
+    # groupby turns dates into strings to make a key; turn them back into dates
+    elections_by_day.append({'date':key, 'list':list(group)})
 

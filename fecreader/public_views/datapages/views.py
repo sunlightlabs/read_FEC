@@ -19,7 +19,7 @@ from summary_data.utils.summary_utils import map_summary_form_to_dict
 from django.conf import settings
 from summary_data.utils.update_utils import get_update_time
 from summary_data.utils.weekly_update_utils import get_week_number, get_week_start, get_week_end
-
+from summary_data.election_dates import elections_by_day
 
 from django.views.decorators.cache import cache_page
 
@@ -551,4 +551,16 @@ def top_current_races(request):
         }
     )
 
+
+@cache_page(LONG_CACHE_TIME)
+def election_calendar(request): 
     
+    title = "2014 Cycle Election Calendar"
+    return render_to_response('datapages/election_calendar.html',
+        {
+        'elections_by_day':elections_by_day,
+        'title':title,
+        }
+    )
+
+

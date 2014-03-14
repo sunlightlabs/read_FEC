@@ -158,7 +158,7 @@ class Command(BaseCommand):
 
 
         races = sorted(competitive_races['all'], key=lambda x: (x['primary_date'], x['race'].office_district ))
-
+        print races
         update_time = datetime.now()
         c = Context({"update_time": update_time, "races": races})
         this_template = get_template('generated_pages/primary_list.html')
