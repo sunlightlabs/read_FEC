@@ -268,7 +268,7 @@ class Candidate_Overlay(models.Model):
         try:
             if self.not_seeking_reelection or len(self.candidate_status) > 0:
                 return False
-        except KeyError:
+        except TypeError:
             pass
         return True
         
