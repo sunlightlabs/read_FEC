@@ -136,7 +136,7 @@ class District(models.Model):
         if self.office == 'H':
             name="%s House Race, District %s" % (STATE_CHOICES_DICT[self.state], self.office_district)
         elif self.office == 'S':
-            name= "%s Senate Race, %s" % (STATE_CHOICES_DICT[self.state])
+            name= "%s Senate Race" % (STATE_CHOICES_DICT[self.state])
         elif self.office == 'P':
             name= "Presidential Race"
         return name
