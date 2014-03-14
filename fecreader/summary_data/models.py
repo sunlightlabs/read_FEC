@@ -264,12 +264,11 @@ class Candidate_Overlay(models.Model):
             return '(%s-%s)' % (self.state, self.office_district)
 
 
+    def has_next_election(self):
+        if self.not_seeking_reelection or len(self.candidate_status) > 0:
+            return False
+        return True
         
-    def next_election(self):
-        if self.not_seeking_reelection:
-            return ''
-        else:
-            return 'Next election is in %s' % (self.curated_election_year) 
 
     def get_absolute_url(self):
         return "/candidate/%s/%s/" % (self.slug, self.fec_id)
