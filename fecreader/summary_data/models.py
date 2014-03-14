@@ -265,8 +265,11 @@ class Candidate_Overlay(models.Model):
 
 
     def has_next_election(self):
-        if self.not_seeking_reelection or len(self.candidate_status) > 0:
-            return False
+        try:
+            if self.not_seeking_reelection or len(self.candidate_status) > 0:
+                return False
+        except KeyError:
+            pass
         return True
         
 
