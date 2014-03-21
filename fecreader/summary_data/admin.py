@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import District, Candidate_Overlay, ElectionSummary
+from models import District, Candidate_Overlay, Committee_Overlay, ElectionSummary
 
 class DistrictAdmin(admin.ModelAdmin):
     
@@ -46,3 +46,21 @@ class ElectionSummaryAdmin(admin.ModelAdmin):
 
 admin.site.register(ElectionSummary, ElectionSummaryAdmin)
 
+class Committee_OverlayAdmin(admin.ModelAdmin):
+    readonly_fields = ('name','designation', 'ctype')
+    ordering = ('name',)
+    
+    fieldsets = (
+    ("Autopopulated", {
+        'fields': ('name', 'designation','ctype'),
+               
+    }),
+        ("Human-verified data", {
+            'fields': ('political_orientation','political_orientation_verified', 'org_status'),
+        }),
+    )
+    search_fields=['name']
+    list_display=['name', 'ctype', 'designation',]
+    
+
+admin.site.register(Committee_Overlay, Committee_OverlayAdmin)
