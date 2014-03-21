@@ -23,7 +23,7 @@ class Command(BaseCommand):
             
             dem_support_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='D',support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
             
-            rep_support_ies = dem_support_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='R',support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
+            rep_support_ies  = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='R',support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
             
             dem_oppose_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='D',support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total']
             
