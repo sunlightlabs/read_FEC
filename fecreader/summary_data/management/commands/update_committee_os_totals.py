@@ -33,7 +33,7 @@ class Command(BaseCommand):
             
             try:
                 this_committee = Committee_Overlay.objects.get(fec_id=fec_id)
-            except:
+            except Committee_Overlay.DoesNotExist:
                 continue
                 
             this_committee.total_indy_expenditures = total_ies
