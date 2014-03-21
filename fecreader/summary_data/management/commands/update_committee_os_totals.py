@@ -20,10 +20,10 @@ class Command(BaseCommand):
             fec_id = ie_committee['committee__fec_id']
             
             total_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id).aggregate(total=Sum('total_ind_exp'))['total']
-            dem_support_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__ilike='D',support_oppose__ilike='S' ).aggregate(total=Sum('total_ind_exp'))['total']
-            rep_support_ies = dem_support_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__ilike='R',support_oppose__ilike='S' ).aggregate(total=Sum('total_ind_exp'))['total']
-            dem_oppose_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__ilike='D',support_oppose__ilike='O' ).aggregate(total=Sum('total_ind_exp'))['total']
-            rep_oppose_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__ilike='R',support_oppose__ilike='O' ).aggregate(total=Sum('total_ind_exp'))['total']
+            dem_support_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='D',support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
+            rep_support_ies = dem_support_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='R',support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
+            dem_oppose_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='D',support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total']
+            rep_oppose_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='R',support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total']
             
             print "total=%s support d = %s support r = %s oppose d = %s oppose r = %s" % (total_ies, dem_support_ies, rep_support_ies, dem_oppose_ies, rep_oppose_ies)
             
