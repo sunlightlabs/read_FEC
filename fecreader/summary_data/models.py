@@ -402,7 +402,7 @@ class Committee_Overlay(models.Model):
         blank=True, null=True, help_text="We're only tracking these for non-committees")
 
     # what's their orientation
-    political_orientation = models.CharField(max_length=1,null=True, choices=[
+    political_orientation = models.CharField(max_length=1,null=True, help_text="We're only doing these for outside groups", choices=[
                         ('R', 'backs Republicans'),
                         ('D', 'backs Democrats'),
                         ('U', 'unknown'),
