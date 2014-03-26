@@ -6,6 +6,8 @@ router = routers.DefaultRouter()
 router.register(r'new_filing', views.NFViewSet)
 router.register(r'committee', views.COViewSet)
 router.register(r'independent-expenditures', views.SkedEViewSet)
+router.register(r'outside-spenders', views.OSViewSet)
+
 #router.register(r'skededownloads', downloads.MyView)
 
 

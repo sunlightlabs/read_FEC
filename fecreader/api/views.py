@@ -9,8 +9,8 @@ from summary_data.models import Committee_Overlay
 from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
-from api.serializers import NFSerializer, COSerializer, SkedESerializer
-from api.filters import NFFilter, COFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch, yearFilter
+from api.serializers import NFSerializer, COSerializer, SkedESerializer, OSSerializer
+from api.filters import NFFilter, COFilter, OSFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch, yearFilter
 from rest_framework_csv import renderers as r
 from rest_framework.settings import api_settings
 from paginated_csv_renderer import PaginatedCSVRenderer
@@ -83,7 +83,36 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
         self.queryset =  candidateCommitteeSearchSlow(self.queryset, self.request.GET)
         return self.queryset
         
-        
+
+
+os_orderable_fields = ['fec_id', 'name', 'slug', 'cycle', 'term_class', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype']
+
+class OSViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows outside spenders to be viewed.
+    """
+
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
+
+    queryset = Committee_Overlay.nulls_last_objects.filter(total_indy_expenditures__gt=0).order_by('-total_indy_expenditures')
+    serializer_class = OSSerializer
+    filter_class = OSFilter
+
+    def get_paginate_by(self):
+            """
+            Use smaller pagination for json/html than csv
+            """
+            if self.request.accepted_renderer.format == ('csv'):
+                return 2000
+            return 100
+
+    def get_queryset(self):  
+        # Again, this seems like a pretty weird way to do this.       
+        self.queryset = orderingFilter(self.queryset, self.request.GET, os_orderable_fields)
+        self.queryset =  multiCTypeFilter(self.queryset, self.request.GET)
+        self.queryset =  candidateCommitteeSearchSlow(self.queryset, self.request.GET)
+        return self.queryset
+
 
 
 skede_orderable_fields = ['expenditure_date_formatted', 'expenditure_amount', 'payee_state', 'committee_name', 'candidate_name_checked']

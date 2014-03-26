@@ -36,6 +36,18 @@ class COFilter(django_filters.FilterSet):
         model = Committee_Overlay
         fields = ['fec_id', 'name', 'slug', 'cycle', 'term_class', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype']
 
+
+
+class OSFilter(django_filters.FilterSet):
+
+    # can create both ends of a range like this: 
+    min_ies = django_filters.NumberFilter(name='total_indy_expenditures', lookup_type='gte')
+
+    class Meta:
+        model = Committee_Overlay
+        fields = ['fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'total_indy_expenditures','ie_oppose_reps', 'ie_oppose_dems', 'ie_support_reps', 'ie_support_dems', 'political_orientation', 'political_orientation_verified']
+
+
 class SkedEFilter(django_filters.FilterSet):
     
     min_spent = django_filters.NumberFilter(name='expenditure_amount', lookup_type='gte')
