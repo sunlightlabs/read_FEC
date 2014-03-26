@@ -25,7 +25,6 @@ class COSerializer(serializers.HyperlinkedModelSerializer):
     candidate_name = serializers.Field(source='curated_candidate_name')
     committee_url = serializers.Field(source='get_absolute_url')  
     
-    
     class Meta:
         model = Committee_Overlay
         fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'candidate_office','candidate_name', 'candidate_url', 'display_type', 'committee_url')
@@ -34,11 +33,13 @@ class COSerializer(serializers.HyperlinkedModelSerializer):
 class OSSerializer(serializers.HyperlinkedModelSerializer):
     display_type = serializers.Field(source='display_type')
     committee_url = serializers.Field(source='get_absolute_url')  
-
+    get_filtered_ie_url = serializers.Field(source='get_filtered_ie_url')
+    display_coh_date =  serializers.Field(source='display_coh_date')
+    display_coh =  serializers.Field(source='display_coh')
 
     class Meta:
         model = Committee_Overlay
-        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified', 'display_type', 'committee_url')
+        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified', 'display_type', 'committee_url', 'get_filtered_ie_url', 'display_coh', 'display_coh_date')
         #depth = 1
         
 class SkedESerializer(serializers.ModelSerializer):

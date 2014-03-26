@@ -462,6 +462,19 @@ class Committee_Overlay(models.Model):
         else:
             return None
     
+    def display_coh_date(self):
+        if self.is_not_a_committee:
+            return ""
+        else:
+            return self.cash_on_hand_date
+    
+    def display_coh(self):
+        if self.is_not_a_committee:
+            return ""
+        else:
+            return self.cash_on_hand_date
+
+    
     def is_electronic_filer(self):
         return self.is_paper_filer == False
     
@@ -480,7 +493,7 @@ class Committee_Overlay(models.Model):
     def is_not_a_committee(self):
         if self.ctype=='I':
             return True
-            return False
+        return False
 
     def neg_percent(self):
         if self.total_indy_expenditures == 0:

@@ -8,6 +8,7 @@ urlpatterns = patterns('',
         url(r'^senate/$', 'public_views.datapages.views.senate'),
         url(r'^races/$', 'public_views.datapages.views.races'),        
         url(r'^newest-filings/$', 'public_views.datapages.views.newest_filings'),
+        url(r'^outside-spenders/$', 'public_views.datapages.views.outside_spenders'),
         # make this the home page--will need a canonical url if we deploy like this. 
         url(r'^$', 'public_views.datapages.views.home_page'),
         url(r'^new-committees/$', 'public_views.datapages.views.new_committees'),

@@ -212,6 +212,22 @@ def pacs(request):
         context_instance=RequestContext(request)
     ) 
 
+
+
+@cache_page(LONG_CACHE_TIME)
+def outside_spenders(request):
+    return render_to_response('datapages/dynamic_outside_spenders.html', 
+        {
+        'explanatory_text':'Find and filter outside spender information for the entire election cycle (since Jan. 1, 2013). Click the committee name to see filings; click the expenditure amount to see this spending broken down line-by-line. For more, see a <a href="/about/#pacs">more detailed explanation</a>.',
+        'title':'Outside spending committee summaries',
+        'PAGINATE_BY':PAGINATE_BY,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+
+
 @cache_page(LONG_CACHE_TIME)
 def dynamic_ies(request):
     districts = District.objects.filter(outside_spending__gt=1000).order_by('state', 'office', 'office_district')

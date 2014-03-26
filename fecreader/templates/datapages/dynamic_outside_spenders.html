@@ -1,0 +1,383 @@
+{# List of outside spending groups #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+
+{% block sitejs %}
+<script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
+{# <script type="text/javascript" src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script> #}
+
+{% endblock %}
+
+{% block sitecss %}
+{{ block.super }}
+{# <link rel="stylesheet" href="{% static 'realtimefec/css/jquery-ui-1.10.3.custom.min.css' %}" /> #}
+{% endblock sitecss %}
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}Find Outside Spending Totals {% endblock %}
+{% block rtmain %}
+
+<div class="module">
+
+   <div id="formdiv" class="clearfix">
+     
+        <div class="clearfix form-row">
+          <div class="form_spacer">
+               <label>Committee type:</label>
+               <select name="committee_type" class="dropdown_field" id="committee_class">
+                   <option value=''>All</option>
+                   <option value='UOVW'>Super PACs (including hybrids)</option>
+                   <option value='UO'>Super PACs (NOT including hybrids)</option>
+                   <option value='XYZ'>Party committees</option>
+                   <option value='NQ'>Non-connected PACs</option>
+                   <option value='I'>Non committees</option>
+               </select>
+           </div>
+           
+           
+           <div class="form_spacer">
+               <label>Minimum independent expenditures:</label>
+               <input type="text" class="dollar_field" id="min_ies" name="min_ies"></input>
+           </div>
+
+            
+            
+        </div>
+
+        <div class="form-row clearfix">
+          <div class="form_spacer">
+              <label>Candidate or Committee name:</label>
+              <input type="text" class="text_field" id="search_term" name="search_term"></input>
+          </div>
+
+
+<input type="button" value="Filter Committees" id="load_button" title="Apply the selections to show a different set of committees" style="float:left; margin-left: 20px;"/>
+
+        </div>
+
+        
+</div>
+
+
+<div>
+<!-- <div id="result_description"><b></b></div> -->
+<span id="display_info"></span><span id="csv_info" class="tip"></span>
+<div class="load_next" style="float: right; width: 200px;"></div>
+<div class="load_previous" style="float: left; width: 200px; z-index:100;"></div>
+<div style="clear:both;"></div>
+</div>
+
+<table id="mainPageTable" class="sortable">
+            <thead>
+                  <tr id="titles">
+                    <th>Committee Name</th>
+                    <th>Total outside spending</th>
+                    <th>Type</th>
+                    <th>Major Activity</th>
+                    <th>Cash on hand (if reported)</th>
+                    <th>Cash on hand date</th>
+                    </tr>
+              </thead>
+              <tbody id="maintablebody">
+
+
+</tbody>
+</table>
+<div>
+<div class="load_next" style="float: right; width: 200px;"></div>
+<div class="load_previous" style="float: left; width: 200px;"></div>
+<div style="clear:both;"></div>
+</div>
+
+</div>
+{% verbatim %}
+<script id="committeerow-template" type="text/x-handlebars-template" >
+   <tr class="{{ class }}">
+        <td><a href="{{ committee_url }}">{{ name}}</a></td>
+        <td><a href="{{ get_filtered_ie_url }}">${{{ addcommas total_indy_expenditures }}}</a></td>
+        <td>{{ display_type }}</td>
+        <td></td>
+        <td>{{{ addcommasdollars cash_on_hand }}}</td>
+        <td>{{ cash_on_hand_date }}</td>
+    </tr>
+
+</script>
+{% endverbatim %}
+
+<script type="text/javascript">
+// The api doesn't tell us the pagenumber
+pagenumber = 1;
+// set this dynamically
+pagination_size = {{ PAGINATE_BY }};
+
+function is_valid_number(a) {
+  return a.length > 0 && !isNaN(a);
+}
+
+function clean_dollar_fields(str) {
+  str = str.replace(/ /g,"");
+  str = str.replace("$","");
+  str = str.replace(/,/g,"");
+  return str;
+}
+
+function validate_fields() {
+
+  // Clean up dollar fields if we can; if they seem not-numeric, set them to empty.
+  $(".dollar_field").each(function( index ) {
+      this_amount = clean_dollar_fields($(this).val());
+      if (is_valid_number(this_amount) ) {
+        $(this).val(this_amount);
+      } else {
+        $(this).val("");
+      }
+  });
+
+  $(".text_field").each(function( index ) {
+      this_text = $(this).val();
+      this_text = $.trim(this_text);
+      $(this).val(this_text);
+  });
+
+}
+
+// Some template functions. Should eventually live somewhere else.
+
+function roundwCommas(nStr) {
+    if (nStr) {
+      nStr = Math.round(nStr);
+      nStr += '';
+      x1 = nStr;
+      //x2 = x.length > 1 ? '.' + x[1] : '';
+      var rgx = /(\d+)(\d{3})/;
+      while (rgx.test(x1)) {
+          x1 = x1.replace(rgx, '$1' + ',' + '$2');
+      }
+      return x1;
+    } else {
+      return "";
+    }
+}
+
+function roundwCommasDollars(nStr) {
+    if (nStr) {
+      return "$" + roundwCommas(nStr);
+    } else {
+      return "";
+    }
+}
+
+function get_json_url() {
+  query_string = "?ordering=-total_indy_expenditures"
+
+  var min_ies = $("#min_ies").val();
+  if (min_ies.length > 0) {
+    query_string += "&min_ies=" + min_ies
+  }
+
+  var search_term = $("#search_term").val();
+  if (search_term.length > 0) {
+    query_string += "&search_term=" + search_term
+  }
+
+  var committee_class =  $("#committee_class").val();
+  if (committee_class.length>0) {
+    query_string += "&committee_class=" + committee_class;
+  }
+
+  window.location.hash = query_string;
+
+  url = "/api/outside-spenders/" + query_string
+  //console.log("url is: " + url);
+  return url;
+
+}
+
+function reset_all_fields() {
+  $(".date_field,  .dollar_field, .dropdown_field, .text_field").each(function( index ) {
+    $(this).val("");
+  });
+  // default is filing order
+}
+
+function search_all() {
+  reset_all_fields();
+  button_load();
+
+}
+
+/* This date stuff is fucking terrible. There's gotta be a better approach */
+function getDate(datestring) {
+  // Why is this so annoying?
+  date_components = datestring.split('-');
+  // Months are zero-indexed, but day numbers aren't. Nice work, guys.
+  return_date = new Date(date_components[0], Math.round(date_components[1])-1, date_components[2]);
+  return return_date;
+}
+
+function format_mddyy(datestring) {
+  thisdate = getDate(datestring);
+  // Months are zero-indexed, but day numbers aren't. Again, nice work.
+  month = Math.round(thisdate.getMonth()) + 1;
+  year = String(thisdate.getFullYear()).substring(2,4);
+  return_string =  month + "/" +   thisdate.getDate() + "/" +  year;
+  return return_string;
+}
+
+
+function button_load() {
+  pagenumber = 1;
+  jsonurl =  get_json_url();
+  loadjson(jsonurl);
+}
+
+function load_next(jsonurl) {
+  pagenumber++;
+  loadjson(jsonurl);
+}
+
+function load_previous(jsonurl) {
+  pagenumber--;
+  loadjson(jsonurl);
+}
+
+function loadjson(jsonurl) {
+  //console.log("loading json");
+  validate_fields();
+  //jsonurl = "/api/new_filing/";
+  $.getJSON(jsonurl, function(data_loaded) {
+
+               var source   = $("#committeerow-template").html();
+               var template = Handlebars.compile(source);
+
+               results = data_loaded.results;
+               numresults = results.length;
+               first_result = 100*(pagenumber-1)+1;
+               last_result = 100*(pagenumber-1) + numresults;
+
+               result_string = "Total of " + roundwCommas(data_loaded.count) + " results found. Showing " + first_result + "-" + last_result + ".";
+               $( "#display_info" ).html(result_string);
+
+               next =  data_loaded.next;
+               previous = data_loaded.previous;
+
+               if (next != null) {
+                 $( ".load_next" ).html( "<a href=\"javascript:load_next('" + next + "');\">next page<\/a>");
+               } else {
+                 $( ".load_next" ).html("");
+               }
+
+               //$( "#result_description" ).html("<b>This is a text description of the results shown below.</b>")
+
+               if (previous != null) {
+                 $( ".load_previous" ).html( "<a href=\"javascript:load_previous('" + previous + "');\">previous page<\/a>");
+               } else {
+                 $( ".load_previous" ).html("");
+               }
+
+
+               //console.log("count is: " + data_loaded.count + " num results: " + numresults);
+               first_result = 100*(pagenumber-1)+1;
+               last_result = 100*(pagenumber-1) + numresults;
+
+
+               resultrows = []
+               for (var i=0;i<results.length;i++) {
+                  var context = results[i];
+                  if (i%2==0) {
+                    context['class']='even';
+                  } else {
+                    context['class']='odd';
+                  }
+                  var html    = template(context);
+                  resultrows.push(html);
+               };
+               $( "#maintablebody" ).html( resultrows.join(""));
+               
+               if (data_loaded.count <  2000) {
+                   var page_re = /&*page=\d+/i;
+                   var format_re = /&*format=json/i;
+                   var csvurl = jsonurl.replace(page_re, '').replace(format_re, '') + "&format=csv";
+                   //console.log("csv url is: " + csvurl);
+                   csv_string = ' Download a <a href="' + csvurl + '">csv file of all '+ roundwCommas(data_loaded.count) +' results</a>.';
+                   $( "#csv_info" ).html(csv_string);
+
+                } else {
+                  $( "#csv_info" ).html("");
+                }
+                
+               // rerun tablesorter
+               //remove_tablesorter();
+
+               // This doesn't work sometimes, and also isn't needed in others. wtf?
+               // addCommaParser()
+               $(".sortable").tablesorter({ widgets: ['zebra']});
+
+            });
+
+}
+
+function addMustacheHelpers() {
+
+  Handlebars.registerHelper('addcommas', function(object) {
+    return new Handlebars.SafeString(
+      roundwCommas(object)
+    );
+  });
+  
+  Handlebars.registerHelper('addcommasdollars', function(object) {
+    return new Handlebars.SafeString(
+      roundwCommasDollars(object)
+    );
+  });
+  
+  Handlebars.registerHelper('mddyy', function(object) {
+    if (object != null) {
+      return new Handlebars.SafeString(
+        format_mddyy(object)
+      );
+    } else {
+      return new Handlebars.SafeString("");
+    }
+  });
+
+}
+
+$(document).ready(function() {
+    addMustacheHelpers();
+
+    $( "#load_button" )
+      .bind( "click", function() {
+        button_load();
+      });
+
+    $("#search_term, #min_ies").keydown(function(event){
+      if(event.keyCode == 13){
+        button_load();
+      }
+    });
+
+   reset_all_fields();
+
+   windowhash = window.location.hash;
+   var hashdict = {};
+
+   $.each(windowhash.substr(2).split('&'), function(i, elem) {
+      var parts = elem.split('=');
+      //console.log("hashdict parts0 " + parts[0] + " parts 1: " + parts[1]);
+      $("#" + parts[0]).val(parts[1]);
+   });
+
+   //console.log("hashdict is " + hashdict);
+   button_load();
+
+
+
+});
+
+
+</script>
+  {% endblock %}
+
