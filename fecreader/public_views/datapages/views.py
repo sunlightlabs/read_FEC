@@ -218,7 +218,7 @@ def pacs(request):
 def outside_spenders(request):
     return render_to_response('datapages/dynamic_outside_spenders.html', 
         {
-        'explanatory_text':'Find and filter outside spender information for the entire election cycle (since Jan. 1, 2013). Click the committee name to see filings; click the expenditure amount to see this spending broken down line-by-line. By "majority activty" we mean the activity the PAC has reported spending the most money on.',
+        'explanatory_text':'Find and filter outside spender information for the entire election cycle (since Jan. 1, 2013). Click the committee name to see filings; click the expenditure amount to see this spending broken down line-by-line. By "major activty" we mean the activity the PAC has reported spending the most money on.',
         'title':'Outside spending committee summaries',
         'PAGINATE_BY':PAGINATE_BY,
         },
