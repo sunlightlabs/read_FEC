@@ -472,7 +472,7 @@ class Committee_Overlay(models.Model):
         if self.ctype=='I':
             return ""
         else:
-            return self.cash_on_hand_date
+            return self.cash_on_hand
 
     
     def is_electronic_filer(self):
