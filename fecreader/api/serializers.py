@@ -36,10 +36,11 @@ class OSSerializer(serializers.HyperlinkedModelSerializer):
     get_filtered_ie_url = serializers.Field(source='get_filtered_ie_url')
     display_coh_date =  serializers.Field(source='display_coh_date')
     display_coh =  serializers.Field(source='display_coh')
+    major_activity = serializers.Field(source='major_activity')
 
     class Meta:
         model = Committee_Overlay
-        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified', 'display_type', 'committee_url', 'get_filtered_ie_url', 'display_coh', 'display_coh_date')
+        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified', 'display_type', 'committee_url', 'get_filtered_ie_url', 'display_coh', 'display_coh_date', 'major activity')
         #depth = 1
         
 class SkedESerializer(serializers.ModelSerializer):
