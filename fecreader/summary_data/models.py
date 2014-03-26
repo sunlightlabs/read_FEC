@@ -569,9 +569,12 @@ class Committee_Overlay(models.Model):
             return ''
 
     def major_activity(self):
-        activity_dict = {'attacking Democrats':self.ie_oppose_dems, 'attacking Republicans':self.ie_oppose_reps, 'supporting Democrats':self.ie_support_dems, 'supporting Republicans':self.ie_support_reps}
-        activity_rank = sorted(activity_dict.items(), key=lambda (k, v): (v), reverse=True)
-        return activity_rank[0][0]
+        if (self.ie_oppose_dems + self.ie_oppose_reps + self.ie_support_dems + self.ie_support_reps) > 0:
+            activity_dict = {'attacking Democrats':self.ie_oppose_dems, 'attacking Republicans':self.ie_oppose_reps, 'supporting Democrats':self.ie_support_dems, 'supporting Republicans':self.ie_support_reps}
+            activity_rank = sorted(activity_dict.items(), key=lambda (k, v): (v), reverse=True)
+            return activity_rank[0][0]
+        else:
+            return ""
         
     def display_political_orientation(self):
         p = self.political_orientation
