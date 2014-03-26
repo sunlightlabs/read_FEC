@@ -45,7 +45,7 @@ class OSFilter(django_filters.FilterSet):
 
     class Meta:
         model = Committee_Overlay
-        fields = ['fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'total_indy_expenditures','ie_oppose_reps', 'ie_oppose_dems', 'ie_support_reps', 'ie_support_dems', 'political_orientation', 'political_orientation_verified']
+        fields = ['fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified']
 
 
 class SkedEFilter(django_filters.FilterSet):

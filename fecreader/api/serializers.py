@@ -38,7 +38,7 @@ class OSSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Committee_Overlay
-        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_support_dems', 'political_orientation', 'political_orientation_verified', 'display_type', 'committee_url')
+        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified', 'display_type', 'committee_url')
         #depth = 1
         
 class SkedESerializer(serializers.ModelSerializer):
