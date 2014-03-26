@@ -569,7 +569,7 @@ class Committee_Overlay(models.Model):
             return ''
 
     def major_activity(self):
-        if (self.ie_oppose_dems + self.ie_oppose_reps + self.ie_support_dems + self.ie_support_reps) > 0:
+        if (self.ie_oppose_dems or self.ie_oppose_reps or self.ie_support_dems or self.ie_support_reps):
             activity_dict = {'attacking Democrats':self.ie_oppose_dems, 'attacking Republicans':self.ie_oppose_reps, 'supporting Democrats':self.ie_support_dems, 'supporting Republicans':self.ie_support_reps}
             activity_rank = sorted(activity_dict.items(), key=lambda (k, v): (v), reverse=True)
             return activity_rank[0][0]
