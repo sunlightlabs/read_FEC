@@ -1,4 +1,4 @@
-""" Set party leaning for outside spending groups. """
+""" Set party leaning for outside spending groups. Better version will take into account primary spending. Not sure that's needed. """
 
 from datetime import date
 from django.core.management.base import BaseCommand, CommandError

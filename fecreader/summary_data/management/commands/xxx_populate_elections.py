@@ -1,3 +1,5 @@
+""" outdated """
+
 from django.core.management.base import BaseCommand, CommandError
 
 # Creates races from districts, and from special elections 
