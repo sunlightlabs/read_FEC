@@ -76,7 +76,7 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014
 
 # udpate committee information
 def update_committee_from_masterfile(committee_id, cycle_to_copy_from=2014, cycle_to_copy_to=2014):
-    print "Updating %s" % (committee_id)
+    #print "Updating %s" % (committee_id)
     c = None
     try:
         c = Committee.objects.get(cmte_id=committee_id, cycle=cycle_to_copy_from)
@@ -153,7 +153,7 @@ def make_committee_from_new_committee_list(committee_id, cycle='2014'):
         return None
     except Committee_Overlay.DoesNotExist:
         # only create one if this doesn't exist. 
-        print "Creating committee from new committee %s" % (committee_id)
+        #print "Creating committee from new committee %s" % (committee_id)
         
         ctype = nc.get_ctype()
         
@@ -168,7 +168,7 @@ def make_committee_from_new_committee_list(committee_id, cycle='2014'):
             elif ctype.upper() in ['I']:
                 is_noncommittee = True
 
-        print cycle, nc.name, nc.fec_id, is_superpac, is_hybrid, is_noncommittee, ctype
+        #print cycle, nc.name, nc.fec_id, is_superpac, is_hybrid, is_noncommittee, ctype
         cm = Committee_Overlay.objects.create(
             cycle = cycle,
             name = nc.name,

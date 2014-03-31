@@ -41,7 +41,7 @@ def summarize_week(week_number):
         obj.total_spending = total_spending
         
         obj.save()
-        print "Total amount spent in %s for week %s (%s-%s): %s" % (district, week_number, week_start, week_end, total_spending)
+        #print "Total amount spent in %s for week %s (%s-%s): %s" % (district, week_number, week_start, week_end, total_spending)
     
     
     
