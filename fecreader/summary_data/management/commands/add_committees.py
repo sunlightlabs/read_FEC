@@ -1,3 +1,5 @@
+""" Create new committees from the FEC's masterfile. If a committee already exists, it will be updated with current information. """
+
 from django.core.management.base import BaseCommand, CommandError
 from ftpdata.models import Committee
 from summary_data.models import Committee_Overlay

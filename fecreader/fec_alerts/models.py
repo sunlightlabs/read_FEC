@@ -37,6 +37,24 @@ form_types = [['F3X','Monthly/quarterly report'],
 ['F8','Debt settlement plan'],
 ['F9','24-hour notice of disbursement/obligations for electioneering communications']]
 
+# map the names that appear on the press offices list of new committees to an actual committee type
+# Leadership PAC is a designation, not a type, but... 
+raw_ctypes = {
+    'SENATE':'S',
+    'INDEPENDENT EXPENDITURE':'O',
+    'PARTY':'X',
+    'HOUSE':'H',
+    'SINGLE CANDIDATE INDEPENDENT EXPENDITURE':'U',
+    'JOINT FUNDRAISER':'J',
+    'PRESIDENTIAL':'P',
+    'LEADERSHIP PAC':'N',
+    'INDEPENDENT EXPENDITURE-ONLY':'O',
+    'COMMUNICATION COST':'C',
+    'PAC WITH NON-CONTRIBUTION ACCOUNT':'V',
+    'DELEGATE':'D',
+    'PAC':'N',
+}
+
 class Filing_Scrape_Time(models.Model):
     run_time = models.DateTimeField(auto_now=True)
     
@@ -58,6 +76,12 @@ class newCommittee(models.Model):
 
     def __unicode__(self):
         return "%s formed %s" % (self.name, self.date_filed)
+    
+    def get_ctype(self):
+        try:
+            return raw_ctypes[self.ctype]
+        except KeyError:
+            return None
     
 
 # Class to hold new filings, whether or not they've been parsed yet. 

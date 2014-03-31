@@ -10,6 +10,7 @@ from django.core.management.base import BaseCommand
 
 from fec_alerts.models import newCommittee
 from summary_data.utils.update_utils import set_update
+from summary_data.utils.overlay_utils import make_committee_from_new_committee_list
 from django.conf import settings
 
 COMMITTEES_SCRAPE_KEY  = settings.COMMITTEES_SCRAPE_KEY
@@ -51,6 +52,10 @@ def scrape_page():
             new = addCommittee(cid, ctype, name, file_date)
             if new:
                 print "added: %s, %s, %s, %s" % (cid, ctype, name, file_date)
+            
+            # try to add it 
+            make_committee_from_new_committee_list(cid)
+                
         except ValueError:
             print "Couldn't parse line: %s" % row.text_content()
             pass
