@@ -3,6 +3,7 @@ import re
 from pytz import timezone
 
 from django.db import models
+from django.utils.text import slugify
 
 from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
@@ -82,6 +83,9 @@ class newCommittee(models.Model):
             return raw_ctypes[self.ctype]
         except KeyError:
             return None
+            
+    def get_absolute_url(self):          
+        return ("/committee/%s/%s/" % (slugify(self.name), self.fec_id))
     
 
 # Class to hold new filings, whether or not they've been parsed yet. 
