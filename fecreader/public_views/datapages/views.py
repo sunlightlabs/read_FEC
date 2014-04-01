@@ -543,6 +543,7 @@ def top_races(request, week_number):
         'weeklysummaries':weeklysummaries,
         'previous_week_number':previous_week_number,
         'following_week_number':following_week_number,
+        'week_number':week_number,
         }
     )
 
@@ -564,6 +565,7 @@ def top_current_races(request):
         'week_start':week_start,
         'week_end':week_end,
         'weeklysummaries':weeklysummaries,
+        'week_number':week_number,
         }
     )
 
