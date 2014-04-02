@@ -2,7 +2,7 @@ import django_filters
 
 from datetime import date, timedelta
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees
+from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees, DistrictWeekly
 from formdata.models import SkedE
 from django.db.models import Q
 
@@ -48,6 +48,17 @@ class OSFilter(django_filters.FilterSet):
         fields = ['fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified']
 
 
+class DWFilter(django_filters.FilterSet):
+    
+    week_start = django_filters.NumberFilter(name='cycle_week_number', lookup_type='gte')
+    week_end = django_filters.NumberFilter(name='cycle_week_number', lookup_type='lte')
+    
+
+    class Meta:
+        model = DistrictWeekly
+        fields = ['start_date', 'end_date', 'cycle_week_number', 'outside_spending']
+    
+
 class SkedEFilter(django_filters.FilterSet):
     
     min_spent = django_filters.NumberFilter(name='expenditure_amount', lookup_type='gte')
@@ -64,6 +75,25 @@ def yearFilter(queryset, querydict):
     except (KeyError, ValueError):
         pass
     return queryset
+    
+
+def districtFilter(queryset, querydict):
+    try:
+        district_list=querydict['district_list']
+        
+        # we are expecting a comma delimited list. If we don't find one, just quietly ignore
+        if district_list.find(',') < 0:
+            pass
+            
+        else:
+            district_ids = district_list.split(',')
+            queryset = queryset.filter(district__pk__in=district_ids)
+    
+    except KeyError:
+        pass
+        
+    return queryset
+    
     
 
 def periodTypeFilter(queryset, querydict):

@@ -1,6 +1,6 @@
 
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay, Candidate_Overlay
+from summary_data.models import Committee_Overlay, Candidate_Overlay, DistrictWeekly, District
 from formdata.models import SkedE
 from rest_framework import serializers
 
@@ -42,6 +42,25 @@ class OSSerializer(serializers.HyperlinkedModelSerializer):
         model = Committee_Overlay
         fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified', 'display_type', 'committee_url', 'get_filtered_ie_url', 'display_coh', 'display_coh_date', 'major_activity')
         #depth = 1
+
+
+class DistrictSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = District
+        fields=('state', 'office', 'office_district', 'term_class', 'id')
+    
+    
+class DWSerializer(serializers.HyperlinkedModelSerializer):
+    
+    district = DistrictSerializer(source='district')
+    
+    class Meta:
+        model = DistrictWeekly
+        depth = 1
+        fields=('start_date', 'end_date', 'cycle_week_number', 'outside_spending', 'district')
+
+
         
 class SkedESerializer(serializers.ModelSerializer):
     payee_name_simplified = serializers.Field(source='payee_name_simplified')

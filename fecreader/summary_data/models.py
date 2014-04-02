@@ -102,12 +102,17 @@ class District(models.Model):
         return "http://rothenbergpoliticalreport.com/state/" + state_slug
             
     def __unicode__(self):
-        if self.office == 'P':
-            return 'President'
-        elif self.office == 'S':
-            return '%s (Senate) %s-%s' % (self.state, self.term_class, self.election_year)
-        else:
-            return '%s-%s (House)' % (self.state, self.office_district)
+        if self.office == 'S':
+            return "%s Senate" % (self.state)
+        elif self.office== 'H':
+            if self.office_district:
+                return "%s-%s (house)" % (self.state, self.office_district)
+            else:
+                return "%s" % (self.state) 
+        elif self.office == 'P':
+            return "President"
+            
+        return ""
             
     def get_absolute_url(self):
         url= ""
@@ -834,3 +839,7 @@ class DistrictWeekly(models.Model):
     coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+
+    # make nulls sort last
+    objects = models.Manager()
+    nulls_last_objects = NullsLastManager()
