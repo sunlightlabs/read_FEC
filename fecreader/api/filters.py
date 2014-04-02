@@ -2,7 +2,7 @@ import django_filters
 
 from datetime import date, timedelta
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees, DistrictWeekly
+from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees, DistrictWeekly, District
 from formdata.models import SkedE
 from django.db.models import Q
 
@@ -48,6 +48,13 @@ class OSFilter(django_filters.FilterSet):
         fields = ['fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'ctype', 'total_indy_expenditures','ie_support_dems', 'ie_oppose_dems', 'ie_support_reps', 'ie_oppose_reps', 'political_orientation', 'political_orientation_verified']
 
 
+class DistrictFilter(django_filters.FilterSet):
+    
+    class Meta:
+        model = District
+        fields = ['id', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text']
+    
+    
 class DWFilter(django_filters.FilterSet):
     
     week_start = django_filters.NumberFilter(name='cycle_week_number', lookup_type='gte')

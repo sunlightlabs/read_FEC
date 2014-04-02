@@ -5,12 +5,12 @@ from django.db.models import Sum, Count, Q
 
 from datetime import date
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay, DistrictWeekly
+from summary_data.models import Committee_Overlay, DistrictWeekly, District
 from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
-from api.serializers import NFSerializer, COSerializer, SkedESerializer, OSSerializer, DWSerializer
-from api.filters import NFFilter, COFilter, OSFilter, DWFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch, yearFilter, districtFilter
+from api.serializers import NFSerializer, COSerializer, SkedESerializer, OSSerializer, DWSerializer, DistrictSerializer
+from api.filters import NFFilter, COFilter, OSFilter, DWFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch, yearFilter, DistrictFilter
 from rest_framework_csv import renderers as r
 from rest_framework.settings import api_settings
 from paginated_csv_renderer import PaginatedCSVRenderer
@@ -115,7 +115,32 @@ class OSViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 
-dw_orderable_fields = ['total_spending', 'outside_spending', 'cycle_week_number', 'district']
+district_orderable_fields = ['total_spending', 'outside_spending', 'cycle_week_number', 'state', 'next_election_date']
+
+class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows weekly district summaries to be viewed.
+    """
+
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
+
+    queryset = District.objects.all().order_by('-outside_spending')
+    serializer_class = DistrictSerializer
+    filter_class = DistrictFilter
+
+    def get_paginate_by(self):
+            """
+            Use smaller pagination for json/html than csv
+            """
+            if self.request.accepted_renderer.format == ('csv'):
+                return 2000
+            return 100
+
+    def get_queryset(self):  
+        # Again, this seems like a pretty weird way to do this.       
+        self.queryset = orderingFilter(self.queryset, self.request.GET, district_orderable_fields)
+        return self.queryset
+    
 
 class DWViewSet(viewsets.ReadOnlyModelViewSet):
     """

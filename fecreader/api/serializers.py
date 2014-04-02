@@ -44,7 +44,14 @@ class OSSerializer(serializers.HyperlinkedModelSerializer):
         #depth = 1
 
 
+
 class DistrictSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = District
+        fields=('id', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text')
+                
+class MinimalDistrictSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = District
@@ -53,7 +60,7 @@ class DistrictSerializer(serializers.ModelSerializer):
     
 class DWSerializer(serializers.HyperlinkedModelSerializer):
     
-    district = DistrictSerializer(source='district')
+    district = MinimalDistrictSerializer(source='district')
     
     class Meta:
         model = DistrictWeekly
