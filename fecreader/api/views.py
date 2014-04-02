@@ -10,7 +10,7 @@ from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
 from api.serializers import NFSerializer, COSerializer, SkedESerializer, OSSerializer, DWSerializer, DistrictSerializer
-from api.filters import NFFilter, COFilter, OSFilter, DWFilter, SkedEFilter, periodTypeFilter, reportTypeFilter, orderingFilter, multiCommitteeTypeFilter, multiCTypeFilter, filingTimeFilter, candidateCommitteeSearchSlow, committeeSearchSlow, candidateidSearch, yearFilter, DistrictFilter
+from api.filters import *
 from rest_framework_csv import renderers as r
 from rest_framework.settings import api_settings
 from paginated_csv_renderer import PaginatedCSVRenderer
@@ -142,6 +142,8 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
         return self.queryset
     
 
+dw_orderable_fields = ['total_spending', 'outside_spending', 'cycle_week_number']
+
 class DWViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows weekly district summaries to be viewed.
@@ -164,7 +166,8 @@ class DWViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
         self.queryset = orderingFilter(self.queryset, self.request.GET, dw_orderable_fields)
-        self.queryset = districtFilter(self.queryset, self.request.GET)
+        self.queryset = DWDistrictFilter(self.queryset, self.request.GET)
+        self.queryset = weekFilter(self.queryset, self.request.GET)
         return self.queryset
 
 

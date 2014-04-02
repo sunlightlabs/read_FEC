@@ -5,6 +5,7 @@ from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees, DistrictWeekly, District
 from formdata.models import SkedE
 from django.db.models import Q
+from summary_data.utils.weekly_update_utils import get_week_number
 
 
 
@@ -84,7 +85,7 @@ def yearFilter(queryset, querydict):
     return queryset
     
 
-def districtFilter(queryset, querydict):
+def DWDistrictFilter(queryset, querydict):
     try:
         district_list=querydict['districts']
         
@@ -101,8 +102,23 @@ def districtFilter(queryset, querydict):
         pass
         
     return queryset
-    
-    
+
+
+def weekFilter(queryset, querydict):
+    try:
+        week=querydict['week']
+
+        # if there's no commas, it's just a single district
+        if week.upper() == "NOW":
+            queryset = queryset.filter(cycle_week_number = get_week_number(date.today()) )
+        if week.upper() == "LAST":
+            queryset = queryset.filter(cycle_week_number = get_week_number(date.today())-1 )
+
+
+    except KeyError:
+        pass
+
+    return queryset
 
 def periodTypeFilter(queryset, querydict):
     try:
