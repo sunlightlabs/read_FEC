@@ -46,10 +46,11 @@ class OSSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class DistrictSerializer(serializers.ModelSerializer):
+    district_url = serializers.Field(source='get_absolute_url')  
 
     class Meta:
         model = District
-        fields=('id', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text')
+        fields=('id', 'district_url', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text')
                 
 class MinimalDistrictSerializer(serializers.ModelSerializer):
     
