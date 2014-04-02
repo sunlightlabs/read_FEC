@@ -124,7 +124,7 @@ class DWViewSet(viewsets.ReadOnlyModelViewSet):
 
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
 
-    queryset = DistrictWeekly.nulls_last_objects.all().select_related('district').order_by('-outside_spending')
+    queryset = DistrictWeekly.nulls_last_objects.all().select_related('district').order_by('cycle_week_number', 'district__pk')
     serializer_class = DWSerializer
     filter_class = DWFilter
 
