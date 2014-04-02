@@ -104,6 +104,15 @@ def DWDistrictFilter(queryset, querydict):
     return queryset
 
 
+def districtIDFilter(queryset, querydict):
+    try:
+        id=int(querydict['pk'])
+        queryset = queryset.filter(pk=id)
+
+    except (KeyError, ValueError):
+        pass
+    return queryset
+
 def weekFilter(queryset, querydict):
     try:
         week=querydict['week']

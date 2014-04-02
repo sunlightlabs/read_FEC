@@ -46,7 +46,9 @@ class OSSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class DistrictSerializer(serializers.ModelSerializer):
+
     district_url = serializers.Field(source='get_absolute_url')  
+
 
     class Meta:
         model = District

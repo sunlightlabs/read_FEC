@@ -119,7 +119,7 @@ district_orderable_fields = ['total_spending', 'outside_spending', 'cycle_week_n
 
 class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    API endpoint that allows weekly district summaries to be viewed.
+    API endpoint that allows district summaries to be viewed.
     """
 
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
@@ -139,6 +139,9 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
         self.queryset = orderingFilter(self.queryset, self.request.GET, district_orderable_fields)
+        self.queryset = districtIDFilter(self.queryset, self.request.GET)
+        
+        
         return self.queryset
     
 
