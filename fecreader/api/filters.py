@@ -79,12 +79,13 @@ def yearFilter(queryset, querydict):
 
 def districtFilter(queryset, querydict):
     try:
-        district_list=querydict['district_list']
+        district_list=querydict['districts']
         
-        # we are expecting a comma delimited list. If we don't find one, just quietly ignore
+        # if there's no commas, it's just a single district
         if district_list.find(',') < 0:
-            pass
+            queryset = queryset.filter(district__pk=district_list)
             
+        # if there's a comma, it's a comma-delimited list
         else:
             district_ids = district_list.split(',')
             queryset = queryset.filter(district__pk__in=district_ids)
