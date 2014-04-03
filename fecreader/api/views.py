@@ -5,11 +5,11 @@ from django.db.models import Sum, Count, Q
 
 from datetime import date
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay, DistrictWeekly, District
+from summary_data.models import Committee_Overlay, DistrictWeekly, District, Candidate_Overlay
 from formdata.models import SkedE
 from rest_framework import viewsets
 from rest_framework import generics
-from api.serializers import NFSerializer, COSerializer, SkedESerializer, OSSerializer, DWSerializer, DistrictSerializer
+from api.serializers import NFSerializer, COSerializer, SkedESerializer, OSSerializer, DWSerializer, DistrictSerializer, CandidateSerializer
 from api.filters import *
 from rest_framework_csv import renderers as r
 from rest_framework.settings import api_settings
@@ -143,7 +143,35 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
         
         
         return self.queryset
-    
+
+
+candidate_orderable_fields = ['total_expenditures', 'total_receipts', 'state']
+
+class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows currently active candidate summaries to be viewed.
+    """
+
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
+
+    queryset = Candidate_Overlay.objects.all().select_related('district')
+    serializer_class = CandidateSerializer
+    filter_class = CandidateFilter
+
+    def get_paginate_by(self):
+            """
+            Use smaller pagination for json/html than csv
+            """
+            if self.request.accepted_renderer.format == ('csv'):
+                return 2000
+            return 100
+
+    def get_queryset(self):  
+        # Again, this seems like a pretty weird way to do this.       
+        self.queryset = orderingFilter(self.queryset, self.request.GET, candidate_orderable_fields)
+
+        return self.queryset
+
 
 dw_orderable_fields = ['total_spending', 'outside_spending', 'cycle_week_number']
 

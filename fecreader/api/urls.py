@@ -9,6 +9,7 @@ router.register(r'independent-expenditures', views.SkedEViewSet)
 router.register(r'outside-spenders', views.OSViewSet)
 router.register(r'districts-weekly', views.DWViewSet)
 router.register(r'districts', views.DistrictViewSet)
+router.register(r'candidates', views.CandidateViewSet)
 
 
 #router.register(r'skededownloads', downloads.MyView)

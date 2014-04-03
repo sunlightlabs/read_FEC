@@ -2,7 +2,7 @@ import django_filters
 
 from datetime import date, timedelta
 from fec_alerts.models import new_filing
-from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees, DistrictWeekly, District
+from summary_data.models import Committee_Overlay, Authorized_Candidate_Committees, DistrictWeekly, District, Candidate_Overlay
 from formdata.models import SkedE
 from django.db.models import Q
 from summary_data.utils.weekly_update_utils import get_week_number
@@ -55,6 +55,15 @@ class DistrictFilter(django_filters.FilterSet):
         model = District
         fields = ['id', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text']
     
+
+
+class CandidateFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Candidate_Overlay
+        fields = ['name', 'fec_id', 'pcc', 'party', 'is_incumbent', 'cycle', 'not_seeking_reelection', 'other_office_sought', 'other_fec_id', 'election_year', 'state', 'office', 'office_district', 'term_class', 'candidate_status', 'total_expenditures', 'expenditures_supporting', 'expenditures_opposing', 'total_receipts', 'total_contributions', 'total_disbursements', 'cash_on_hand', 'cash_on_hand_date']
+
+
     
 class DWFilter(django_filters.FilterSet):
     

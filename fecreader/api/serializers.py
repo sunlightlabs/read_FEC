@@ -48,19 +48,33 @@ class OSSerializer(serializers.HyperlinkedModelSerializer):
 class DistrictSerializer(serializers.ModelSerializer):
 
     district_url = serializers.Field(source='get_absolute_url')  
-
+    next_election = serializers.Field(source='next_election')
 
     class Meta:
         model = District
-        fields=('id', 'district_url', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text')
+        fields=('id', 'district_url', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'next_election', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text')
                 
 class MinimalDistrictSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = District
         fields=('state', 'office', 'office_district', 'term_class', 'id')
+
+
+
+class CandidateSerializer(serializers.ModelSerializer):
+    candidate_url = serializers.Field(source='get_absolute_url')  
+    race_url = serializers.Field(source='get_race_url')
+    ie_url = serializers.Field(source='get_filtered_ie_url')  
+    district = MinimalDistrictSerializer(source='district')
     
-    
+
+    class Meta:
+        model = Candidate_Overlay
+        fields=('name', 'fec_id', 'pcc', 'party', 'candidate_url', 'race_url', 'ie_url', 'is_incumbent', 'cycle', 'not_seeking_reelection', 'other_office_sought', 'other_fec_id', 'election_year', 'state', 'office', 'office_district', 'term_class', 'candidate_status', 'total_expenditures', 'expenditures_supporting', 'expenditures_opposing', 'total_receipts', 'total_contributions', 'total_disbursements', 'cash_on_hand', 'cash_on_hand_date', 'district')
+
+
+
 class DWSerializer(serializers.HyperlinkedModelSerializer):
     
     district = MinimalDistrictSerializer(source='district')
