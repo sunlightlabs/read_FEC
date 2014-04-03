@@ -169,7 +169,7 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
         self.queryset = orderingFilter(self.queryset, self.request.GET, candidate_orderable_fields)
-
+        self.queryset = candidatedistrictFilter(self.queryset, self.request.GET)
         return self.queryset
 
 

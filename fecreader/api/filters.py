@@ -112,6 +112,15 @@ def DWDistrictFilter(queryset, querydict):
         
     return queryset
 
+def candidatedistrictFilter(queryset, querydict):
+    try:
+        id=int(querydict['district'])
+        queryset = queryset.filter(district__pk=id)
+
+    except (KeyError, ValueError):
+        pass
+        
+    return queryset
 
 def districtIDFilter(queryset, querydict):
     try:
