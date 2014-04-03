@@ -231,6 +231,9 @@ def reportTypeFilter(queryset, querydict):
             
         elif report_type == 'F2':
             queryset = queryset.filter(form_type__in=['F2', 'F2N', 'F2A'])
+            
+        elif report_type == 'F1':
+            queryset = queryset.filter(form_type__in=['F1', 'F1N', 'F1A'])
 
         elif report_type == 'F13':
             queryset = queryset.filter(form_type__in=['F13', 'F13N', 'F13A'])
