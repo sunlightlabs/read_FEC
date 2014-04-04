@@ -103,10 +103,10 @@ class District(models.Model):
             
     def __unicode__(self):
         if self.office == 'S':
-            return "%s Senate" % (self.state)
+            return "%s Sen." % (self.state)
         elif self.office== 'H':
             if self.office_district:
-                return "%s-%s (house)" % (self.state, self.office_district)
+                return "%s-%s (House)" % (self.state, self.office_district)
             else:
                 return "%s" % (self.state) 
         elif self.office == 'P':
@@ -139,11 +139,11 @@ class District(models.Model):
     def race_name(self):
         name = ""
         if self.office == 'H':
-            name="%s House Race, District %s" % (STATE_CHOICES_DICT[self.state], self.office_district)
+            name="%s House, District %s" % (STATE_CHOICES_DICT[self.state], self.office_district)
         elif self.office == 'S':
-            name= "%s Senate Race" % (STATE_CHOICES_DICT[self.state])
+            name= "%s Senate" % (STATE_CHOICES_DICT[self.state])
         elif self.office == 'P':
-            name= "Presidential Race"
+            name= "Presidential"
         return name
             
     def get_filtered_ie_url(self):

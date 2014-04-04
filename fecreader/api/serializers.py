@@ -55,10 +55,10 @@ class DistrictSerializer(serializers.ModelSerializer):
         fields=('id', 'district_url', 'cycle', 'state', 'office', 'office_district', 'term_class', 'incumbent_name', 'incumbent_party', 'next_election_date', 'next_election_code', 'next_election', 'open_seat', 'candidate_raised', 'candidate_spending', 'outside_spending', 'total_spending', 'rothenberg_rating_id', 'rothenberg_rating_text')
                 
 class MinimalDistrictSerializer(serializers.ModelSerializer):
-    
+    race_name = serializers.Field(source='__unicode__')
     class Meta:
         model = District
-        fields=('state', 'office', 'office_district', 'term_class', 'id')
+        fields=('race_name', 'state', 'office', 'office_district', 'term_class', 'id')
 
 
 
