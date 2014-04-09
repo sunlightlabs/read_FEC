@@ -34,6 +34,8 @@ djangorestframework
 
 # experimenting with this for csv support:
 djangorestframework-csv
+# CORS support
+django-cors
 
 django-filter
 django-debug-toolbar
@@ -43,3 +45,5 @@ south
 -e git+git://github.com/seatgeek/fuzzywuzzy.git#egg=fuzzywuzzy
 jellyfish
 nameparser
+
+

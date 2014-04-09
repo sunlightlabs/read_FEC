@@ -99,6 +99,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -173,6 +174,7 @@ INSTALLED_APPS = (
     'dryrub',
     'downloads',
     'rothenberg',
+    'corsheaders',
 )
 
 REST_FRAMEWORK = {
@@ -190,6 +192,13 @@ REST_FRAMEWORK = {
     
 }
 
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
+CORS_ALLOW_METHODS = (
+        'GET',
+    )
 
 ## Timestamp keys
 
