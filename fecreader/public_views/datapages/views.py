@@ -564,7 +564,7 @@ def top_current_races(request):
     week_end_formatted = week_end.strftime('%m/%d, %Y')
     previous_week_number = int(week_number) - 1
 
-    weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gt=1000).order_by('-outside_spending')[:5]
+    weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gt=1000).order_by('-outside_spending')[:3]
     title = "Top races by outside spending, %s-%s" % (week_start_formatted, week_end_formatted)
     
     district_ids = weeklysummaries.values("district__pk")
