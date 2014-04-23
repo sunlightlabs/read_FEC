@@ -525,8 +525,10 @@ def top_races(request, week_number):
     week_start_formatted = week_start.strftime('%m/%d')
     week_end = get_week_end(int(week_number))
     week_end_formatted = week_end.strftime('%m/%d, %Y')
+    
+    
 
-    weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gte=1000).order_by('-outside_spending')[:5]
+    weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gte=1000).order_by('-outside_spending')[:3]
     title = "Top races by outside spending, %s-%s" % (week_start_formatted, week_end_formatted)
     previous_week_number = None
     following_week_number = None
@@ -534,6 +536,11 @@ def top_races(request, week_number):
         previous_week_number = int(week_number) - 1
     if int(week_number) < get_week_number(datetime.date.today()):
         following_week_number = int(week_number) + 1
+    
+    district_ids = weeklysummaries.values("district__pk")
+    district_id_list = [str(x['district__pk']) for x in district_ids]
+    district_list = ",".join(district_id_list)
+    data_url = "http://realtime.influenceexplorer.com/api/districts-weekly/?week_start=%s&week_end=%s&districts=%s&format=json" % (int(week_number)-2, week_number, district_list)
     
     return render_to_response('datapages/top_races.html',
         {
@@ -544,6 +551,7 @@ def top_races(request, week_number):
         'previous_week_number':previous_week_number,
         'following_week_number':following_week_number,
         'week_number':week_number,
+        'data_url':data_url,
         }
     )
 
@@ -558,6 +566,12 @@ def top_current_races(request):
 
     weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gt=1000).order_by('-outside_spending')[:5]
     title = "Top races by outside spending, %s-%s" % (week_start_formatted, week_end_formatted)
+    
+    district_ids = weeklysummaries.values("district__pk")
+    district_id_list = [str(x['district__pk']) for x in district_ids]
+    district_list = ",".join(district_id_list)
+    data_url = "http://realtime.influenceexplorer.com/api/districts-weekly/?week_start=%s&week_end=%s&districts=%s&format=json" % (int(week_number)-2, week_number, district_list)
+    
     return render_to_response('datapages/top_races.html',
         {
         'previous_week_number':previous_week_number,
@@ -566,6 +580,7 @@ def top_current_races(request):
         'week_end':week_end,
         'weeklysummaries':weeklysummaries,
         'week_number':week_number,
+        'data_url':data_url,
         }
     )
 

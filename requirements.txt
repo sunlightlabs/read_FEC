@@ -35,7 +35,7 @@ djangorestframework
 # experimenting with this for csv support:
 djangorestframework-csv
 # CORS support
-django-cors
+django-cors-headers
 
 django-filter
 django-debug-toolbar
