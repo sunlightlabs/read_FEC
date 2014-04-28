@@ -57,7 +57,7 @@
     <div class="header-container">
         <div class="header-title">
             <div class="main-title">
-                Top races by outside spending, {{week_start|date:"m/d"}}-{{week_end|date:"m/d"}}</em> 
+                Outside spending, {{period_start|date:"m/d"}}-{{week_end|date:"m/d"}}</em> 
             </div>
             <!-- save space by floating explanation to the left and logo to the right -->
             <div class="explanatory" style="float:left;">
@@ -74,10 +74,9 @@
     </div>
     
 </div>
-
+The three races shown above are the those with the most outside spending during the week of {{week_start|date:"m/d"}}-{{week_end|date:"m/d"}}.
 <!-- end chart div -->
-{% endif %}
-
+{% endif %} 
 </div>
 <div style="clear:both;" />
 
