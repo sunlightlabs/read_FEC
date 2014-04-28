@@ -557,12 +557,13 @@ def top_races(request, week_number):
 
 @cache_page(LONG_CACHE_TIME)
 def top_current_races(request): 
-    week_number = get_week_number(datetime.date.today())
+    week_number = get_week_number(datetime.date.today()) - 1
     week_start = get_week_start(int(week_number))
     week_start_formatted = week_start.strftime('%m/%d')
     week_end = get_week_end(int(week_number))
     week_end_formatted = week_end.strftime('%m/%d, %Y')
     previous_week_number = int(week_number) - 1
+    following_week_number = int(week_number) + 1
 
     weeklysummaries = DistrictWeekly.objects.filter(cycle_week_number=week_number, outside_spending__gt=1000).order_by('-outside_spending')[:3]
     title = "Top races by outside spending, %s-%s" % (week_start_formatted, week_end_formatted)
@@ -575,6 +576,7 @@ def top_current_races(request):
     return render_to_response('datapages/top_races.html',
         {
         'previous_week_number':previous_week_number,
+        'following_week_number':following_week_number,
         'title':title,
         'week_start':week_start,
         'week_end':week_end,
