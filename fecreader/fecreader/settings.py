@@ -175,6 +175,7 @@ INSTALLED_APPS = (
     'downloads',
     'rothenberg',
     'corsheaders',
+    'public_views'
 )
 
 REST_FRAMEWORK = {
