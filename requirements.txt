@@ -1,5 +1,5 @@
-
-django>=1.5
+# pegging at 1.5 because of django.conf.urls.default error (easily fixed, though?)
+django==1.5
 # It would be silly to run this without postgres
 psycopg2
 # for hstore
