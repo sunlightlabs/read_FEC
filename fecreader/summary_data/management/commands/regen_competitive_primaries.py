@@ -84,7 +84,7 @@ class Command(BaseCommand):
                                 continue
                         
                         
-                    except ElectionSummary.DoesNotExist:
+                    except Election.DoesNotExist:
                         print "Missing primary election for %s" % (race)
                         pass
                     
