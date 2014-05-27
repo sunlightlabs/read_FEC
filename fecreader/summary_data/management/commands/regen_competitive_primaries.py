@@ -166,7 +166,7 @@ class Command(BaseCommand):
         c = Context({"update_time": update_time, "races": races})
         this_template = get_template('generated_pages/primary_list.html')
         result = this_template.render(c)
-        template_path = PROJECT_ROOT + "/../templates/generated_pages/primary_content.html"
+        template_path = PROJECT_ROOT + "/templates/generated_pages/primary_content.html"
         output = open(template_path, 'w')
         output.write(result)
         output.close()
