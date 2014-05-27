@@ -138,8 +138,7 @@ class Command(BaseCommand):
                                 this_race_object['type'] = 'primary runoff'
                                 this_race_object['primary_date'] = primary_runoff_election.election_date
                             except Election.DoesNotExist:
-                                # No primary
-                                continue
+                                # No primary runoff
                                 this_race_object['primary_date'] = None
                             
                             
