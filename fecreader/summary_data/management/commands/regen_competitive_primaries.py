@@ -87,7 +87,7 @@ class Command(BaseCommand):
                         
                     except Election.DoesNotExist:
                         print "Missing primary election for %s" % (race)
-                        pass
+                        continue
                     
                     this_race_object['candidates'] = []
                     print "State=%s Office =%s District =%s incumbent=%s incumbent party = %s is open %s rating: %s (%s)" % (race.state, race.office, race.office_district, race.incumbent_name, race.incumbent_party, race.open_seat,  race.rothenberg_rating_text, race.rothenberg_rating_id)
@@ -139,13 +139,12 @@ class Command(BaseCommand):
                                 this_race_object['primary_date'] = primary_runoff_election.election_date
                             except Election.DoesNotExist:
                                 # No primary runoff
-                                this_race_object['primary_date'] = None
+                                continue
                             
                             
                     except Election.DoesNotExist:
                         print "Missing primary election for %s" % (race)
-                        this_race_object['primary_date'] = None
-                        pass
+                        continue
                     
                     
                     
