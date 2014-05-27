@@ -98,6 +98,7 @@ class Command(BaseCommand):
                     print "\n\n"
                     this_race_object['party']='Open*'
                     
+                    
                     competitive_races['all'].append(this_race_object)
                     
                 
@@ -144,6 +145,7 @@ class Command(BaseCommand):
                             
                     except Election.DoesNotExist:
                         print "Missing primary election for %s" % (race)
+                        this_race_object['primary_date'] = None
                         pass
                     
                     
@@ -156,6 +158,7 @@ class Command(BaseCommand):
                 
                     print "\n\n"
                     this_race_object['party'] = party_hash[party] 
+                    
                     competitive_races['all'].append(this_race_object)            
 
 
