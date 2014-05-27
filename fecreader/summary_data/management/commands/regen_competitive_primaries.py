@@ -81,6 +81,7 @@ class Command(BaseCommand):
                                 
                             except Election.DoesNotExist:
                                 # No primary
+                                this_race_object['primary_date']  = None
                                 continue
                         
                         
@@ -138,9 +139,10 @@ class Command(BaseCommand):
                             except Election.DoesNotExist:
                                 # No primary
                                 continue
+                                this_race_object['primary_date'] = None
                             
                             
-                    except ElectionSummary.DoesNotExist:
+                    except Election.DoesNotExist:
                         print "Missing primary election for %s" % (race)
                         pass
                     
