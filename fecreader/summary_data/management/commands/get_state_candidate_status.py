@@ -1,5 +1,7 @@
 # show candidate status as json object suitable for human editing. 
 
+import json
+
 from optparse import make_option
 
 from datetime import datetime, date
@@ -13,6 +15,7 @@ from django.db.models import Q
 from summary_data.models import District, Candidate_Overlay, Election
 
 from django.core.management.base import BaseCommand, CommandError
+
 
 today = date.today()
 
@@ -55,4 +58,4 @@ class Command(BaseCommand):
                     candidate_list.append({"id":candidate.pk, "fec_id":candidate.fec_id, "is_incumbent":candidate.is_incumbent, "name":candidate.name, "party":candidate.party, "office":candidate.office, "district":candidate.office_district, "status":candidate.candidate_status})
 
 
-        print candidate_list
+        print json.dumps(candidate_list, sort_keys=True, indent=4, separators=(',', ': ')) 
