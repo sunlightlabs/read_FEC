@@ -3,19 +3,10 @@
 
 from optparse import make_option
 
-from datetime import datetime, date
-
-from django.template import Template
-from django.template.loader import get_template
-from django.template import Context
-from django.conf import settings
-from django.db.models import Q
-
-from summary_data.models import District, Candidate_Overlay, Election
+from summary_data.models import District, Candidate_Overlay
 
 from django.core.management.base import BaseCommand, CommandError
 
-today = date.today()
 
 
 def comment_print(message):

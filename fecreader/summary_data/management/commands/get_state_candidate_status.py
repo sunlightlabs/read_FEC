@@ -4,28 +4,9 @@ import json
 
 from optparse import make_option
 
-from datetime import datetime, date
-
-from django.template import Template
-from django.template.loader import get_template
-from django.template import Context
-from django.conf import settings
-from django.db.models import Q
-
-from summary_data.models import District, Candidate_Overlay, Election
+from summary_data.models import District, Candidate_Overlay
 
 from django.core.management.base import BaseCommand, CommandError
-
-
-today = date.today()
-
-
-def comment_print(message):
-    print "###  " + message + "\n"
-    
-########
-# Deal with jungle primary states first: CA, WA, LA
-########
 
 
 class Command(BaseCommand):
@@ -55,7 +36,7 @@ class Command(BaseCommand):
                 candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('-cash_on_hand')
                 
                 for candidate in candidates:
-                    candidate_list.append({"id":candidate.pk, "fec_id":candidate.fec_id, "is_incumbent":candidate.is_incumbent, "name":candidate.name, "party":candidate.party, "office":candidate.office, "district":candidate.office_district, "status":candidate.candidate_status})
+                    candidate_list.append({"id":candidate.pk, "fec_id":candidate.fec_id, "is_incumbent":candidate.is_incumbent, "name":candidate.name, "party":candidate.party, "office":candidate.office, "district":candidate.office_district, "candidate_status":candidate.candidate_status})
 
 
         print json.dumps(candidate_list, sort_keys=True, indent=4, separators=(',', ': ')) 
