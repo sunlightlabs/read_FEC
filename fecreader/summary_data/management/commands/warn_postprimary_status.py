@@ -74,5 +74,5 @@ class Command(BaseCommand):
                     if len(candidates) > 1:
                         print "Too many candidates still in race after %s primary: %s %s %s" % (party, state, race.office, race.office_district)    
                         for candidate in candidates:
-                            print "\t%s %s %s %s %s" % (candidate.name, candidate.fec_id, candidate.office, canddidate.office_district, canddiate.party)
+                            print "\t%s %s %s %s %s" % (candidate.name, candidate.fec_id, candidate.office, candidate.office_district, candidate.party)
             
