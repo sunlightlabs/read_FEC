@@ -33,7 +33,7 @@ class Command(BaseCommand):
         for race in races:
                 #print "Handling race %s" % (race)
         
-                candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('-cash_on_hand')
+                candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).order_by('office', 'office_distric', 'party')
                 
                 for candidate in candidates:
                     candidate_list.append({"id":candidate.pk, "fec_id":candidate.fec_id, "is_incumbent":candidate.is_incumbent, "name":candidate.name, "party":candidate.party, "office":candidate.office, "district":candidate.office_district, "candidate_status":candidate.candidate_status})
