@@ -25,7 +25,7 @@ class Command(BaseCommand):
 
         state = options['state']
         assert state, "No state given"
-        print "Checking candidate status='%s'" % (state)
+        #print "Checking candidate status='%s'" % (state)
         candidate_list = []
 
         races = District.objects.filter(state=state, election_year=2014)
