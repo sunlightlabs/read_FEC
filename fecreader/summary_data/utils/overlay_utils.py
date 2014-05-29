@@ -206,6 +206,7 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
     is_hybrid = False
     is_noncommittee = False
     is_superpac = False
+    is_paper_filer = False
     if ctype:
         if ctype.upper() in ['O', 'U']:
             is_superpac = True
@@ -213,6 +214,8 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
             is_hybrid = True
         if ctype.upper() in ['I']:
             is_noncommittee = True
+        if ctype.upper() in ['S']:
+            is_paper_filer = True
         
     party = c.cmte_pty_affiliation
     if party:
@@ -238,6 +241,7 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
         designation = c.cmte_dsgn,
         ctype = ctype,
         is_dirty=True,
+        is_paper_filer=is_paper_filer
     )
     
     return cm
