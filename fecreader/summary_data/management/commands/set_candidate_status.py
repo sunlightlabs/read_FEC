@@ -1,4 +1,4 @@
-# takes the file spit out by get_state_candidate_status and sets only the candidate status. All other aspects of the json are ignored (except for the id) and the fec_id which is used for integrity checking. 
+# takes the file spit out by get_state_candidate_status and set the candidate status, party and name. Uses the primary key to lookup the candidates. All other aspects of the json are ignored.
 
 import json
 
@@ -35,4 +35,7 @@ class Command(BaseCommand):
                 cand_overlay = Candidate_Overlay.objects.get(pk=candidate['id'])
                 assert (cand_overlay.fec_id == candidate['fec_id']), "mismatch in fec id between %s and %s" % (cand_overlay.name, candidate['name'])
                 cand_overlay.candidate_status = candidate['candidate_status']
+                cand_overlay.name = candidate['name']
+                cand_overlay.party = candidate['party']
+                
                 cand_overlay.save()

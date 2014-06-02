@@ -43,7 +43,7 @@ class Command(BaseCommand):
             for race in races:
                 #print "Handling race %s" % (race)
         
-                candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).exclude(candidate_status__in=['W', 'LP', 'SP', 'SR', 'SG', 'SX']).order_by('-cash_on_hand')
+                candidates = Candidate_Overlay.objects.filter(district=race).exclude(not_seeking_reelection=True).exclude(candidate_status__in=['W', 'LP', 'SP', 'SR', 'SG', 'SX', 'PR']).order_by('-cash_on_hand')
                 
 
                 # There are two berths, so its competitive only if there are three spots
