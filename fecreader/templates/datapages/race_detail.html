@@ -85,7 +85,8 @@
       <tbody>
           {% for object in candidates %}    
           <tr class="{% cycle 'odd' 'even' %}">
-              <td><a href="{{object.get_absolute_url}}">{{object.name}} ({{object.party}})</a>{% if object.not_seeking_reelection %}<a href="#notseekingreelection">*</a>{% endif %}</td>
+              <td><a href="{{object.get_absolute_url}}">{{object.name}} ({{object.party}})</a>
+                {% if object.not_seeking_reelection %}<br><b>Not seeking reelection</b>{% else %}{% if object.candidate_status %}<br><b>{{ object.show_candidate_status }}</b>{% endif %}{% endif %}
               <td class="incumbency">{{object.incumbency_status }}</td>
               <td>${{ object.cash_on_hand|intcomma }}</td>
               <td>{{ object.cash_on_hand_date|date:"n/j/y" }}</td>

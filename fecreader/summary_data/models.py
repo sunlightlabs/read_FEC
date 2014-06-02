@@ -154,6 +154,7 @@ class District(models.Model):
             return ELECTION_TYPE_DICT[self.next_election_code]
         else:
             return ""
+    
 
     class Meta:
         ordering = ['state', '-office', 'office_district']
@@ -310,6 +311,14 @@ class Candidate_Overlay(models.Model):
 
     def get_filtered_ie_url(self):
         return "/outside-spending/#?ordering=-expenditure_date_formatted&candidate_id_checked=%s" % self.fec_id
+    
+    def show_candidate_status(self):
+        if self.candidate_status:
+            try: 
+                return CANDIDATE_STATUS_DICT[self.candidate_status]
+            except KeyError:
+                return ""
+        return ""
 
 
   ## The US congress repo doesn't do a good job handling fec ids, so distill what we need into this model.
