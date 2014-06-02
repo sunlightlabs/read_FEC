@@ -61,7 +61,7 @@ class Command(BaseCommand):
                 #print "Handling race %s" % (race)
                 
                 for party in ['D', 'R']:
-                    candidates = Candidate_Overlay.objects.filter(district=race, party=party).exclude(not_seeking_reelection=True).exclude(candidate_status__in=['W', 'LP', 'SP', 'SR', 'SG', 'SX']).order_by('-cash_on_hand')
+                    candidates = Candidate_Overlay.objects.filter(district=race, party=party).exclude(not_seeking_reelection=True).exclude(candidate_status__in=['W', 'LP', 'SP', 'SR', 'SG', 'SX', 'PR']).order_by('-cash_on_hand')
                     if len(candidates) > 1:
                         print "Too many candidates still in race after %s primary: %s %s %s" % (party, state, race.office, race.office_district)    
                         for candidate in candidates:
