@@ -42,11 +42,14 @@
 <br><span class="amount_description">Outside opposition</span>&nbsp;<span class="amount_dollars">{% if candidate.expenditures_opposing %}${{candidate.expenditures_opposing|intcomma}}{% else %}$0{% endif %}</span>
 
 </div>
-{% if candidate.not_seeking_reelection %}This candidate is not seeking reelection to this position.{% endif %}{% if candidate.other_office_sought %} This candidate is running for {% if candidate.other_fec_id %}<a href="/candidate/{{candidate.slug}}/{{candidate.other_fec_id}}"><br>{% endif %}{{ candidate.other_office_sought }}{% if candidate.other_fec_id %}</a>{% endif %}.{% endif %}
-{% if candidate.not_seeking_reelection %}{% else %}{% if candidate.candidate_status %}<b>{{ candidate.show_candidate_status }}</b>{% endif %}{% endif %}
+{% if candidate.not_seeking_reelection %}This candidate is not seeking reelection to this position.{% endif %}{% if candidate.other_office_sought %} This candidate is running for {% if candidate.other_fec_id %}<a href="/candidate/{{candidate.slug}}/{{candidate.other_fec_id}}">{% endif %}{{ candidate.other_office_sought }}{% if candidate.other_fec_id %}</a>{% endif %}.{% endif %}
 
 
-<p>{% if candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %} <a href="{{ candidate.district.get_absolute_url }}">{{ candidate.detailed_office}}</a>. {% if candidate.has_next_election %}Next scheduled election: {{ candidate.district.next_election }} to be held {{ candidate.district.next_election_date|date:"n/j/y" }}{% endif %}
+
+<p>{% if candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %} <a href="{{ candidate.district.get_absolute_url }}">{{ candidate.detailed_office}}</a>. 
+  
+  {% if candidate.not_seeking_reelection %}{% else %}{% if candidate.candidate_status %}<b>{{ candidate.show_candidate_status }}</b>{% else %}{% if candidate.has_next_election %}Next scheduled election: {{ candidate.district.next_election }} to be held {{ candidate.district.next_election_date|date:"n/j/y" }}{% endif %}{% endif %}{% endif %}
+
 <br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>{% if not forloop.last %}&nbsp;|&nbsp;{% endif %}{% endfor %}
 
 {% if recent_ies %}
