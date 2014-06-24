@@ -8,6 +8,10 @@ from django.template.defaultfilters import slugify
 
 
 def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014, election_year=2014, cycle_to_copy_to=2014, verify_does_not_exist=True, display_candidate=False):
+    
+    if candidate_id == 'P20003851':
+        return None
+        
     ## Returns overlay if created, None if not. 
     
 
@@ -184,7 +188,8 @@ def make_committee_from_new_committee_list(committee_id, cycle='2014'):
     
     
 def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014, cycle_to_copy_to=2014, verify_does_not_exist=True):
-    
+    if committee_id == 'C00507947':
+        return None
     c = None
     try:
         c = Committee.objects.get(cmte_id=committee_id, cycle=cycle_to_copy_from)
