@@ -163,7 +163,7 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
             Use smaller pagination for json/html than csv
             """
             if self.request.accepted_renderer.format == ('csv'):
-                return 2000
+                return 4000
             return 100
 
     def get_queryset(self):  
