@@ -59,9 +59,9 @@ ELECTION_TYPE_CHOICES = (('G', 'General'), ('P', 'Primary'), ('PR', 'Primary Run
 
 ELECTION_TYPE_DICT = {'G':'general' ,'P':'primary', 'PR': 'runoff (primary election)', 'GR':'runoff (general election)', 'SP':'(primary) special election', 'OR':'runoff (primary, special election)', 'SG':'special election (general)', 'SR':'runoff, special general', 'O':'other'}
 
-CANDIDATE_STATUS_CHOICES = (('W', 'Dropped out / withdrew'),('LP', 'lost in primary'), ('PR', 'lost in primary runoff'), ('G', 'lost in general'), ('GR', 'lost in general runoff'), ('SP', 'lost in special primary'), ('SR', 'lost in special runoff'), ('SG', 'lost in special general'), ('SX', 'lost in special general runoff'))
+CANDIDATE_STATUS_CHOICES = (('W', 'Dropped out / withdrew'),('LP', 'lost in primary'), ('PR', 'lost in primary runoff'), ('G', 'lost in general'), ('GR', 'lost in general runoff'), ('SP', 'lost in special primary'), ('SR', 'lost in special runoff'), ('SG', 'lost in special general'), ('SX', 'lost in special general runoff'), ('LC', 'lost in party convention'))
 
-CANDIDATE_STATUS_DICT = {'LP':'Lost in primary','PR':'Lost in primary runoff', 'G':'Lost in general', 'GR':'Lost in general runoff', 'SP':'Lost in special primary', 'SR':'Lost in special runoff', 'SG':'Lost in special general', 'SX':'Lost in special general runoff', 'W': 'Withdrew or not on ballot'}
+CANDIDATE_STATUS_DICT = {'LP':'Lost in primary','PR':'Lost in primary runoff', 'G':'Lost in general', 'GR':'Lost in general runoff', 'SP':'Lost in special primary', 'SR':'Lost in special runoff', 'SG':'Lost in special general', 'SX':'Lost in special general runoff', 'W': 'Withdrew or not on ballot', 'LC':'Lost in party convention'}
 
 
 
