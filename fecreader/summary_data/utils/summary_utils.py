@@ -514,7 +514,7 @@ def update_committee_times(committee):
 
 def update_district_totals(district):
     # get authorized spending
-    candidates = Candidate_Overlay.objects.filter(district=district)
+    candidates = Candidate_Overlay.objects.filter(district=district).exclude(not_seeking_reelection=True)
     # expenditures is independent expenditures for or against; disbursements is spending by them.
     sums = candidates.aggregate(total_expenditures=Sum('total_expenditures'), total_receipts=Sum('total_receipts'), total_disbursements=Sum('total_disbursements'))
     for i in sums:
