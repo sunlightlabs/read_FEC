@@ -71,7 +71,7 @@ class CandidateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Candidate_Overlay
-        fields=('name', 'fec_id', 'pcc', 'party', 'candidate_url', 'race_url', 'ie_url', 'is_incumbent', 'cycle', 'not_seeking_reelection', 'other_office_sought', 'other_fec_id', 'election_year', 'state', 'office', 'office_district', 'term_class', 'candidate_status', 'total_expenditures', 'expenditures_supporting', 'expenditures_opposing', 'total_receipts', 'total_contributions', 'total_disbursements', 'cash_on_hand', 'cash_on_hand_date', 'district')
+        fields=('name', 'fec_id', 'pcc', 'party', 'candidate_url', 'race_url', 'ie_url', 'is_incumbent', 'cycle', 'not_seeking_reelection', 'other_office_sought', 'other_fec_id', 'election_year', 'state', 'office', 'office_district', 'term_class', 'candidate_status', 'total_expenditures', 'expenditures_supporting', 'expenditures_opposing', 'total_receipts', 'total_contributions', 'total_disbursements', 'cash_on_hand', 'cash_on_hand_date', 'district', 'outstanding_loans')
 
 
 
