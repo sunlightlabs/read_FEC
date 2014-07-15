@@ -24,8 +24,8 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
     """
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES + [PaginatedCSVRenderer] 
     
-    
-    queryset = new_filing.nulls_last_objects.all()
+    # processing the header makes most of these not zero. 
+    queryset = new_filing.nulls_last_objects.filter(header_is_processed=True)
     serializer_class = NFSerializer
     filter_class = NFFilter
     
