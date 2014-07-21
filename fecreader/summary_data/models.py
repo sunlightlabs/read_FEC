@@ -737,6 +737,9 @@ class Committee_Time_Summary(models.Model):
             url = "http://docquery.fec.gov/cgi-bin/fecimg/?%s" % (self.com_id)
             return url
 
+    def __unicode__(self):
+        return "%s: (%s-%s)" % (self.com_name, self.coverage_from_date, self.coverage_through_date)
+
 # reference table. Has these relationships for everyone. We're not building candidate overlays for other cycles.
 class Authorized_Candidate_Committees(models.Model):
     candidate_id = models.CharField(max_length=9, blank=True)
