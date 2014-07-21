@@ -27,7 +27,7 @@ class COSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = Committee_Overlay
-        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'candidate_office','candidate_name', 'candidate_url', 'display_type', 'committee_url')
+        fields=('fec_id', 'name', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype', 'candidate_office','candidate_name', 'candidate_url', 'display_type', 'committee_url', 'political_orientation')
         #depth = 1
 
 class OSSerializer(serializers.HyperlinkedModelSerializer):
