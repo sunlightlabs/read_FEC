@@ -164,6 +164,8 @@ def skeda_from_f133(data_dict, filing_number, header_row_id, is_amended, cd):
 
 def skedb_from_skedbdict(data_dict, filing_number, header_row_id, is_amended, cd):
     data_dict['transaction_id'] = data_dict['transaction_id'][:20]
+    data_dict['beneficiary_candidate_first_name'] = data_dict['beneficiary_candidate_first_name'][:20]
+
     data_dict['header_id'] = header_row_id
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['filing_number'] = filing_number
