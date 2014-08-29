@@ -16,9 +16,27 @@ from rest_framework.settings import api_settings
 from paginated_csv_renderer import PaginatedCSVRenderer
 
 CYCLE_START=date(2013,1,1)
+CSV_PAGE_SIZE = 2000
 
 nf_orderable_fields = ['committee_name', 'filing_number', 'form_type', 'filed_date', 'coverage_from_date', 'committee_slug', 'party', 'coh_end', 'new_loans', 'tot_raised', 'tot_spent']
-class NFViewSet(viewsets.ReadOnlyModelViewSet):
+
+
+
+class alternatelypaginatedviewset(viewsets.ReadOnlyModelViewSet):
+    def get_paginate_by(self):
+        """
+        Use smaller pagination for json/html than csv
+        As per settings.py, default is 10, max is 100, param is page_size
+        For csv you get 2000 rows.
+        """
+        if self.request.accepted_renderer.format.lower() == ('csv'):
+            return CSV_PAGE_SIZE
+        else:
+            superclass = super(viewsets.ReadOnlyModelViewSet, self)
+            return superclass.get_paginate_by(superclass)
+    
+            
+class NFViewSet(alternatelypaginatedviewset):
     """
     API endpoint that allows new filings to be viewed.
     """
@@ -29,13 +47,6 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NFSerializer
     filter_class = NFFilter
     
-    def get_paginate_by(self):
-            """
-            Use smaller pagination for json/html than csv
-            """
-            if self.request.accepted_renderer.format == ('csv'):
-                return 2000
-            return 100
     
     def get_queryset(self):  
         # It seems like there should be a better way to chain filters together than this
@@ -57,7 +68,7 @@ class NFViewSet(viewsets.ReadOnlyModelViewSet):
 
 co_orderable_fields = ['fec_id', 'name', 'slug', 'cycle', 'term_class', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype']
 
-class COViewSet(viewsets.ReadOnlyModelViewSet):
+class COViewSet(alternatelypaginatedviewset):
     """
     API endpoint that allows committee_overlays to be viewed.
     """
@@ -68,13 +79,6 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = COSerializer
     filter_class = COFilter
     
-    def get_paginate_by(self):
-            """
-            Use smaller pagination for json/html than csv
-            """
-            if self.request.accepted_renderer.format == ('csv'):
-                return 2000
-            return 100
             
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
@@ -87,7 +91,7 @@ class COViewSet(viewsets.ReadOnlyModelViewSet):
 
 os_orderable_fields = ['fec_id', 'name', 'slug', 'cycle', 'term_class', 'total_receipts', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'ctype']
 
-class OSViewSet(viewsets.ReadOnlyModelViewSet):
+class OSViewSet(alternatelypaginatedviewset):
     """
     API endpoint that allows outside spenders to be viewed.
     """
@@ -98,13 +102,6 @@ class OSViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = OSSerializer
     filter_class = OSFilter
 
-    def get_paginate_by(self):
-            """
-            Use smaller pagination for json/html than csv
-            """
-            if self.request.accepted_renderer.format == ('csv'):
-                return 2000
-            return 100
 
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
@@ -117,7 +114,7 @@ class OSViewSet(viewsets.ReadOnlyModelViewSet):
 
 district_orderable_fields = ['total_spending', 'outside_spending', 'cycle_week_number', 'state', 'next_election_date']
 
-class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
+class DistrictViewSet(alternatelypaginatedviewset):
     """
     API endpoint that allows district summaries to be viewed.
     """
@@ -128,13 +125,6 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DistrictSerializer
     filter_class = DistrictFilter
 
-    def get_paginate_by(self):
-            """
-            Use smaller pagination for json/html than csv
-            """
-            if self.request.accepted_renderer.format == ('csv'):
-                return 2000
-            return 100
 
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
@@ -147,7 +137,7 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
 
 candidate_orderable_fields = ['total_expenditures', 'total_receipts', 'state']
 
-class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
+class CandidateViewSet(alternatelypaginatedviewset):
     """
     API endpoint that allows currently active candidate summaries to be viewed.
     """
@@ -158,13 +148,6 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CandidateSerializer
     filter_class = CandidateFilter
 
-    def get_paginate_by(self):
-            """
-            Use smaller pagination for json/html than csv
-            """
-            if self.request.accepted_renderer.format == ('csv'):
-                return 4000
-            return 100
 
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
@@ -175,7 +158,7 @@ class CandidateViewSet(viewsets.ReadOnlyModelViewSet):
 
 dw_orderable_fields = ['total_spending', 'outside_spending', 'cycle_week_number']
 
-class DWViewSet(viewsets.ReadOnlyModelViewSet):
+class DWViewSet(alternatelypaginatedviewset):
     """
     API endpoint that allows weekly district summaries to be viewed.
     """
@@ -185,14 +168,6 @@ class DWViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = DistrictWeekly.nulls_last_objects.all().select_related('district').order_by('cycle_week_number', 'district__pk')
     serializer_class = DWSerializer
     filter_class = DWFilter
-
-    def get_paginate_by(self):
-            """
-            Use smaller pagination for json/html than csv
-            """
-            if self.request.accepted_renderer.format == ('csv'):
-                return 2000
-            return 100
 
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.       
@@ -204,7 +179,7 @@ class DWViewSet(viewsets.ReadOnlyModelViewSet):
 
 skede_orderable_fields = ['expenditure_date_formatted', 'expenditure_amount', 'payee_state', 'committee_name', 'candidate_name_checked']
 
-class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
+class SkedEViewSet(alternatelypaginatedviewset):
     """
     API endpoint that allows sked e items to be viewed.
     """
@@ -214,13 +189,6 @@ class SkedEViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SkedESerializer
     filter_class = SkedEFilter
     
-    def get_paginate_by(self):
-            """
-            Use smaller pagination for json/html than csv
-            """
-            if self.request.accepted_renderer.format == ('csv'):
-                return 2000
-            return 100
 
     def get_queryset(self):  
         # Again, this seems like a pretty weird way to do this.               
