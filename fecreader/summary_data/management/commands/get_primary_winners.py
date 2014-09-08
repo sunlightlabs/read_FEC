@@ -62,7 +62,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for state in STATES_FIPS_DICT:
             # ignore states with primaries on Sept. 9
-            if state in ['DE', 'MA', 'NH', 'LA', 'RI']
+            if state in ['DE', 'MA', 'NH', 'LA', 'RI']:
                 continue
             # ignore state with primary Nov. 4
             if state == 'LA':
