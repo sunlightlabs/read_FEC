@@ -52,7 +52,6 @@ def process_state(state):
                         print "\t%s %s %s %s %s %s" % (candidate.name, candidate.fec_id, candidate.office, candidate.office_district, candidate.party, candidate.candidate_status)
     
     
-    return candidates
 
 class Command(BaseCommand):
     requires_model_validation = False
@@ -62,6 +61,12 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         for state in STATES_FIPS_DICT:
-            winners = process_state(state)
-            print "Winners: " % winners
+            # ignore states with primaries on Sept. 9
+            if state in ['DE', 'MA', 'NH', 'LA', 'RI']
+                continue
+            # ignore state with primary Nov. 4
+            if state == 'LA':
+                continue
+            
+            process_state(state)
         
