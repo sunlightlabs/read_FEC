@@ -50,6 +50,8 @@ class Command(BaseCommand):
                 if len(candidates) > 2:
                     comment_print("Too many candidates remaining in jungle primary: %s %s %s" % (state, race.office, race.office_district))
                     
+                    for candidate in candidates:
+                        print "\t%s %s %s %s %s %s" % (candidate.name, candidate.fec_id, candidate.office, candidate.office_district, candidate.party, candidate.candidate_status)
 
 
         else:
