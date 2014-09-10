@@ -75,7 +75,7 @@ class Command(BaseCommand):
                 
                     candidate_list.append({'name':c.name, 'url':c.get_absolute_url(), 'incumbent':c.is_incumbent, 'party':c.display_party(), 'office':c.detailed_office(), 'support_oppose':supporting_opposing(candidate['support_oppose_checked']), 'amount':candidate['expenditure_amount__sum'], 'result':c.show_candidate_status()})
                 
-            candidate_list.sort(key=lambda x: x['expenditure_amount__sum'], reverse=True)
+            candidate_list.sort(key=lambda x: x['amount'], reverse=True)
             outside_spender['candidates'] = candidate_list
             spender_data.append(outside_spender)
         
