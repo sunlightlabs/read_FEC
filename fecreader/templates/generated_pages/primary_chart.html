@@ -95,7 +95,7 @@ tr.even { background-color: #dfe0da; }
         <th scope="col">Result</th>
         </tr>
     <thead>
-        {% for candidate in spenders.candidates %}
+        {% for candidate in spender.candidates %}
         <tr>
             <td><a href="http://realtime.influenceexplorer.com{{candidate.url}}">{{ candidate.name}} {{ candidate.party}}</a></td>
             <td>{{ candidate.office}}</td>
