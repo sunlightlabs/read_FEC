@@ -41,7 +41,7 @@ class Command(BaseCommand):
             support_dems = their_ies.filter(candidate_party_checked='D', support_oppose_checked='S').aggregate(tot_ies=Sum('expenditure_amount'))['tot_ies']
             support_reps = their_ies.filter(candidate_party_checked='R', support_oppose_checked='S').aggregate(tot_ies=Sum('expenditure_amount'))['tot_ies']
             
-            this_spender_data = {'name':outside_spender.name, 'url':outside_spender.get_absolute_url(), 'total_ies':total or 0, 'oppose_dems':oppose_dems or 0, 'oppose_reps':oppose_reps or 0, 'support_dems':support_dems or 0, 'support_reps':support_reps or 0, 'type':outside_spender.display_type(), 'orientation':outside_spender.display_political_orientation(), 'ie_url':outside_spender.get_filtered_ie_url(), 'fec_id':outside_spender.fec_id}
+            this_spender_data = {'name':outside_spender.name, 'url':outside_spender.get_absolute_url(), 'total_ies':total, 'oppose_dems':oppose_dems, 'oppose_reps':oppose_reps, 'support_dems':support_dems, 'support_reps':support_reps, 'type':outside_spender.display_type(), 'orientation':outside_spender.display_political_orientation(), 'ie_url':outside_spender.get_filtered_ie_url(), 'fec_id':outside_spender.fec_id}
             spender_list.append(this_spender_data)
         
         # sort the list by outside spending in the primary
