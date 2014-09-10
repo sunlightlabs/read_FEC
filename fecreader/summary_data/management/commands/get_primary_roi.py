@@ -63,10 +63,11 @@ class Command(BaseCommand):
         
         # Now add the top candidates supported or opposed in the primary by each of those groups. 
         spender_data = []
-        candidate_list=[]
+        
         for outside_spender in top_spenders:
             their_ies = primary_ies.filter(filer_committee_id_number=outside_spender['fec_id']).order_by('candidate_id_checked', 'support_oppose_checked')
             candidate_summary = their_ies.values('candidate_id_checked', 'support_oppose_checked').annotate(Sum('expenditure_amount'))
+            candidate_list=[]
             for candidate in candidate_summary:
                 
                 if candidate['expenditure_amount__sum'] >= CANDIDATE_DISPLAY_THRESHOLD:
@@ -78,7 +79,7 @@ class Command(BaseCommand):
             spender_data.append(outside_spender)
         
         ##print "spender_data"
-        #print spender_data
+        print spender_data
 
         # now write it out to screen via a template
         this_template = get_template('generated_pages/primary_chart.html')
