@@ -2,6 +2,9 @@ from datetime import date
 from django.core.management.base import BaseCommand, CommandError 
 from django.db.models import Sum
 
+from django.template import Template
+from django.template.loader import get_template
+from django.template import Context
 
 election_day_2014 = date(2014,11,4)
 cycle_start = date(2013,1,1)
@@ -21,6 +24,12 @@ def supporting_opposing(support_oppose_code):
     elif support_oppose_code == 'O':
         support = 'Oppose'    
     return support
+
+
+
+
+
+
     
 class Command(BaseCommand):
  
@@ -49,11 +58,11 @@ class Command(BaseCommand):
         spender_list.sort(key=lambda x: x['total_ies'], reverse=True)
         
         top_spenders = spender_list[:SPENDER_COUNT]
-        print "top ten spenders"
-        print spender_list[:10]
+        #print "top ten spenders"
+        #print spender_list[:10]
         
         # Now add the top candidates supported or opposed in the primary by each of those groups. 
-        district_data = []
+        spender_data = []
         candidate_list=[]
         for outside_spender in top_spenders:
             their_ies = primary_ies.filter(filer_committee_id_number=outside_spender['fec_id']).order_by('candidate_id_checked', 'support_oppose_checked')
@@ -62,14 +71,19 @@ class Command(BaseCommand):
                 
                 c = Candidate_Overlay.objects.get(fec_id=candidate['candidate_id_checked'])
                 
-                candidate_list.append({'name':c.name, 'incumbent':c.is_incumbent, 'party':c.display_party(), 'office':c.detailed_office(), 'support_oppose':supporting_opposing(candidate['support_oppose_checked']), 'amount':candidate['expenditure_amount__sum']})
+                candidate_list.append({'name':c.name, 'url':c.get_absolute_url(), 'incumbent':c.is_incumbent, 'party':c.display_party(), 'office':c.detailed_office(), 'support_oppose':supporting_opposing(candidate['support_oppose_checked']), 'amount':candidate['expenditure_amount__sum']})
                 
             outside_spender['candidates'] = candidate_list
-            district_data.append(outside_spender)
+            spender_data.append(outside_spender)
         
-        print "district data"
-        print district_data
-            
+        ##print "spender_data"
+        #print spender_data
+
+        # now write it out to screen via a template
+        this_template = get_template('generated_pages/primary_chart.html')
+        c = Context({'spenders':spender_data})
+        result = this_template.render(c)
+        print result
                 
                 
                 

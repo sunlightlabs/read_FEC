@@ -1,0 +1,122 @@
+{% load humanize %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="http://assets.sunlightfoundation.com/scripts/sorttable/sorttable.min.js"></script>
+<script>
+$(document).ready(function() {
+$('a.toggler').click(function(ev) {
+ev.preventDefault();
+var groupId = $(this).attr('data-groupid');
+$("#" + groupId).slideToggle();
+});
+});
+</script>
+
+<style>
+#hor-minimalist-a {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 11px;
+background: #fff;
+margin: 0px;
+width: 570px;
+border-collapse: collapse;
+text-align: left;
+}
+#hor-minimalist-a th {
+font-size: 12px;
+font-weight: bold;
+color: #58595B;
+padding: 11px 8px;
+border-bottom: 2px solid 457b80;
+vertical-align: bottom;
+}
+#hor-minimalist-a td {
+color: #58595B;
+padding: 9px 8px 0px 8px;
+}
+a.toggler {
+border: 1px solid #999;
+border-radius: 5px;
+background-color: #eee;
+color: #00b;
+display: block;
+font-family: sans-serif;
+font-size: 12px;
+margin-top: 1em;
+text-align: center;
+text-decoration: none;
+padding: 8px 10px 5px;
+width: 130px;
+}
+table { margin-bottom: 3em; }
+thead { background-color: #eeefeb; }
+tr.odd { background-color: #eeefeb; }
+tr.even { background-color: #dfe0da; }
+</style>
+
+{% for spender in spenders %}
+<div>
+    <h2 style="color: rgb(0, 102, 51); text-align: center; "> </h2>
+    <h2 style="color: rgb(0, 102, 51); text-align: center; "><a href="http://realtime.influenceexplorer.com{{spender.url}}">{{ spender.name }}</a></h2>
+    <h2 style="text-align: center; ">
+    <h3 style="text-align: center; ">Total primary/runoff spending: ${{ spender.total_ies|intcomma}}</h3>
+
+<div id="shell" style="background:#F8F8F8 ;">
+<div id="title">
+<ul>
+<li>
+<strong>Positive spending</strong>
+{% if spender.support_dems %}${{spender.support_dems}} spent supporting Democrats.{% endif %}
+{% if spender.support_reps %}${{spender.support_reps}} spent supporting Republicans.{% endif %}
+</li>
+<li>
+<strong>Negative spending</strong>
+{% if spender.oppose_dems %}${{spender.oppose_dems}} spent opposing Democrats.{% endif %}
+{% if spender.oppose_reps %}${{spender.oppose_reps}} spent opposing Republicans.{% endif %}
+</li>
+
+</ul>
+<p style="text-align: center;">
+<a href="http://realtime.influenceexplorer.com{{spender.ie_url}}">See all independent expenditures this cycle</a>
+</p>
+
+</div>
+</div>
+<a class="toggler" data-groupid="{{spender.fec_id}}" href="#">See ROI breakdown</a>
+
+<ul>
+<div id="{{spender.fec_id}}" style="display:none;">
+    <p>click headings to sort</p>
+    <table id="hor-minimalist-a" class="sortable">
+    <thead>
+        <tr>
+        <th scope="col">Candidate</th>
+        <th scope="col">Office</th>
+        <th scope="col">Support or oppose</th>
+        <th scope="col">Result</th>
+        </tr>
+    <thead>
+        {% for candidate in spenders.candidates %}
+        <tr>
+            <td><a href="http://realtime.influenceexplorer.com{{candidate.url}}">{{ candidate.name}} {{ candidate.party}}</a></td>
+            <td>{{ candidate.office}}</td>
+            <td>{{ candidate.support_oppose }}</td>
+            <td>${{ candidate.amount|intcomma}}</td>            
+        </tr>
+        {% endfor %}
+    <tbody>
+        
+        
+    </tbody>
+    
+    
+    </table>
+    <a class="toggler" data-groupid="{{spender.fec_id}}" href="#">Click here to collapse</a>
+    
+</div>
+
+</ul>
+
+
+</div>
+
+{% endfor %}
