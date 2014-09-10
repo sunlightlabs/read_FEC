@@ -89,23 +89,25 @@ tr.even { background-color: #dfe0da; }
     <table id="hor-minimalist-a" class="sortable">
     <thead>
         <tr>
+        <th scope="col">Support or oppose</th>
+
         <th scope="col">Candidate</th>
         <th scope="col">Office</th>
-        <th scope="col">Support or oppose</th>
+        <th scope="col">Amount</th>
         <th scope="col">Result</th>
+
         </tr>
     <thead>
+    <tbody>
         {% for candidate in spender.candidates %}
         <tr>
+            <td>{{ candidate.support_oppose }}</td>
             <td><a href="http://realtime.influenceexplorer.com{{candidate.url}}">{{ candidate.name}} {{ candidate.party}}</a></td>
             <td>{{ candidate.office}}</td>
-            <td>{{ candidate.support_oppose }}</td>
-            <td>${{ candidate.amount|intcomma}}</td>            
+            <td>${{ candidate.amount|intcomma}}</td> 
+            <td>{% if candidate.result %}{{ candidate.result}}{% else %}Won primary{% endif %}</td>           
         </tr>
-        {% endfor %}
-    <tbody>
-        
-        
+        {% endfor %}        
     </tbody>
     
     
