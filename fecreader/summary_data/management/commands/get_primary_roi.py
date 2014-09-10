@@ -59,9 +59,11 @@ class Command(BaseCommand):
             their_ies = primary_ies.filter(filer_committee_id_number=outside_spender['fec_id']).order_by('candidate_id_checked', 'support_oppose_checked')
             candidate_summary = their_ies.values('candidate_id_checked', 'support_oppose_checked').annotate(Sum('expenditure_amount'))
             for candidate in candidate_summary:
+                
                 c = Candidate_Overlay.objects.get(fec_id=candidate['candidate_id_checked'])
                 
-                candidate_list.append({'name':c.name, 'incumbent':c.is_incumbent, 'party':c.display_party(), 'office':c.detailed_office(), 'support_oppose':supporting_opposing(candidate['support_oppose_checked']), 'amount':candidate['expenditure_amount']})
+                candidate_list.append({'name':c.name, 'incumbent':c.is_incumbent, 'party':c.display_party(), 'office':c.detailed_office(), 'support_oppose':supporting_opposing(candidate['support_oppose_checked']), 'amount':candidate['expenditure_amount__sum']})
+                
             outside_spender['candidates'] = candidate_list
             district_data.append(outside_spender)
         
