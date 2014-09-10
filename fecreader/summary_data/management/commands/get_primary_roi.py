@@ -79,7 +79,7 @@ class Command(BaseCommand):
             spender_data.append(outside_spender)
         
         ##print "spender_data"
-        print spender_data
+        #print spender_data
 
         # now write it out to screen via a template
         this_template = get_template('generated_pages/primary_chart.html')

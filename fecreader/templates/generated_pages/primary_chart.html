@@ -65,13 +65,13 @@ tr.even { background-color: #dfe0da; }
 <ul>
 <li>
 <strong>Positive spending</strong>
-{% if spender.support_dems %}${{spender.support_dems}} spent supporting Democrats.{% endif %}
-{% if spender.support_reps %}${{spender.support_reps}} spent supporting Republicans.{% endif %}
+{% if spender.support_dems %}${{spender.support_dems|intcomma}} spent supporting Democrats.{% endif %}
+{% if spender.support_reps %}${{spender.support_reps|intcomma}} spent supporting Republicans.{% endif %}
 </li>
 <li>
 <strong>Negative spending</strong>
-{% if spender.oppose_dems %}${{spender.oppose_dems}} spent opposing Democrats.{% endif %}
-{% if spender.oppose_reps %}${{spender.oppose_reps}} spent opposing Republicans.{% endif %}
+{% if spender.oppose_dems %}${{spender.oppose_dems|intcomma}} spent opposing Democrats.{% endif %}
+{% if spender.oppose_reps %}${{spender.oppose_reps|intcomma}} spent opposing Republicans.{% endif %}
 </li>
 
 </ul>
@@ -81,7 +81,7 @@ tr.even { background-color: #dfe0da; }
 
 </div>
 </div>
-<a class="toggler" data-groupid="{{spender.fec_id}}" href="#">See ROI breakdown</a>
+<a class="toggler" data-groupid="{{spender.fec_id}}" href="#">See primary breakdown</a>
 
 <ul>
 <div id="{{spender.fec_id}}" style="display:none;">
