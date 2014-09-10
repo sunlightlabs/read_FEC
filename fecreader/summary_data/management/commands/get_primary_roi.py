@@ -31,7 +31,7 @@ class Command(BaseCommand):
         # first pull the top outside spenders by amount spent in primaries or runoffs
         spender_list = []
         for outside_spender in outside_spenders:
-            print "processing %s" % (outside_spender)
+            #print "processing %s" % (outside_spender)
             
             their_ies = primary_ies.filter(filer_committee_id_number=outside_spender.fec_id)
             
@@ -42,11 +42,11 @@ class Command(BaseCommand):
             support_reps = their_ies.filter(candidate_party_checked='R', support_oppose_checked='S').aggregate(tot_ies=Sum('expenditure_amount'))['tot_ies']
             
             this_spender_data = {'name':outside_spender.name, 'url':outside_spender.get_absolute_url(), 'total_ies':total, 'oppose_dems':oppose_dems, 'oppose_reps':oppose_reps, 'support_dems':support_dems, 'support_reps':support_reps, 'type':outside_spender.display_type(), 'orientation':outside_spender.display_political_orientation(), 'ie_url':outside_spender.get_filtered_ie_url(), 'fec_id':outside_spender.fec_id}
-            print this_spender_data
+            #print this_spender_data
             spender_list.append(this_spender_data)
         
         # sort the list by outside spending in the primary
-        spender_list.sort(key=lambda x: x['total_ies'])
+        spender_list.sort(key=lambda x: x['total_ies'], reverse=True)
         
         top_spenders = spender_list[:SPENDER_COUNT]
         print "top ten spenders"
