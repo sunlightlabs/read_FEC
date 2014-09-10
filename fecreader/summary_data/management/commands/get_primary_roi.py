@@ -9,11 +9,26 @@ cycle_start = date(2013,1,1)
 from summary_data.models import *
 from formdata.models import SkedE
 
+# HOW MANY SHOULD WE DISPLAY? 
+SPENDER_COUNT = 10
+
+CANDIDATE_DISPLAY_THRESHOLD = 50000
+
+def supporting_opposing(support_oppose_code):
+    support = ''
+    if support_oppose_code == 'S':
+        support='Support'
+    elif support_oppose_code == 'O':
+        support = 'Oppose'    
+    return support
+    
 class Command(BaseCommand):
  
     def handle(self, *args, **options): 
         outside_spenders = Committee_Overlay.objects.filter(total_indy_expenditures__gte=50000)
         primary_ies = SkedE.objects.filter(superceded_by_amendment=False, expenditure_date__gte=cycle_start, election_code__in=['P2014', 'R2014'])
+        
+        # first pull the top outside spenders by amount spent in primaries or runoffs
         spender_list = []
         for outside_spender in outside_spenders:
             print "processing %s" % (outside_spender)
@@ -26,10 +41,35 @@ class Command(BaseCommand):
             support_dems = their_ies.filter(candidate_party_checked='D', support_oppose_checked='S').aggregate(tot_ies=Sum('expenditure_amount'))['tot_ies']
             support_reps = their_ies.filter(candidate_party_checked='R', support_oppose_checked='S').aggregate(tot_ies=Sum('expenditure_amount'))['tot_ies']
             
-            this_spender_data = {'name':outside_spender.name, 'url':outside_spender.get_absolute_url(), 'total_ies':total, 'oppose_dems':oppose_dems, 'oppose_reps':oppose_reps, 'support_dems':support_dems, 'support_reps':support_reps, 'type':outside_spender.display_type(), 'orientation':outside_spender.display_political_orientation(), 'ie_url':outside_spender.get_filtered_ie_url()}
-            print this_spender_data
+            this_spender_data = {'name':outside_spender.name, 'url':outside_spender.get_absolute_url(), 'total_ies':total or 0, 'oppose_dems':oppose_dems or 0, 'oppose_reps':oppose_reps or 0, 'support_dems':support_dems or 0, 'support_reps':support_reps or 0, 'type':outside_spender.display_type(), 'orientation':outside_spender.display_political_orientation(), 'ie_url':outside_spender.get_filtered_ie_url(), 'fec_id':outside_spender.fec_id}
             spender_list.append(this_spender_data)
+        
+        # sort the list by outside spending in the primary
+        spender_list.sort(key=lambda x: x['total_ies'])
+        
+        top_spenders = spender_list[:SPENDER_COUNT]
+        print "top ten spenders"
+        print spender_list[:10]
+        
+        # Now add the top candidates supported or opposed in the primary by each of those groups. 
+        district_data = []
+        candidate_list=[]
+        for outside_spender in top_spenders:
+            their_ies = primary_ies.filter(filer_committee_id_number=outside_spender['fec_id']).order_by('candidate_id_checked', 'support_oppose_checked')
+            candidate_summary = their_ies.values('candidate_id_checked', 'support_oppose_checked').annotate(Sum('expenditure_amount'))
+            for candidate in candidate_summary:
+                c = Candidate_Overlay.objects.get(fec_id=candidate['candidate_id_checked'])
+                
+                candidate_list.append({'name':c.name, 'incumbent':c.is_incumbent, 'party':c.display_party(), 'office':c.detailed_office(), 'support_oppose':supporting_opposing(), 'amount':candidate['expenditure_amount']})
+            outside_spender['candidates'] = candidate_list
+            district_data.append(outside_spender)
+        
+        print "district data"
+        print district_data
             
-        
-        
+                
+                
+                
+            
+            
         
