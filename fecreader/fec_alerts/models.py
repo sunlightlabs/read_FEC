@@ -61,6 +61,7 @@ class Filing_Scrape_Time(models.Model):
     
     
 # This is just to hold newly formed committees, scraped from a special page on the press site here: http://www.fec.gov/press/press2011/new_form1dt.shtml. Form F1's don't have to be filed electronically, so the press page appears to be the best resource out there. 
+# This model has since been retired since the FEC stopped maintaining the source page. 
 class newCommittee(models.Model):
     cycle = models.CharField(max_length=4, default=CURRENT_CYCLE)
     fec_id = models.CharField(max_length=9, blank=True, unique=True)
@@ -86,6 +87,39 @@ class newCommittee(models.Model):
             
     def get_absolute_url(self):          
         return ("/committee/%s/%s/" % (slugify(self.name), self.fec_id))
+
+
+class f1filer(models.Model):
+    cycle = models.CharField(max_length=4, default=CURRENT_CYCLE)
+    cmte_id = models.CharField(max_length=9, blank=True, unique=True)
+    cmte_nm =  models.CharField(max_length=255)
+    cmte_st1 =  models.CharField(max_length=255, null=True, blank=True)
+    cmte_st2 =  models.CharField(max_length=255, null=True, blank=True)
+    cmte_city =  models.CharField(max_length=63, null=True, blank=True)
+    cmte_st =  models.CharField(max_length=5, null=True, blank=True)
+    cmte_zip =  models.CharField(max_length=15, null=True, blank=True)
+    affiliated_cmte_nm =  models.CharField(max_length=61, null=True, blank=True)
+    filed_cmte_tp = models.CharField(max_length=2)
+    filed_cmte_dsgn = models.CharField(max_length=2)
+    filing_freq= models.CharField(max_length=2, null=True, blank=True)
+    org_tp = models.CharField(max_length=2, null=True, blank=True)
+    tres_nm = models.CharField(max_length=255, null=True, blank=True)
+    receipt_dt = models.DateField(null=True, blank=True)
+    cmte_email = models.CharField(max_length=255, null=True, blank=True) 
+    cmte_web_url= models.CharField(max_length=255, null=True, blank=True)
+    begin_image_num = models.CharField(max_length=15)
+    
+    def __unicode__(self):
+        return "%s formed %s" % (self.cmte_nm, self.receipt_dt)
+    
+    def get_ctype(self):
+        try:
+            return raw_ctypes[self.filed_cmte_tp]
+        except KeyError:
+            return None
+            
+    def get_absolute_url(self):          
+        return ("/committee/%s/%s/" % (slugify(self.cmte_nm), self.cmte_id))
     
 
 # Class to hold new filings, whether or not they've been parsed yet. 
