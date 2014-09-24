@@ -192,6 +192,9 @@ def skede_from_skededict(data_dict, filing_number, header_row_id, is_amended, cd
     data_dict['header_id'] = header_row_id
     data_dict['superceded_by_amendment'] = is_amended
     data_dict['filing_number'] = filing_number
+    data_dict['completing_prefix'] = data_dict['completing_prefix'][:10]
+    data_dict['completing_suffix'] = data_dict['completing_suffix'][:10]
+    
         
     ## The switch from v.8 to v.8.1 added a 'dissemination date' though it kept the expenditure date.
     ## We now prefer the dissemination date, but fall back to the expenditure date if it's not available.
