@@ -46,4 +46,6 @@ south
 jellyfish
 nameparser
 
+# locksmith client keys branch
+-e git+https://github.com/sunlightlabs/django-locksmith.git@client-keys#egg=locksmith
 
