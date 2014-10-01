@@ -304,7 +304,7 @@ function loadjson(jsonurl) {
                    var format_re = /&*format=json/i;
                    var csvurl = jsonurl.replace(page_re, '').replace(format_re, '') + "&format=csv";
                    //console.log("csv url is: " + csvurl);
-                   csv_string = ' Download a <a href="' + csvurl + '">csv file of all '+ roundwCommas(data_loaded.count) +' results</a>.';
+                   csv_string = '<a href="' + csvurl + '"><img src="http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/css/images/download.png" style="margin-right: 5px;"></img>Download a csv file</a> of all '+ roundwCommas(data_loaded.count) +' results.';
                    $( "#csv_info" ).html(csv_string);
 
                 } else {
