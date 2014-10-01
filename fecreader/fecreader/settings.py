@@ -97,6 +97,9 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+    'locksmith.client_keys.middleware.ClientKeyMiddleware',
+    #'locksmith.lightauth.middleware.APIKeyMiddleware',
+    'api.middleware.APIKeyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -117,7 +120,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     # need to point at other one
     #'summary_data.brisket_context_processors.custom_context'
-    'dryrub.context_processors.custom_context'
+    'dryrub.context_processors.custom_context',
+    'locksmith.client_keys.context_processors.client_key_context'
 )
 
 ROOT_URLCONF = 'fecreader.urls'
@@ -175,14 +179,22 @@ INSTALLED_APPS = (
     'downloads',
     'rothenberg',
     'corsheaders',
-    'public_views'
+    'public_views',
+    'locksmith.client_keys',
+    'api'
 )
 
 REST_FRAMEWORK = {
 
 #    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
-    'DEFAULT_AUTHENTICATION_CLASSES': ('django.contrib.auth.models.AnonymousUser',),    
+    #'DEFAULT_AUTHENTICATION_CLASSES': ('django.contrib.auth.models.AnonymousUser',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+     'api.auth.SpareribAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+     'rest_framework.permissions.IsAuthenticated',
+    ),
     'PAGINATE_BY': 100,
     'PAGINATE_BY_PARAM': 'page_size',
     'MAX_PAGINATE_BY': 100,

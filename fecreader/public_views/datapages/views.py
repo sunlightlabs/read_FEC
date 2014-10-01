@@ -554,7 +554,8 @@ def top_races(request, week_number):
         'following_week_number':following_week_number,
         'week_number':week_number,
         'data_url':data_url,
-        }
+        }, 
+        context_instance=RequestContext(request)
     )
 
 @cache_page(LONG_CACHE_TIME)
@@ -587,7 +588,8 @@ def top_current_races(request):
         'weeklysummaries':weeklysummaries,
         'week_number':week_number,
         'data_url':data_url,
-        }
+        }, 
+        context_instance=RequestContext(request)
     )
 
 

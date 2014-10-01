@@ -164,6 +164,9 @@ pagenumber = 1;
 pagination_size = {{ PAGINATE_BY }};
 
 
+API_KEY = "{{ CLIENT_KEY }}";
+
+
 function make_states() {
   state_element = '';
   for (var i = 0; i < states.length; i++) {
@@ -358,6 +361,7 @@ function load_previous(jsonurl) {
 function loadjson(jsonurl) {
   //console.log("loading json: " + jsonurl);
   //jsonurl = "/api/new_filing/";
+  jsonurl += "&clientkey=" + API_KEY; 
   $.getJSON(jsonurl, function(data_loaded) {
 
                var source   = $("#row-template").html();

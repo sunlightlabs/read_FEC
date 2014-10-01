@@ -112,6 +112,8 @@ pagenumber = 1;
 // set this dynamically
 pagination_size = {{ PAGINATE_BY }};
 
+API_KEY = "{{ CLIENT_KEY }}";
+
 function is_valid_number(a) {
   return a.length > 0 && !isNaN(a);
 }
@@ -247,6 +249,7 @@ function loadjson(jsonurl) {
   //console.log("loading json");
   validate_fields();
   //jsonurl = "/api/new_filing/";
+  jsonurl += "&clientkey=" + API_KEY; 
   $.getJSON(jsonurl, function(data_loaded) {
 
                var source   = $("#committeerow-template").html();

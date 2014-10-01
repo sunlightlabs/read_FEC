@@ -124,19 +124,19 @@ class f1filer(models.Model):
 
 # Class to hold new filings, whether or not they've been parsed yet. 
 class new_filing(models.Model):
-    fec_id = models.CharField(max_length=9)
-    committee_name = models.CharField(max_length=200)
-    filing_number = models.IntegerField(primary_key=True)
-    form_type = models.CharField(max_length=7)
-    filed_date = models.DateField(null=True, blank=True)
-    coverage_from_date = models.DateField(null=True, blank=True)
-    coverage_to_date = models.DateField(null=True, blank=True)
-    process_time = models.DateTimeField(help_text="This is the time that FEC processed the filing--not us")
-    is_superpac = models.NullBooleanField()
+    fec_id = models.CharField(max_length=9, help_text="The FEC id of the committee filing this report")
+    committee_name = models.CharField(max_length=200, help_text="The committee's name as reported to the FEC")
+    filing_number = models.IntegerField(primary_key=True, help_text="The numeric filing number assigned to this electronic filing by the FEC")
+    form_type = models.CharField(max_length=7, help_text="The type of form used.")
+    filed_date = models.DateField(null=True, blank=True, help_text="The date that this filing was processed")
+    coverage_from_date = models.DateField(null=True, blank=True, help_text="The start of the reporting period that this filing covers. Not all forms list this.")
+    coverage_to_date = models.DateField(null=True, blank=True, help_text="The end of the reporting period that this filing covers. Not all forms include this")
+    process_time = models.DateTimeField(help_text="This is the time that FEC processed the filing")
+    is_superpac = models.NullBooleanField(help_text="Is this group a super PAC?")
     
     # populate from committee_overlay file. 
-    committee_designation = models.CharField(max_length=1, null=True, blank=True)
-    committee_type = models.CharField(max_length=1, null=True, blank=True)
+    committee_designation = models.CharField(max_length=1, null=True, blank=True, help_text="See the FEC's committee designations")
+    committee_type = models.CharField(max_length=1, null=True, blank=True, help_text="See the FEC's committee types")
                
     committee_slug = models.SlugField(max_length=255, null=True, blank=True)
     party = models.CharField(max_length=3, blank=True, null=True)
@@ -158,19 +158,19 @@ class new_filing(models.Model):
     ## summary data only available after form is parsed:
     
     # periodic reports only
-    coh_start = models.DecimalField(max_digits=14, decimal_places=2, null=True)
-    coh_end = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
+    coh_start = models.DecimalField(max_digits=14, decimal_places=2, null=True, help_text="The cash on hand at the start of the reporting period. Not recorded on all forms.")
+    coh_end = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0, help_text="The cash on hand at the end of the reporting period. ")
     # Did they borrow *new* money this period ? 
-    new_loans = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
+    new_loans = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0, help_text="The amount of new loans taken on by the committee during this reporting period.")
     
     # if applicable:
-    tot_raised = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
-    tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
+    tot_raised = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0, help_text="The total amount raised in this report. This is total receipts for periodic reports.")
+    tot_spent = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0, help_text="The total amount spent in this report.")
     
-    tot_ies = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
+    tot_ies = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0, help_text="The total amount of independent expenditures ")
     tot_coordinated = models.DecimalField(max_digits=14, decimal_places=2, null=True, default=0)
     # which filing types are contained? Store as a dict:
-    lines_present =  DictionaryField(db_index=True, null=True)
+    lines_present =  DictionaryField(db_index=True, null=True, help_text="A dictionary of the type of lines present in this report by schedule. ")
     
     
     ## Models migrated from old form_header model
@@ -184,7 +184,7 @@ class new_filing(models.Model):
     amendment_number = models.IntegerField(null=True, blank=True)
     
     # Is this filing superceded by another filing, either a later amendment, or a periodic filing.
-    is_superceded=models.BooleanField(default=False)
+    is_superceded=models.BooleanField(default=False, help_text="Is this filing superceded by another filing, either a later amendment, or a periodic filing")
     # which filing is this one superceded by? 
     amended_by=models.IntegerField(null=True, blank=True)
     

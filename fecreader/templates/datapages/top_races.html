@@ -10,7 +10,7 @@
 {% if weeklysummaries %}
 <script type="text/javascript" src="{% static 'realtimefec/js/d3.v3.min.js' %}"></script>
 <script type="text/javascript">
-  window.datafileURL = "{{ data_url }}";
+  window.datafileURL = "{{ data_url }}&clientkey={{ CLIENT_KEY }}";
 </script>
 <script type="text/javascript" src="{% static 'realtimefec/js/race_chart.js' %}"></script>
 {% endif %}

@@ -22,18 +22,18 @@ class Update_Time(models.Model):
 
 # because this is defined by cycle, not every state has a senator; others are represented twice, if there's a special senate election.
 class District(models.Model):
-    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
-    state = models.CharField(max_length=2, blank=True, null=True, choices=STATE_CHOICES, help_text="US for president")
+    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="The even-numbered year that ends a two-year cycle.")
+    state = models.CharField(max_length=2, blank=True, null=True, choices=STATE_CHOICES, help_text="The district's state")
     incumbent_legislator = models.ForeignKey(Legislator, null=True)
     office = models.CharField(max_length=1, null=True,
-                              choices=(('H', 'House'), ('S', 'Senate'), ('P', 'President')))
+                              choices=(('H', 'House'), ('S', 'Senate'), ('P', 'President')), help_text="'H' for House, 'S' for Senate, 'P' for President")
     office_district = models.CharField(max_length=2, blank=True, null=True, help_text="'00' for at-large congress; null for senate, president")
     term_class = models.IntegerField(blank=True, null=True, help_text="1,2 or 3. Pulled from US Congress repo. Only applies to senators.")
     incumbent_name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
     incumbent_pty = models.CharField(max_length=3, blank=True, null=True, help_text="What party is the incumbent? 3-digit FEC abbrev")
-    incumbent_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R, more TK")
+    incumbent_party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party: D for Dem, DFL etc; R for R")
     election_year = models.IntegerField(blank=True, null=True, help_text="When is the next general election going to take place--enter this even when we don't know the election date")
-    next_election_date = models.DateField(blank=True, null=True)
+    next_election_date = models.DateField(blank=True, null=True, help_text="Date of the next eelction")
     next_election_code = models.CharField(max_length=2, blank=True, null=True, choices=ELECTION_TYPE_CHOICES) # General, Primary, Runoff, SP=special primary, SR=special runoff, SG=special general, Caucus, Other
     special_election_scheduled = models.NullBooleanField(default=False, null=True, help_text="Is there a special election scheduled ahead of the next regularly scheduled election? This should be *false* if a special election has already been held this cycle")
     open_seat = models.NullBooleanField(default=False, null=True, help_text="is the incumbent stepping down")
@@ -44,17 +44,17 @@ class District(models.Model):
     # summary data
     
     # do these need to be differentiated between primary / general elections ? 
-    candidate_raised = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    candidate_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    candidate_raised = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="Total amount raised by candidates who've run in this district during the cycle. Doesn't include incumbents who are not seeking reelection.")
+    candidate_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="Total amount spent by candidates who've run in this district during the cycle. Doesn't include incumbents who are not seeking reelection.")
     coordinated_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    outside_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="Total amount of independent expenditures for or against candidates in this district, not including incumbents who are not seeking reelection.")
     total_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     # should we include electioneering? 
     electioneering_spending = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     
     # This is pulled from the rothenberg app periodically
     rothenberg_rating_id = models.IntegerField(null=True)
-    rothenberg_rating_text = models.CharField(null=True, max_length=63)
+    rothenberg_rating_text = models.CharField(null=True, max_length=63, help_text="The Rothenberg political reports rating of this district")
     rothenberg_update_time = models.DateTimeField(null=True)
     
     district_notes = models.TextField(null=True, blank=True, help_text="Mostly intended to note special elections, but...")
@@ -172,17 +172,17 @@ class Candidate_Overlay(models.Model):
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     transparency_id = models.CharField(max_length=31, blank=True, null=True, help_text="Crosswalk to influence explorer etc.")
     is_minor_candidate = models.BooleanField(default=False,help_text="Should we hide this name because they're not a serious candidate")
-    not_seeking_reelection = models.BooleanField(default=False,help_text="It's confusing if we remove incumbents, so keep them here, but note that they are retiring. ")
+    not_seeking_reelection = models.BooleanField(default=False,help_text="True if they are an incumbent who is not seeking reelection.")
     other_office_sought = models.CharField(max_length=127, blank=True, null=True, help_text="E.g. are they running for senate?")
     other_fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="If they've declared for another federal position, what is it? This should be the *candidate id* not a committee id. ")
-    name = models.CharField(max_length=255, blank=True, null=True, help_text="incumbent name")
+    name = models.CharField(max_length=255, blank=True, null=True, help_text="Incumbent name")
     pty = models.CharField(max_length=3, blank=True, null=True, help_text="What party is the incumbent?")
     party = models.CharField(max_length=1, blank=True, null=True, help_text="Simplified party")
     fec_id = models.CharField(max_length=9, blank=True, null=True, help_text="FEC candidate id")
-    pcc = models.CharField(max_length=9, blank=True, null=True, help_text="FEC id for primary campaign committee")
+    pcc = models.CharField(max_length=9, blank=True, null=True, help_text="FEC id for the candidate's primary campaign committee")
     
     # This is displayed--this needs to be maintained.
-    election_year = models.PositiveIntegerField(blank=True, null=True, help_text="year of general election")
+    election_year = models.PositiveIntegerField(blank=True, null=True, help_text="Year of general election")
     state = models.CharField(max_length=2, blank=True, null=True, help_text="US for president")
     office = models.CharField(max_length=1, null=True,
                               choices=(('H', 'House'), ('S', 'Senate'), ('P', 'President'))
@@ -348,9 +348,9 @@ class Committee_Overlay(models.Model):
     
 
     # direct from the raw fec table
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, help_text="The committee name.")
     display_name = models.CharField(max_length=255, null=True)
-    fec_id = models.CharField(max_length=9, blank=True)
+    fec_id = models.CharField(max_length=9, blank=True, help_text="The FEC id of the filing committee")
     slug = models.SlugField(max_length=255)
     party = models.CharField(max_length=3, blank=True, null=True)
     treasurer = models.CharField(max_length=200, blank=True, null=True)
@@ -363,30 +363,30 @@ class Committee_Overlay(models.Model):
     filing_frequency = models.CharField(max_length=1, blank=True, null=True)
 
     candidate_id = models.CharField(max_length=9,blank=True, null=True)
-    candidate_office = models.CharField(max_length=1, blank=True, null=True)    
+    candidate_office = models.CharField(max_length=1, blank=True, null=True, help_text="The office of the candidate that this committee supports. Not all committees support candidates.")    
 
 
     has_contributions = models.NullBooleanField(null=True, default=False)
     # total receipts
-    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_receipts = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="Total receipts for this committee ceived during the entire cycle. ")
     total_contributions = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_disbursements = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="Total disbursements by this committee ceived during the entire cycle")
 
-    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, default=0)
+    outstanding_loans = models.DecimalField(max_digits=19, decimal_places=2, null=True, blank=True, default=0, help_text="Total outstanding loans as of the cash_on_hand_date")
 
     # total unitemized receipts
     total_unitemized = models.DecimalField(max_digits=19, decimal_places=2, null=True)
 
-    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    cash_on_hand_date = models.DateField(null=True)
+    cash_on_hand = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="Cash on hand as of the end of committee's most recent periodic report; this date appears as cash_on_hand_date")
+    cash_on_hand_date = models.DateField(null=True, help_text="The end of the most recent periodic filing; the date that the cash on hand was reported as of.")
 
     # independent expenditures
     has_independent_expenditures = models.NullBooleanField(null=True, default=False)
-    total_indy_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
-    ie_support_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    ie_oppose_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    ie_support_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
-    ie_oppose_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
+    total_indy_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True, help_text="Total independent expenditures made this cycle.")
+    ie_support_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="The total amount of independent expenditures make to support Democratic candidates")
+    ie_oppose_dems = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="The total amount of independent expenditures make to oppose Democratic candidates")
+    ie_support_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="The total amount of independent expenditures make to support Republican candidates")
+    ie_oppose_reps = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0, help_text="The total amount of independent expenditures make to oppose Republican candidates")
     total_presidential_indy_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True)
 
     # Typically only party committees make coordinated expenditures
@@ -417,7 +417,7 @@ class Committee_Overlay(models.Model):
         blank=True, null=True, help_text="We're only tracking these for non-committees")
 
     # what's their orientation
-    political_orientation = models.CharField(max_length=1,null=True, help_text="We're only doing these for outside groups", choices=[
+    political_orientation = models.CharField(max_length=1,null=True, help_text="The political orientation of the group, as coded by sunlight algorithms / researchers. This is only added for groups making independent expenditures.", choices=[
                         ('R', 'backs Republicans'),
                         ('D', 'backs Democrats'),
                         ('U', 'unknown'),
@@ -438,6 +438,7 @@ class Committee_Overlay(models.Model):
 
     ctype = models.CharField(max_length=1,
                         blank=False,
+                        help_text="The FEC defined committee type.",
                         null=True,
                         choices=[('C', 'Communication Cost'),
                                    ('D', 'Delegate'),
