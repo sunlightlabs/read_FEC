@@ -2,6 +2,8 @@
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
 {% load staticfiles %}
+{% load cache %}
+
 
 {% block sitejs %}
 <script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
@@ -26,7 +28,10 @@
 
 <div class="module">
 
+    {% cache 3600 __dynamic_ies_form %}
+
     <div id="formdiv" class="clearfix">
+
 
         <div class="form-row clearfix ">
             <div class="form_spacer">
@@ -91,6 +96,7 @@
             <input type="button" value="Filter Filings" id="load_button" />
         </div>
     </div>
+    {% endcache %}
 
     <span id="display_info"></span><span id="csv_info" class="tip"></span>
     <div class="pagination_container">
@@ -141,6 +147,7 @@
 <script type="text/javascript" src="{% static 'realtimefec/js/chosen.jquery.min.js' %}"></script>
 
 <script type="text/javascript">
+{% cache 3600 __dynamic_ies_js %}
 
 var states = [
   {'name':'Show All', 'value':'0'},
@@ -157,6 +164,7 @@ candidates = [
   {% for candidate in candidates %}{ 'value':'{{ candidate.fec_id }}', 'name':'{{ candidate.name }} {{candidate.display_party }}', 'state':'{{ candidate.state }}', 'raceid':'{{candidate.district.pk}}'}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}  
 ];
 
+{% endcache %}
 
 // The api doesn't tell us the pagenumber
 pagenumber = 1;

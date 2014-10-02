@@ -21,7 +21,7 @@ from summary_data.utils.update_utils import get_update_time
 from summary_data.utils.weekly_update_utils import get_week_number, get_week_start, get_week_end
 from summary_data.election_dates import elections_by_day
 
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, cache_control
 
 STATE_LIST = [{'name':x[1], 'abbrev':x[0]} for x in US_STATES]
 
@@ -188,7 +188,7 @@ def senate_race(request, cycle, state, term_class):
         context_instance=RequestContext(request)
     )
     
-@cache_page(SHORT_CACHE_TIME)
+@cache_control(no_cache=True)
 def newest_filings(request):
     candidates = Candidate_Overlay.objects.filter(office='H').order_by('name')
     return render_to_response('datapages/dynamic_filings.html', 
@@ -201,7 +201,7 @@ def newest_filings(request):
         context_instance=RequestContext(request)
     )
 
-@cache_page(LONG_CACHE_TIME)
+@cache_control(no_cache=True)
 def pacs(request):
     return render_to_response('datapages/dynamic_pacs.html', 
         {
@@ -214,7 +214,7 @@ def pacs(request):
 
 
 
-@cache_page(LONG_CACHE_TIME)
+@cache_control(no_cache=True)
 def outside_spenders(request):
     return render_to_response('datapages/dynamic_outside_spenders.html', 
         {
@@ -228,7 +228,7 @@ def outside_spenders(request):
 
 
 
-@cache_page(LONG_CACHE_TIME)
+@cache_control(no_cache=True)
 def dynamic_ies(request):
     districts = District.objects.filter(outside_spending__gt=1000).order_by('state', 'office', 'office_district')
     candidates = Candidate_Overlay.objects.filter(total_expenditures__gt=1).select_related('district').order_by('name')
@@ -519,7 +519,7 @@ def committee_search_html(request):
         }
     )
 
-@cache_page(LONG_CACHE_TIME)
+@cache_control(no_cache=True)
 def top_races(request, week_number): 
     week_start = get_week_start(int(week_number))
     week_start_formatted = week_start.strftime('%m/%d')
@@ -558,7 +558,7 @@ def top_races(request, week_number):
         context_instance=RequestContext(request)
     )
 
-@cache_page(LONG_CACHE_TIME)
+@cache_control(no_cache=True)
 def top_current_races(request): 
     week_number = get_week_number(datetime.date.today()) - 1
     week_start = get_week_start(int(week_number))

@@ -2,6 +2,7 @@
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
 {% load staticfiles %}
+{% load cache %}
 
 {% block sitejs %}
 <script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
@@ -39,6 +40,7 @@
 
         <div class="form-row clearfix form-break">
             
+            {% cache 3600 __candidate_form %}
             <div class="form_spacer">
                 <label>Candidate:</label>
                 <select data-placeholder="Pick a house candidate..."tabindex="2" name="candidate_id" id="candidate_id"  class="dropdown_field_long chosen-select">
@@ -48,6 +50,7 @@
                     {% endfor %}
                 </select>
             </div>
+            {% endcache %}
             
             <div class="form_spacer">
                 <label>Committee: </label>
@@ -208,6 +211,8 @@
     </div>
 
 </div>
+
+
 {% verbatim %}
 <script id="row-template" type="text/x-handlebars-template" >
    <tr class="{{ class }}">
