@@ -47,5 +47,9 @@ jellyfish
 nameparser
 
 # locksmith client keys branch
--e git+https://github.com/sunlightlabs/django-locksmith.git@client-keys#egg=locksmith
+#-e git+https://github.com/sunlightlabs/django-locksmith.git@client-keys#egg=locksmith
+
+-e git+https://github.com/jsfenfen/django-locksmith.git@client-keys#egg=locksmith
+
+SimpleAES==1.0
 
