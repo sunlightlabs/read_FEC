@@ -443,7 +443,9 @@ function load_previous(jsonurl) {
 function loadjson(jsonurl) {
   //console.log("loading json");
   //jsonurl = "/api/new_filing/";
-  jsonurl += "&clientkey=" + API_KEY; 
+  if (jsonurl.search("&clientkey=") == -1) {
+      jsonurl += "&clientkey=" + API_KEY; 
+  }
   $.getJSON(jsonurl, function(data_loaded) {
 
                var source   = $("#row-template").html();
