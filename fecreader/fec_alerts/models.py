@@ -9,6 +9,7 @@ from djorm_hstore.fields import DictionaryField
 from djorm_hstore.models import HStoreManager
 from parsing.read_FEC_settings import FEC_HTML_LOCATION
 from api.nulls_last_queryset import NullsLastManager
+from summary_data.data_references import type_hash
 
 # This committee files paper filings that appear inaccurate.
 # C00547109 files both paper and electronic
@@ -114,7 +115,7 @@ class f1filer(models.Model):
     
     def get_ctype(self):
         try:
-            return raw_ctypes[self.filed_cmte_tp]
+            return type_hash[self.filed_cmte_tp]
         except KeyError:
             return None
             

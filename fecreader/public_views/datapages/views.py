@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.localflavor.us.us_states import US_STATES
 from django.db.models import Sum
 
-from fec_alerts.models import new_filing, newCommittee
+from fec_alerts.models import new_filing, newCommittee, f1filer
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate, DistrictWeekly
 this_cycle = '2014'
 this_cycle_start = datetime.date(2013,1,1)
@@ -251,7 +251,7 @@ def dynamic_ies(request):
 def new_committees(request):
     today = datetime.datetime.today()
     month_ago = today - datetime.timedelta(days=30)
-    committees=newCommittee.objects.filter(date_filed__gte=month_ago).order_by('-date_filed')
+    committees=f1filer.objects.filter(receipt_dt__gte=month_ago).order_by('-receipt_dt')
     return render_to_response('datapages/new_committees.html', {
                 'object_list':committees,
                 'explanatory_text':'These are political committees formed within the last 30 days. It may take several days after a PAC is formed for details to be posted. Click the arrow on the column headers to sort by date, type or name.',

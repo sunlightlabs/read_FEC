@@ -25,10 +25,10 @@
               <tbody>
                 {% for object in object_list %}
                     <tr class="{% cycle 'odd' 'even' %}">
-                        <td>{{ object.date_filed|date:"Y-m-d" }}</td>
-                        <td>{{ object.ctype }}</td>
-                        <td><a href="{{object.get_absolute_url}}">{{ object.name }}</a></td>
-                        <td><a href="http://images.nictusa.com/cgi-bin/fecimg/?{{ object.fec_id }}">FEC filings</a></td>
+                        <td>{{ object.receipt_dt|date:"Y-m-d" }}</td>
+                        <td>{{ object.get_ctype }}</td>
+                        <td><a href="{{object.get_absolute_url}}">{{ object.cmte_nm }}</a></td>
+                        <td><a href="http://images.nictusa.com/cgi-bin/fecimg/?{{ object.cmte_id }}">FEC filings</a></td>
                     </tr>
                 {% endfor %}
 
