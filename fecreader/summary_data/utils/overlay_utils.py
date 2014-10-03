@@ -1,6 +1,6 @@
 from ftpdata.models import Candidate, Committee
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay
-from fec_alerts.models import newCommittee
+from fec_alerts.models import newCommittee, f1filer
 from summary_data.utils.term_reference import get_election_year_from_term_class, get_term_class_from_election_year
 from summary_data.utils.party_reference import get_party_from_pty
 from django.template.defaultfilters import slugify
@@ -139,7 +139,7 @@ def update_committee_from_masterfile(committee_id, cycle_to_copy_from=2014, cycl
     
     committee_overlay.save()
     
-
+# the new committee list is now longer used. See below. 
 def make_committee_from_new_committee_list(committee_id, cycle='2014'):
     nc = None
     try:
@@ -185,7 +185,67 @@ def make_committee_from_new_committee_list(committee_id, cycle='2014'):
             is_dirty=True,
         )
         return cm
-    
+
+
+def make_committee_from_f1filer(committee_id, cycle='2014'):
+    nc = None
+    try:
+        nc = f1filer.objects.get(cmte_id = committee_id, cycle=cycle)
+    except f1filer.DoesNotExist:
+        return None
+    except f1filer.MultipleObjectsReturned:
+        return None
+
+    co = None
+    try:
+        co = Committee_Overlay.objects.get(fec_id=committee_id, cycle=cycle)
+        return None
+    except Committee_Overlay.MultipleObjectsReturned:
+        return None
+    except Committee_Overlay.DoesNotExist:
+        # only create one if this doesn't exist. 
+        print "Creating committee from new committee %s" % (committee_id)
+
+        ctype = nc.filed_cmte_tp
+
+        is_hybrid = False
+        is_noncommittee = False
+        is_superpac = False
+        if ctype:
+            if ctype.upper() in ['O', 'U']:
+                is_superpac = True
+            elif ctype.upper() in ['V', 'W']:
+                is_hybrid = True
+            elif ctype.upper() in ['I']:
+                is_noncommittee = True
+        
+        is_paper_filer = False
+        if ctype == 'S':
+            is_paper_filer = True
+        
+        
+        #print cycle, nc.name, nc.fec_id, is_superpac, is_hybrid, is_noncommittee, ctype
+        cm = Committee_Overlay.objects.create(
+            cycle = cycle,
+            name = nc.cmte_nm,
+            fec_id = nc.cmte_id,
+            slug = slugify(nc.cmte_nm),
+            is_superpac = is_superpac,
+            is_hybrid = is_hybrid,
+            is_noncommittee = is_noncommittee,
+            ctype = ctype,
+            is_dirty=True,
+            is_paper_filer=is_paper_filer,
+            street_1 = nc.cmte_st1,
+            street_2 = nc.cmte_st2,
+            city = nc.cmte_city,
+            zip_code = nc.cmte_zip,
+            state = nc.cmte_st,
+            filing_frequency = nc.filing_freq
+            
+            
+        )
+        return cm
     
 def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014, cycle_to_copy_to=2014, verify_does_not_exist=True):
     if committee_id == 'C00507947':

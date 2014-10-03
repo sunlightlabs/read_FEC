@@ -98,7 +98,7 @@ class f1filer(models.Model):
     cmte_city =  models.CharField(max_length=63, null=True, blank=True)
     cmte_st =  models.CharField(max_length=5, null=True, blank=True)
     cmte_zip =  models.CharField(max_length=15, null=True, blank=True)
-    affiliated_cmte_nm =  models.CharField(max_length=61, null=True, blank=True)
+    affiliated_cmte_nm =  models.CharField(max_length=255, null=True, blank=True)
     filed_cmte_tp = models.CharField(max_length=2)
     filed_cmte_dsgn = models.CharField(max_length=2)
     filing_freq= models.CharField(max_length=2, null=True, blank=True)
