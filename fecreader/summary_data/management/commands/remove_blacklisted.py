@@ -6,8 +6,8 @@ from django.core.management.base import BaseCommand, CommandError
 from summary_data.models import Committee_Overlay, Candidate_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees
 from fec_alerts.models import WebK
 
-blacklisted_committees = ['C00507947']
-blacklisted_candidates = ['P20003851']
+blacklisted_committees = ['C00507947', 'C00428599']
+blacklisted_candidates = ['P20003851', 'P80003205']
 
 class Command(BaseCommand):
     help = "Set "
