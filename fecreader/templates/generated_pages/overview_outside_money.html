@@ -8,13 +8,13 @@
         <div style="clear:both;">
               
         <p class="tip">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}.
-       <div class="numeric_summary">
+        <p>Jump to <a href="#positive">Positive vs. Negative</a>&nbsp;|&nbsp;<a href="#type">Committee Type</a>&nbsp;|&nbsp;<a href="#alignment">Political Alignment</a>&nbsp;|&nbsp;<a href="#office">Candidate Office</a></p>
+           <div class="numeric_summary">
            <span class="amount_description">Total Independent Expenditures:</span>&nbsp;<span class="amount_dollars">${{ sums.ie_sum|intword }}</span>
-        </div>
         <p>The numbers on this page refer to <a href="http://www.fec.gov/pages/brochures/indexp.shtml">"independent expenditures"</a>, the most important class of spending by which outside groups and party committees get involved in federal elections. Most of the money comes from groups that aren't subject to contribution limits, and some do not report their donors at all. By law, these groups cannot "coordinate" with the candidate they are supporting or opposing, though those rules have been criticized as ineffectual.</p>
     </div>
 
-<div class="overviewBar withNav withTip">
+<div class="overviewBar withNav withTip" id="positive">
     <h4>Positive vs Negative </h4>
 </div>
 <h4>Overall</h4>
@@ -34,7 +34,7 @@
 
 <p>The numbers above include all spending, including in the primaries, so it's not necessarily easy to impute party affiliation from these. Some of the ads targeting Republicans in the primary, for instance, were run by other GOP groups.</p>
     
-<div class="overviewBar withNav withTip">
+<div class="overviewBar withNav withTip" id="type">
     <h4>Spending group type</h4>
 </div>
 <div class="numeric_summary">
@@ -45,7 +45,7 @@
 </div>
 <p>Super PACs include "hybrid super PACs" and are not subject to contribution limits; Party committees include all party committees, not just the four major ones. Non-committees are groups--typically 501(c)4s--that haven't registered as political groups with the FEC and aren't required to report their donors, but do report their independent expenditures. Other PACs include traditional PACs which are subject to contribution limits.</p>
 
-<div class="overviewBar withNav withTip">
+<div class="overviewBar withNav withTip" id="alignment">
     <h4>By spending committee's political alignment</h4>
 </div>
 <div class="numeric_summary">
@@ -54,7 +54,7 @@
 </div>
 <p>The committees making independent expenditures are not required to declare their political affiliation; reporters at Sunlight have classified them based on their spending patterns. Approximately ${{ sums.no_affil|intcomma }} in spending is not characterized as either leaning left or right.</p>
 
-<div class="overviewBar withNav withTip">
+<div class="overviewBar withNav withTip" id="office">
     <h4>House or Senate</h4>
 </div>
 <div class="numeric_summary">
