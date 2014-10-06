@@ -68,7 +68,7 @@ class Command(BaseCommand):
         c = Context({"update_time": update_time, "sums": summary_obj})
         this_template = get_template('generated_pages/overview_outside_money.html')
         result = this_template.render(c)
-        template_path = PROJECT_ROOT + "/../templates/generated_pages/overview_outside_money_include.html"
+        template_path = PROJECT_ROOT + "/templates/generated_pages/overview_outside_money_include.html"
         output = open(template_path, 'w')
         output.write(result)
         output.close()
