@@ -1,0 +1,60 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div class="module RT clearfix">
+       <h3>Independent Expenditures, 2013/14 Cycle</h3>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
+       <p>Total independent expenditures: <b>${{ sums.ie_sum|intcomma }}</b>.       
+
+<div class="overviewBar withNav withTip">
+    <h4>Positive vs Negative </h4>
+</div>
+<h4>Overall</h4>
+<div class="numeric_summary">
+<span class="amount_description">Supporting a candidate:</span>&nbsp;<span class="amount_dollars">${{ sums.positive|intcomma }}</span>
+<br><span class="amount_description">Opposing a candidate:</span>&nbsp;<span class="amount_dollars">${{ sums.negative|intcomma }}</span>
+</div>
+<p>Independent expenditures can either support or oppose a candidate.</p>
+
+<h4>By targeted candidate's political party</h4>
+<div class="numeric_summary">
+<span class="amount_description">Supports a Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.pro_rep|intcomma }}</span>
+<br><span class="amount_description">Supports a Democrat:</span>&nbsp;<span class="amount_dollars">${{ sums.pro_dem|intcomma }}</span>
+<br><span class="amount_description">Opposes a Democrat:</span>&nbsp;<span class="amount_dollars">${{ sums.anti_dem|intcomma }}</span>
+<br><span class="amount_description">Opposes a Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.anti_rep|intcomma }}</span>
+</div>
+<p>Independent expenditures can either support or oppose a candidate.</p>
+
+<div class="overviewBar withNav withTip">
+    <h4>Expenditor type</h4>
+</div>
+<div class="numeric_summary">
+<span class="amount_description">Super PACs:</span>&nbsp;<span class="amount_dollars">${{ sums.super_pacs|intcomma }}</span>
+<br><span class="amount_description">Party Committees:</span>&nbsp;<span class="amount_dollars">${{ sums.party_committees|intcomma }}</span>
+<br><span class="amount_description">Non-committees:</span>&nbsp;<span class="amount_dollars">${{ sums.non_committees|intcomma }}</span>
+<br><span class="amount_description">Other PACs:</span>&nbsp;<span class="amount_dollars">${{ sums.oth_committees|intcomma }}</span>
+</div>
+<p>Independent expenditures can either support or oppose a candidate.</p>
+
+<div class="overviewBar withNav withTip">
+    <h4>By spending committee's political alignment</h4>
+</div>
+<div class="numeric_summary">
+<span class="amount_description">Leans Democratic:</span>&nbsp;<span class="amount_dollars">${{ sums.dem_affil|intcomma }}</span>
+<br><span class="amount_description">Leans Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.rep_affil|intcomma }}</span>
+</div>
+<p>Independent expenditures can either support or oppose a candidate.</p>
+
+<div class="overviewBar withNav withTip">
+    <h4>House or Senate</h4>
+</div>
+<div class="numeric_summary">
+<span class="amount_description">Senate:</span>&nbsp;<span class="amount_dollars">${{ sums.senate|intcomma }}</span>
+<br><span class="amount_description">House:</span>&nbsp;<span class="amount_dollars">${{ sums.house|intcomma }}</span>
+</div>
+<p>Independent expenditures can either support or oppose a candidate.</p>
+
+
+
+
+</div>

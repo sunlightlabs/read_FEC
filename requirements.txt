@@ -46,10 +46,8 @@ south
 jellyfish
 nameparser
 
-# locksmith client keys branch
-#-e git+https://github.com/sunlightlabs/django-locksmith.git@client-keys#egg=locksmith
+# locksmith client keys branch; pull with : pip install -U 
 
 -e git+https://github.com/jsfenfen/django-locksmith.git@client-keys#egg=locksmith
-
 SimpleAES==1.0
 

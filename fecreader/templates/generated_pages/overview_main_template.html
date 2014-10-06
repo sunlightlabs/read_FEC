@@ -1,0 +1,13 @@
+{% extends "datapages/realtime_generated_base.html" %}
+{% load staticfiles %}
+
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+{% endblock sitecss %}
+
+{% block pagetitle %}2013-14 Cycle Overview {% endblock pagetitle %}
+
+{% block rtmain_generated %}
+{% include "generated_pages/overview_main_include.html" %}
+{% endblock %}

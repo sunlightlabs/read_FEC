@@ -1,0 +1,9 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div class="module RT clearfix">
+       <h3>Outside Spending</h3>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
+       <p>Total independent expenditures: ${{ sums.ie_sum|intcomma }}
+       
+</div>
