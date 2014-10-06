@@ -61,8 +61,9 @@ class Command(BaseCommand):
         print "outside spending parties"
         # breakdown by parties 
         summary_obj['dem_affil'] = all_outside_spenders.filter(political_orientation='D').aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
-        
         summary_obj['rep_affil'] = all_outside_spenders.filter(political_orientation='R').aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
+        summary_obj['no_affil'] = all_outside_spenders.exclude(political_orientation__in=('R', 'D')).aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
+        
         
         update_time = datetime.now()
         c = Context({"update_time": update_time, "sums": summary_obj})

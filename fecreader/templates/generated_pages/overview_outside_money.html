@@ -4,57 +4,62 @@
 <div class="module RT clearfix">
        <h3>Independent Expenditures, 2013/14 Cycle</h3>
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
-       <p>Total independent expenditures: <b>${{ sums.ie_sum|intcomma }}</b>.       
+       
+        <div style="clear:both;">
+              
+        <p class="tip">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}.
+       <div class="numeric_summary">
+           <span class="amount_description">Total Independent Expenditures:</span>&nbsp;<span class="amount_dollars">${{ sums.ie_sum|intword }}</span>
+        </div>
+        <p>The numbers on this page refer to <a href="http://www.fec.gov/pages/brochures/indexp.shtml">"independent expenditures"</a>, the most important class of spending by which outside groups and party committees get involved in federal elections. Most of the money comes from groups that aren't subject to contribution limits, and some do not report their donors at all. By law, these groups cannot "coordinate" with the candidate they are supporting or opposing, though those rules have been criticized as ineffectual.</p>
+    </div>
 
 <div class="overviewBar withNav withTip">
     <h4>Positive vs Negative </h4>
 </div>
 <h4>Overall</h4>
 <div class="numeric_summary">
-<span class="amount_description">Supporting a candidate:</span>&nbsp;<span class="amount_dollars">${{ sums.positive|intcomma }}</span>
-<br><span class="amount_description">Opposing a candidate:</span>&nbsp;<span class="amount_dollars">${{ sums.negative|intcomma }}</span>
+<span class="amount_description">Supporting a candidate:</span>&nbsp;<span class="amount_dollars">${{ sums.positive|intword }}</span>
+<br><span class="amount_description">Opposing a candidate:</span>&nbsp;<span class="amount_dollars">${{ sums.negative|intword }}</span>
 </div>
-<p>Independent expenditures can either support or oppose a candidate.</p>
+<p>Groups making independent expenditures must indicate whether the action either supports or opposes the candidates; there's no option to say that a single communication does both. Some groups, however, seem to report a single ad buy in two parts. The determination of whether a communication is positive or negative is solely up to the submitting group and is not audited.</p>
 
 <h4>By targeted candidate's political party</h4>
 <div class="numeric_summary">
-<span class="amount_description">Supports a Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.pro_rep|intcomma }}</span>
-<br><span class="amount_description">Supports a Democrat:</span>&nbsp;<span class="amount_dollars">${{ sums.pro_dem|intcomma }}</span>
-<br><span class="amount_description">Opposes a Democrat:</span>&nbsp;<span class="amount_dollars">${{ sums.anti_dem|intcomma }}</span>
-<br><span class="amount_description">Opposes a Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.anti_rep|intcomma }}</span>
+<span class="amount_description">Supports a Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.pro_rep|intword }}</span>
+<br><span class="amount_description">Supports a Democrat:</span>&nbsp;<span class="amount_dollars">${{ sums.pro_dem|intword }}</span>
+<br><span class="amount_description">Opposes a Democrat:</span>&nbsp;<span class="amount_dollars">${{ sums.anti_dem|intword }}</span>
+<br><span class="amount_description">Opposes a Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.anti_rep|intword }}</span>
 </div>
-<p>Independent expenditures can either support or oppose a candidate.</p>
 
 <div class="overviewBar withNav withTip">
-    <h4>Expenditor type</h4>
+    <h4>Spending group type</h4>
 </div>
 <div class="numeric_summary">
-<span class="amount_description">Super PACs:</span>&nbsp;<span class="amount_dollars">${{ sums.super_pacs|intcomma }}</span>
-<br><span class="amount_description">Party Committees:</span>&nbsp;<span class="amount_dollars">${{ sums.party_committees|intcomma }}</span>
-<br><span class="amount_description">Non-committees:</span>&nbsp;<span class="amount_dollars">${{ sums.non_committees|intcomma }}</span>
-<br><span class="amount_description">Other PACs:</span>&nbsp;<span class="amount_dollars">${{ sums.oth_committees|intcomma }}</span>
+<span class="amount_description">Super PACs:</span>&nbsp;<span class="amount_dollars">${{ sums.super_pacs|intword }}</span>
+<br><span class="amount_description">Party Committees:</span>&nbsp;<span class="amount_dollars">${{ sums.party_committees|intword }}</span>
+<br><span class="amount_description">Non-committees:</span>&nbsp;<span class="amount_dollars">${{ sums.non_committees|intword }}</span>
+<br><span class="amount_description">Other PACs:</span>&nbsp;<span class="amount_dollars">${{ sums.oth_committees|intword }}</span>
 </div>
-<p>Independent expenditures can either support or oppose a candidate.</p>
+<p>Super PACs include "hybrid super PACs"; Party committees include all party committees, not just the four major ones. Non-committees are groups--typically 501(c)4s--that haven't registered as political groups with the FEC, but do report their independent expenditures. Other PACs include traditional PACs which are subject to contribution limits.</p>
 
 <div class="overviewBar withNav withTip">
     <h4>By spending committee's political alignment</h4>
 </div>
 <div class="numeric_summary">
-<span class="amount_description">Leans Democratic:</span>&nbsp;<span class="amount_dollars">${{ sums.dem_affil|intcomma }}</span>
-<br><span class="amount_description">Leans Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.rep_affil|intcomma }}</span>
+<span class="amount_description">Leans Democratic:</span>&nbsp;<span class="amount_dollars">${{ sums.dem_affil|intword }}</span>
+<br><span class="amount_description">Leans Republican:</span>&nbsp;<span class="amount_dollars">${{ sums.rep_affil|intword }}</span>
 </div>
-<p>Independent expenditures can either support or oppose a candidate.</p>
+<p>The committees making independent expenditures are not required to declare their political affiliation; reporters at Sunlight have classified them based on their spending patterns. Approximately ${{ sums.rep_affil|intcomma }} in spending is not characterized as either leaning left or right.</p>
 
 <div class="overviewBar withNav withTip">
     <h4>House or Senate</h4>
 </div>
 <div class="numeric_summary">
-<span class="amount_description">Senate:</span>&nbsp;<span class="amount_dollars">${{ sums.senate|intcomma }}</span>
-<br><span class="amount_description">House:</span>&nbsp;<span class="amount_dollars">${{ sums.house|intcomma }}</span>
+<span class="amount_description">Senate:</span>&nbsp;<span class="amount_dollars">${{ sums.senate|intword }}</span>
+<br><span class="amount_description">House:</span>&nbsp;<span class="amount_dollars">${{ sums.house|intword }}</span>
 </div>
-<p>Independent expenditures can either support or oppose a candidate.</p>
-
-
+<p></p>
 
 
 </div>
