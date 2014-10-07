@@ -116,7 +116,7 @@ class form_parser(object):
             '^F3X[A|N|T]': f3x,
             '^F3P[A|N|T]': f3p,
             '^F3L[A|N]':f3l,
-            '^F4[A|N]': f4,
+            '^F4[A|N|T]': f4,
             '^F3PS':f3ps,
             '^F3S': f3s,
             '^F3[A|N|T]$': f3,
