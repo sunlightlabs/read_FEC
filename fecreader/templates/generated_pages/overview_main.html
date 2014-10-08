@@ -42,13 +42,13 @@
 
     <tbody>
         {% for group in inside_money %}
-        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>${{group.tot_ope_exp|intword}} </td><td>${{group.oth_com_con|intword}}</td><td>${{group.outside_spending|intword}}</td></tr>
+        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>${{group.tot_ope_exp|intword}} </td><td>${{group.oth_com_con|intword}}</td><td>${% if group.outside_spending %}{{group.outside_spending|intword}}{% else %}0{% endif %}</td></tr>
         {% endfor %}
     <tbody>
 <table>
 
 <p id="methodology">
 All the numbers on this page&mdash;with the exception of independent expenditures&mdash;are calculated solely from the amounts reported on monthly or quarterly reports and published by the FEC's <a href="http://www.fec.gov/data/CampaignAndCommitteeSummary.do">Committee Report Summary</a>. As a result, <em>there is no precise end date</em> that describes the period this data covers. In other words, this data includes monthly reports as they are received, even if quarterly filers have yet to file. </p> 
-</p>    
+<p>The "Group Type" is determined solely on the basis of the "committee type" of each group. House committees include all committees that self-identify as such, whether or not they are authorized or not, or whether or not their authorizing member is currently up for reelection. "Super PACs" in the above include "hybrid Super PACs".</p>
     
 </div>
