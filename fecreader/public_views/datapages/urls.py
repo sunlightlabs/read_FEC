@@ -33,6 +33,7 @@ urlpatterns = patterns('',
         url(r'^top-races\/week\/(\d+)\/$','public_views.datapages.views.top_races'),
         url(r'^top-races\/$','public_views.datapages.views.top_current_races'),
         url(r'^election-calendar\/$','public_views.datapages.views.election_calendar'),
+        url(r'^overview\/super-pacs\/$', TemplateView.as_view(template_name='generated_pages/overview_superpac_template.html')),
         url(r'^overview\/outside-money\/$', TemplateView.as_view(template_name='generated_pages/overview_outside_money_template.html')),
         url(r'^overview\/$', TemplateView.as_view(template_name='generated_pages/overview_main_template.html')),
 

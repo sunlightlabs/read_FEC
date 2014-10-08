@@ -115,3 +115,31 @@ class Command(BaseCommand):
         output.write(result)
         output.close()
         
+        # now superpacs
+        
+        sp_summary_types = [
+            {'name':'Super PACs', 'code':'UO'},
+            {'name':'Hybrid Super PACs', 'code':'VW'},
+            {'name': 'All Super PACs', 'code':'UOVW'}
+        ]
+        all_superpacs = Committee_Overlay.objects.filter(ctype__in=['U', 'O', 'V', 'W'])
+        
+        for s in sp_summary_types:
+            code_list = [i for i in s['code']]
+            print code_list
+            sums = all_superpacs.filter(ctype__in=code_list).aggregate(tot_ie=Sum('total_indy_expenditures'), tot_rec=Sum('total_receipts'), coh=Sum('cash_on_hand'))
+            s['tot_ie'] = sums['tot_ie']
+            s['tot_rec'] = sums['tot_rec']
+            s['coh'] = sums['coh']
+        
+        
+        top_superpacs = all_superpacs.order_by('-total_indy_expenditures')[:50]
+        
+        c = Context({"update_time": update_time, "sums": sp_summary_types, "top_superpacs": top_superpacs})
+        this_template = get_template('generated_pages/overview_superpac.html')
+        result = this_template.render(c)
+        template_path = PROJECT_ROOT + "/templates/generated_pages/overview_superpac_include.html"
+        output = open(template_path, 'w')
+        output.write(result)
+        output.close()
+        

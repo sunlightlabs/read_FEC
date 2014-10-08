@@ -28,8 +28,8 @@
         {% for group in inside_money %}
         <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>${{group.oth_com_con|intword}}</td><td>${{group.ind_ite_con|intword}}</td><td>${{group.ind_uni_con|intword}}</td></tr>
         {% endfor %}
-    <tbody>
-<table>
+    </tbody>
+</table>
 
 
 <div class="overviewBar withNav withTip" id="positive">
@@ -46,8 +46,8 @@
         {% for group in inside_money %}
         <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>${{group.tot_ope_exp|intword}} </td><td>${{group.oth_com_con|intword}}</td><td>${% if group.outside_spending %}{{group.outside_spending|intword}}{% else %}0{% endif %}</td></tr>
         {% endfor %}
-    <tbody>
-<table>
+    </tbody>
+</table>
 
 <p id="methodology">
 All the numbers on this page&mdash;with the exception of independent expenditures&mdash;are calculated solely from the amounts reported on monthly or quarterly reports and published by the FEC's <a href="http://www.fec.gov/data/CampaignAndCommitteeSummary.do">Committee Report Summary</a>. As a result, <em>there is no precise end date</em> that describes the period this data covers. In other words, this data includes monthly reports as they are received, even if quarterly filers have yet to file. </p> 
