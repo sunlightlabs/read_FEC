@@ -46,7 +46,7 @@
     
     <tbody>
         {% for superpac in top_superpacs %}
-        <tr class="{% cycle 'even' 'odd'%}"><td><a href="{{superpac.get_absolute_url}}">{{ superpac.name }}</a></td><td>${{superpac.tot_indy_expenditures|intcomma}}</td><td>{{superpac.major_activity }}</td><td>${{ superpac.display_coh |intcomma}}</td><td>{{ superpac.display_coh_date }}</td></tr>
+        <tr class="{% cycle 'even' 'odd'%}"><td><a href="{{superpac.get_absolute_url}}">{{ superpac.name }}</a><br>( {{superpac.display_type}} )</td><td>${{superpac.total_indy_expenditures|intcomma}}</td><td>{{superpac.major_activity }}</td><td>${{ superpac.display_coh |intcomma}}</td><td>{{ superpac.display_coh_date }}</td></tr>
         {% endfor %}
     </tbody>
 </table>
