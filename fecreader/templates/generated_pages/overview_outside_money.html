@@ -6,9 +6,10 @@
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
        
         <div style="clear:both;">
-              
+        {% include "includes/overview_nav.html" %}
+        
+             
         <p class="tip">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}.
-        <p>Jump to <a href="#positive">Positive vs. Negative</a>&nbsp;|&nbsp;<a href="#type">Committee Type</a>&nbsp;|&nbsp;<a href="#alignment">Political Alignment</a>&nbsp;|&nbsp;<a href="#office">Candidate Office</a></p>
            <div class="numeric_summary">
            <span class="amount_description">Total Independent Expenditures:</span>&nbsp;<span class="amount_dollars">${{ sums.ie_sum|intword }}</span>
            </div>

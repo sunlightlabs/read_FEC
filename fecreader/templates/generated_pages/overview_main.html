@@ -7,10 +7,12 @@
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
        
         <div style="clear:both;">
-              
-        <p class="tip">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}. For more about how these numbers were calculated, see <a href="#methodology">the methodology</a> below.</p>
-        <p>Jump to <a href="#spending">Spending</a>&nbsp;|&nbsp;<a href="#methodology">Methodology</a>; &nbsp;See a more detailed breakdown of <a href="/overview/outside-money/">outside spending</a></p>
-         </div>  
+        </div>
+    
+        {% include "includes/overview_nav.html" %}
+        
+    
+        <p class="tip" style="margin:0px; padding:5px;">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}. For more about how these numbers were calculated, see <a href="#methodology">the methodology</a> below.</p>
 
 <div class="overviewBar withNav withTip" id="positive">
     <h4>Fundraising by committee type</h4>
