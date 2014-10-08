@@ -1,0 +1,14 @@
+{% extends "datapages/realtime_generated_base.html" %}
+{% load staticfiles %}
+
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+{% endblock sitecss %}
+
+{% block pagetitle %}2013-14 Super PAC Overview {% endblock pagetitle %}
+
+
+{% block rtmain_generated %}
+{% include "generated_pages/overview_superpac_include.html" %}
+{% endblock %}

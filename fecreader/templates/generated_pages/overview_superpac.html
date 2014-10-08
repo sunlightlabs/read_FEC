@@ -1,0 +1,54 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div class="module RT clearfix">
+
+      <h3>Top Super PACs by Independent Expenditures, 2013/14 Cycle</h3>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
+       
+        <div style="clear:both;">
+        </div>
+    
+        {% include "includes/overview_nav.html" %}
+        
+    
+        <p class="tip" style="margin:0px; padding:5px;">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}. 
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Super PAC Totals</h4>
+</div>
+
+<table id="mainPageTable" style="width: 800px;">
+    
+    <thead><th>Group type</th><th>Total Receipts</th><th>Total Independent Expenditures</th><th>Cash on Hand</th></thead>
+    
+    <tbody>
+        {% for group in sums %}
+        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>${{group.tot_ie|intword}}</td><td>${{group.coh|intword}}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Top Super PACs, by Independent expenditures</h4>
+</div>
+<p class="tip">This is just a listing of the top 50 Super PACs by independent expenditures. For a more complete list that's sortable, filterable and downloadable, see <a href="/pacs/#?ordering=-total_disbursements&committee_class=UOVW">here</a>.
+
+<table id="mainPageTable" style="width: 800px;">
+    
+    <thead><th>Committee Name</th>
+    <th>Total outside spending</th>
+    <th>Major Activity</th>
+    <th>Cash on hand (if reported)</th>
+    <th>Cash on hand date</th>
+    </tr></thead>
+    
+    <tbody>
+        {% for superpac in top_superpacs %}
+        <tr class="{% cycle 'even' 'odd'%}"><td><a href="{{superpac.get_absolute_url}}">{{ superpac.name }}</a></td><td>${{superpac.tot_indy_expenditures|intcomma}}</td><td>{{superpac.major_activity }}</td><td>${{ superpac.display_coh |intcomma}}</td><td>{{ superpac.display_coh_date }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
