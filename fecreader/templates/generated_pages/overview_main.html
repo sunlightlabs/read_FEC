@@ -2,8 +2,53 @@
 {% load staticfiles %}
 
 <div class="module RT clearfix">
-       <h3>Outside Spending</h3>
+
+      <h3>Cycle Overview, 2013/14 Cycle</h3>
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
-       <p>Total independent expenditures: ${{ sums.ie_sum|intcomma }}
        
+        <div style="clear:both;">
+              
+        <p class="tip">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}. For more about how these numbers were calculated, see <a href="#methodology">the methodology</a> below.</p>
+        <p>Jump to <a href="#spending">Spending</a>&nbsp;|&nbsp;<a href="#methodology">Methodology</a>; &nbsp;See a more detailed breakdown of <a href="/overview/outside-money/">outside spending</a></p>
+         </div>  
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Fundraising by committee type</h4>
+</div>
+
+
+
+<table id="mainPageTable" style="width: 800px;">
+    
+    <thead><th>Group type</th><th>Total Receipts</th><th>Contributions from other committees</th><th>Itemized individual contributions ($200+)</th><th>Unitemized individual contributions (&lt;$200)</th></thead>
+    
+    <tbody>
+        {% for group in inside_money %}
+        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>${{group.oth_com_con|intword}}</td><td>${{group.ind_ite_con|intword}}</td><td>${{group.ind_uni_con|intword}}</td></tr>
+        {% endfor %}
+    <tbody>
+<table>
+
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Spending by committee type</h4>
+</div>
+
+
+
+<table id="mainPageTable" style="width: 800px;">
+
+    <thead id="spending"><th>Group type</th><th>Total Disbursements</th><th>Operating Expenditures</th><th>Contributions to candidates or committees</th><th>Independent Expenditures</th></thead>
+
+    <tbody>
+        {% for group in inside_money %}
+        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>${{group.tot_ope_exp|intword}} </td><td>${{group.oth_com_con|intword}}</td><td>${{group.outside_spending|intword}}</td></tr>
+        {% endfor %}
+    <tbody>
+<table>
+
+<p id="methodology">
+All the numbers on this page&mdash;with the exception of independent expenditures&mdash;are calculated solely from the amounts reported on monthly or quarterly reports and published by the FEC's <a href="http://www.fec.gov/data/CampaignAndCommitteeSummary.do">Committee Report Summary</a>. As a result, <em>there is no precise end date</em> that describes the period this data covers. In other words, this data includes monthly reports as they are received, even if quarterly filers have yet to file. </p> 
+</p>    
+    
 </div>

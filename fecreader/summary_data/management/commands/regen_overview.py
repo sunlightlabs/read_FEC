@@ -10,6 +10,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from formdata.models import SkedE
 from summary_data.models import Committee_Overlay
+from fec_alerts.models import WebK
 
 PROJECT_ROOT = settings.PROJECT_ROOT
 
@@ -22,6 +23,8 @@ class Command(BaseCommand):
     
     
     def handle(self, *args, **options):
+        
+        update_time = datetime.now()
         
         print "summaries"
         summary_obj = {}
@@ -56,6 +59,9 @@ class Command(BaseCommand):
         # non-committees:
         summary_obj['non_committees'] = all_outside_spenders.filter(ctype__in=('I')).aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
         summary_obj['oth_committees'] = all_outside_spenders.filter(ctype__in=('N', 'Q')).aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
+        summary_obj['house_committees'] = all_outside_spenders.filter(ctype__in=('H')).aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
+        summary_obj['senate_committees'] = all_outside_spenders.filter(ctype__in=('S')).aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
+        
         
         
         print "outside spending parties"
@@ -64,8 +70,8 @@ class Command(BaseCommand):
         summary_obj['rep_affil'] = all_outside_spenders.filter(political_orientation='R').aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
         summary_obj['no_affil'] = all_outside_spenders.exclude(political_orientation__in=('R', 'D')).aggregate(total_expenditures=Sum('total_indy_expenditures'))['total_expenditures']
         
-        
-        update_time = datetime.now()
+        ## write the outside spending overview
+                
         c = Context({"update_time": update_time, "sums": summary_obj})
         this_template = get_template('generated_pages/overview_outside_money.html')
         result = this_template.render(c)
@@ -73,3 +79,39 @@ class Command(BaseCommand):
         output = open(template_path, 'w')
         output.write(result)
         output.close()
+        
+        ## deal with the inside spending
+        
+        # assumes fake committees have been removed
+        all_webk = WebK.objects.filter(cycle='2014')
+        summary_types = [
+            {'name':'Super PACs', 'code':'UOVW', 'outside_spending': summary_obj['super_pacs']},
+            {'name':'Party Committees', 'code':'XYZ', 'outside_spending': summary_obj['party_committees']},
+            {'name':'House Candidate Committees', 'code':'H', 'outside_spending': summary_obj['house_committees']},
+            {'name':'Senate Candidate Committees', 'code':'S', 'outside_spending': summary_obj['senate_committees']},
+            {'name':'Non-connected PACs', 'code':'NQ', 'outside_spending': summary_obj['oth_committees']}
+        ]
+        for s in summary_types:
+            code_list = [i for i in s['code']]
+            sums = all_webk.filter(com_typ__in=code_list).aggregate(tot_rec=Sum('tot_rec'), tot_dis=Sum('tot_dis'), par_com_con=Sum('par_com_con'), oth_com_con=Sum('oth_com_con'), ind_ite_con=Sum('ind_ite_con'), ind_uni_con=Sum('ind_uni_con'), fed_can_com_con=Sum('fed_can_com_con'), tot_ope_exp=Sum('tot_ope_exp'), ope_exp=Sum('ope_exp'))
+            s['tot_dis'] = sums['tot_dis']
+            s['tot_rec'] = sums['tot_rec']
+            s['oth_com_con'] = sums['oth_com_con'] + sums['par_com_con']
+            s['ind_ite_con']= sums['ind_ite_con']
+            s['ind_uni_con'] = sums['ind_uni_con']
+            s['fed_can_com_con'] = sums['fed_can_com_con']
+            
+            # operating expenses are recorded differently for candidate pacs
+            if s['code'] in ['H', 'S']:
+                s['tot_ope_exp'] = sums['ope_exp']
+            else:
+                s['tot_ope_exp'] = sums['tot_ope_exp']
+        
+        c = Context({"update_time": update_time, "sums": summary_obj, "inside_money": summary_types})
+        this_template = get_template('generated_pages/overview_main.html')
+        result = this_template.render(c)
+        template_path = PROJECT_ROOT + "/templates/generated_pages/overview_main_include.html"
+        output = open(template_path, 'w')
+        output.write(result)
+        output.close()
+        
