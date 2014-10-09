@@ -241,7 +241,8 @@ def make_committee_from_f1filer(committee_id, cycle='2014'):
             city = nc.cmte_city,
             zip_code = nc.cmte_zip,
             state = nc.cmte_st,
-            filing_frequency = nc.filing_freq
+            filing_frequency = nc.filing_freq,
+            treasurer = nc.tres_nm
             
             
         )
