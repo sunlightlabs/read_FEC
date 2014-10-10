@@ -31,21 +31,45 @@ def make_header(start_week_number, end_week_number):
 ## some queries to help define sets
 all_ies = SkedE.objects.filter(superceded_by_amendment=False)
 
+all_outside_groups = Committee_Overlay.objects.filter(total_indy_expenditures__gt=0)
+dem_id_list = [i.fec_id for i in all_outside_groups.filter(political_orientation='D')]
+rep_id_list = [i.fec_id for i in all_outside_groups.filter(political_orientation='R')]
+
+
 noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'], total_indy_expenditures__gt=0)
 noncommittee_id_list = [i.fec_id for i in noncommittees]
+dem_noncommittee_id_list = [i.fec_id for i in noncommittees.filter(political_orientation='D')]
+rep_noncommittee_id_list = [i.fec_id for i in noncommittees.filter(political_orientation='R')]
+
 
 superpacs = Committee_Overlay.objects.filter(ctype__in=['U', 'O'], total_indy_expenditures__gt=0)
 superpac_id_list = [i.fec_id for i in superpacs]
+dem_superpac_id_list = [i.fec_id for i in superpacs.filter(political_orientation='D')]
+rep_superpac_id_list = [i.fec_id for i in superpacs.filter(political_orientation='R')]
 
 party_committees = Committee_Overlay.objects.filter(ctype__in=['X', 'Y', 'Z'], total_indy_expenditures__gt=0)
 party_committee_id_list = [i.fec_id for i in party_committees]
-
+dem_party_committee_id_list = [i.fec_id for i in party_committees.filter(political_orientation='D')]
+rep_party_committee_id_list = [i.fec_id for i in party_committees.filter(political_orientation='R')]
 
 data_series = [
     {'data_id':1,'data_series_name':'All Independent Expenditures', 'q':all_ies},
     {'data_id':2,'data_series_name':'Dark Money', 'q':all_ies.filter(filer_committee_id_number__in=noncommittee_id_list)},
     {'data_id':3,'data_series_name':'Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=superpac_id_list)},
     {'data_id':4,'data_series_name':'Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=party_committee_id_list)},
+    
+    {'data_id':5,'data_series_name':'All Democratic Independent Expenditures', 'q':all_ies.filter(filer_committee_id_number__in=dem_id_list)},
+    {'data_id':6,'data_series_name':'All Republican Independent Expenditures', 'q':all_ies.filter(filer_committee_id_number__in=rep_id_list)},
+    
+    {'data_id':7,'data_series_name':'Democratic Dark Money', 'q':all_ies.filter(filer_committee_id_number__in=dem_noncommittee_id_list)},
+    {'data_id':8,'data_series_name':'Republican Dark Money', 'q':all_ies.filter(filer_committee_id_number__in=rep_noncommittee_id_list)},
+    
+    {'data_id':9,'data_series_name':'Republican Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=dem_superpac_id_list)},
+    {'data_id':10,'data_series_name':'Democratic Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=rep_superpac_id_list)},
+
+    {'data_id':11,'data_series_name':'Republican Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=dem_party_committee_id_list)},
+    {'data_id':12,'data_series_name':'Democratic Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=rep_party_committee_id_list)},
+
 ]
 
 class Command(BaseCommand):
