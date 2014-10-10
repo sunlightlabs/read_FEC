@@ -1,3 +1,5 @@
+## godawful mess to redo some static pages. Best if this process doesn't live too long. 
+
 from datetime import datetime, date
 
 from django.template import Template
@@ -126,7 +128,6 @@ class Command(BaseCommand):
         
         for s in sp_summary_types:
             code_list = [i for i in s['code']]
-            print code_list
             sums = all_superpacs.filter(ctype__in=code_list).aggregate(tot_ie=Sum('total_indy_expenditures'), tot_rec=Sum('total_receipts'), coh=Sum('cash_on_hand'))
             s['tot_ie'] = sums['tot_ie']
             s['tot_rec'] = sums['tot_rec']
@@ -142,4 +143,24 @@ class Command(BaseCommand):
         output = open(template_path, 'w')
         output.write(result)
         output.close()
+        
+        print "Regenerating dark money pages"
+        # now dark money groups
+        all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'])
+        
+        
+        sums = all_noncommittees.aggregate(tot_ie=Sum('total_indy_expenditures'))
+        #s['tot_ie'] = sums['tot_ie']
+        print "dm sums: %s" % sums
+
+        top_noncommittees = all_noncommittees.order_by('-total_indy_expenditures')[:50]
+        
+        c = Context({"update_time": update_time, "sums": sums, "top_darkmoneyers": top_noncommittees})
+        this_template = get_template('generated_pages/overview_dark_money.html')
+        result = this_template.render(c)
+        template_path = PROJECT_ROOT + "/templates/generated_pages/overview_dark_money_include.html"
+        output = open(template_path, 'w')
+        output.write(result)
+        output.close()
+
         

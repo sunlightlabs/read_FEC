@@ -1,0 +1,45 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div class="module RT clearfix">
+
+      <h3>Top Dark Money groups by Independent Expenditures, 2013/14 Cycle</h3>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
+       
+        <div style="clear:both;">
+        </div>
+    
+        {% include "includes/overview_nav.html" %}
+        
+    
+        <p class="tip" style="margin:0px; padding:5px;">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}. 
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Dark Money Totals</h4>
+</div>
+
+<div class="numeric_summary">
+   <span class="amount_description">All Independent Expenditures:</span>&nbsp;<span class="amount_dollars">${{ sums.tot_ie|intword }}</span>
+   </div>
+<p>Dark money groups are entities&mdash;typically 501(c)(4)s, but sometimes corporations, LLC's or individuals&mdash;that haven't registered as political groups with the FEC because they do not consider politics to be their "primary purpose". As such, these groups aren't required to report their donors, but do report their independent expenditures. These groups, it should be noted, are not required to report "issue ads" they run supporting or criticizing candidates more than 60 days before a general election or 30 days before a general election if the ads are not considered "<a href="http://www.gpo.gov/fdsys/pkg/CFR-2014-title11-vol1/xml/CFR-2014-title11-vol1-sec100-22.xml">express advocacy</a>".</p>
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Top Dark Money groups, by Independent expenditures</h4>
+</div>
+<p class="tip">This is just a listing of the top 50 Dark Money groups by independent expenditures. For a more complete list that's sortable, filterable and downloadable, see <a href="/pacs/#?ordering=-total_disbursements&committee_class=I">here</a>.
+
+<table id="mainPageTable" style="width: 800px;">
+    
+    <thead><th>Committee Name</th>
+    <th>Total outside spending</th>
+    <th>Major Activity</th>
+    </tr></thead>
+    
+    <tbody>
+        {% for dm in top_darkmoneyers %}
+        <tr class="{% cycle 'even' 'odd'%}"><td><a href="{{dm.get_absolute_url}}">{{ dm.name }}</a></td><td>${{dm.total_indy_expenditures|intcomma}}</td><td>{{dm.major_activity }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+

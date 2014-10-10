@@ -1,0 +1,14 @@
+{% extends "datapages/realtime_generated_base.html" %}
+{% load staticfiles %}
+
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+{% endblock sitecss %}
+
+{% block pagetitle %}2013-14 Non-Committee Overview {% endblock pagetitle %}
+
+
+{% block rtmain_generated %}
+{% include "generated_pages/overview_dark_money_include.html" %}
+{% endblock %}
