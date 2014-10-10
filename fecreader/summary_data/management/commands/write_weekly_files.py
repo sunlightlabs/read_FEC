@@ -64,11 +64,11 @@ data_series = [
     {'data_id':7,'data_series_name':'Democratic Dark Money', 'q':all_ies.filter(filer_committee_id_number__in=dem_noncommittee_id_list)},
     {'data_id':8,'data_series_name':'Republican Dark Money', 'q':all_ies.filter(filer_committee_id_number__in=rep_noncommittee_id_list)},
     
-    {'data_id':9,'data_series_name':'Republican Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=dem_superpac_id_list)},
-    {'data_id':10,'data_series_name':'Democratic Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=rep_superpac_id_list)},
+    {'data_id':9,'data_series_name':'Democratic Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=dem_superpac_id_list)},
+    {'data_id':10,'data_series_name':'Republican Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=rep_superpac_id_list)},
 
-    {'data_id':11,'data_series_name':'Republican Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=dem_party_committee_id_list)},
-    {'data_id':12,'data_series_name':'Democratic Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=rep_party_committee_id_list)},
+    {'data_id':11,'data_series_name':'Republican Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=rep_party_committee_id_list)},
+    {'data_id':12,'data_series_name':'Democratic Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=dem_party_committee_id_list)},
 
     {'data_id':13,'data_series_name':'Democratic IE Senate', 'q':all_ies.filter(filer_committee_id_number__in=dem_id_list, candidate_office_checked='S')},
     {'data_id':14,'data_series_name':'Republican IE Senate', 'q':all_ies.filter(filer_committee_id_number__in=rep_id_list, candidate_office_checked='S')},
