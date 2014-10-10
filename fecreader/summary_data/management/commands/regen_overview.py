@@ -109,6 +109,14 @@ class Command(BaseCommand):
             else:
                 s['tot_ope_exp'] = sums['tot_ope_exp']
         
+        
+        ## reuse this stuff as is in noncommittees
+        all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'])        
+        sums = all_noncommittees.aggregate(tot_ie=Sum('total_indy_expenditures'))
+        ##
+        
+        summary_types.append({'name':'Dark Money', 'code':'I', 'outside_spending': sums['tot_ie'], 'tot_dis':0, 'tot_rec':0, 'oth_com_con':0, 'ind_ite_con':0, 'ind_uni_con':0, 'fed_can_com_con':0, 'tot_ope_exp':0})
+        
         c = Context({"update_time": update_time, "sums": summary_obj, "inside_money": summary_types})
         this_template = get_template('generated_pages/overview_main.html')
         result = this_template.render(c)
@@ -145,13 +153,8 @@ class Command(BaseCommand):
         output.close()
         
         print "Regenerating dark money pages"
-        # now dark money groups
-        all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'])
-        
-        
-        sums = all_noncommittees.aggregate(tot_ie=Sum('total_indy_expenditures'))
-        #s['tot_ie'] = sums['tot_ie']
-        print "dm sums: %s" % sums
+        # now dark money groups -- the sums were calculated previously 
+
 
         top_noncommittees = all_noncommittees.order_by('-total_indy_expenditures')[:50]
         
