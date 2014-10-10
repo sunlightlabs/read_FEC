@@ -31,6 +31,9 @@ def make_header(start_week_number, end_week_number):
 ## some queries to help define sets
 all_ies = SkedE.objects.filter(superceded_by_amendment=False)
 
+noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'], total_indy_expenditures__gt=0)
+noncommittee_id_list = [i.fec_id for i in noncommittees]
+
 superpacs = Committee_Overlay.objects.filter(ctype__in=['U', 'O'], total_indy_expenditures__gt=0)
 superpac_id_list = [i.fec_id for i in superpacs]
 
@@ -40,7 +43,7 @@ party_committee_id_list = [i.fec_id for i in party_committees]
 
 data_series = [
     {'data_id':1,'data_series_name':'All Independent Expenditures', 'q':all_ies},
-    {'data_id':2,'data_series_name':'Dark Money', 'q':all_ies.filter(filer_committee_id_number__startswith='C9')},
+    {'data_id':2,'data_series_name':'Dark Money', 'q':all_ies.filter(filer_committee_id_number__in=noncommittee_id_list)},
     {'data_id':3,'data_series_name':'Super PACs', 'q':all_ies.filter(filer_committee_id_number__in=superpac_id_list)},
     {'data_id':4,'data_series_name':'Party Committees', 'q':all_ies.filter(filer_committee_id_number__in=party_committee_id_list)},
 ]
