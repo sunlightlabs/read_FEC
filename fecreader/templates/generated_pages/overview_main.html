@@ -44,7 +44,7 @@
 
     <tbody>
         {% for group in inside_money %}
-        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_dis|intword}}</td><td>${{group.tot_ope_exp|intword}} </td><td>${{group.fed_can_com_con|intword}}</td><td>${% if group.outside_spending %}{{group.outside_spending|intword}}{% else %}0{% endif %}</td></tr>
+        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_dis|intword}}</td><td>${{group.tot_ope_exp|intword}} </td><td>${% if group.fed_can_com_con %}{{group.fed_can_com_con|intword}}{% else %}0{% endif %}</td><td>${% if group.outside_spending %}{{group.outside_spending|intword}}{% else %}0{% endif %}</td></tr>
         {% endfor %}
     </tbody>
 </table>
