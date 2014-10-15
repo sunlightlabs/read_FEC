@@ -118,6 +118,8 @@ class Command(BaseCommand):
         summary_types.append({'name':'Dark Money', 'code':'I', 'outside_spending': sums['tot_ie'], 'tot_dis':0, 'tot_rec':0, 'oth_com_con':0, 'ind_ite_con':0, 'ind_uni_con':0, 'fed_can_com_con':0, 'tot_ope_exp':0})
         
         print "overview main sums: %s" % summary_obj
+        print "overview inside money: %s" % summary_types
+
         c = Context({"update_time": update_time, "sums": summary_obj, "inside_money": summary_types})
         this_template = get_template('generated_pages/overview_main.html')
         result = this_template.render(c)
