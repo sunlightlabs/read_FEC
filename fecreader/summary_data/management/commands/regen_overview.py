@@ -114,9 +114,10 @@ class Command(BaseCommand):
         all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'])        
         sums = all_noncommittees.aggregate(tot_ie=Sum('total_indy_expenditures'))
         ##
-        
+        dark_money_total_ies = sums['tot_ie']
         summary_types.append({'name':'Dark Money', 'code':'I', 'outside_spending': sums['tot_ie'], 'tot_dis':0, 'tot_rec':0, 'oth_com_con':0, 'ind_ite_con':0, 'ind_uni_con':0, 'fed_can_com_con':0, 'tot_ope_exp':0})
         
+        print "overview main sums: %s" % summary_obj
         c = Context({"update_time": update_time, "sums": summary_obj, "inside_money": summary_types})
         this_template = get_template('generated_pages/overview_main.html')
         result = this_template.render(c)
@@ -158,7 +159,7 @@ class Command(BaseCommand):
 
         top_noncommittees = all_noncommittees.order_by('-total_indy_expenditures')[:50]
         
-        c = Context({"update_time": update_time, "sums": sums, "top_darkmoneyers": top_noncommittees})
+        c = Context({"update_time": update_time, "sums": dark_money_total_ies, "dark_money_total_ies": top_noncommittees})
         this_template = get_template('generated_pages/overview_dark_money.html')
         result = this_template.render(c)
         template_path = PROJECT_ROOT + "/templates/generated_pages/overview_dark_money_include.html"
