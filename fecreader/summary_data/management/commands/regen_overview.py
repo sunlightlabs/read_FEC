@@ -84,8 +84,8 @@ class Command(BaseCommand):
         
         ## deal with the inside spending
         
-        # assumes fake committees have been removed
-        all_webk = WebK.objects.filter(cycle='2014')
+        # assumes fake committees have been removed; disregard joint fundraisers which disburse their proceeds to their recipients
+        all_webk = WebK.objects.filter(cycle='2014').exclude(com_des='J')
         summary_types = [
             {'name':'Super PACs', 'code':'UOVW', 'outside_spending': summary_obj['super_pacs']},
             {'name':'Party Committees', 'code':'XYZ', 'outside_spending': summary_obj['party_committees']},
@@ -111,7 +111,7 @@ class Command(BaseCommand):
         
         
         ## reuse this stuff as is in noncommittees
-        all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'])        
+        all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I']).exclude(designation='J')       
         sums = all_noncommittees.aggregate(tot_ie=Sum('total_indy_expenditures'))
         ##
         dark_money_total_ies = sums['tot_ie']
@@ -135,7 +135,7 @@ class Command(BaseCommand):
             {'name':'Hybrid Super PACs', 'code':'VW'},
             {'name': 'All Super PACs', 'code':'UOVW'}
         ]
-        all_superpacs = Committee_Overlay.objects.filter(ctype__in=['U', 'O', 'V', 'W'])
+        all_superpacs = Committee_Overlay.objects.filter(ctype__in=['U', 'O', 'V', 'W']).exclude(designation='J')
         
         for s in sp_summary_types:
             code_list = [i for i in s['code']]
