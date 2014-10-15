@@ -37,6 +37,7 @@ urlpatterns = patterns('',
         url(r'^overview\/outside-money\/$', TemplateView.as_view(template_name='generated_pages/overview_outside_money_template.html')),
         url(r'^overview\/dark-money\/$', TemplateView.as_view(template_name='generated_pages/overview_dark_money_template.html')),
         url(r'^overview\/$', TemplateView.as_view(template_name='generated_pages/overview_main_template.html')),
+        url(r'^training\/$', TemplateView.as_view(template_name='datapages/training.html')),
 
 #        url(r'^race/(?P<cycle>\d\d\d\d)\/president\/', 'public_views.datapages.views.presidential_race'),
 
