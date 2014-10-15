@@ -161,7 +161,7 @@ class Command(BaseCommand):
 
         top_noncommittees = all_noncommittees.order_by('-total_indy_expenditures')[:50]
         
-        c = Context({"update_time": update_time, "sums": dark_money_total_ies, "dark_money_total_ies": top_noncommittees})
+        c = Context({"update_time": update_time, "dark_money_total_ies": dark_money_total_ies, "top_darkmoneyers": top_noncommittees})
         this_template = get_template('generated_pages/overview_dark_money.html')
         result = this_template.render(c)
         template_path = PROJECT_ROOT + "/templates/generated_pages/overview_dark_money_include.html"
