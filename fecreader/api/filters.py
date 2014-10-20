@@ -202,6 +202,9 @@ def periodTypeFilter(queryset, querydict):
             elif period_type == 'M12':
                 queryset = queryset.filter(Q(coverage_from_date=date(2013,12,1), coverage_to_date=date(2013,12,31))|Q(coverage_from_date=date(2014,12,1), coverage_to_date=date(2014,12,31)))
 
+        elif period_type == 'PRE':
+            queryset = queryset.filter(Q(coverage_from_date=date(2014,10,1), coverage_to_date=date(2014,10,15)))
+        
         elif period_type.startswith('S'):
 
             if period_type == 'S1':
