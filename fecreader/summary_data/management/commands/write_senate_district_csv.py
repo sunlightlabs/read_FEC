@@ -18,7 +18,7 @@ CHART_CSV_DOWNLOAD_DIR = settings.CHART_CSV_DOWNLOAD_DIR
 CSV_FILE_NAME = 'competitive_senate_seats_weekly.csv'
 
 
-data_start = date(2014,6,1)
+data_start = date(2014,8,27)
 
 # 
 senate_districts = [
