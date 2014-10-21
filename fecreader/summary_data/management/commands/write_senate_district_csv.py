@@ -20,7 +20,7 @@ CSV_FILE_NAME = 'competitive_senate_seats_weekly.csv'
 
 data_start = date(2014,8,27)
 
-# 
+# tossups and leaners, rothenberg, 10/21
 senate_districts = [
     {'state':'NC', 'id':1034},
     {'state':'MI', 'id':1025},
@@ -30,7 +30,10 @@ senate_districts = [
     {'state':'LA', 'id':1016},
     {'state':'KS', 'id':1012},
     {'state':'AK', 'id':982},
-    {'state':'IA', 'id':1004}
+    {'state':'IA', 'id':1004},
+    {'state':'GA', 'id':1000},
+    {'state':'KY', 'id':1014},
+    {'state':'SD', 'id':1062}
 ]
 
 district_list=[]
