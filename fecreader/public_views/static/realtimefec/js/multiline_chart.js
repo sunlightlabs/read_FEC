@@ -313,7 +313,7 @@ function read_data(text) {
 
         
         .on("mouseover", function(f,g){
-          d3.select(this).style("stroke", highlighted);
+          d3.select(this).attr("r", 5);
           month = f.date.getMonth() + 1;
           day = f.date.getUTCDate();
           var thistext = "Week ending: " + month + "/" + day + "<br>Total spent: $" + roundwCommas(f.value); 
@@ -325,7 +325,7 @@ function read_data(text) {
             
           })
           .on("mouseout", function(){
-          d3.select(this).style("stroke", unhighlighted);
+          d3.select(this).attr("r", circle_radius);
           d3.select("#" + this.id) 
             .style("stroke", unhighlighted)
             tooltipdiv.style("opacity",0);
@@ -343,7 +343,7 @@ d3.json(window.jsonURL, function(error, s) {
         styles = s;
 
         // grab the data as text, we'll parse the rows out later
-        d3.text("/static/data/competitive_senate_seats_weekly.csv", read_data);
-        
-        
+        d3.text("static/data/competitive_senate_seats_weekly.csv", read_data);
+        //\\ /static/realtimefec/js/competitive_senate_seats_weekly.csv
+        //\\ /static/data/competitive_senate_seats_weekly.csv
 });

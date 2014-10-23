@@ -625,3 +625,21 @@ def senate_races(request, blog_or_feature):
             }
         )
 
+def weekly_comparison(request, race_list, blog_or_feature):
+    print "weekly comparison"
+    if not (blog_or_feature in ['feature', 'blog']):
+        raise Http404
+    race_ids = race_list.split('-')
+    if len(race_ids) == 0 or len(race_ids) > 6: 
+        raise Http404
+    race_id_text = ",".join(race_ids)
+    
+    return render_to_response('datapages/comparison_chart.html',
+            {
+            'race_id_text':race_id_text,
+            'chart_title': 'This is the title',
+            'blog_or_feature':blog_or_feature,
+            'partisan_colors':'false'
+            }
+        )
+
