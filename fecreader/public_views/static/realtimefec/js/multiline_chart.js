@@ -46,7 +46,7 @@ function get_x_offset(x) {
         current_tooltipwidth = expanded_tooltipwidth;        
     }
     
-	if (x >  width - current_tooltipwidth ) {
+	if (x >  width - current_tooltipwidth - 20) {
 		return x - current_tooltipwidth -10 ;
 	} else {
 		return x + 20  ;
