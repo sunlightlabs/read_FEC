@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.shortcuts import redirect
 from django.contrib.localflavor.us.us_states import US_STATES
 from django.db.models import Sum
+from django.http import Http404
 
 from fec_alerts.models import new_filing, newCommittee, f1filer
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate, DistrictWeekly
@@ -604,4 +605,23 @@ def election_calendar(request):
         }
     )
 
+def chart_test(request, blog_or_feature):
+    if not (blog_or_feature in ['feature', 'blog']):
+        raise Http404
+        
+    return render_to_response('datapages/chart_test.html',
+            {
+            'blog_or_feature':blog_or_feature
+            }
+        )
+
+def senate_races(request, blog_or_feature):
+    if not (blog_or_feature in ['feature', 'blog']):
+        raise Http404
+
+    return render_to_response('datapages/senate_races.html',
+            {
+            'blog_or_feature':blog_or_feature
+            }
+        )
 
