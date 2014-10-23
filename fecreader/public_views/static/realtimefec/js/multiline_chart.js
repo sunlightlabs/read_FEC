@@ -343,7 +343,7 @@ d3.json(window.jsonURL, function(error, s) {
         styles = s;
 
         // grab the data as text, we'll parse the rows out later
-        d3.text("/static/realtimefec/js/competitive_senate_seats_weekly.csv", read_data);
+        d3.text("/static/data/competitive_senate_seats_weekly.csv", read_data);
         
         
 });
