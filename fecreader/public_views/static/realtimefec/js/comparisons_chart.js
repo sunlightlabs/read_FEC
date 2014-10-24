@@ -1,9 +1,9 @@
 var partisan_colors = window.partisan_colors;
 var blog_or_feature = window.blog_or_feature;
 var data_series_to_choose = window.race_id_array;
-var start_month = 5 
+var start_month =  window.start_month;
 var start_day = 1
-var start_year = 2014
+var start_year = window.start_year;
 var startDate = Date.UTC(start_year, start_month, start_day, 5, 43, 0);
 
 
@@ -409,7 +409,7 @@ function read_data(text) {
           expand_tooltip();
           month = f.date.getMonth() + 1;
           day = f.date.getUTCDate();
-          var thistext = "Week ending: " + month + "/" + day + "<br>Total spent: $" + roundwCommas(f.value); 
+          var thistext = "Week ending: " + month + "/" + day + "<br>Total: $" + roundwCommas(f.value); 
           tooltipdiv.style("opacity",1);
           tooltipdiv.html( "<b>" + data_series[f.index]['name'] + "</b> <br>" + thistext);            
           })

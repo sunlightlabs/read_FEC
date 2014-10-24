@@ -680,7 +680,10 @@ def weekly_comparison(request, race_list, blog_or_feature):
             'chart_title': chart_title,
             'blog_or_feature':blog_or_feature,
             'partisan_colors':partisan_colors,
-            'data_source': '/static/data/weekly_ies.csv'
+            'data_source': '/static/data/weekly_ies.csv',
+            'period_description':'previous seven days',
+            'start_month':5,
+            'start_year':2014,
             }
         )
 
@@ -720,7 +723,11 @@ def weekly_comparison_cumulative(request, race_list, blog_or_feature):
             'chart_title': chart_title,
             'blog_or_feature':blog_or_feature,
             'partisan_colors':partisan_colors,
-            'data_source': '/static/data/weekly_ies_cumulative.csv'
+            'data_source': '/static/data/weekly_ies_cumulative.csv',
+            'period_description':'cycle through date shown',
+            'start_month':1,
+            'start_year':2013,
+            
             }
         )
 
@@ -761,7 +768,10 @@ def contrib_comparison(request, race_list, blog_or_feature):
             'chart_title': chart_title,
             'blog_or_feature':blog_or_feature,
             'partisan_colors':partisan_colors,
-            'data_source': '/static/data/weekly_superpac_donations.csv'
+            'data_source': '/static/data/weekly_superpac_donations.csv',
+            'period_description':'cycle through date shown',
+            'start_month':5,
+            'start_year':2014,
             }
         )
 
@@ -801,6 +811,10 @@ def contrib_comparison_cumulative(request, race_list, blog_or_feature):
             'chart_title': chart_title,
             'blog_or_feature':blog_or_feature,
             'partisan_colors':partisan_colors,
-            'data_source': '/static/data/weekly_superpac_donations_cumulative.csv'
+            'data_source': '/static/data/weekly_superpac_donations_cumulative.csv',
+            'period_description':'cycle through date shown',
+            'start_month':1,
+            'start_year':2013,
+            
             }
         )
