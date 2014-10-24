@@ -289,7 +289,7 @@ function read_data(text) {
        
        if (drawLegend) {
        
-           var legendx = 90;
+           var legendx = 60;
            var legendy = 335;
            var legend_width = 360;
            var legend_height = 80;
