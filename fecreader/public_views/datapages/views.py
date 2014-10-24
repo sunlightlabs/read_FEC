@@ -684,6 +684,47 @@ def weekly_comparison(request, race_list, blog_or_feature):
             }
         )
 
+def weekly_comparison_cumulative(request, race_list, blog_or_feature):
+    print "weekly comparison"
+    if not (blog_or_feature in ['feature', 'blog']):
+        raise Http404
+    race_ids = race_list.split('-')
+    if len(race_ids) == 0 or len(race_ids) > 6: 
+        raise Http404
+    race_id_text = ",".join(race_ids)
+
+    chart_title = ""
+    partisan_colors = 'false'
+
+    try:
+        chart_data = chart_name_reference[race_list]
+        chart_title = chart_data['name']
+        partisan_colors = chart_data['partisan']
+
+    except KeyError:
+
+        for i,id in enumerate(race_ids):
+            try:
+                series_name = weekly_dump_data_series[int(id)]['data_series_name']
+                if i>0:
+                    chart_title = chart_title + " and "
+                chart_title = chart_title + series_name
+
+            except IndexError:
+                continue
+        chart_title = chart_title + ", weekly"
+
+    return render_to_response('datapages/comparisons_chart.html',
+            {
+            'race_id_text':race_id_text,
+            'chart_title': chart_title,
+            'blog_or_feature':blog_or_feature,
+            'partisan_colors':partisan_colors,
+            'data_source': '/static/data/weekly_ies_cumulative.csv'
+            }
+        )
+
+
 def contrib_comparison(request, race_list, blog_or_feature):
     print "weekly comparison"
     if not (blog_or_feature in ['feature', 'blog']):
@@ -721,5 +762,45 @@ def contrib_comparison(request, race_list, blog_or_feature):
             'blog_or_feature':blog_or_feature,
             'partisan_colors':partisan_colors,
             'data_source': '/static/data/weekly_superpac_donations.csv'
+            }
+        )
+
+def contrib_comparison_cumulative(request, race_list, blog_or_feature):
+    print "weekly comparison"
+    if not (blog_or_feature in ['feature', 'blog']):
+        raise Http404
+    race_ids = race_list.split('-')
+    if len(race_ids) == 0 or len(race_ids) > 6: 
+        raise Http404
+    race_id_text = ",".join(race_ids)
+
+    chart_title = ""
+    partisan_colors = 'false'
+
+    try:
+        chart_data = chart_donor_name_reference[race_list]
+        chart_title = chart_data['name']
+        partisan_colors = chart_data['partisan']
+
+    except KeyError:
+
+        for i,id in enumerate(race_ids):
+            try:
+                series_name = weekly_dump_data_series[int(id)]['data_series_name']
+                if i>0:
+                    chart_title = chart_title + " and "
+                chart_title = chart_title + series_name
+
+            except IndexError:
+                continue
+        chart_title = chart_title + ", weekly"
+
+    return render_to_response('datapages/comparisons_chart.html',
+            {
+            'race_id_text':race_id_text,
+            'chart_title': chart_title,
+            'blog_or_feature':blog_or_feature,
+            'partisan_colors':partisan_colors,
+            'data_source': '/static/data/weekly_superpac_donations_cumulative.csv'
             }
         )
