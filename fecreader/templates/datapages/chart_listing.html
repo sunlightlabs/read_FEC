@@ -24,19 +24,22 @@
  {% block rtmain %}
 
 <div class="module">
-    <h4>Chart listing</h4>
-    <div class="amountLine clear">
-        <p>This is a listing of available charts.
-        </p>
-    </div>
-    <h4>Contributions</h4>
-    <br>  All Itemized Super PAC Contributions: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions/0/{{ type}}/">weekly ({{ type}})</a>{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions-cumulative/0/{{ type}}/">cumulative ({{ type}}) </a>{% endfor %}
+    <h3>Chart listing</h3>
+        This is a listing of available charts, which are embeddable on other sites or blogs. The "blog" versions of the chart are 650px wide; the "feature" versions of them are 870px wide. Both are about 500 px high. To embed these, use slightly larger dimensions. For example:
+            
+            <br><code>&lt;iframe src="http://realtime.influenceexplorer.com/charts/contributions/0/blog/" width="660" height="520" frameborder="0" scrolling="no"/&gt;</code>
+            <br> Or:
+            <br><code>&lt;iframe src="http://realtime.influenceexplorer.com/charts/contributions-cumulative/0/feature/" width="880" height="520" frameborder="0" scrolling="no"/&gt;</code>
+        <br><br>
+    <h3>Contributions</h3>
+    All Itemized Super PAC Contributions: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions/0/{{ type}}/">weekly ({{ type}})</a>{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions-cumulative/0/{{ type}}/">cumulative ({{ type}}) </a>{% endfor %}
     <br>  Itemized Super PAC Contributions by party: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions/1-2/{{ type}}/">weekly ({{ type}})</a>{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions-cumulative/1-2/{{ type}}/">cumulative ({{ type}})</a>{% endfor %}
-    <h4>Independent Expenditures</h4>
+    <br><br>
+    <h3>Independent Expenditures</h3>
     {% for chart in chart_list %}
        <br>  {{ chart.name }}: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending/{{ chart.race_id }}/{{ type}}/">weekly {{ type}}{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending-cumulative/{{ chart.race_id }}/{{ type}}/">cumulative {{ type}}</a>{% endfor %}
      {% endfor %}
-
+     </div>
 </div>
 
 
