@@ -19,6 +19,6 @@ chart_name_reference = {
 }
 
 chart_donor_name_reference = {
-    '0':{'name':'Itemized Individual Super PAC Contribitions', 'partisan':'false'},
-    '1-2':{'name':'Itemized Individual Super PAC Contribitions by party', 'partisan':'true'}
+    '0':{'name':'Itemized Individual Super PAC Contributions', 'partisan':'false'},
+    '1-2':{'name':'Itemized Individual Super PAC Contributions by party', 'partisan':'true'}
 }
