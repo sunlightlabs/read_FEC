@@ -23,7 +23,7 @@ CSV_FILE_NAME_CUMULATIVE = 'weekly_superpac_donations_cumulative.csv'
 data_start = date(2013,1,1)
 start = data_start.strftime("%Y-%m-%d")
 
-write_cumulative = True
+write_cumulative = False
 
 def make_header(start_week_number, end_week_number):
     headers = ['data_id','data_series_name']
@@ -95,7 +95,7 @@ class Command(BaseCommand):
         
         for data in data_series:
             this_row = [data['data_id'], data['data_series_name']]
-            this_cum_row = this_row
+            this_cum_row = [data['data_id'], data['data_series_name']]
             for week in range(first_week, last_week+1):
                 print "handling %s week %s" % (data['data_series_name'], week)
                 this_row.append(summarize_week(week, data['q'], cursor))
