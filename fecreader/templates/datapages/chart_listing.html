@@ -30,11 +30,11 @@
         </p>
     </div>
     <h4>Contributions</h4>
-    <br>  All Itemized Super PAC Contribitions: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions/0/{{ type}}/">{{ type}} width</a>{% endfor %}
-    <br>  Itemized Super PAC Contribitions by party: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions/1-2/{{ type}}/">{{ type}} width</a>{% endfor %}
+    <br>  All Itemized Super PAC Contributions: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions/0/{{ type}}/">weekly ({{ type}})</a>{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions-cumulative/0/{{ type}}/">cumulative ({{ type}}) </a>{% endfor %}
+    <br>  Itemized Super PAC Contributions by party: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions/1-2/{{ type}}/">weekly ({{ type}})</a>{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/contributions-cumulative/1-2/{{ type}}/">cumulative ({{ type}})</a>{% endfor %}
     <h4>Independent Expenditures</h4>
     {% for chart in chart_list %}
-       <br>  {{ chart.name }}: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending/{{ chart.race_id }}/{{ type}}/">{{ type}} width</a>{% endfor %}
+       <br>  {{ chart.name }}: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending/{{ chart.race_id }}/{{ type}}/">weekly {{ type}}{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending-cumulative/{{ chart.race_id }}/{{ type}}/">cumulative {{ type}}</a>{% endfor %}
      {% endfor %}
 
 </div>
