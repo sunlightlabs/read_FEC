@@ -21,6 +21,8 @@ from django.conf import settings
 from summary_data.utils.update_utils import get_update_time
 from summary_data.utils.weekly_update_utils import get_week_number, get_week_start, get_week_end
 from summary_data.election_dates import elections_by_day
+from summary_data.management.commands.write_weekly_files import data_series as weekly_dump_data_series
+from summary_data.utils.chart_reference import chart_name_reference
 
 from django.views.decorators.cache import cache_page, cache_control
 
@@ -615,13 +617,30 @@ def chart_test(request, blog_or_feature):
             }
         )
 
+def chart_listing(request):
+    
+    chart_list = []
+    for key in chart_name_reference:
+        value = chart_name_reference[key]
+        value['race_id'] = key
+        print value
+        chart_list.append(value)
+        
+    chart_list.sort(key=lambda x: x['name'])
+    return render_to_response('datapages/chart_listing.html',
+            {
+            'chart_list':chart_list,
+            'type_list':['blog', 'feature']
+            }
+        )
+                
 def senate_races(request, blog_or_feature):
     if not (blog_or_feature in ['feature', 'blog']):
         raise Http404
 
     return render_to_response('datapages/senate_races.html',
             {
-            'blog_or_feature':blog_or_feature
+            'blog_or_feature':blog_or_feature,
             }
         )
 
@@ -634,12 +653,33 @@ def weekly_comparison(request, race_list, blog_or_feature):
         raise Http404
     race_id_text = ",".join(race_ids)
     
+    chart_title = ""
+    partisan_colors = 'false'
+    
+    try:
+        chart_data = chart_name_reference[race_list]
+        chart_title = chart_data['name']
+        partisan_colors = chart_data['partisan']
+    
+    except KeyError:
+    
+        for i,id in enumerate(race_ids):
+            try:
+                series_name = weekly_dump_data_series[int(id)]['data_series_name']
+                if i>0:
+                    chart_title = chart_title + " and "
+                chart_title = chart_title + series_name
+            
+            except IndexError:
+                continue
+        chart_title = chart_title + ", weekly"
+    
     return render_to_response('datapages/comparison_chart.html',
             {
             'race_id_text':race_id_text,
-            'chart_title': 'This is the title',
+            'chart_title': chart_title,
             'blog_or_feature':blog_or_feature,
-            'partisan_colors':'false'
+            'partisan_colors':partisan_colors
             }
         )
 

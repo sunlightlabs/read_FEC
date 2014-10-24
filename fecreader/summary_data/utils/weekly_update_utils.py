@@ -51,5 +51,12 @@ def summarize_week_queryset(week_number, skede_queryset):
     outside_spending = skede_queryset.filter(expenditure_date_formatted__gte=week_start, expenditure_date_formatted__lte=week_end).aggregate(tot_spending=Sum('expenditure_amount'))['tot_spending']
     
     return outside_spending
+
+def summarize_week_queryset_cumulative(week_number, skede_queryset):
+    week_end = get_week_end(week_number)
+
+    outside_spending = skede_queryset.filter(expenditure_date_formatted__gt=cycle_iso_start, expenditure_date_formatted__lte=week_end).aggregate(tot_spending=Sum('expenditure_amount'))['tot_spending']
+
+    return outside_spending
         
     

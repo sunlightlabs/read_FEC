@@ -32,8 +32,8 @@ var drawLegend = true;
 var tooltipwidth  = 80;
 var tooltipheight = 20;
 
-var expanded_tooltipwidth = 160;
-var expanded_tooltipheight = 50;
+var expanded_tooltipwidth = 170;
+var expanded_tooltipheight = 60;
 
 var tooltipoffset_x = 10;
 var tooltipoffset_y = 10; 

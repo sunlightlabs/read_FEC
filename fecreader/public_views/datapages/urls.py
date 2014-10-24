@@ -39,8 +39,9 @@ urlpatterns = patterns('',
         url(r'^overview\/$', TemplateView.as_view(template_name='generated_pages/overview_main_template.html')),
         url(r'^training\/$', TemplateView.as_view(template_name='datapages/training.html')),
         url(r'^chart_test\/(\w+)\/$','public_views.datapages.views.chart_test'),
-        url(r'^charts\/([\d\-]+)\/(\w+)\/$','public_views.datapages.views.weekly_comparison'),
-        url(r'^charts\/senate-races\/(\w+)\/$','public_views.datapages.views.senate_races')
+        url(r'^charts\/spending/([\d\-]+)\/(\w+)\/$','public_views.datapages.views.weekly_comparison'),
+        url(r'^charts\/senate-races\/(\w+)\/$','public_views.datapages.views.senate_races'),
+        url(r'^charts\/$','public_views.datapages.views.chart_listing')
 
 #        url(r'^race/(?P<cycle>\d\d\d\d)\/president\/', 'public_views.datapages.views.presidential_race'),
 

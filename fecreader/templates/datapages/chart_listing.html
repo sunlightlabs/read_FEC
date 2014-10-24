@@ -1,0 +1,40 @@
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
+
+{{ block.super }}
+{% endblock sitecss %}
+
+{% block sitejs %}
+<script type="text/javascript" src="{% static 'realtimefec/js/handlebars.js' %}"></script>
+<script type="text/javascript" src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script> 
+
+{% endblock %}
+
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}Chart Listing{% endblock %}
+
+ {% block rtmain %}
+
+<div class="module">
+    <h4>Chart listing</h4>
+    <div class="amountLine clear">
+        <p>This is a listing of available charts.
+        </p>
+    </div>
+    {% for chart in chart_list %}
+       <br>  {{ chart.name }}: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending/{{ chart.race_id }}/{{ type}}/">{{ type}} width</a>{% endfor %}
+     {% endfor %}
+
+</div>
+
+
+  {% endblock %}
+

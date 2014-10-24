@@ -33,3 +33,12 @@ PREVIEW_HEIGHT = ""
 
 # valid key here
 LOCKSMITH_CLIENT_KEY = ''
+
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+# aws bucket
+AWS_STORAGE_BUCKET_NAME = ''
+# path on AWS
+AWS_BULK_EXPORT_PATH = ''
+# local directory files are written to before export
+CSV_EXPORT_DIR = ''
