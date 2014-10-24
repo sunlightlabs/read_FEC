@@ -138,7 +138,8 @@ class Command(BaseCommand):
                 if write_cumulative:
                     this_cum_row.append(summarize_week_queryset_cumulative(week, data['q']))
             dw.writerow(this_row)
-            cumdw.writerow(this_cum_row)
+            if write_cumulative:
+                cumdw.writerow(this_cum_row)
 
 
 
