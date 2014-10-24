@@ -103,7 +103,7 @@ class Command(BaseCommand):
     help = "Write some data csvs"
     requires_model_validation = False
     
-    write_cumulative = False
+    write_cumulative = True
     
     def handle(self, *args, **options):
         today = date.today()
