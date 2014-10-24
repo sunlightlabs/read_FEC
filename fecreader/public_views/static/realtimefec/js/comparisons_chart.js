@@ -148,16 +148,10 @@ function read_data(text) {
     
     data_rows = rows.slice(1,rows.length);
     
-    console.log("data series is: " + data_series_to_choose);
     // just pull out the rows we care about
     for (var i=0; i<data_series_to_choose.length; i++) { 
-            console.log("i is: " + i + " and data series is: " + data_series_to_choose[i]);
-            console.log("Adding data series: " + data_rows[data_series_to_choose[i]][1]);
             data_series.push( {'id':data_rows[data_series_to_choose[i]][0], 'name':data_rows[data_series_to_choose[i]][1], 'data':format_data_series(data_rows[data_series_to_choose[i]].slice(2,num_cols), week_end_dates, data_rows[data_series_to_choose[i]][0], i )} );
     };
-    
-    console.log(data_series);
-    console.log(" length is: " + data_series.length);
     
     var svg = d3.select(div_selector+' svg');
     var chart = d3.select(".chart-area");
@@ -175,11 +169,8 @@ function read_data(text) {
     var color_dict = {}
     var color_index = 0;
     for (var key in data_series ) {
-        console.log("adding key: " + key);
         color_dict[data_series[key]['id']] = colors[color_index++];
-    }
-    console.log(color_dict);
-    
+    }    
     
 
  //  ... get default margins from specs
@@ -420,7 +411,6 @@ function read_data(text) {
           day = f.date.getUTCDate();
           var thistext = "Week ending: " + month + "/" + day + "<br>Total spent: $" + roundwCommas(f.value); 
           tooltipdiv.style("opacity",1);
-          console.log("mouseover: " + f.index);
           tooltipdiv.html( "<b>" + data_series[f.index]['name'] + "</b> <br>" + thistext);            
           })
           
