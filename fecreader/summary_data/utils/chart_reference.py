@@ -17,3 +17,8 @@ chart_name_reference = {
     '26-27':{'name':'House Party Committee Independent Expenditures by party', 'partisan':'true'},
 
 }
+
+chart_donor_name_reference = {
+    '0':{'name':'All Itemized Super PAC Contribitions', 'partisan':'false'},
+    '1-2':{'name':'Itemized Super PAC Contribitions by party', 'partisan':'true'}
+}

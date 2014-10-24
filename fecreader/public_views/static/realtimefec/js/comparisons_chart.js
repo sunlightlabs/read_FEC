@@ -439,7 +439,9 @@ d3.json(window.jsonURL, function(error, s) {
         styles = s;
 
         // grab the data as text, we'll parse the rows out later
-        d3.text("/static/data/weekly_ies.csv", read_data);
+        d3.text(window.data_source, read_data);
         // realtime.influenceexplorer.com/static/data/weekly_ies.csv
-        //
+        // /static/data/weekly_ies.csv
+        // static/data/
+        // /static/realtimefec/js/
 });

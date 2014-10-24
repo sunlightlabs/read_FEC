@@ -40,6 +40,7 @@ urlpatterns = patterns('',
         url(r'^training\/$', TemplateView.as_view(template_name='datapages/training.html')),
         url(r'^chart_test\/(\w+)\/$','public_views.datapages.views.chart_test'),
         url(r'^charts\/spending/([\d\-]+)\/(\w+)\/$','public_views.datapages.views.weekly_comparison'),
+        url(r'^charts\/contributions/([\d\-]+)\/(\w+)\/$','public_views.datapages.views.contrib_comparison'),
         url(r'^charts\/senate-races\/(\w+)\/$','public_views.datapages.views.senate_races'),
         url(r'^charts\/$','public_views.datapages.views.chart_listing')
 

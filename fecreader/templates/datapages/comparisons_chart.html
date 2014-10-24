@@ -47,10 +47,11 @@ div.tooltip {
   window.blog_or_feature = '{{blog_or_feature}}';
   window.partisan_colors = {{ partisan_colors }};
   window.race_id_array = [{{ race_id_text}}];
+  window.data_source = '{{ data_source }}';
 </script>
 
 <script type="text/javascript" src="{% static 'realtimefec/js/d3.v3.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'realtimefec/js/comparison_chart.js' %}"></script>
+<script type="text/javascript" src="{% static 'realtimefec/js/comparisons_chart.js' %}"></script>
 
 {% endblock %}
 
