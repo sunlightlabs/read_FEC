@@ -21,6 +21,7 @@ CSV_FILE_NAME_CUMULATIVE = 'weekly_ies_cumulative.csv'
 
 
 data_start = date(2013,1,1)
+write_cumulative = True
 
 
 def make_header(start_week_number, end_week_number):
@@ -103,7 +104,6 @@ class Command(BaseCommand):
     help = "Write some data csvs"
     requires_model_validation = False
     
-    write_cumulative = True
     
     def handle(self, *args, **options):
         today = date.today()
