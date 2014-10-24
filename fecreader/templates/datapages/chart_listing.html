@@ -37,7 +37,7 @@
     <br><br>
     <h3>Independent Expenditures</h3>
     {% for chart in chart_list %}
-       <br>  {{ chart.name }}: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending/{{ chart.race_id }}/{{ type}}/">weekly {{ type}}{% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending-cumulative/{{ chart.race_id }}/{{ type}}/">cumulative {{ type}}</a>{% endfor %}
+       <br>  {{ chart.name }}: {% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending/{{ chart.race_id }}/{{ type}}/">weekly ({{ type}}){% endfor %}{% for type in type_list %}&nbsp;|&nbsp;<a href="/charts/spending-cumulative/{{ chart.race_id }}/{{ type}}/">cumulative ({{ type}})</a>{% endfor %}
      {% endfor %}
      </div>
 </div>
