@@ -23,7 +23,7 @@ var div_selector = "#line-chart";
 // If there are too many items the legend won't fit
 
 // list of colors
-var available_colors = ['yellows', 'teals', 'reds', 'pinks', 'mints', 'magentas', 'oranges', 'blues', 'cyans', 'greens'];
+var available_colors = ['yellows', 'mints', 'pinks', 'oranges','blues', 'cyans', 'greens', 'teals', 'reds', 'magentas',];
 var num_colors = 8;
 var colors = [];
 
