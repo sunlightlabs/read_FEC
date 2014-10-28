@@ -2,6 +2,7 @@
 var styles;
 
 var unhighlighted = d3.rgb("#9999bb");
+var unhighlighted_opacity = 0.5;
 var highlighted = d3.rgb("#000000");
 
 var tooltipwidth  = 80;
@@ -281,17 +282,18 @@ function read_data(text) {
         .attr("id", function(d) { return d.id; })
 
         .style("stroke-width", 4)
+        .style("opacity", unhighlighted_opacity)
         .style("fill", "none")
         
         .on("mouseover", function(f,g){
-          d3.select(this).style("stroke", highlighted);
+          d3.select(this).style("stroke", highlighted).style("opacity",1);
           tooltipdiv.style("opacity",1);
           tooltipdiv.html( "<b>" + data_series[g]['id'] + " Senate</b>");
 
           })
           .on("mouseout", function(){
           d3.select(this)
-          .style("stroke", unhighlighted);
+          .style("stroke", unhighlighted).style("opacity",unhighlighted_opacity);
           tooltipdiv.style("opacity",0);
           })
           
@@ -319,6 +321,7 @@ function read_data(text) {
           var thistext = "Week ending: " + month + "/" + day + "<br>Total spent: $" + roundwCommas(f.value); 
           d3.select("#" + this.id) 
             .style("stroke", highlighted)
+            .style("opacity",1)
             tooltipdiv.style("opacity",1);
             tooltipdiv.html( "<b>" + f.id + " Senate</b> <br>" + thistext);
             expand_tooltip();
@@ -328,6 +331,7 @@ function read_data(text) {
           d3.select(this).attr("r", circle_radius);
           d3.select("#" + this.id) 
             .style("stroke", unhighlighted)
+            .style("opacity",unhighlighted_opacity)
             tooltipdiv.style("opacity",0);
             shrink_tooltip();
             
@@ -343,7 +347,10 @@ d3.json(window.jsonURL, function(error, s) {
         styles = s;
 
         // grab the data as text, we'll parse the rows out later
-        d3.text("/static/data/competitive_senate_seats_weekly.csv", read_data);
+        //d3.text("/static/data/competitive_senate_seats_weekly.csv", read_data);
+        d3.text("/static/realtimefec/js/competitive_senate_seats_weekly.csv", read_data);
+        
+        
         //\\ /static/realtimefec/js/competitive_senate_seats_weekly.csv
         //\\ /static/data/competitive_senate_seats_weekly.csv
 });
