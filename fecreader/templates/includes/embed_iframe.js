@@ -36,7 +36,7 @@ $( document ).ready(function() {
 	
 	$( "#dialog" ).dialog({
 		autoOpen: false,
-		width: 400,
+		width: 400
 	});
 
 	// Link to open the dialog
