@@ -9,7 +9,7 @@
   <div class="dialog-body"><span id="modal_body" style="font-size: 12px;">
   You can embed this chart on your site with this code snippet:<br>
   <div style="width: 350px; margin:10px;">
-  &lt;iframe src="http:/realtime.influenceexplorer.com{{ request.get_full_path }}" {% ifequal blog_or_feature 'blog' %} width="660"{% else %} width="880"{% endifequal %}  height="520" frameborder="0" scrolling="no"&gt; &lt;/iframe&gt; 
+  &lt;iframe src="http:/realtime.influenceexplorer.com{{ request.get_full_path }}" {% ifequal blog_or_feature 'blog' %} width="660"{% else %}{% ifequal blog_or_feature 'narrow' %} width="590"{% else %} width="880"{% endifequal %}{% endifequal %}  height="520" frameborder="0" scrolling="no"&gt; &lt;/iframe&gt; 
   </div>
   <br>See the <a href="http://realtime.influenceexplorer.com/charts/" target="_none">charts page</a> for more options.
   <span id="confirmation_buttons">

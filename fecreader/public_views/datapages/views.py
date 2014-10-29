@@ -630,7 +630,7 @@ def chart_listing(request):
     return render_to_response('datapages/chart_listing.html',
             {
             'chart_list':chart_list,
-            'type_list':['blog', 'feature']
+            'type_list':['narrow', 'blog', 'feature']
             }
         )
                 
@@ -819,8 +819,8 @@ def contrib_comparison_cumulative(request, race_list, blog_or_feature):
             'partisan_colors':partisan_colors,
             'data_source': '/static/data/weekly_superpac_donations_cumulative.csv',
             'period_description':'cycle through date shown',
-            'start_month':1,
-            'start_year':2013,
+            'start_month':5,
+            'start_year':2014,
             
             }, 
             context_instance=RequestContext(request)
