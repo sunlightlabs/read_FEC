@@ -121,7 +121,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # need to point at other one
     #'summary_data.brisket_context_processors.custom_context'
     'dryrub.context_processors.custom_context',
-    'locksmith.client_keys.context_processors.client_key_context'
+    'locksmith.client_keys.context_processors.client_key_context',
+    'django.core.context_processors.request',
 )
 
 ROOT_URLCONF = 'fecreader.urls'

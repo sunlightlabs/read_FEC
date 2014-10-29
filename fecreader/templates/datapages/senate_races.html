@@ -6,6 +6,8 @@
 
 {% block sitecss %}
 <link rel="stylesheet" href="{% static 'realtimefec/css/ie_style.css' %}" />
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" />
+
 
 <style>
 
@@ -25,15 +27,18 @@
 }
 
 div.tooltip {   
-  position: absolute;           
-  text-align: center;                           
-  padding-top: 10px;             
-  font: 12px sans-serif;        
-  background: white;   
-  border: 1px solid #999;      
-  border-radius: 2px;
-  pointer-events: none;
-  opacity: 1; 
+    position: absolute;           
+    text-align: center;                           
+    padding: 3px;             
+    background: white;   
+    border: 1px solid #999;      
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 1; 
+    font-family: "Franklin Gothic Book","Franklin Gothic Medium","Franklin Gothic","ITC Franklin Gothic",Arial,sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
 }
 
 </style>
@@ -50,6 +55,8 @@ div.tooltip {
 <script type="text/javascript" src="{% static 'realtimefec/js/d3.v3.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'realtimefec/js/multiline_chart.js' %}"></script>
 
+{% include "includes/embed_iframe.js" %}
+
 {% endblock %}
 
 
@@ -63,7 +70,7 @@ div.tooltip {
             </div>
             <!-- save space by floating explanation to the left and logo to the right -->
             <div class="explanatory" style="float:left;">
-                Amounts are for the previous seven days. Hover over chart for details.
+                Amounts are for the previous seven days. Hover over chart for details. <a id="dialog-link" href="#">Embed this chart</a>
             </div>
             <div class="header-logo" style="float:right;">
             </div>

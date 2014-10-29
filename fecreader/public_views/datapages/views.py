@@ -641,7 +641,8 @@ def senate_races(request, blog_or_feature):
     return render_to_response('datapages/senate_races.html',
             {
             'blog_or_feature':blog_or_feature,
-            }
+            }, 
+            context_instance=RequestContext(request)
         )
 
 def weekly_comparison(request, race_list, blog_or_feature):
@@ -731,7 +732,8 @@ def weekly_comparison_cumulative(request, race_list, blog_or_feature):
             'start_month':5,
             'start_year':2014,
             
-            }
+            }, 
+            context_instance=RequestContext(request)
         )
 
 
@@ -775,7 +777,8 @@ def contrib_comparison(request, race_list, blog_or_feature):
             'period_description':'cycle through date shown',
             'start_month':5,
             'start_year':2014,
-            }
+            }, 
+            context_instance=RequestContext(request)
         )
 
 def contrib_comparison_cumulative(request, race_list, blog_or_feature):
@@ -819,5 +822,6 @@ def contrib_comparison_cumulative(request, race_list, blog_or_feature):
             'start_month':1,
             'start_year':2013,
             
-            }
+            }, 
+            context_instance=RequestContext(request)
         )
