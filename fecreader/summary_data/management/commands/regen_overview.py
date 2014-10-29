@@ -6,13 +6,15 @@ from django.template import Template
 from django.template.loader import get_template
 from django.template import Context
 from django.conf import settings
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.core.management.base import BaseCommand, CommandError
 
 
 from formdata.models import SkedE
 from summary_data.models import Committee_Overlay
 from fec_alerts.models import WebK
+from ftpdata.models import Committee
+
 
 PROJECT_ROOT = settings.PROJECT_ROOT
 
@@ -91,7 +93,7 @@ class Command(BaseCommand):
             {'name':'Party Committees', 'code':'XYZ', 'outside_spending': summary_obj['party_committees']},
             {'name':'House Candidate Committees', 'code':'H', 'outside_spending': summary_obj['house_committees']},
             {'name':'Senate Candidate Committees', 'code':'S', 'outside_spending': summary_obj['senate_committees']},
-            {'name':'Non-connected PACs', 'code':'NQ', 'outside_spending': summary_obj['oth_committees']}
+            {'name':'Other PACs', 'code':'NQ', 'outside_spending': summary_obj['oth_committees']}
         ]
         for s in summary_types:
             code_list = [i for i in s['code']]
@@ -169,4 +171,39 @@ class Command(BaseCommand):
         output.write(result)
         output.close()
 
+        ## do connected pacs now.
+        
+        all_webk = WebK.objects.filter(cycle='2014').exclude(com_des='J')
+
+        connected_org_types = [
+            {'name':'Corporation', 'code':'C'},
+            {'name':'Labor organization', 'code':'L'},
+            {'name':'Member Organization', 'code':'M'},
+            {'name':'Cooperative', 'code':'V'},
+            {'name':'Trade Association', 'code':'T'},
+            {'name':'Corporation without capital stock', 'code':'W'}
+        ]
+
+        for j in connected_org_types:
+            committees = Committee.objects.filter(cmte_tp__in=['N', 'Q'],org_tp=j['code'])
+            committee_id_list = [i.cmte_id for i in committees]
+
+            sums = all_webk.filter(com_id__in=committee_id_list).aggregate(tot_rec=Sum('tot_rec'), tot_dis=Sum('tot_dis'), par_com_con=Sum('par_com_con'), oth_com_con=Sum('oth_com_con'), ind_ite_con=Sum('ind_ite_con'), ind_uni_con=Sum('ind_uni_con'), fed_can_com_con=Sum('fed_can_com_con'), tot_ope_exp=Sum('tot_ope_exp'), ope_exp=Sum('ope_exp'))
+            j['tot_dis'] = sums['tot_dis']
+            j['tot_rec'] = sums['tot_rec']
+            j['oth_com_con'] = sums['oth_com_con'] + sums['par_com_con']
+            j['ind_ite_con']= sums['ind_ite_con']
+            j['ind_uni_con'] = sums['ind_uni_con']
+            j['fed_can_com_con'] = sums['fed_can_com_con']
+            j['tot_ope_exp'] = sums['tot_ope_exp']
+         
+        print "building connected pac with inside money set to %s" % (connected_org_types)
+        c = Context({"update_time": update_time, "inside_money": connected_org_types})
+        this_template = get_template('generated_pages/overview_connected.html')
+        result = this_template.render(c)
+        template_path = PROJECT_ROOT + "/templates/generated_pages/overview_connected_include.html"
+        output = open(template_path, 'w')
+        output.write(result)
+        output.close()
+        
         

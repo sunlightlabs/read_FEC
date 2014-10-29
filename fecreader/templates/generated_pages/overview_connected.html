@@ -1,0 +1,53 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div class="module RT clearfix">
+
+      <h3>Cycle Overview, 2013/14 Cycle -- Connected pacs</h3>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
+       
+        <div style="clear:both;">
+        </div>
+    
+        {% include "includes/overview_nav.html" %}
+        
+    
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Fundraising by connected committee type</h4>
+</div>
+
+
+
+<table id="mainPageTable" style="width: 800px;">
+    
+    <thead><th>Group type</th><th>Total Receipts</th><th>Contributions from other committees</th><th>Itemized individual contributions ($200+)</th><th>Unitemized individual contributions (&lt;$200)</th></thead>
+    
+    <tbody>
+        {% for group in inside_money %}
+        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_rec|intword}}</td><td>{% if group.oth_com_con > 1000000 %}${{group.oth_com_con|intword}}{% else %}${{group.oth_com_con|intcomma}}{% endif %}</td><td>${{group.ind_ite_con|intword}}</td><td>${{group.ind_uni_con|intword}}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Spending by connected committee type</h4>
+</div>
+
+
+
+<table id="mainPageTable" style="width: 800px;">
+
+    <thead id="spending"><th>Group type</th><th>Total Disbursements</th><th>Operating Expenditures</th><th>Contributions to candidates or committees</th></thead>
+
+    <tbody>
+        {% for group in inside_money %}
+        <tr class="{% cycle 'even' 'odd'%}"><td>{{ group.name }}</td><td>${{group.tot_dis|intword}}</td><td>{% if group.tot_ope_exp > 1000000 %}${{group.tot_ope_exp|intword}}{% else %}${{group.tot_ope_exp|intcomma}}{% endif %}</td><td>${% if group.fed_can_com_con %}{{group.fed_can_com_con|intword}}{% else %}0{% endif %}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p id="methodology">This page shows only "regular" PACs -- those of type Q "qualified" or N "nonqualified" that claim to be "connected" to another organization. FEC allows PACs to characterize these related organizations as a 'Corporation', 'Labor Organization', 'Member Organization', 'Cooperative', 'Trade Association' or 'corporation without capital stock'. The coding of a related organization is left up to the PAC submitting paperwork to FEC--not all filers complete this correctly. No effort has been made to correct or fix these entries.</p>
+    
+</div>
