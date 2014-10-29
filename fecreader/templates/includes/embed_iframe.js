@@ -8,9 +8,9 @@
   <!-- end nutty workaround -->
   <div class="dialog-body"><span id="modal_body" style="font-size: 12px;">
   Select an external width for the chart <select name="embed_width" id="embed_width_chosen">
-         <option value='narrow'>590px</option>
-         <option value='blog'>660 px</option>
-         <option value='feature'>880 px</option>
+         <option value='narrow' {% ifequal blog_or_feature 'narrow' %}selected{% endifequal %}>590px</option>
+         <option value='blog' {% ifequal blog_or_feature 'blog' %}selected{% endifequal %}>660 px</option>
+         <option value='feature' {% ifequal blog_or_feature 'feature' %}selected{% endifequal %}>880 px</option>
      </select>
   <br>
   You can embed this chart on your site with this code snippet:<br>
