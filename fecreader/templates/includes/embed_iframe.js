@@ -7,11 +7,17 @@
   <span class="ui-helper-hidden-accessible"><input type="text"/></span>
   <!-- end nutty workaround -->
   <div class="dialog-body"><span id="modal_body" style="font-size: 12px;">
+  Select an external width for the chart <select name="embed_width" id="embed_width_chosen">
+         <option value='narrow'>590px</option>
+         <option value='blog'>660 px</option>
+         <option value='feature'>880 px</option>
+     </select>
+  <br>
   You can embed this chart on your site with this code snippet:<br>
   <div style="width: 350px; margin:10px;">
-  &lt;iframe src="http:/realtime.influenceexplorer.com{{ request.get_full_path }}" {% ifequal blog_or_feature 'blog' %} width="660"{% else %}{% ifequal blog_or_feature 'narrow' %} width="590"{% else %} width="880"{% endifequal %}{% endifequal %}  height="520" frameborder="0" scrolling="no"&gt; &lt;/iframe&gt; 
+  &lt;iframe src="http:/realtime.influenceexplorer.com{{ request.get_full_path }}" {% ifequal blog_or_feature 'blog' %} width="<span id='thiswidth'>660</span>"{% else %}{% ifequal blog_or_feature 'narrow' %} width="<span id='thiswidth'>590</span>"{% else %} width="<span id='thiswidth'>880</span>"{% endifequal %}{% endifequal %}  height="520" frameborder="0" scrolling="no"&gt; &lt;/iframe&gt; 
   </div>
-  <br>See the <a href="http://realtime.influenceexplorer.com/charts/" target="_none">charts page</a> for more options.
+  <br>For more options, see the <a href="http://realtime.influenceexplorer.com/charts/" target="_none">charts page</a>.
   <span id="confirmation_buttons">
   <br><br><button id="dismiss_button" class="textBtn">Ok</button></div>
   </span>
@@ -22,13 +28,34 @@
 <script src="{% static 'realtimefec/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
 
 <script type="text/javascript">
-
-
+function set_value(width_arg) {
+    if (width_arg=='blog') 
+    {
+        $( "#thiswidth" ).html('660');
+    }
+    if (width_arg=='narrow') 
+    {
+        $( "#thiswidth" ).html('590');
+    }
+    if (width_arg=='feature') 
+    {
+        $( "#thiswidth" ).html('880');
+    }
+    
+}
 $( document ).ready(function() {	
-	$( "#dismiss_button" ).button();
-	
+    
+    
+    //<select name="embed_width" id="embed_width_chosen">
+	$( "#embed_width_chosen" ).change(function( event ) {
+	    set_value(this.value);    
+    });
+    set_value('{{ blog_or_feature }}');
 
-	
+    //var initial{{ blog_or_feature }}
+    
+    
+	$( "#dismiss_button" ).button();	
 	$( "#dismiss_button" ).click(function( event ) {
 		$( "#dialog" ).dialog( "close" );
 	});
@@ -45,6 +72,9 @@ $( document ).ready(function() {
 		event.preventDefault();
 		
 	});
+	
+	
+	
 });
 
 </script>
