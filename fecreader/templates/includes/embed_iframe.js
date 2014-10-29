@@ -15,7 +15,7 @@
   <br>
   You can embed this chart on your site with this code snippet:<br>
   <div style="width: 350px; margin:10px;">
-  &lt;iframe src="http:/realtime.influenceexplorer.com<span id='full_path'>{{ request.get_full_path }}</span>" {% ifequal blog_or_feature 'blog' %} width="<span id='thiswidth'>660</span>"{% else %}{% ifequal blog_or_feature 'narrow' %} width="<span id='thiswidth'>590</span>"{% else %} width="<span id='thiswidth'>880</span>"{% endifequal %}{% endifequal %}  height="520" frameborder="0" scrolling="no"&gt; &lt;/iframe&gt; 
+  &lt;iframe src="http://realtime.influenceexplorer.com<span id='full_path'>{{ request.get_full_path }}</span>" {% ifequal blog_or_feature 'blog' %} width="<span id='thiswidth'>660</span>"{% else %}{% ifequal blog_or_feature 'narrow' %} width="<span id='thiswidth'>590</span>"{% else %} width="<span id='thiswidth'>880</span>"{% endifequal %}{% endifequal %}  height="520" frameborder="0" scrolling="no"&gt; &lt;/iframe&gt; 
   </div>
   <br>For more options, see the <a href="http://realtime.influenceexplorer.com/charts/" target="_none">charts page</a>.
   <span id="confirmation_buttons">
