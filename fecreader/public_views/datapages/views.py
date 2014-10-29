@@ -726,9 +726,10 @@ def weekly_comparison_cumulative(request, race_list, blog_or_feature):
             'blog_or_feature':blog_or_feature,
             'partisan_colors':partisan_colors,
             'data_source': '/static/data/weekly_ies_cumulative.csv',
+            #'data_source': '/static/realtimefec/js/weekly_ies_cumulative.csv',
             'period_description':'cycle through date shown',
-            'start_month':1,
-            'start_year':2013,
+            'start_month':5,
+            'start_year':2014,
             
             }
         )
