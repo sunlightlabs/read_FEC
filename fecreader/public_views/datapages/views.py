@@ -635,7 +635,7 @@ def chart_listing(request):
         )
                 
 def senate_races(request, blog_or_feature):
-    if not (blog_or_feature in ['feature', 'blog']):
+    if not (blog_or_feature in ['feature', 'blog', 'narrow']):
         raise Http404
 
     return render_to_response('datapages/senate_races.html',
@@ -647,7 +647,7 @@ def senate_races(request, blog_or_feature):
 
 def weekly_comparison(request, race_list, blog_or_feature):
     print "weekly comparison"
-    if not (blog_or_feature in ['feature', 'blog']):
+    if not (blog_or_feature in ['feature', 'blog', 'narrow']):
         raise Http404
     race_ids = race_list.split('-')
     if len(race_ids) == 0 or len(race_ids) > 6: 
@@ -692,7 +692,7 @@ def weekly_comparison(request, race_list, blog_or_feature):
 
 def weekly_comparison_cumulative(request, race_list, blog_or_feature):
     print "weekly comparison"
-    if not (blog_or_feature in ['feature', 'blog']):
+    if not (blog_or_feature in ['feature', 'blog', 'narrow']):
         raise Http404
     race_ids = race_list.split('-')
     if len(race_ids) == 0 or len(race_ids) > 6: 
@@ -739,7 +739,7 @@ def weekly_comparison_cumulative(request, race_list, blog_or_feature):
 
 def contrib_comparison(request, race_list, blog_or_feature):
     print "weekly comparison"
-    if not (blog_or_feature in ['feature', 'blog']):
+    if not (blog_or_feature in ['feature', 'blog', 'narrow']):
         raise Http404
     race_ids = race_list.split('-')
     if len(race_ids) == 0 or len(race_ids) > 6: 
@@ -783,7 +783,7 @@ def contrib_comparison(request, race_list, blog_or_feature):
 
 def contrib_comparison_cumulative(request, race_list, blog_or_feature):
     print "weekly comparison"
-    if not (blog_or_feature in ['feature', 'blog']):
+    if not (blog_or_feature in ['feature', 'blog', 'narrow']):
         raise Http404
     race_ids = race_list.split('-')
     if len(race_ids) == 0 or len(race_ids) > 6: 

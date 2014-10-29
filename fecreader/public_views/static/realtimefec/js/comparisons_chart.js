@@ -43,6 +43,9 @@ var tooltip_is_shrunk = true;
 var base_width = 950;
 if (blog_or_feature == 'blog') {
     base_width = 720
+} 
+if (blog_or_feature == 'narrow') {
+    base_width = 650
 }
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = base_width - margin.left - margin.right,

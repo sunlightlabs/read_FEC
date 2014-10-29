@@ -6,7 +6,8 @@
             "width":
             {
                 "blog": "650",
-                "feature": 870
+                "feature": 870,
+                "narrow":580
             },
             "padding":
             {
@@ -102,7 +103,8 @@
             "width":
             {
                 "blog": 618,
-                "feature": 838
+                "feature": 838,
+                "narrow":548
             },
             "margin":
             {
