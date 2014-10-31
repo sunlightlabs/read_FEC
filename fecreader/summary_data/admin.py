@@ -21,7 +21,7 @@ class Candidate_OverlayAdmin(admin.ModelAdmin):
     readonly_fields = ('fec_id', 'pcc')
     fieldsets = (
         ("Human-curated data", {
-            'fields': ('curated_election_year', 'candidate_status', 'other_office_sought', 'other_fec_id', 'not_seeking_reelection', 'is_incumbent', 'name'),
+            'fields': ('name', 'cand_is_gen_winner', 'curated_election_year', 'candidate_status', 'other_office_sought', 'other_fec_id', 'not_seeking_reelection', 'is_incumbent'),
             
         }),
         ("Mostly autopopulated", {

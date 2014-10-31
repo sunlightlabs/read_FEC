@@ -211,7 +211,7 @@ class Candidate_Overlay(models.Model):
     electioneering = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
     
     # Is this candidate a winner in the general election?
-    cand_is_gen_winner = models.NullBooleanField(null=True)
+    cand_is_gen_winner = models.NullBooleanField(null=True, help_text="Did this candidate win the general election. Only applies to November 2014 contests--so no special elections. If it's Louisiana or GA that goes to post-november runoff, do not check this box until they've won the runoff.")
 
     # Are they in the general election ? 
     is_general_candidate = models.NullBooleanField(null=True)
