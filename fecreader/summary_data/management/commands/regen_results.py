@@ -76,7 +76,7 @@ class Command(BaseCommand):
                             #print "General contestant: %s, %s" % (candidate, candidate.party)
                             candidate.is_general_candidate = True
                             district_result['results'].append(candidate)
-                    class_dict[rothenberg_class['name']]['results'].append(district_result)
+                    class_dict[rothenberg_class['name']].append(district_result)
                 results_dict[chamber['name']].append(class_dict)
 
         print results_dict             
