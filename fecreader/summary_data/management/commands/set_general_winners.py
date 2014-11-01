@@ -50,7 +50,7 @@ class Command(BaseCommand):
                 for district in districts:
                     print "handling %s" % district
                     party_list = ['D', 'R']
-                    if district_id in independent_districts:
+                    if district.pk in independent_districts:
                         party_list.append("I")
                     print district, rothenberg_class
                     candidates = all_candidates.filter(district=district)
