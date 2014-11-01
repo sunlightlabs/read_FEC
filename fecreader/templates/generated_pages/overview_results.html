@@ -29,15 +29,15 @@
   {% endfor }
   
     <br>{% for district in rothenberg_class.districts %}
-    <br>&nbsp;&nbsp;district={{a.district}} 
-    {% for result in a.results %}
+    <br>&nbsp;&nbsp;district={{district}} 
+    {% for result in district.results %}
     <br> aaa  = {{ result }}
+    {% endfor %}
     {% endfor %}
     
     
     
     
-  {% endfor %}
   
   {% endfor %}
 
