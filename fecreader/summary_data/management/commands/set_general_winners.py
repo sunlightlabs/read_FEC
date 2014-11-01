@@ -70,15 +70,15 @@ class Command(BaseCommand):
                         if len(party_candidates) > 1:
                             print "More than 1 %s candidate in %s" % (party, district)
                     
-                    if rothenberg_class.assigned_party:
-                        probable_winner = candidates.filter(rothenberg_class.assigned_party)
+                    if rothenberg_class['assigned_party']:
+                        probable_winner = candidates.filter(rothenberg_class['assigned_party'])
                         if probable_winner:
                             if len(probable_winner) > 1:
-                                print "** Warning--more than 1 %s probable winner in %s" % ( rothenberg_class.assigned_party, district)
+                                print "** Warning--more than 1 %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                             elif len(probable_winner) == 0:
-                                print "Warning--No %s probable winner in %s" % ( rothenberg_class.assigned_party, district)
+                                print "Warning--No %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                             elif len(probable_winner) == 1:
-                                print "Setting winner %s %s in %s" % (probable_winner[0], rothenberg_class.assigned_party, district)
+                                print "Setting winner %s %s in %s" % (probable_winner[0], rothenberg_class['assigned_party'], district)
                                 candidate.cand_is_gen_winner = True
                                 #candidate.save()
                     
