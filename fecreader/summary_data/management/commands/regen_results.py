@@ -65,8 +65,7 @@ class Command(BaseCommand):
             results_dict[chamber['name']] = []
 
             for rothenberg_class in rothenberg_classes:
-                class_dict = {}
-                class_dict[rothenberg_class['name']] = []
+                class_dict = {'class':rothenberg_class['name'], 'districts':[]}
                 
                 districts = chamber_districts.filter(rothenberg_rating_id__in=rothenberg_class['values'])
                 #district_list =  [i.id for i in districts]
@@ -92,7 +91,9 @@ class Command(BaseCommand):
                             #print "General contestant: %s, %s" % (candidate, candidate.party)
                             candidate.is_general_candidate = True
                             district_result['results'].append(candidate)
-                    class_dict[rothenberg_class['name']].append(district_result)
+                            
+                            # class_dict
+                    class_dict['districts'].append(district_result)
                 results_dict[chamber['name']].append(class_dict)
 
         print results_dict             
