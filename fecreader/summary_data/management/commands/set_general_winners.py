@@ -58,10 +58,10 @@ class Command(BaseCommand):
                         if candidate.candidate_status in status_array:
                             pass
                             #print "losing candidate: %s candidate: %s - %s" % (district, candidate, candidate.show_candidate_status())
-                        elif candidate.party:
+                        elif not candidate.party:
                             pass
                             #print "has a party %s candidate: %s party=%s- %s" % (district, candidate, candidate.party, candidate.show_candidate_status())
-                        if candidate.party in party_list:
+                        elif candidate.party in party_list:
                             print "General contestant: %s, %s" % (candidate, candidate.party)
                             candidate.is_general_candidate = True
                             # candidate.save()
