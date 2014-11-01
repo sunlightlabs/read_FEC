@@ -24,6 +24,10 @@
   
   {% for r in value %}
   <br>r = {{ r}} 
+  {% for k, v in r.items %}
+    <br>&nbsp;&nbsp;k={{k}} v = {{ v }}
+  {% endfor %}
+  
   {% endfor %}
 
 </div>
