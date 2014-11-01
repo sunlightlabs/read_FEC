@@ -26,15 +26,15 @@
   <br>r = {{ rothenberg_class}} 
   {% for k in rothenberg_class.items %}
      <br>&nbsp;&nbsp;k={{k}} 
-    
-    <br>{% for a in v %}
+  {% endfor }
+  
+    <br>{% for district in rothenberg_class.districts %}
     <br>&nbsp;&nbsp;district={{a.district}} 
     {% for result in a.results %}
     <br> aaa  = {{ result }}
     {% endfor %}
     
     
-    {% endfor %}
     
     
   {% endfor %}
