@@ -38,11 +38,16 @@ class Command(BaseCommand):
         
         for chamber in chambers:
             chamber_candidates = all_candidates.filter(office=chamber['name'])
-            chamber_districts = all_districts.filter(office=chamber['name'])
+            chamber_districts = all_districts.filter(office=chamber['value'])
+            
+            if chamber['value'] == 'S':
+                # there are 3 class 3 special elections here too, I believe... 
+                chamber_districts = chamber_districts.filter(term_class=2)
+                
             
 
             for rothenberg_class in rothenberg_classes:
-                districts = all_districts.filter(rothenberg_rating_id__in=rothenberg_class['values'])
+                districts = chamber_districts.filter(rothenberg_rating_id__in=rothenberg_class['values'])
                 #district_list =  [i.id for i in districts]
                 print "Handling rothenberg id = %s for chamber = %s" % (rothenberg_class['name'], chamber['name'])
                 
@@ -70,7 +75,7 @@ class Command(BaseCommand):
                         if len(party_candidates) > 1:
                             print "* More than 1 %s candidate in %s" % (party, district)
                             for c in party_candidates:
-                                print "\t\t%s" % c
+                                print "\t\t%s - %s" % (c, c.show_candidate_status())
                     
                     if rothenberg_class['assigned_party']:
                         probable_winner = candidates.filter(party=rothenberg_class['assigned_party']).exclude(candidate_status__in=status_array)
@@ -78,7 +83,7 @@ class Command(BaseCommand):
                             if len(probable_winner) > 1:
                                 print "** Warning--more than 1 %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                                 for c in probable_winner:
-                                    print "\t\t%s" % c
+                                    print "\t\t%s - %s" % (c, c.show_candidate_status())
                             elif len(probable_winner) == 0:
                                 print "** Warning--No %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                             elif len(probable_winner) == 1:
