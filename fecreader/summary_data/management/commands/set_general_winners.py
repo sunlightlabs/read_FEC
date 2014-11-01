@@ -53,7 +53,7 @@ class Command(BaseCommand):
                     if district.pk in independent_districts:
                         party_list.append("I")
                     print district, rothenberg_class
-                    candidates = all_candidates.filter(district=district)
+                    candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
                     for candidate in candidates:
                         if candidate.candidate_status in status_array:
                             pass
@@ -66,12 +66,12 @@ class Command(BaseCommand):
                             candidate.is_general_candidate = True
                             # candidate.save()
                     for party in party_list:
-                        party_candidates = candidates.filter(party=party)
+                        party_candidates = candidates.filter(party=party).exclude(candidate_status__in=status_array)
                         if len(party_candidates) > 1:
                             print "More than 1 %s candidate in %s" % (party, district)
                     
                     if rothenberg_class['assigned_party']:
-                        probable_winner = candidates.filter(rothenberg_class['assigned_party'])
+                        probable_winner = candidates.filter(party=rothenberg_class['assigned_party']).exclude(candidate_status__in=status_array)
                         if probable_winner:
                             if len(probable_winner) > 1:
                                 print "** Warning--more than 1 %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
