@@ -48,7 +48,7 @@ class Command(BaseCommand):
                 
                 
                 for district in districts:
-                    print "handling %s" % district
+                    #print "handling %s" % district
                     party_list = ['D', 'R']
                     if district.pk in independent_districts:
                         party_list.append("I")
@@ -62,13 +62,13 @@ class Command(BaseCommand):
                             pass
                             #print "has a party %s candidate: %s party=%s- %s" % (district, candidate, candidate.party, candidate.show_candidate_status())
                         elif candidate.party in party_list:
-                            print "General contestant: %s, %s" % (candidate, candidate.party)
+                            #print "General contestant: %s, %s" % (candidate, candidate.party)
                             candidate.is_general_candidate = True
                             # candidate.save()
                     for party in party_list:
                         party_candidates = candidates.filter(party=party).exclude(candidate_status__in=status_array)
                         if len(party_candidates) > 1:
-                            print "More than 1 %s candidate in %s" % (party, district)
+                            print "* More than 1 %s candidate in %s" % (party, district)
                     
                     if rothenberg_class['assigned_party']:
                         probable_winner = candidates.filter(party=rothenberg_class['assigned_party']).exclude(candidate_status__in=status_array)
@@ -76,9 +76,9 @@ class Command(BaseCommand):
                             if len(probable_winner) > 1:
                                 print "** Warning--more than 1 %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                             elif len(probable_winner) == 0:
-                                print "Warning--No %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
+                                print "** Warning--No %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                             elif len(probable_winner) == 1:
-                                print "Setting winner %s %s in %s" % (probable_winner[0], rothenberg_class['assigned_party'], district)
+                                #print "Setting winner %s %s in %s" % (probable_winner[0], rothenberg_class['assigned_party'], district)
                                 candidate.cand_is_gen_winner = True
                                 #candidate.save()
                     
