@@ -22,13 +22,14 @@
   
   <b>value items: </b>
   
-  {% for r in value %}
-  <br>r = {{ r}} 
-  {% for k, v in r.items %}
-     <br>&nbsp;&nbsp;k={{k}} v = {{ v }} 
+  {% for thiskey, rothenberg_class in value.items %}
+  <br>key = {{ thiskey }} r = {{ rothenberg_class}} 
+  {% for k, v in rothenberg_class.items %}
+     {# <br>&nbsp;&nbsp;k={{k}} v = {{ v }} #}
     
     <br>{% for a in v %}
     <br>&nbsp;&nbsp;a={{a}} 
+    
     
     {% endfor %}
     
