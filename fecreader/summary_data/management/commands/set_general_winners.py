@@ -83,7 +83,7 @@ class Command(BaseCommand):
                             if len(probable_winner) > 1:
                                 print "** Warning--more than 1 %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                                 for c in probable_winner:
-                                    print "\t\t%s - %s" % (c, c.show_candidate_status())
+                                    print "\t\t%s - %s" % (c, c.candidate_status)
                             elif len(probable_winner) == 0:
                                 print "** Warning--No %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                             elif len(probable_winner) == 1:
