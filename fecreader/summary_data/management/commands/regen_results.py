@@ -49,7 +49,7 @@ class Command(BaseCommand):
             results_dict[chamber['name']] = []
 
             for rothenberg_class in rothenberg_classes:
-                class_dict[rothenberg_class['name']] = {'districts':[]}}
+                class_dict[rothenberg_class['name']] = []
                 
                 districts = chamber_districts.filter(rothenberg_rating_id__in=rothenberg_class['values'])
                 #district_list =  [i.id for i in districts]
