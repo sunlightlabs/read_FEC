@@ -1,6 +1,20 @@
+
+from django.template import Template
+from django.template.loader import get_template
+from django.template import Context
+from django.conf import settings
+from django.db.models import Sum, Count
+
+from datetime import datetime, date
+
+
+PROJECT_ROOT = settings.PROJECT_ROOT
+
+
+CYCLE_START = date(2013,1,1)
+
 # really about setting losers, but... 
 
-from datetime import date
 
 from django.core.management.base import BaseCommand, CommandError
 from summary_data.data_references import CANDIDATE_STATUS_CHOICES, CANDIDATE_STATUS_DICT, COMPETITIVE_INDEPENDENTS
@@ -31,6 +45,8 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         today = date.today()
+        update_time = datetime.now()
+        
         
         # if there's an existing candidate status, they didn't win. 
         all_candidates = Candidate_Overlay.objects.all()
@@ -81,3 +97,11 @@ class Command(BaseCommand):
 
         print results_dict             
                             
+                            
+        c = Context({"update_time": update_time, "results":results_dict})
+        this_template = get_template('generated_pages/overview_results.html')
+        result = this_template.render(c)
+        template_path = PROJECT_ROOT + "/templates/generated_pages/overview_results_include.html"
+        output = open(template_path, 'w')
+        output.write(result)
+        output.close()

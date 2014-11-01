@@ -1,0 +1,35 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div class="module RT clearfix">
+
+      <h3>Results, 2013/14 Cycle</h3>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
+       
+        <div style="clear:both;">
+        </div>
+    
+        {% include "includes/overview_nav.html" %}
+        
+    
+{% for key, value in results.items %}
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>{{ key }} results </h4>
+</div>
+<div class="module">  
+  <p>value is {{ value }}</p>
+  
+  <b>value items: </b>
+  
+  {% for r,c in value.items %}
+  <br>r = {{ r}} c = {{ c}}
+  {% endfor %}
+
+</div>
+
+
+{% endfor %}
+
+
+</div>
