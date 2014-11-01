@@ -18,17 +18,17 @@
     <h4>{{ key }} results </h4>
 </div>
 <div class="module">  
-  <p>value is {{ value }}</p>
+  {# <p>value is {{ value }}</p> #}
   
   <b>value items: </b>
   
   {% for r in value %}
   <br>r = {{ r}} 
   {% for k, v in r.items %}
-    {# <br>&nbsp;&nbsp;k={{k}} v = {{ v }} #}
+     <br>&nbsp;&nbsp;k={{k}} v = {{ v }} 
     
-    <br>{% for a, b in v.items %}
-    <br>&nbsp;&nbsp;a={{a}} b = {{ b }}
+    <br>{% for a in v %}
+    <br>&nbsp;&nbsp;a={{a}} 
     
     {% endfor %}
     
