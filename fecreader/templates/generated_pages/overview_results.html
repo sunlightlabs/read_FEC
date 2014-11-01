@@ -25,7 +25,14 @@
   {% for r in value %}
   <br>r = {{ r}} 
   {% for k, v in r.items %}
-    <br>&nbsp;&nbsp;k={{k}} v = {{ v }}
+    {# <br>&nbsp;&nbsp;k={{k}} v = {{ v }} #}
+    
+    <br>{% for a, b in v.items %}
+    <br>&nbsp;&nbsp;a={{a}} b = {{ b }}
+    
+    {% endfor %}
+    
+    
   {% endfor %}
   
   {% endfor %}
