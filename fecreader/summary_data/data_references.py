@@ -63,7 +63,7 @@ CANDIDATE_STATUS_CHOICES = (('W', 'Dropped out / withdrew'),('LP', 'lost in prim
 
 CANDIDATE_STATUS_DICT = {'LP':'Lost in primary','PR':'Lost in primary runoff', 'G':'Lost in general', 'GR':'Lost in general runoff', 'SP':'Lost in special primary', 'SR':'Lost in special runoff', 'SG':'Lost in special general', 'SX':'Lost in special general runoff', 'W': 'Withdrew or not on ballot', 'LC':'Lost in party convention'}
 
-
+COMPETITIVE_INDEPENDENTS = [{'name':'SD Senate', 'district_id': 1062}, {'name':'Kansas Senate', 'district_id': 1012}]
 
 
 type_hash_full={'C': 'Communication Cost',
