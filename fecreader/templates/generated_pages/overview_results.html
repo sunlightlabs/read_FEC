@@ -17,23 +17,24 @@
 <div class="overviewBar withNav withTip" id="positive">
     <h4>{{ key }} results </h4>
 </div>
-<div class="module">  
+  <div class="module">  
   
   
   {% for rothenberg_class in value %}
   {% for k in rothenberg_class.items %}
    <div class="overviewBar withNav withTip" id="positive">
-        <h4>{{ k }} results </h4>
+        <h4>{{ k.name }} results </h4>
   </div>
   {% endfor %}
+  <div class="module">  
   
-    <br>{% for district in rothenberg_class.districts %}
-    <b>{{district.district}}</b><br>
+    {% for district in rothenberg_class.districts %}
+    <br><b>{{district.district}}</b><br>
     {% for result in district.results %}
     <br>{{ result }}
     {% endfor %}
     {% endfor %}
-    
+  </div>  
     
     
     
