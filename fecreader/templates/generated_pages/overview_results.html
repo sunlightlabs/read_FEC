@@ -23,7 +23,8 @@
 			<div><a href="#" class="toggler" data-groupid="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}">{% ifequal rothenberg_class.display 'none' %}+ Show all district results{% else %}- Hide all district results{% endifequal %}</a></div>
 			
 			
-			<b>Total seats: {{ rothenberg_class.num_seats }}. Winners: {% for k in rothenberg_class.victors %}{% endfor %}
+			<b>Total seats: {{ rothenberg_class.num_seats }}. Winners: {% for k in rothenberg_class.victors %}{{d}}{% endfor %}</b>
+			
 			<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}">
 			{% for district in rothenberg_class.districts %}
 			
