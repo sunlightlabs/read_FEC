@@ -214,7 +214,7 @@ class Candidate_Overlay(models.Model):
     cand_is_gen_winner = models.NullBooleanField(null=True, verbose_name="Candidate is general winner", help_text="Did this candidate win the general election. Only applies to November 2014 contests--so no special elections. If it's Louisiana or GA that goes to post-november runoff, do not check this box until they've won the runoff.")
 
     # Are they in the general election ? 
-    is_general_candidate = models.NullBooleanField(null=True)
+    is_general_candidate = models.NullBooleanField(null=True, verbose_name="Is a general candidate", help_text="Is this candidate in the general election and a major party candidate? Set this to true if they are a significant third party candidate too. This only controls whether or note they show up on the results pages (as a general election loser)")
     ### data from the candidates own committees. 
     
     has_contributions = models.NullBooleanField(null=True, default=False)

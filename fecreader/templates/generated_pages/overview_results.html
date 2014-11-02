@@ -48,7 +48,7 @@
 				                <tbody>
 												{% for object in district.results %}
 				                <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
-				                    <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }} ({{object.party}})</a></td>
+				                    <td>{% if object.cand_is_gen_winner %}*{% endif %}<a href="{{ object.get_absolute_url }}" class="link">{{ object.name }} ({{object.party}})</a></td>
 				                    <td>{{ object.incumbency_status }}</td>
 				                    <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
 				                    <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>

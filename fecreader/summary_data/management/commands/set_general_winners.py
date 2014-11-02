@@ -69,7 +69,7 @@ class Command(BaseCommand):
                         elif candidate.party in party_list:
                             #print "General contestant: %s, %s" % (candidate, candidate.party)
                             candidate.is_general_candidate = True
-                            # candidate.save()
+                            candidate.save()
                     for party in party_list:
                         party_candidates = candidates.filter(party=party).exclude(candidate_status__in=status_array)
                         if len(party_candidates) > 1:
@@ -89,7 +89,7 @@ class Command(BaseCommand):
                             elif len(probable_winner) == 1:
                                 #print "Setting winner %s %s in %s" % (probable_winner[0], rothenberg_class['assigned_party'], district)
                                 candidate.cand_is_gen_winner = True
-                                #candidate.save()
+                                candidate.save()
                     
                     # Get probable winner:
                         
