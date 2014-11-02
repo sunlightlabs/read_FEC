@@ -26,13 +26,13 @@ status_array = CANDIDATE_STATUS_DICT.keys()
 chambers = [{'name':'House', 'value':'H'}, {'name':'Senate', 'value':'S'}]
 
 rothenberg_classes = [
-{'name':'Safe Democrat, Democrat Favored', 'values':[4,5], 'assigned_party':'D'},
-{'name':'Lean Democrat', 'values':[3], 'assigned_party':'D'},
-{'name':'Toss-up/Tilt Democrat', 'values':[2], 'assigned_party':None},
-{'name':'Tossup', 'values':[1], 'assigned_party':None},
-{'name':'Toss-up/Tilt Republican', 'values':[6], 'assigned_party':None},
-{'name':'Lean Republican', 'values':[7], 'assigned_party':'R'},
-{'name':'Safe Republican, Republican Favored', 'values':[8,9], 'assigned_party':'R'},
+{'id':1,'name':'Safe Democrat, Democrat Favored', 'values':[4,5], 'assigned_party':'D', 'display':'none'},
+{'id':2,'name':'Lean Democrat', 'values':[3], 'assigned_party':'D', 'display':'none'},
+{'id':3,'name':'Toss-up/Tilt Democrat', 'values':[2], 'assigned_party':None, 'display':'block'},
+{'id':4,'name':'Tossup', 'values':[1], 'assigned_party':None, 'display':'block'},
+{'id':5,'name':'Toss-up/Tilt Republican', 'values':[6], 'assigned_party':None, 'display':'block'},
+{'id':6,'name':'Lean Republican', 'values':[7], 'assigned_party':'R', 'display':'none'},
+{'id':7,'name':'Safe Republican, Republican Favored', 'values':[8,9], 'assigned_party':'R', 'display':'none'},
 ]
 
 independent_districts = [i['district_id'] for i in COMPETITIVE_INDEPENDENTS]
@@ -66,7 +66,7 @@ class Command(BaseCommand):
             #results_dict[chamber['name']] = []
 
             for rothenberg_class in rothenberg_classes:
-                rothenberg_class_dict = {'class':rothenberg_class['name'], 'districts':[]}
+                rothenberg_class_dict = {'class':rothenberg_class['name'], 'id':rothenberg_class['id'],  'display':rothenberg_class['display'], 'districts':[]}
                 
                 districts = chamber_districts.filter(rothenberg_rating_id__in=rothenberg_class['values'])
                 #district_list =  [i.id for i in districts]

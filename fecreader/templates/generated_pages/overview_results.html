@@ -15,20 +15,44 @@
 			<h4>{{ this_chamber.chamber }} results </h4>
 		</div>
 		<div class="module">  
+		
 		{% for rothenberg_class in this_chamber.results.rothenberg_classes %}
 			<div class="overviewBar withNav withTip" id="positive">
 				<h4>{{ rothenberg_class.class }}</h4>
 			</div>
+			<div><a href="#" class="toggler" data-groupid="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}">{% ifequal rothenberg_class.display 'none' %}Show results{% else %}Hide results{% endifequal %}</a></div>
+			
+			<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}"><br><b>blah blah</b><br></div>
 			
 			{% for district in rothenberg_class.districts %}
-				<div><br><b>{{district.district}}</b><br> 
+				<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}"><br><b>{{district.district}}</b><br> 
 					{% for result in district.results %}
 						<br>{{ result }}
 					{% endfor %}
 				</div>  
 			{% endfor %}
 		{% endfor %}
+		
 		</div>
 	{% endfor %}
 
 </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+$('a.toggler').click(function(ev) {
+	ev.preventDefault();
+	var groupId = $(this).attr('data-groupid');
+	is_displayed =  $("#" + groupId).is(':visible');
+	$("#" + groupId).toggle(200);
+	
+	if (is_displayed) {
+		$(this).html("Show results");
+	} else {
+		$(this).html("Hide results");
+	}
+		
+
+	});
+});
+</script>
