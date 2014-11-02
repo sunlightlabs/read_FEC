@@ -92,9 +92,9 @@ class Command(BaseCommand):
                             elif len(probable_winner) == 0:
                                 print "** Warning--No %s probable winner in %s" % ( rothenberg_class['assigned_party'], district)
                             elif len(probable_winner) == 1:
-                                #print "Setting winner %s %s in %s" % (probable_winner[0], rothenberg_class['assigned_party'], district)
-                                candidate.cand_is_gen_winner = True
-                                candidate.save()
+                                print "Setting winner %s %s in %s" % (probable_winner[0], rothenberg_class['assigned_party'], district)
+                                probable_winner[0].cand_is_gen_winner = True
+                                probable_winner[0].save()
                     
 
             
