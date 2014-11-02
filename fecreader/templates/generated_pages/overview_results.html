@@ -22,15 +22,17 @@
 			</div>
 			<div><a href="#" class="toggler" data-groupid="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}">{% ifequal rothenberg_class.display 'none' %}Show results{% else %}Hide results{% endifequal %}</a></div>
 			
-			<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}"><br><b>blah blah</b><br></div>
-			
+			<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}">
+			<b>Districts</b><br>
 			{% for district in rothenberg_class.districts %}
-				<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}"><br><b>{{district.district}}</b><br> 
+				<div id=""><br><b>{{district.district}}</b><br> 
 					{% for result in district.results %}
 						<br>{{ result }}
 					{% endfor %}
 				</div>  
 			{% endfor %}
+		</div>
+		
 		{% endfor %}
 		
 		</div>
