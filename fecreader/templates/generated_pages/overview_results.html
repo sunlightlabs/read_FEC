@@ -25,10 +25,39 @@
 			<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}">
 			<b>Districts</b><br>
 			{% for district in rothenberg_class.districts %}
-				<div id=""><br><b>{{district.district}}</b><br> 
-					{% for result in district.results %}
-						<br>{{ result }}
-					{% endfor %}
+			
+			
+				<div id="">
+					<h3><a href={{district.get_absolute_url}}>{{ district.state }} {% ifequal district.office 'H' %}House {{ district.office_district}}{% else %}Senate{% endifequal %}</a>  {% if district.open_seat %}(OPEN SEAT){% endif %} </h3>
+					
+					<b>Incumbent: {{ district.incumbent_name }} ({{ district.incumbent_party}}) </b>
+
+				  <table id="mainPageTable">
+				              <thead>
+				                    <tr id="titles">                      
+				                        <th>Name (Party)</th>
+				                        <th>Incumbent</th>
+				                        <th>Cash on Hand</th>
+				                        <th>Cash on Hand Date</th>
+				                        <th>Total Fundraising (2013-14)</th>
+				                        <th>Outside support (2013-14)</th>
+				                        <th>Outside opposition (2013-14)</th>
+
+				                    </tr>
+				                </thead>
+				                <tbody>
+												{% for object in district.results %}
+				                <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
+				                    <td><a href="{{ object.get_absolute_url }}" class="link">{{ object.name }} ({{object.party}})</a></td>
+				                    <td>{{ object.incumbency_status }}</td>
+				                    <td>${% if object.cash_on_hand %}{{ object.cash_on_hand|intcomma }}{% else %}0{% endif %}</td>
+				                    <td>{{ object.cash_on_hand_date|date:"Y-m-d" }}</td>
+				                    <td>${% if object.total_receipts %}{{ object.total_receipts|intcomma }}{% else %}0{% endif %}</td>
+				                    <td>${% if object.expenditures_supporting %}{{ object.expenditures_supporting|intcomma }}{% else %}0{% endif %}</td>
+				                    <td>${% if object.expenditures_opposing %}{{ object.expenditures_opposing|intcomma }}{% else %}0{% endif %}</td>
+				                    </tr>
+				                {% endfor %}
+				  </table>
 				</div>  
 			{% endfor %}
 		</div>
