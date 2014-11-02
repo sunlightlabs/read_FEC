@@ -61,7 +61,7 @@ class Command(BaseCommand):
             
             if chamber['value'] == 'S':
                 # there are 3 class 3 special elections here too, I believe: SC (graham's seat); hawaii, oklahoma
-                chamber_districts = chamber_districts.filter(Q(term_class=2)|Q(id__in=[1003, 1053]))
+                chamber_districts = chamber_districts.filter(Q(term_class=2)|Q(id__in=[1003, 1053, 1061]))
                 
             #results_dict[chamber['name']] = []
 
