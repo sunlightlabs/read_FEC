@@ -3,49 +3,32 @@
 
 <div class="module RT clearfix">
 
-      <h3>Results, 2013/14 Cycle</h3>
-       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
-       
-        <div style="clear:both;">
-        </div>
-    
-        {% include "includes/overview_nav.html" %}
-        
-    
-{% for key, value in results.items %}
+	<h3>Results, 2013/14 Cycle</h3>
+	<div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
 
-<div class="overviewBar withNav withTip" id="positive">
-    <h4>{{ key }} results </h4>
-</div>
-  <div class="module">  
-  
-  
-  {% for rothenberg_class in value %}
-  {% for k,v in rothenberg_class %}
- <br>k={{ k}} v={{ v }}<br>
-   <div class="overviewBar withNav withTip" id="positive">
-        <h4>k.0 {{ k.0 }} results </h4>
-  </div>
-  {% endfor %}
-  <div class="module">  
-  
-    {% for district in rothenberg_class.districts %}
-    <br><b>{{district.district}}</b><br>
-    {% for result in district.results %}
-    <br>{{ result }}
-    {% endfor %}
-    {% endfor %}
-  </div>  
-    
-    
-    
-  
-{% endfor %}
-
-</div>
-
-
-{% endfor %}
-
+		<div style="clear:both;">
+		</div>
+		
+	{% include "includes/overview_nav.html" %}
+	{% for this_chamber in results %}
+		<div class="overviewBar withNav withTip" id="positive">
+			<h4>{{ this_chamber.chamber }} results </h4>
+		</div>
+		<div class="module">  
+		{% for rothenberg_class in this_chamber.results.rothenberg_classes %}
+			<div class="overviewBar withNav withTip" id="positive">
+				<h4>{{ rothenberg_class.class }}</h4>
+			</div>
+			
+			{% for district in rothenberg_class.districts %}
+				<div><br><b>{{district.district}}</b><br> 
+					{% for result in district.results %}
+						<br>{{ result }}
+					{% endfor %}
+				</div>  
+			{% endfor %}
+		{% endfor %}
+		</div>
+	{% endfor %}
 
 </div>

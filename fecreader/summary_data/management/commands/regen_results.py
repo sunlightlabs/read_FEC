@@ -52,20 +52,21 @@ class Command(BaseCommand):
         all_candidates = Candidate_Overlay.objects.all()
         all_districts = District.objects.all()
         
-        results_dict = {}
+        results = []
         
         for chamber in chambers:
             chamber_candidates = all_candidates.filter(office=chamber['name'])
             chamber_districts = all_districts.filter(office=chamber['value'])
+            chamber_results = {'chamber':chamber['name'], 'rothenberg_classes':[]}
             
             if chamber['value'] == 'S':
                 # there are 3 class 3 special elections here too, I believe... 
                 chamber_districts = chamber_districts.filter(term_class=2)
                 
-            results_dict[chamber['name']] = []
+            #results_dict[chamber['name']] = []
 
             for rothenberg_class in rothenberg_classes:
-                class_dict = {'class':rothenberg_class['name'], 'districts':[]}
+                rothenberg_class_dict = {'class':rothenberg_class['name'], 'districts':[]}
                 
                 districts = chamber_districts.filter(rothenberg_rating_id__in=rothenberg_class['values'])
                 #district_list =  [i.id for i in districts]
@@ -79,6 +80,8 @@ class Command(BaseCommand):
                     if district.pk in independent_districts:
                         party_list.append("I")
                     #print district, rothenberg_class
+                    
+                    ## just add 'is_general_candidate=True' here to filter once we've set this stuff. 
                     candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
                     for candidate in candidates:
                         if candidate.candidate_status in status_array:
@@ -93,13 +96,15 @@ class Command(BaseCommand):
                             district_result['results'].append(candidate)
                             
                             # class_dict
-                    class_dict['districts'].append(district_result)
-                results_dict[chamber['name']].append(class_dict)
+                    rothenberg_class_dict['districts'].append(district_result)
+                chamber_results['rothenberg_classes'].append(rothenberg_class_dict)
+            results.append({'chamber':chamber['name'] , 'results':chamber_results})
+            
 
-        print results_dict             
+        print results             
                             
                             
-        c = Context({"update_time": update_time, "results":results_dict})
+        c = Context({"update_time": update_time, "results":results})
         this_template = get_template('generated_pages/overview_results.html')
         result = this_template.render(c)
         template_path = PROJECT_ROOT + "/templates/generated_pages/overview_results_include.html"
