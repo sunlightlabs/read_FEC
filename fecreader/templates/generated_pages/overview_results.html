@@ -8,10 +8,11 @@
 
 		<div style="clear:both;">
 		</div>
+	<div><p>Races are shown by how competitive the Rothenberg Political Report rates them. To see district level results expand the section by clicking on the 'Show all district results' link. <a href="#chamber-H">Jump to House results</a></p>
 		
 	{% include "includes/overview_nav.html" %}
 	{% for this_chamber in results %}
-		<div class="overviewBar withNav withTip" id="positive">
+		<div class="overviewBar withNav withTip" id="chamber-{{ this_chamber.chamber }}">
 			<h4>{{ this_chamber.chamber }} results </h4>
 		</div>
 		<div class="module">  
