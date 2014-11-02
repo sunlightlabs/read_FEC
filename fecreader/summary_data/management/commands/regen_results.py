@@ -23,7 +23,7 @@ from summary_data.models import Committee_Overlay, Candidate_Overlay, District
 
 
 status_array = CANDIDATE_STATUS_DICT.keys()
-chambers = [{'name':'House', 'value':'H'}, {'name':'Senate', 'value':'S'}]
+chambers = [{'name':'Senate', 'value':'S'}, {'name':'House', 'value':'H'}]
 
 rothenberg_classes = [
 {'id':1,'name':'Safe Democrat, Democrat Favored', 'values':[4,5], 'assigned_party':'D', 'display':'none'},
