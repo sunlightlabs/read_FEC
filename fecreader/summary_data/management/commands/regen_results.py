@@ -3,7 +3,7 @@ from django.template import Template
 from django.template.loader import get_template
 from django.template import Context
 from django.conf import settings
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 
 from datetime import datetime, date
 
@@ -60,8 +60,8 @@ class Command(BaseCommand):
             chamber_results = {'chamber':chamber['name'], 'rothenberg_classes':[]}
             
             if chamber['value'] == 'S':
-                # there are 3 class 3 special elections here too, I believe... 
-                chamber_districts = chamber_districts.filter(term_class=2)
+                # there are 3 class 3 special elections here too, I believe: SC (graham's seat); hawaii, oklahoma
+                chamber_districts = chamber_districts.filter(Q(term_class=2)|Q(district__pk__in=[1003, 1053]))
                 
             #results_dict[chamber['name']] = []
 
