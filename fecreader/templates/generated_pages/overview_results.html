@@ -20,7 +20,7 @@
 			<div class="overviewBar withNav withTip" id="positive">
 				<h4>{{ rothenberg_class.class }}</h4>
 			</div>
-			<div><a href="#" class="toggler" data-groupid="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}">{% ifequal rothenberg_class.display 'none' %}Show results{% else %}Hide results{% endifequal %}</a></div>
+			<div><a href="#" class="toggler" data-groupid="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}">{% ifequal rothenberg_class.display 'none' %}- Show all district results{% else %}+ Hide all district results{% endifequal %}</a></div>
 			
 			<div id="{{ this_chamber.chamber }}-{{ rothenberg_class.id }}" style="display:{{rothenberg_class.display}}">
 			<b>Districts</b><br>
@@ -28,7 +28,9 @@
 			
 			
 				<div id="">
+					<div>
 					<h3><a href={{district.district.get_absolute_url}}>{{ district.district.state }} {% ifequal district.district.office 'H' %}House {{ district.district.office_district}}{% else %}Senate{% endifequal %}</a>  {% if district.district.open_seat %}(OPEN SEAT){% endif %} </h3>
+					</div>
 					
 					<b>Incumbent: {{ district.district.incumbent_name }} ({{ district.district.incumbent_party}}) </b>
 
@@ -78,9 +80,9 @@ $('a.toggler').click(function(ev) {
 	$("#" + groupId).toggle(200);
 	
 	if (is_displayed) {
-		$(this).html("Show results");
+		$(this).html("- Show all district results");
 	} else {
-		$(this).html("Hide results");
+		$(this).html("+ Hide all district results");
 	}
 		
 
