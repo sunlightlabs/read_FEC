@@ -73,6 +73,9 @@ class Command(BaseCommand):
                 print "Handling rothenberg id = %s for chamber = %s" % (rothenberg_class['name'], chamber['name'])
                 
                 
+                num_seats_in_class = len(districts)
+                victors = {'D':0, 'R':0, 'I':0}
+                
                 for district in districts:
                     district_result = {'district':district, 'results':[]}
                     #print "handling %s" % district
@@ -82,21 +85,33 @@ class Command(BaseCommand):
                     #print district, rothenberg_class
                     
                     ## just add 'is_general_candidate=True' here to filter once we've set this stuff. 
-                    candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
+                    # candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
+                    candidates = all_candidates.filter(district=district, is_general_candidate=True).exclude(not_seeking_reelection=True)
+                    
+                    candidate_winners = 0
                     for candidate in candidates:
-                        if candidate.candidate_status in status_array:
+                        
+                        if not candidate.party:
                             pass
-                            #print "losing candidate: %s candidate: %s - %s" % (district, candidate, candidate.show_candidate_status())
-                        elif not candidate.party:
-                            pass
-                            #print "has a party %s candidate: %s party=%s- %s" % (district, candidate, candidate.party, candidate.show_candidate_status())
-                        elif candidate.party in party_list:
-                            #print "General contestant: %s, %s" % (candidate, candidate.party)
-                            candidate.is_general_candidate = True
-                            district_result['results'].append(candidate)
                             
-                            # class_dict
+                        elif candidate.party in party_list:
+                            district_result['results'].append(candidate)
+                        
+                        if candidate.cand_is_gen_winner:
+                            
+                            victors[candidate.party] = victors[candidate.party] + 1
+                            candidate_winners += 1
+                            if candidate_winners > 1:
+                                print "***** MORE THAN ONE WINNING CANDIDATE FOUND **** %s" % (district)
+                            
                     rothenberg_class_dict['districts'].append(district_result)
+                    
+                
+                
+                reformatted_victors = ['Democrats: '+str(victors['D']), 'Republicans: '+str(victors['R']),'Independents: '+str(victors['I'])]
+                rothenberg_class_dict['victors'] = reformatted_victors 
+                rothenberg_class_dict['num_seats']= num_seats_in_class
+                # add stats about this class of districts
                 chamber_results['rothenberg_classes'].append(rothenberg_class_dict)
             results.append({'chamber':chamber['name'] , 'results':chamber_results})
             
