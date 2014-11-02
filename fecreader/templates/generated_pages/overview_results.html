@@ -28,7 +28,7 @@
 			
 				<div id="">
 					<div>
-					<h2><a href={{district.district.get_absolute_url}}>{{ district.district.state }} {% ifequal district.district.office 'H' %}House {{ district.district.office_district}}{% else %}Senate{% endifequal %}</a>  {% if district.district.open_seat %}(OPEN SEAT){% endif %} </h2>
+					<h4><a href={{district.district.get_absolute_url}}>{{ district.district.state }} {% ifequal district.district.office 'H' %}House {{ district.district.office_district}}{% else %}Senate{% endifequal %}</a>  {% if district.district.open_seat %}(OPEN SEAT){% endif %} </h4>
 					</div>
 					
 					<b>Incumbent: {{ district.district.incumbent_name }} ({{ district.district.incumbent_party}}) </b>
