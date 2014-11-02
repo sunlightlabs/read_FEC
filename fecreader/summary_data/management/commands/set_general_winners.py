@@ -9,6 +9,9 @@ from summary_data.models import Committee_Overlay, Candidate_Overlay, District
 
 
 status_array = CANDIDATE_STATUS_DICT.keys()
+status_array.append('D')
+status_array.append('R')
+
 chambers = [{'name':'House', 'value':'H'}, {'name':'Senate', 'value':'S'}]
 
 rothenberg_classes = [
@@ -63,6 +66,8 @@ class Command(BaseCommand):
                         if candidate.candidate_status in status_array:
                             pass
                             #print "losing candidate: %s candidate: %s - %s" % (district, candidate, candidate.show_candidate_status())
+                            candidate.is_general_candidate = False
+                            candidate.save()
                         elif not candidate.party:
                             pass
                             #print "has a party %s candidate: %s party=%s- %s" % (district, candidate, candidate.party, candidate.show_candidate_status())
@@ -91,21 +96,5 @@ class Command(BaseCommand):
                                 candidate.cand_is_gen_winner = True
                                 candidate.save()
                     
-                    # Get probable winner:
-                        
-                    
-                
-            #  Is this candidate a winner in the general election?
-            # cand_is_gen_winner = models.NullBooleanField(null=True)
 
-            #  Are they in the general election ? 
-            # is_general_candidate = models.NullBooleanField(null=True)
-"""
-
-d = District.objects.filter(office='H')
-
-rothenberg_rating_id, rothenberg_rating_text,
-
-"""
-            
             
