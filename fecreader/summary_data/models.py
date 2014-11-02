@@ -103,7 +103,7 @@ class District(models.Model):
             
     def __unicode__(self):
         if self.office == 'S':
-            return "%s Sen." % (self.state)
+            return "%s Sen. (%s)" % (self.state, self.term_class)
         elif self.office== 'H':
             if self.office_district:
                 return "%s-%s (House)" % (self.state, self.office_district)
