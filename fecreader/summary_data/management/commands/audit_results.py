@@ -71,10 +71,24 @@ def run_districts(district_queryset, queryset_name):
         if victors > 1:
             print "WARN: More than one winner for %s - %s" % (district, district.rothenberg_rating_text)
             too_many_winners += 1
+            print "\t\tMarking this race as undecided until this is fixed!!!"
+            district.general_is_decided = False
+            district.save()
     
         if numcandidates > 2:
             print "WARN: more than two candidates found for  %s - %s" % (district, district.rothenberg_rating_text)
             too_many_candidates += 1
+        
+        # now clean up the district -- mark that it's decided 
+        if victors==1:
+            district.general_is_decided = True
+            district.save()
+            for candidate in Candidate_Overlay.objects.filter(district=district):
+                if not candidate.cand_is_gen_winner:
+                    candidate.cand_is_gen_winner = False
+                    candidate.save()
+        
+        
     print "\n\n---------------\n"
     print "Summary of %s " % (queryset_name)
     print "%s districts with no winner" % (unresolved)
