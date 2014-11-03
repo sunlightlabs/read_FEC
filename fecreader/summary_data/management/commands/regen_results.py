@@ -116,7 +116,9 @@ class Command(BaseCommand):
             results.append({'chamber':chamber['name'] , 'results':chamber_results})
             
 
-        print results             
+        print results
+        
+                     
                             
                             
         c = Context({"update_time": update_time, "results":results})
@@ -126,3 +128,24 @@ class Command(BaseCommand):
         output = open(template_path, 'w')
         output.write(result)
         output.close()
+        
+        # write a simpler file that ignores rothenberg ratings entirely and just sorts by race.
+        house = []
+        senate = []
+        
+        print "Now flattening result"
+        
+        senate_results = results[0]['results']['rothenberg_classes']
+        house_results = results[1]['results']['rothenberg_classes']
+
+        for sen in senate_results:
+            for d in sen['districts']:
+                senate.append(d)
+            
+        for hou in house_results:
+            for d in hou['districts']:
+                print "d: " + d
+                house.append(d)
+        
+        print "House: %s" % house
+        print "senate: %s" % senate
