@@ -215,12 +215,12 @@ function read_data(text) {
    
    // Add day at the end
    var displayendDate = new Date();
-   displayendDate.setDate(maxDate.getDate() + 1); 
+   displayendDate.setDate(maxDate.getDate() + 2); 
    
    
    
    x.domain([minDate, displayendDate ]);            
-   y.domain([0, maxValue + 100000]);
+   y.domain([0, maxValue + 1000000]);
    
    /*
     * Creating Axes and Gridlines (innerTick)
