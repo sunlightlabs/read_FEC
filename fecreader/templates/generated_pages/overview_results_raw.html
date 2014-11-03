@@ -19,34 +19,34 @@
 					<h4><a href={{district.district.get_absolute_url}}>{{ district.district.state }} {% ifequal district.district.office 'H' %}House {{ district.district.office_district}}{% else %}Senate{% endifequal %}</a>  {% if district.district.open_seat %}(OPEN SEAT){% endif %} </h4>
 					</div>
 					
-					<b>Incumbent: {{ district.district.incumbent_name }} ({{ district.district.incumbent_party}}) </b>
+					<b>Rothenberg Rating: {{ district.district.rothenberg_rating_text }}  Incumbent: {{ district.district.incumbent_name }} ({{ district.district.incumbent_party}}) </b>
 
 				  <table id="mainPageTable">
 				              <thead>
 				                    <tr id="titles">                      
 				                        <th>Name (Party)</th>
-				                        <th>Incumbent</th>
-																<th>Not seeking reelection</th>
 				                        <th>Primary Status</th>
 				                        <th>Is general candidate</th>
-				                        <th>Is general winner</th>
+				                        <th>Is general winner</th>				
+				                        <th>Incumbent</th>
+																<th>Not seeking reelection</th>
 				                    </tr>
 				                </thead>
 				                <tbody>
 												{% for object in district.results %}
 				                <tr class="{% cycle 'odd' 'even' %}" id="{{ object.rothenberg_rating_id}}">
 				                    <td>{% if object.cand_is_gen_winner %}*{% endif %}<a href="{{ object.get_absolute_url }}" class="link">{{ object.name }} ({{object.party}})</a></td>
-				                    <td>{{ object.incumbency_status }}</td>
-														<td>{{ object.not_seeking_reelection }}</td>
 				                    <td>{{ object.candidate_status  }} - {{ object.show_candidate_status }}</td>
 				                    <td>{{ object.is_general_candidate }}</td>
 				                    <td>{{ object.cand_is_gen_winner }}</td>
+				                    <td>{{ object.incumbency_status }}</td>
+														<td>{{ object.not_seeking_reelection }}</td>
+
 				                   
 				                    </tr>
 				                {% endfor %}
 				  </table>
 				</div>  
-		</div>		
 		{% endfor %}
 
 		</div>
