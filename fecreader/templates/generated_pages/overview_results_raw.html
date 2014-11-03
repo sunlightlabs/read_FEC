@@ -8,18 +8,17 @@
 
 		<div style="clear:both;">
 		</div>
-	<div><p>Jump to <a href="#house">house results</a>.</p>
+	<div>
 	{% include "includes/overview_nav.html" %}
 
+<p>Jump to <a href="#house">house results</a>.</p>
 
-
+	<div id="senate">
+		<div class="overviewBar withNav withTip" id="positive">
+			<h4>Senate</h4>
+		</div>
 			{% for district in senate %}
 			
-			
-				<div id="senate">
-					<div class="overviewBar withNav withTip" id="positive">
-						<h4>Senate</h4>
-					</div>
 					
 					<div>
 					<h4><a href={{district.district.get_absolute_url}}>{{ district.district.state }} {% ifequal district.district.office 'H' %}House {{ district.district.office_district}}{% else %}Senate{% endifequal %}</a>  {% if district.district.open_seat %}(OPEN SEAT){% endif %} </h4>
@@ -52,17 +51,15 @@
 				                    </tr>
 				                {% endfor %}
 				  </table>
-				</div>  
 		{% endfor %}
+		</div>  
+
 		
+		<div id="house">
+			<div class="overviewBar withNav withTip" id="positive">
+				<h4>House</h4>
+			</div>
 			{% for district in house %}
-			
-			
-				<div id="house">
-					<div class="overviewBar withNav withTip" id="positive">
-						<h4>House</h4>
-					</div>
-					
 					<div>
 					<h4><a href={{district.district.get_absolute_url}}>{{ district.district.state }} {% ifequal district.district.office 'H' %}House {{ district.district.office_district}}{% else %}Senate{% endifequal %}</a>  {% if district.district.open_seat %}(OPEN SEAT){% endif %} </h4>
 					</div>
@@ -94,8 +91,8 @@
 				                    </tr>
 				                {% endfor %}
 				  </table>
-				</div>  
 		{% endfor %}
+		</div>  
 
 		
 		</div>
