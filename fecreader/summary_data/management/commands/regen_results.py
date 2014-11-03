@@ -151,3 +151,11 @@ class Command(BaseCommand):
         
         print "House: %s" % str(house)
         print "senate: %s" % str(senate)
+        
+        c = Context({"update_time": update_time, "house":house, "senate":senate})
+        this_template = get_template('generated_pages/overview_results_raw.html')
+        result = this_template.render(c)
+        template_path = PROJECT_ROOT + "/templates/generated_pages/overview_results_raw_include.html"
+        output = open(template_path, 'w')
+        output.write(result)
+        output.close()
