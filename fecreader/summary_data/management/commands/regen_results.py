@@ -147,5 +147,5 @@ class Command(BaseCommand):
                 print "d: " + d
                 house.append(d)
         
-        print "House: %s" % house
-        print "senate: %s" % senate
+        print "House: %s" % str(house)
+        print "senate: %s" % str(senate)
