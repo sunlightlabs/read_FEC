@@ -57,7 +57,7 @@ def run_district(district):
     
     if victors==0:
         print "WARN: No winner for %s" % district
-    if victors > 0:
+    if victors > 1:
         print "WARN: More than one winner for %s" % district
     
     if numcandidates > 2:
