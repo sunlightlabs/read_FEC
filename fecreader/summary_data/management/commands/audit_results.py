@@ -36,32 +36,53 @@ rothenberg_classes = [
 
 independent_districts = [i['district_id'] for i in COMPETITIVE_INDEPENDENTS]
 
-def run_district(district):
-    #print "handling %s" % district
-    party_list = ['D', 'R']
-    if district.pk in independent_districts:
-        party_list.append("I")
-    #print district, rothenberg_class
+def run_districts(district_queryset, queryset_name):
+    print "handling %s" % (queryset_name)
+    unresolved = 0
+    too_many_winners = 0
+    too_many_candidates = 0
     
-    ## just add 'is_general_candidate=True' here to filter once we've set this stuff. 
-    # candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
-    candidates = all_candidates = Candidate_Overlay.objects.filter(district=district, is_general_candidate=True, party__in=party_list).exclude(not_seeking_reelection=True)
+
+    for district in district_queryset:
+        
+        
+        #print "handling %s" % district
+        party_list = ['D', 'R']
+        if district.pk in independent_districts:
+            party_list.append("I")
+        #print district, rothenberg_class
     
-    candidate_winners = 0
-    victors = 0
-    numcandidates = 0 
-    for candidate in candidates:
-        numcandidates += 1
-        if candidate.cand_is_gen_winner:                    
-            victors += 1
+        ## just add 'is_general_candidate=True' here to filter once we've set this stuff. 
+        # candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
+        candidates = all_candidates = Candidate_Overlay.objects.filter(district=district, is_general_candidate=True, party__in=party_list).exclude(not_seeking_reelection=True)
     
-    if victors==0:
-        print "WARN: No winner for %s - %s" % (district, district.rothenberg_rating_text)
-    if victors > 1:
-        print "WARN: More than one winner for %s - %s" % (district, district.rothenberg_rating_text)
+        candidate_winners = 0
+        victors = 0
+        numcandidates = 0 
+        for candidate in candidates:
+            numcandidates += 1
+            if candidate.cand_is_gen_winner:                    
+                victors += 1
     
-    if numcandidates > 2:
-        print "WARN: more than two candidates found for  %s - %s" % (district, district.rothenberg_rating_text)
+                
+        if victors==0:
+            print "WARN: No winner for %s - %s" % (district, district.rothenberg_rating_text)
+            unresolved += 1
+        if victors > 1:
+            print "WARN: More than one winner for %s - %s" % (district, district.rothenberg_rating_text)
+            too_many_winners += 1
+    
+        if numcandidates > 2:
+            print "WARN: more than two candidates found for  %s - %s" % (district, district.rothenberg_rating_text)
+            too_many_candidates += 1
+    print "\n\n---------------\n"
+    print "Summary of %s " % (queryset_name)
+    print "%s districts with no winner" % (unresolved)
+    print "%s districts with more than 1 winner" % (too_many_winners)
+    print "%s districts with more than two general candidates--this may be legitimate, but usually aren't" % (too_many_candidates)
+    print "\n---------------\n"
+    
+    
 
 class Command(BaseCommand):
     help = "Set general election status"
@@ -80,13 +101,8 @@ class Command(BaseCommand):
         
         results = []
         
-
-
-        for district in senate_districts:
-            run_district(district)
-        
-        for district in house_districts:
-            run_district(district)
+        run_districts(senate_districts, 'SENATE')        
+        run_districts(house_districts, 'HOUSE')
 
 
                                        
