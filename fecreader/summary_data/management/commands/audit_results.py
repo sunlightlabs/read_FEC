@@ -36,6 +36,33 @@ rothenberg_classes = [
 
 independent_districts = [i['district_id'] for i in COMPETITIVE_INDEPENDENTS]
 
+def run_district(district):
+    #print "handling %s" % district
+    party_list = ['D', 'R']
+    if district.pk in independent_districts:
+        party_list.append("I")
+    #print district, rothenberg_class
+    
+    ## just add 'is_general_candidate=True' here to filter once we've set this stuff. 
+    # candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
+    candidates = all_candidates = Candidate_Overlay.objects.filter(district=district, is_general_candidate=True, party__in=party_list).exclude(not_seeking_reelection=True)
+    
+    candidate_winners = 0
+    victors = 0
+    numcandidates = 0 
+    for candidate in candidates:
+        numcandidates += 1
+        if candidate.cand_is_gen_winner:                    
+            victors += 1
+    
+    if victors==0:
+        print "WARN: No winner for %s" % district
+    if victors > 0:
+        print "WARN: More than one winner for %s" % district
+    
+    if numcandidates > 2:
+        print "WARN: more than two candidates found for %s" % district
+
 class Command(BaseCommand):
     help = "Set general election status"
     requires_model_validation = False
@@ -48,38 +75,19 @@ class Command(BaseCommand):
         
         
         # if there's an existing candidate status, they didn't win. 
-        all_candidates = Candidate_Overlay.objects.all()
-        all_districts = District.objects.all().order_by('office', 'office_district')
+        house_districts = District.objects.filter(office='H').order_by('office', 'office_district')
+        senate_districts = chamber_districts = District.objects.filter(office='S').filter(Q(term_class=2)|Q(id__in=[1003, 1053, 1061]))
         
         results = []
         
 
 
-        for district in all_districts:
-            #print "handling %s" % district
-            party_list = ['D', 'R']
-            if district.pk in independent_districts:
-                party_list.append("I")
-            #print district, rothenberg_class
-            
-            ## just add 'is_general_candidate=True' here to filter once we've set this stuff. 
-            # candidates = all_candidates.filter(district=district).exclude(not_seeking_reelection=True)
-            candidates = all_candidates.filter(district=district, is_general_candidate=True, party__in=party_list).exclude(not_seeking_reelection=True)
-            
-            candidate_winners = 0
-            victors = 0
-            numcandidates = 0 
-            for candidate in candidates:
-                numcandidates += 1
-                if candidate.cand_is_gen_winner:                    
-                    victors += 1
-            
-            if victors==0:
-                print "WARN: No winner for %s" % district
-            if victors > 0:
-                print "WARN: More than one winner for %s" % district
-            
-            if numcandidates > 2:
-                print "WARN: more than two candidates found for %s" % district
+        for district in senate_districts:
+            run_district(district)
+        
+        for district in house_districts:
+            run_district(district)
+
+
                                        
             
