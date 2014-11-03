@@ -29,6 +29,7 @@ est=pytz.timezone('US/Eastern')
 
 
 def get_local_time(utc_time):
+    
     return utc_time.astimezone(est).replace(tzinfo=None)
 
 def enter_filing(data_hash):
@@ -42,16 +43,29 @@ def enter_filing(data_hash):
         print "entering %s %s" % (data_hash['filing_number'], data_hash['committee_id'])
         is_superpac=False
         
-        thisobj = new_filing.objects.create(
-            is_superpac = is_superpac,
-            #related_committee = related_committee,
-            fec_id = data_hash['committee_id'],
-            committee_name = data_hash['committee_name'],
-            filing_number = data_hash['filing_number'],
-            form_type = data_hash['form_type'],
-            filed_date = get_local_time(data_hash['filed_date']),
-            process_time = get_local_time(data_hash['filed_date']),
-        )
+        try:
+            thisobj = new_filing.objects.create(
+                is_superpac = is_superpac,
+                #related_committee = related_committee,
+                fec_id = data_hash['committee_id'],
+                committee_name = data_hash['committee_name'],
+                filing_number = data_hash['filing_number'],
+                form_type = data_hash['form_type'],
+                filed_date = get_local_time(data_hash['filed_date']),
+                process_time = get_local_time(data_hash['filed_date']),
+            )
+        except pytz.exceptions.AmbiguousTimeError:
+            thisobj = new_filing.objects.create(
+                is_superpac = is_superpac,
+                #related_committee = related_committee,
+                fec_id = data_hash['committee_id'],
+                committee_name = data_hash['committee_name'],
+                filing_number = data_hash['filing_number'],
+                form_type = data_hash['form_type'],
+                filed_date = data_hash['filed_date'],
+                process_time = data_hash['filed_date'],
+            )
+        
         filing_created=True
         needs_saving=False
         try:
