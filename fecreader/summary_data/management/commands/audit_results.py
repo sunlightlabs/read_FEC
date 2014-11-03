@@ -56,12 +56,12 @@ def run_district(district):
             victors += 1
     
     if victors==0:
-        print "WARN: No winner for %s" % district
+        print "WARN: No winner for %s - %s" % (district, district.rothenberg_rating_text)
     if victors > 1:
-        print "WARN: More than one winner for %s" % district
+        print "WARN: More than one winner for %s - %s" % (district, district.rothenberg_rating_text)
     
     if numcandidates > 2:
-        print "WARN: more than two candidates found for %s" % district
+        print "WARN: more than two candidates found for  %s - %s" % (district, district.rothenberg_rating_text)
 
 class Command(BaseCommand):
     help = "Set general election status"
