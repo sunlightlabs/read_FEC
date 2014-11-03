@@ -774,7 +774,7 @@ def contrib_comparison(request, race_list, blog_or_feature):
             'blog_or_feature':blog_or_feature,
             'partisan_colors':partisan_colors,
             'data_source': '/static/data/weekly_superpac_donations.csv',
-            'period_description':'cycle through date shown',
+            'period_description':'previous seven days',
             'start_month':5,
             'start_year':2014,
             }, 
