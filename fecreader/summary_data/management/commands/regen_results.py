@@ -146,8 +146,8 @@ class Command(BaseCommand):
             for d in hou['districts']:
                 house.append(d)
         
-        house.sort(key=lambda x: x['district'])
-        senate.sort(key=lambda x: x['district'])
+        house.sort(key=lambda x: x['district'].__unicode__())
+        senate.sort(key=lambda x: x['district'].__unicode__())
         
         print "House: %s" % str(house)
         print "senate: %s" % str(senate)
