@@ -144,7 +144,6 @@ class Command(BaseCommand):
             
         for hou in house_results:
             for d in hou['districts']:
-                print "d: " + d
                 house.append(d)
         
         print "House: %s" % str(house)
