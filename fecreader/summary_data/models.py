@@ -460,6 +460,16 @@ class Committee_Overlay(models.Model):
                                    ('Y', 'Qualified Party'),
                                    ('Z', 'National Party Organization') ])  
 
+    
+    # roi stuff
+    support_unclassified = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    oppose_unclassified = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    support_winners = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    oppose_winners = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    support_losers = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    oppose_losers = models.DecimalField(max_digits=19, decimal_places=2, null=True)
+    
+    
     # make nulls sort last
     objects = models.Manager()
     nulls_last_objects = NullsLastManager()
@@ -866,6 +876,6 @@ class roi_pair(models.Model):
     candidate = models.ForeignKey('Candidate_Overlay')
     support_oppose = models.CharField(max_length=1, 
                                        choices=(('S', 'Support'), ('O', 'Oppose'))
-                                       )
+                                       )    
     total_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True) 
 
