@@ -58,10 +58,18 @@ function get_x_offset(x) {
 	}
 
 function get_y_offset(y) {
-	if (y <  tooltipheight ) {
-		return y + tooltipheight;
+    
+    current_tooltipheight = tooltipheight;
+    if (tooltip_is_shrunk) {
+        current_tooltipheight = tooltipheight;
+    } else {
+        current_tooltipheight = expanded_tooltipheight;        
+    }
+    
+	if (y <  current_tooltipheight ) {
+		return y + current_tooltipheight;
 	} else {
-		return y - tooltipheight;
+		return y - current_tooltipheight;
 		}
 	}
 
@@ -350,8 +358,8 @@ d3.json(window.jsonURL, function(error, s) {
         styles = s;
 
         // grab the data as text, we'll parse the rows out later
-        d3.text("/static/data/competitive_senate_seats_weekly.csv", read_data);
-        //d3.text("/static/realtimefec/js/competitive_senate_seats_weekly.csv", read_data);
+        //d3.text("/static/data/competitive_senate_seats_weekly.csv", read_data);
+        d3.text("/static/realtimefec/js/competitive_senate_seats_weekly.csv", read_data);
         
         
 
