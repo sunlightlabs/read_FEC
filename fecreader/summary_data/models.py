@@ -59,6 +59,9 @@ class District(models.Model):
     
     district_notes = models.TextField(null=True, blank=True, help_text="Mostly intended to note special elections, but...")
     
+    
+    general_is_decided = models.NullBooleanField(default=False, null=True, help_text="Has the general election been decided? If so all the candidates who aren't the winner can be considered the loser. This is for the November 2014 election (or later for GA, LA); not a special (except the specials held in Nov. 2014)")
+    
     def get_district_fips(self):
         if self.office == 'S':
             return None
