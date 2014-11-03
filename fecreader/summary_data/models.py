@@ -859,3 +859,13 @@ class DistrictWeekly(models.Model):
     # make nulls sort last
     objects = models.Manager()
     nulls_last_objects = NullsLastManager()
+
+# this is like PAC_Candidate, but is only for general election ies to be used for the ROI stuff
+class roi_pair(models.Model):
+    committee = models.ForeignKey('Committee_Overlay')
+    candidate = models.ForeignKey('Candidate_Overlay')
+    support_oppose = models.CharField(max_length=1, 
+                                       choices=(('S', 'Support'), ('O', 'Oppose'))
+                                       )
+    total_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True) 
+
