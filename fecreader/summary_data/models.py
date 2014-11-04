@@ -325,11 +325,11 @@ class Candidate_Overlay(models.Model):
 
     def get_general_status(self):
         if self.cand_is_gen_winner==None and self.is_general_candidate:
-            return "Election not decided"
+            return "Not decided"
         elif self.cand_is_gen_winner and self.is_general_candidate:
-            return "Won General Election"
+            return "Won General"
         elif not self.cand_is_gen_winner and self.is_general_candidate:
-            return "Lost General Election"
+            return "Lost General"
         elif not self.is_general_candidate:
             return "Not a general candidate"
         else:
