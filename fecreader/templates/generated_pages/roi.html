@@ -73,92 +73,22 @@ $("#" + groupId).slideToggle();
             <th scope="col">Office</th>
             <th scope="col">Amount</th>
             <th scope="col">Result</th>
-            <th class="success">Success</th>      
+            <th scope="col">Success</th>      
 
             </tr>
         </thead>
         <tbody>
 
-            <tr>
-                <td>Oppose</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/land-terri-lynn/S4MI00363/">LAND, TERRI LYNN (R)</a></td>
-                <td>US Sen. (MI)</td>
-                <td>$2,895,566</td> 
-                <td>Won primary</td>  
-                <td class="verdict"><span class="success">success</span></td>               
+            	{% for candidate in object.ge %}
+							<tr>
+                <td>{{ ge.show_support_oppose }}</td>
+                <td><a target="_null" href="{{ ge.candidate.get_absolute_url}}">{{ ge.candidate.name}} {{ge.candidate.display_party }} </a></td>
+                <td>{{ge.candidate.detailed_office}}</td>
+                <td>${{ ge.total_ind_exp|floatformat:"0"|intcomma}}</td> 
+                <td></td>  
+                <td class="verdict">{% ifequal }<span class="success">success</span></td>               
             </tr>
-
-            <tr>
-                <td>Oppose</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/tillis-thom-r/S4NC00162/">TILLIS, THOM R (R)</a></td>
-                <td>US Sen. (NC)</td>
-                <td>$2,411,072</td> 
-                <td>Won primary</td>  
-                <td class="verdict"><span class="success">success</span></td>               
-            </tr>
-
-            <tr>
-                <td>Oppose</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/cassidy-william/S4LA00107/">CASSIDY, WILLIAM (R)</a></td>
-                <td>US Sen. (LA)</td>
-                <td>$1,907,085</td> 
-                <td>Won primary</td>  
-                <td class="verdict"><span class="success">success</span></td>               
-            </tr>
-
-            <tr>
-                <td>Oppose</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/gardner-cory/S4CO00395/">GARDNER, CORY (R)</a></td>
-                <td>US Sen. (CO)</td>
-                <td>$1,446,507</td> 
-                <td>Won primary</td> 
-                <td class="verdict"><span class="success">success</span></td>               
-            </tr>
-
-            <tr>
-                <td>Support</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/hagan-kay-r/S8NC00239/">HAGAN, KAY R (D)</a></td>
-                <td>US Sen. (NC)</td>
-                <td>$1,408,654</td> 
-                <td>Won primary</td>  
-                <td class="verdict"><span class="success">success</span></td>               
-            </tr>
-
-            <tr>
-                <td>Oppose</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/brown-scott/S4NH00120/">BROWN, SCOTT (R)</a></td>
-                <td>US Sen. (NH)</td>
-                <td>$1,031,912</td> 
-                <td>Won primary</td> 
-                <td class="verdict"><span class="success">success</span></td>               
-            </tr>
-
-            <tr>
-                <td>Oppose</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/cotton-thomas/S4AR00103/">COTTON, THOMAS (R)</a></td>
-                <td>US Sen. (AR)</td>
-                <td>$1,018,528</td> 
-                <td>Won primary</td>  
-                <td class="verdict"><span class="failure">failure</span></td>               
-            </tr>
-
-            <tr>
-                <td>Support</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/braley-bruce-l/S4IA00087/">BRALEY, BRUCE L (D)</a></td>
-                <td>US Sen. (IA)</td>
-                <td>$549,164</td> 
-                <td>Won primary</td> 
-                <td class="verdict"><span class="success">success</span></td>               
-            </tr>
-
-            <tr>
-                <td>Oppose</td>
-                <td><a href="http://realtime.influenceexplorer.com/candidate/mcconnell-mitch/S2KY00012/">MCCONNELL, MITCH (R)</a></td>
-                <td>US Sen. (KY)</td>
-                <td>$339,906</td> 
-                <td>Won primary</td>
-                <td class="verdict"><span class="success">success</span></td>               
-            </tr>
+						{% endfor %}
 
         </tbody>
 

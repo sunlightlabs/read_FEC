@@ -894,4 +894,12 @@ class roi_pair(models.Model):
                                        choices=(('S', 'Support'), ('O', 'Oppose'))
                                        )    
     total_ind_exp = models.DecimalField(max_digits=19, decimal_places=2, null=True) 
-
+    
+    def show_support_oppose(self):
+        if upper(self.support_oppose)=='S':
+            return 'Support'
+        elif upper(self.support_oppose)=='O':
+            return 'Oppose'
+        else:
+            return 'Unknown'
+    

@@ -25,7 +25,12 @@ class Command(BaseCommand):
         update_time = datetime.now()
         
         outside_spenders = Committee_Overlay.objects.filter(total_indy_expenditures__gt=0).order_by('-total_indy_expenditures')[:20]
-    
+        
+        for os in outside_spenders:
+            # ATTACH LINE ITEMS;
+            ge_spending = roi_pair.objects.filter(committee=os, total_ind_exp__gte=50000).select_related('candidate').order_by('-total_ind_exp')
+            os.ge = ge_spending
+        
         c = Context({"update_time": update_time, "outside_spenders":outside_spenders})
         this_template = get_template('generated_pages/roi.html')
         result = this_template.render(c)
