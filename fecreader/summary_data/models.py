@@ -612,7 +612,7 @@ class Committee_Overlay(models.Model):
         return 0.0 + (self.support_unclassified or 0) +  (self.oppose_unclassified or 0)
     
     def get_ge_spending(self):
-        return 0.0 + (self.support_winners) +  (self.oppose_winners or 0) + (self.support_losers or 0) +  (self.oppose_losers or 0) )
+        return 0.0 + (self.support_winners) +  (self.oppose_winners or 0) + (self.support_losers or 0) +  (self.oppose_losers or 0) 
         
     def display_political_orientation(self):
         p = self.political_orientation
