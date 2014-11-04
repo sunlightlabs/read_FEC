@@ -28,9 +28,9 @@ chambers = [{'name':'Senate', 'value':'S'}, {'name':'House', 'value':'H'}]
 rothenberg_classes = [
 {'id':1,'name':'Safe Democrat, Democrat Favored', 'values':[4,5], 'assigned_party':'D', 'display':'none'},
 {'id':2,'name':'Lean Democrat', 'values':[3], 'assigned_party':'D', 'display':'none'},
-{'id':3,'name':'Toss-up/Tilt Democrat', 'values':[2], 'assigned_party':None, 'display':'block'},
-{'id':4,'name':'Tossup', 'values':[1], 'assigned_party':None, 'display':'block'},
-{'id':5,'name':'Toss-up/Tilt Republican', 'values':[6], 'assigned_party':None, 'display':'block'},
+{'id':3,'name':'Toss-up/Tilt Democrat', 'values':[2], 'assigned_party':None, 'display':'none'},
+{'id':4,'name':'Tossup', 'values':[1], 'assigned_party':None, 'display':'none'},
+{'id':5,'name':'Toss-up/Tilt Republican', 'values':[6], 'assigned_party':None, 'display':'none'},
 {'id':6,'name':'Lean Republican', 'values':[7], 'assigned_party':'R', 'display':'none'},
 {'id':7,'name':'Safe Republican, Republican Favored', 'values':[8,9], 'assigned_party':'R', 'display':'none'},
 ]
