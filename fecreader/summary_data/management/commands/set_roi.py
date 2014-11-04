@@ -42,14 +42,16 @@ class Command(BaseCommand):
             committee = Committee_Overlay.objects.get(fec_id=fec_id)
             
             
-            committee.support_winners = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=True,support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
-            committee.oppose_winners = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=True,support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total']
+            committee.support_winners = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=True,support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
+            committee.oppose_winners = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=True,support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
             
-            committee.support_losers = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=False,support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
-            committee.oppose_losers = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=False,support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total']
+            committee.support_losers = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=False,support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
+            committee.oppose_losers = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner=False,support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
             
-            committee.support_unclassified = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner__isnull=True,support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total']
-            committee.oppose_unclassified = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner__isnull=True,support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total']
+            committee.support_unclassified = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner__isnull=True,support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
+            committee.oppose_unclassified = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner__isnull=True,support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
+            
+            committee.roi = (committee.support_winners + committee.oppose_losers) / (committee.support_winners + committee.oppose_losers + committee.support_losers + committee.oppose_winners )
             
             committee.save()
            

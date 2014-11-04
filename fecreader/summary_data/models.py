@@ -469,6 +469,7 @@ class Committee_Overlay(models.Model):
     support_losers = models.DecimalField(max_digits=19, decimal_places=2, null=True)
     oppose_losers = models.DecimalField(max_digits=19, decimal_places=2, null=True)
     
+    roi = models.DecimalField(max_digits=19, decimal_places=2, null=True)
     
     # make nulls sort last
     objects = models.Manager()
@@ -483,6 +484,9 @@ class Committee_Overlay(models.Model):
             return self.curated_candidate.get_absolute_url()
         else:
             return None
+            
+    def total_unclassified(self):
+        return 0.0 + (self.support_unclassified or 0) +  (self.oppose_unclassified or 0)
 
     def curated_candidate_name(self):
         if self.curated_candidate:
