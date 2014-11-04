@@ -83,7 +83,7 @@ $("#" + groupId).slideToggle();
 							<tr>
                 <td>{{ ge.show_support_oppose }}</td>
                 <td><a target="_null" href="{{ ge.candidate.get_absolute_url}}">{{ ge.candidate.name}} {{ge.candidate.display_party }} </a></td>
-                <td><a target="_null" href"{{ ge.candidate.district.get_absolute_url}}">{{ge.candidate.detailed_office}}</td>
+                <td><a target="_null" href="{{ ge.candidate.district.get_absolute_url}}">{{ge.candidate.detailed_office}}</a></td>
                 <td>${{ ge.total_ind_exp|floatformat:"0"|intcomma}}</td> 
                 <td>{{ ge.candidate.get_general_status}}</td>  
                 <td class="verdict">{{ ge.verdict }}</td>               
