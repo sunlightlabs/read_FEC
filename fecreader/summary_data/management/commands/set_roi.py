@@ -51,7 +51,10 @@ class Command(BaseCommand):
             committee.support_unclassified = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner__isnull=True,support_oppose__iexact='S' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
             committee.oppose_unclassified = roi_pair.objects.filter(committee__fec_id=fec_id, candidate__cand_is_gen_winner__isnull=True,support_oppose__iexact='O' ).aggregate(total=Sum('total_ind_exp'))['total'] or 0
             
-            committee.roi = (committee.support_winners + committee.oppose_losers) / (committee.support_winners + committee.oppose_losers + committee.support_losers + committee.oppose_winners )
+            if ((committee.support_winners + committee.oppose_losers + committee.support_losers + committee.oppose_winners ) > 0):
+                committee.roi = (committee.support_winners + committee.oppose_losers) / (committee.support_winners + committee.oppose_losers + committee.support_losers + committee.oppose_winners )
+            else:
+                committee.roi = None
             
             committee.save()
            
