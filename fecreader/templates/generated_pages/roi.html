@@ -1,0 +1,163 @@
+{% load humanize %}
+{% load staticfiles %}
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="http://assets.sunlightfoundation.com/scripts/sorttable/sorttable.min.js"></script>
+<script>
+$(document).ready(function() {
+$('a.toggler').click(function(ev) {
+ev.preventDefault();
+var groupId = $(this).attr('data-groupid');
+$("#" + groupId).slideToggle();
+});
+});
+</script>
+
+
+
+{% for object in outside_spenders %}
+<div class="group">
+    
+    <h2 style="color: rgb(0, 102, 51); text-align: center; "><a href="{{object.get_absolute_url}}">{{object.name}}</a></h2>
+    <h2 style="text-align: center; "></h2>
+    <!-- <h3 style="text-align: center; ">Total primary/runoff spending: $13,021,696</h3> -->
+        <table class="roi-table summary">
+            <thead>
+                <tr>
+                    <th class="t-right">Total 2014 General Election Spending On Identifiable Candidates</th>
+                    <th class="t-left verdict">Percent Success <span class="success">success</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="t-right">$104,710,472</td>
+                    <td class="t-left"><strong>{{ object.get_formatted_roi }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+    <div id="shell" class="details">
+        <ul>
+            <li>
+                <strong>Positive General Election Spending</strong>
+                ${{ object.support_winners|intcomma}} spent supporting winners; ${{ object.support_winners|intcomma}} spent supporting losers; ${{ object.support_unclassified}} spent supporting candidates in undecided races.
+            </li>
+            <li>
+                <strong>Negative General Election Spending</strong>
+                ${{ object.oppose_winners|intcomma}} spent opposing winners; ${{ object.oppose_winners|intcomma}} spent opposing losers; ${{ object.oppose_unclassified}} spent opposing candidates in undecided races.
+            </li>
+
+        </ul>
+        <p style="text-align: center;">
+        See <a href="http://realtime.influenceexplorer.com/outside-spending/#?ordering=-expenditure_date_formatted&amp;filer_committee_id_number=C00484642">all independent expenditures this cycle</a> (including general election) made by SENATE MAJORITY PAC
+        </p>
+    </div>
+    <a class="toggler" data-groupid="{{ object.fec_id}}" href="#">Expand primary breakdown table</a>
+    <div id="{{ object.fec_id}}">
+        <p><small>Click headings to sort; only candidates targeted with $50,000 or more in independent expenditures are listed below.</small></p>
+        <table id="hor-minimalist-a" class="sortable roi-table">
+        <thead>
+            <tr>
+            <th scope="col">Support or oppose</th>
+
+            <th scope="col">Candidate</th>
+            <th scope="col">Office</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Result</th>
+            <th class="success">Success</th>      
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>Oppose</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/land-terri-lynn/S4MI00363/">LAND, TERRI LYNN (R)</a></td>
+                <td>US Sen. (MI)</td>
+                <td>$2,895,566</td> 
+                <td>Won primary</td>  
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+            <tr>
+                <td>Oppose</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/tillis-thom-r/S4NC00162/">TILLIS, THOM R (R)</a></td>
+                <td>US Sen. (NC)</td>
+                <td>$2,411,072</td> 
+                <td>Won primary</td>  
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+            <tr>
+                <td>Oppose</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/cassidy-william/S4LA00107/">CASSIDY, WILLIAM (R)</a></td>
+                <td>US Sen. (LA)</td>
+                <td>$1,907,085</td> 
+                <td>Won primary</td>  
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+            <tr>
+                <td>Oppose</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/gardner-cory/S4CO00395/">GARDNER, CORY (R)</a></td>
+                <td>US Sen. (CO)</td>
+                <td>$1,446,507</td> 
+                <td>Won primary</td> 
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+            <tr>
+                <td>Support</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/hagan-kay-r/S8NC00239/">HAGAN, KAY R (D)</a></td>
+                <td>US Sen. (NC)</td>
+                <td>$1,408,654</td> 
+                <td>Won primary</td>  
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+            <tr>
+                <td>Oppose</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/brown-scott/S4NH00120/">BROWN, SCOTT (R)</a></td>
+                <td>US Sen. (NH)</td>
+                <td>$1,031,912</td> 
+                <td>Won primary</td> 
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+            <tr>
+                <td>Oppose</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/cotton-thomas/S4AR00103/">COTTON, THOMAS (R)</a></td>
+                <td>US Sen. (AR)</td>
+                <td>$1,018,528</td> 
+                <td>Won primary</td>  
+                <td class="verdict"><span class="failure">failure</span></td>               
+            </tr>
+
+            <tr>
+                <td>Support</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/braley-bruce-l/S4IA00087/">BRALEY, BRUCE L (D)</a></td>
+                <td>US Sen. (IA)</td>
+                <td>$549,164</td> 
+                <td>Won primary</td> 
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+            <tr>
+                <td>Oppose</td>
+                <td><a href="http://realtime.influenceexplorer.com/candidate/mcconnell-mitch/S2KY00012/">MCCONNELL, MITCH (R)</a></td>
+                <td>US Sen. (KY)</td>
+                <td>$339,906</td> 
+                <td>Won primary</td>
+                <td class="verdict"><span class="success">success</span></td>               
+            </tr>
+
+        </tbody>
+
+
+        <tfoot></tfoot></table>
+        <a class="toggler" data-groupid="{{ object.fec_id}}" href="#">Collapse table</a>
+
+    </div>
+</div>
+{% endfor %}

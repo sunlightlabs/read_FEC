@@ -607,6 +607,9 @@ class Committee_Overlay(models.Model):
             return activity_rank[0][0]
         else:
             return ""
+    
+    def get_formatted_roi(self):
+        return str(self.roi*100) + "%"
         
     def display_political_orientation(self):
         p = self.political_orientation

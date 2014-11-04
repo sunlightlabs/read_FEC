@@ -1,0 +1,92 @@
+{% extends "datapages/iframe_base.html" %}
+{% load staticfiles %}
+
+{% block sitecss %}
+<style>
+
+
+body {
+font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+color:#635f5c;
+}
+a {
+    color: #78bcbf;
+}
+
+
+.group{ border-bottom: 1px dashed #CFCFCF;}
+#hor-minimalist-a {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 11px;
+background: #fff;
+width: 100%;
+border-collapse: collapse;
+text-align: left;
+}
+#hor-minimalist-a th {
+font-size: 12px;
+font-weight: bold;
+color: #58595B;
+padding: 11px 8px;
+border-bottom: 2px solid 457b80;
+vertical-align: bottom;
+}
+#hor-minimalist-a td {
+color: #58595B;
+padding: 9px 8px 0px 8px;
+}
+a.toggler {
+display: block;
+font-family: sans-serif;
+margin: 1em auto;
+text-align: center;
+text-decoration: none;
+padding: 8px 10px 5px;
+font-weight: bold;
+}
+
+table { margin-bottom: 3em; }
+thead { background-color: #eeefeb; }
+tr.odd { background-color: #eeefeb; }
+tr.even { background-color: #dfe0da; }
+.roi-table {margin: 0 auto 30px auto;}
+.roi-table.summary thead {background-color: inherit; }
+.roi-table.summary td { font-size: 24px;}
+.roi-table.summary th {font-weight: 200;}
+.roi-table.summary .verdict span {
+    margin: 0px 0 0 3px;
+    display: inline-block;
+}
+.t-right { text-align: right; padding-right: 20px;}
+.t-left {text-align: left;}
+.details {
+    padding: 30px;
+    background-color: #F8F8F8;
+}
+.details ul {
+    margin: 0;
+}
+.verdict span {
+    background: url(http://sunlightfoundation.com/static/img/api_status.png);
+    background-repeat: no-repeat;
+    display: block;
+    height: 18px;
+    width: 18px;
+    text-indent: -9999em;
+    text-align: center;
+    margin: 0 auto;
+}
+.verdict span.success{
+    background-position: top center;
+}
+.verdict span.failure{
+    background-position: bottom center;
+}
+</style>
+{% endblock sitecss %}
+
+{% block title %}2013-14 Cycle Return on Investment{% endblock title %}
+
+{% block rtmain_generated %}
+{% include "generated_pages/roi_include.html" %}
+{% endblock %}
