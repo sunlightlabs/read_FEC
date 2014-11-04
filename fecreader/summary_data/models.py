@@ -485,9 +485,6 @@ class Committee_Overlay(models.Model):
         else:
             return None
             
-    def total_unclassified(self):
-        return 0.0 + (self.support_unclassified or 0) +  (self.oppose_unclassified or 0)
-
     def curated_candidate_name(self):
         if self.curated_candidate:
             return '%s (%s)' % (self.curated_candidate.name, self.curated_candidate.party)
@@ -610,6 +607,12 @@ class Committee_Overlay(models.Model):
     
     def get_formatted_roi(self):
         return str(self.roi*100) + "%"
+    
+    def total_unclassified(self):
+        return 0.0 + (self.support_unclassified or 0) +  (self.oppose_unclassified or 0)
+    
+    def get_ge_spending(self):
+        return 0.0 + (self.support_winners) +  (self.oppose_winners or 0) + (self.support_losers or 0) +  (self.oppose_losers or 0) )
         
     def display_political_orientation(self):
         p = self.political_orientation

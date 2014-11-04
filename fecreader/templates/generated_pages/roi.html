@@ -31,7 +31,7 @@ $("#" + groupId).slideToggle();
             </thead>
             <tbody>
                 <tr>
-                    <td class="t-right">$104,710,472</td>
+                    <td class="t-right">${{object.get_ge_spending|intcomma}}</td>
                     <td class="t-left"><strong>{{ object.get_formatted_roi }}</strong></td>
                 </tr>
             </tbody>
@@ -41,16 +41,16 @@ $("#" + groupId).slideToggle();
         <ul>
             <li>
                 <strong>Positive General Election Spending</strong>
-                ${{ object.support_winners|intcomma}} spent supporting winners; ${{ object.support_winners|intcomma}} spent supporting losers; ${{ object.support_unclassified}} spent supporting candidates in undecided races.
+                ${{ object.support_winners|intcomma}} spent supporting winners; ${{ object.support_losers|intcomma}} spent supporting losers; ${{ object.support_unclassified|intcomma}} spent supporting candidates in undecided races.
             </li>
             <li>
                 <strong>Negative General Election Spending</strong>
-                ${{ object.oppose_winners|intcomma}} spent opposing winners; ${{ object.oppose_winners|intcomma}} spent opposing losers; ${{ object.oppose_unclassified}} spent opposing candidates in undecided races.
+                ${{ object.oppose_winners|intcomma}} spent opposing winners; ${{ object.oppose_losers|intcomma}} spent opposing losers; ${{ object.oppose_unclassified|intcomma}} spent opposing candidates in undecided races.
             </li>
 
         </ul>
         <p style="text-align: center;">
-        See <a href="http://realtime.influenceexplorer.com/outside-spending/#?ordering=-expenditure_date_formatted&amp;filer_committee_id_number=C00484642">all independent expenditures this cycle</a> (including general election) made by SENATE MAJORITY PAC
+        See <a href="{{ object.get_filtered_ie_url }}">all independent expenditures this cycle</a> (including general election) made by {{object.name}}
         </p>
     </div>
     <a class="toggler" data-groupid="{{ object.fec_id}}" href="#">Expand primary breakdown table</a>
