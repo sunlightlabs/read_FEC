@@ -31,7 +31,7 @@ $("#" + groupId).slideToggle();
             </thead>
             <tbody>
                 <tr>
-                    <td class="t-right">${{object.get_ge_spending|intcomma}}</td>
+                    <td class="t-right">${{object.get_ge_spending|floatformat:"0"|intcomma}}</td>
                     <td class="t-left"><strong>{{ object.get_formatted_roi }}</strong></td>
                 </tr>
             </tbody>
@@ -40,19 +40,19 @@ $("#" + groupId).slideToggle();
     <div id="shell" class="details">
         <ul>
             <li>
-                <strong>Positive General Election Spending: ${{ object.get_pos_ge_spending|intcomma}}</strong><br>
+                <strong>Positive General Election Spending: ${{ object.get_pos_ge_spending|floatformat:"0"|intcomma}}</strong><br>
 								<ul>
-								<li>${{ object.support_winners|intcomma}} spent supporting winners</li> 
-								<li>${{ object.support_losers|intcomma}} spent supporting losers</li>
-								<li>${{ object.support_unclassified|intcomma}} spent supporting candidates in undecided races.</li>
+								<li>${{ object.support_winners|floatformat:"0"|intcomma}} spent supporting winners</li> 
+								<li>${{ object.support_losers|floatformat:"0"|intcomma}} spent supporting losers</li>
+								<li>${{ object.support_unclassified|floatformat:"0"|intcomma}} spent supporting candidates in undecided races.</li>
 								</ul>
             </li>
             <li>
-                <strong>Negative General Election Spending: ${{ object.get_neg_ge_spending|intcomma}}</strong>
+                <strong>Negative General Election Spending: ${{ object.get_neg_ge_spending|floatformat:"0"|intcomma}}</strong>
                 <ul>
-									<li>${{ object.oppose_winners|intcomma}} spent opposing winners</li>
-									<li>${{ object.oppose_losers|intcomma}} spent opposing losers</li>
-									<li>${{ object.oppose_unclassified|intcomma}} spent opposing candidates in undecided races.</li>
+									<li>${{ object.oppose_winners|floatformat:"0"|intcomma}} spent opposing winners</li>
+									<li>${{ object.oppose_losers|floatformat:"0"|intcomma}} spent opposing losers</li>
+									<li>${{ object.oppose_unclassified|floatformat:"0"|intcomma}} spent opposing candidates in undecided races.</li>
 								</ul>
             </li>
 
@@ -61,8 +61,8 @@ $("#" + groupId).slideToggle();
         See <a target="_null" href="{{ object.get_filtered_ie_url }}">all independent expenditures this cycle</a> (including general election) made by {{object.name}}
         </p>
     </div>
-    <a class="toggler" data-groupid="{{ object.fec_id}}" href="#" style="display:none;">Expand primary breakdown table</a>
-    <div id="{{ object.fec_id}}">
+    <a class="toggler" data-groupid="{{ object.fec_id}}" href="#">Show primary breakdown table</a>
+    <div id="{{ object.fec_id}}" style="display:none;">
         <p><small>Click headings to sort; only candidates targeted with $50,000 or more in independent expenditures are listed below.</small></p>
         <table id="hor-minimalist-a" class="sortable roi-table">
         <thead>
