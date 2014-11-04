@@ -323,6 +323,17 @@ class Candidate_Overlay(models.Model):
                 return ""
         return ""
 
+    def get_general_status(self):
+        if self.cand_is_gen_winner and self.is_general_candidate:
+            return "Won General Election"
+        elif not self.cand_is_gen_winner and self.is_general_candidate:
+            return "Lost General Election"
+        elif self.cand_is_gen_winner==None and self.is_general_candidate:
+            return "Election not decided"
+        elif not self.is_general_candidate:
+            return "Not a general candidate"
+        else:
+            return ""
 
   ## The US congress repo doesn't do a good job handling fec ids, so distill what we need into this model.
   ## Incumbents are populated from US Congress, and challengers from fec master file. The determination of 
