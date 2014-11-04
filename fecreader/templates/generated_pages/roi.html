@@ -21,7 +21,7 @@ $("#" + groupId).slideToggle();
     
     <h2 style="color: rgb(0, 102, 51); text-align: center; "><a target="_null" href="{{object.get_absolute_url}}">{{object.name}}</a></h2>
     <h2 style="text-align: center; "></h2>
-    <!-- <h3 style="text-align: center; ">Total primary/runoff spending: $13,021,696</h3> -->
+    
         <table class="roi-table summary">
             <thead>
                 <tr>
@@ -61,7 +61,7 @@ $("#" + groupId).slideToggle();
         See <a target="_null" href="{{ object.get_filtered_ie_url }}">all independent expenditures this cycle</a> (including general election) made by {{object.name}}
         </p>
     </div>
-    <a class="toggler" data-groupid="{{ object.fec_id}}" href="#">Show primary breakdown table</a>
+    <a class="toggler" data-groupid="{{ object.fec_id}}" href="#">Show candidate-by-candidate results table</a>
     <div id="{{ object.fec_id}}" style="display:none;">
         <p><small>Click headings to sort; only candidates targeted with $50,000 or more in independent expenditures are listed below.</small></p>
         <table id="hor-minimalist-a" class="sortable roi-table">
