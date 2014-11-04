@@ -86,7 +86,7 @@ $("#" + groupId).slideToggle();
                 <td><a target="_null" href"{{ ge.candidate.district.get_absolute_url}}">{{ge.candidate.detailed_office}}</td>
                 <td>${{ ge.total_ind_exp|floatformat:"0"|intcomma}}</td> 
                 <td>{{ ge.candidate.get_general_status}}</td>  
-                <td class="verdict">{% ifequal ge.candidate.cand_is_gen_winner true %}gen winner{% endifequal %}{% ifequal ge.candidate.cand_is_gen_winner false %}{% endifequal %}<span class="success">success</span></td>               
+                <td class="verdict">{{ ge.verdict }}</td>               
             </tr>
 						{% endfor %}
 
