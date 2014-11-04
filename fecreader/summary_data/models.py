@@ -324,12 +324,12 @@ class Candidate_Overlay(models.Model):
         return ""
 
     def get_general_status(self):
-        if self.cand_is_gen_winner and self.is_general_candidate:
+        if self.cand_is_gen_winner==None and self.is_general_candidate:
+            return "Election not decided"
+        elif self.cand_is_gen_winner and self.is_general_candidate:
             return "Won General Election"
         elif not self.cand_is_gen_winner and self.is_general_candidate:
             return "Lost General Election"
-        elif self.cand_is_gen_winner==None and self.is_general_candidate:
-            return "Election not decided"
         elif not self.is_general_candidate:
             return "Not a general candidate"
         else:
@@ -913,4 +913,29 @@ class roi_pair(models.Model):
             return 'Oppose'
         else:
             return 'Unknown'
+    
+    def verdict(self):
+        """ hack for ROI """
+        
+        if self.candidate.cand_is_gen_winner == None:
+            return ""
+            
+        if self.candidate.cand_is_gen_winner == True:
+            if self.support_oppose.upper() == 'S':
+                return '<span class="success">success</span>'
+            elif self.support_oppose.upper() == 'O':
+                return '<span class="failure">failure</span>'
+            else:
+                return ""
+                
+        if self.candidate.cand_is_gen_winner == False:
+            if self.support_oppose.upper() == 'S':
+                return '<span class="failure">failure</span>'
+            elif self.support_oppose.upper() == 'O':
+                return '<span class="success">success</span>'
+            else:
+                return ""
+                
+        return ""
+            
     
