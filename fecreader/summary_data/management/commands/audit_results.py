@@ -72,6 +72,11 @@ def run_districts(district_queryset, queryset_name):
                 district.general_is_decided = False
                 district.save()
             
+            for candidate in Candidate_Overlay.objects.filter(district=district):
+                if not candidate.cand_is_gen_winner == None:
+                    candidate.cand_is_gen_winner = None
+                    candidate.save()
+            
         if victors > 1:
             print "WARN: More than one winner for %s - %s" % (district, district.rothenberg_rating_text)
             too_many_winners += 1
@@ -79,6 +84,11 @@ def run_districts(district_queryset, queryset_name):
             if district.general_is_decided:
                 district.general_is_decided = False
                 district.save()
+            
+            for candidate in Candidate_Overlay.objects.filter(district=district):
+                if not candidate.cand_is_gen_winner == None:
+                    candidate.cand_is_gen_winner = None
+                    candidate.save()
     
         if numcandidates > 2:
             print "WARN: more than two candidates found for  %s - %s" % (district, district.rothenberg_rating_text)

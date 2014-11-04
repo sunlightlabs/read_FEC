@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        run_summary = False
+        run_summary = True
         
         if run_summary:
             # all skede general 2014 expenditures that are not superseded by an amendment
