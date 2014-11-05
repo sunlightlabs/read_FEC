@@ -27,20 +27,37 @@
 }
 
 div.tooltip {   
-    position: absolute;           
-    text-align: left;                           
-    padding: 3px;             
-    background: white;   
-    border: 1px solid #999;      
-    border-radius: 3px;
-    pointer-events: none;
-    opacity: 1; 
-    font-family: "Franklin Gothic Book","Franklin Gothic Medium","Franklin Gothic","ITC Franklin Gothic",Arial,sans-serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
+	position: absolute;
+	text-align: left;
+	padding: 6px;
+	background: white;
+	border: 1px solid #999;
+	border-radius: 3px;
+	pointer-events: none;
+	opacity: 1;
+	font-family: "Franklin Gothic Book","Franklin Gothic Medium","Franklin Gothic","ITC Franklin Gothic",Arial,sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	box-shadow: 0px 0px 14px -1px rgba(0,0,0,0.2);}
+
+div.tooltip h4 {
+margin: 0;
+font-weight: bold;
 }
 
+div.tooltip dl {
+margin: 5px 0 0 0;
+}
+.tooltip dt {
+float: left;
+margin-right: 5px;
+}
+.tooltip dd {
+margin-left: 0;
+font-weight: bold;
+font-size: 111%
+}
 </style>
 {% endblock sitecss %}
 
@@ -53,7 +70,7 @@ div.tooltip {
 </script>
 
 <script type="text/javascript" src="{% static 'realtimefec/js/d3.v3.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'realtimefec/js/roi2.js' %}"></script>
+<script type="text/javascript" src="{% static 'realtimefec/js/roi3.js' %}"></script>
 
 {% include "includes/embed_iframe.js" %}
 

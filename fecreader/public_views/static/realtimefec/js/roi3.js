@@ -8,8 +8,8 @@ var highlighted = d3.rgb("#000000");
 var tooltipwidth  = 80;
 var tooltipheight = 20;
 
-var expanded_tooltipwidth = 180;
-var expanded_tooltipheight = 80;
+var expanded_tooltipwidth = 190;
+var expanded_tooltipheight = 90;
 
 var tooltipoffset_x = 10;
 var tooltipoffset_y = 10; 
@@ -164,6 +164,17 @@ function read_data(text) {
             this_line['total_negative'] = this_line['oppose_winners'] + this_line['oppose_losers'] + this_line['oppose_unclassified'];
             this_line['total_spending'] = this_line['total_positive'] + this_line['total_negative'];
             this_line['fraction_positive'] = 100.0*(0.0+this_line['total_positive'])/(0.0+this_line['total_spending'])
+            
+            
+            if (isNaN(this_line['roi'])) {
+                this_line['roi'] = 0.0;
+            }
+            if (this_line['name'].indexOf("SEIU") > -1) {
+                this_line['name'] = "SERVICE EMPLOYEES INTERNATIONAL UNION";
+            } else if (this_line['name'].indexOf("AMERICAN FEDERATION OF STATE") > -1) {
+                this_line['name'] ="AMERICAN FEDERATION OF STATE COUNTY & MUNICIPAL EMPLOYEES"
+            }
+            
             data_series.push( this_line);
     };
     
@@ -299,7 +310,7 @@ function read_data(text) {
         
         .on("mouseover", function(f,g){
           d3.select(this).attr("stroke", "black").attr("stroke-width", 2);
-          var thistext = "<div style='text-align:center; margin-bottom:0px;'><b>" + f.name + "</b></div>Return on investment: " + roundwCommas(f.roi) + "%<br>Positive spending: " + roundwCommas(f.fraction_positive) + "%<br>Total spending: $" + roundwCommas(f.total_spending);
+          var thistext = '<div><h4>' + f.name + "</h4><dl><dt>Return on investment:</dt><dd> " + roundwCommas(f.roi) + "%</dd><dt>Positive spending:</dt><dd>" + roundwCommas(f.fraction_positive) + "%</dd><dt>Total spending:</dt><dd> $" + roundwCommas(f.total_spending) + "</dd></dl></div>"
           tooltipdiv.style("opacity",1);
             tooltipdiv.html( thistext);
             expand_tooltip();
@@ -329,8 +340,8 @@ d3.json(window.jsonURL, function(error, s) {
         i_color = styles.colors.network_graph['mints'][0].hex;
 
         // grab the data as text, we'll parse the rows out later
-        d3.text("/static/data/roi.csv", read_data);
-        //d3.text("/static/realtimefec/js/roi.csv", read_data);
+        //d3.text("/static/data/roi.csv", read_data);
+        d3.text("/static/realtimefec/js/roi.csv", read_data);
         
         
 
