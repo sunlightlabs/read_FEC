@@ -70,7 +70,7 @@ class Command(BaseCommand):
                 
                 districts = chamber_districts.filter(rothenberg_rating_id__in=rothenberg_class['values'])
                 #district_list =  [i.id for i in districts]
-                print "Handling rothenberg id = %s for chamber = %s" % (rothenberg_class['name'], chamber['name'])
+                #print "Handling rothenberg id = %s for chamber = %s" % (rothenberg_class['name'], chamber['name'])
                 
                 
                 num_seats_in_class = len(districts)
@@ -116,7 +116,7 @@ class Command(BaseCommand):
             results.append({'chamber':chamber['name'] , 'results':chamber_results})
             
 
-        print results
+        #print results
         
                      
                             
@@ -133,7 +133,7 @@ class Command(BaseCommand):
         house = []
         senate = []
         
-        print "Now flattening result"
+        #print "Now flattening result"
         
         senate_results = results[0]['results']['rothenberg_classes']
         house_results = results[1]['results']['rothenberg_classes']
@@ -149,8 +149,8 @@ class Command(BaseCommand):
         house.sort(key=lambda x: x['district'].__unicode__())
         senate.sort(key=lambda x: x['district'].__unicode__())
         
-        print "House: %s" % str(house)
-        print "senate: %s" % str(senate)
+        #print "House: %s" % str(house)
+        #print "senate: %s" % str(senate)
         
         c = Context({"update_time": update_time, "house":house, "senate":senate})
         this_template = get_template('generated_pages/overview_results_raw.html')
