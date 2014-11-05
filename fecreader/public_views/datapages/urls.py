@@ -48,6 +48,7 @@ urlpatterns = patterns('',
         url(r'^charts\/contributions/([\d\-]+)\/(\w+)\/$','public_views.datapages.views.contrib_comparison'),
         url(r'^charts\/contributions-cumulative/([\d\-]+)\/(\w+)\/$','public_views.datapages.views.contrib_comparison_cumulative'),
         url(r'^charts\/senate-races\/(\w+)\/$','public_views.datapages.views.senate_races'),
+        url(r'^charts\/roi\/(\w+)\/$','public_views.datapages.views.roi_chart'),
         url(r'^charts\/$','public_views.datapages.views.chart_listing')
 
 #        url(r'^race/(?P<cycle>\d\d\d\d)\/president\/', 'public_views.datapages.views.presidential_race'),

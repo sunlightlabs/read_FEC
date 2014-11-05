@@ -645,6 +645,20 @@ def senate_races(request, blog_or_feature):
             context_instance=RequestContext(request)
         )
 
+
+
+def roi_chart(request, blog_or_feature):
+    if not (blog_or_feature in ['feature', 'blog', 'narrow']):
+        raise Http404
+
+    return render_to_response('datapages/roi_chart.html',
+            {
+            'blog_or_feature':blog_or_feature,
+            }, 
+            context_instance=RequestContext(request)
+        )
+
+
 def weekly_comparison(request, race_list, blog_or_feature):
     print "weekly comparison"
     if not (blog_or_feature in ['feature', 'blog', 'narrow']):

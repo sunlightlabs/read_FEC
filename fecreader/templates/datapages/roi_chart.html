@@ -1,0 +1,86 @@
+{% extends "datapages/iframe_base.html" %}
+{% load staticfiles %}
+
+{% block title %}Outside spending in competitive Senate races, by week{% endblock %}
+
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/ie_style.css' %}" />
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" />
+
+
+<style>
+
+{% ifequal blog_or_feature 'feature' %}
+.axis path, .axis line {
+	fill: none;
+	stroke: #E9E9E9;  /* NEW COLOR */
+	stroke-width: 1px;
+}
+
+{% endifequal %}
+
+.line {
+  fill: none;
+  stroke: #99b;
+  stroke-width: 4;
+}
+
+div.tooltip {   
+    position: absolute;           
+    text-align: left;                           
+    padding: 3px;             
+    background: white;   
+    border: 1px solid #999;      
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 1; 
+    font-family: "Franklin Gothic Book","Franklin Gothic Medium","Franklin Gothic","ITC Franklin Gothic",Arial,sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+}
+
+</style>
+{% endblock sitecss %}
+
+
+{% block js %}
+
+<script type="text/javascript">
+  window.jsonURL = "{% static 'realtimefec/js/line_styles.json' %}";
+  window.blog_or_feature = '{{blog_or_feature}}';
+</script>
+
+<script type="text/javascript" src="{% static 'realtimefec/js/d3.v3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'realtimefec/js/roi_chart.js' %}"></script>
+
+{% include "includes/embed_iframe.js" %}
+
+{% endblock %}
+
+
+{% block content %}
+<div id="line-chart" class="graphic-container-{{blog_or_feature}}">
+    <div class="divider solid"></div>
+    <div class="header-container-{{blog_or_feature}}">
+        <div class="header-title-{{blog_or_feature}}">
+            <div class="main-title">
+                Return on investment, top 50 spenders
+            </div>
+            <!-- save space by floating explanation to the left and logo to the right -->
+            <div class="explanatory" style="float:left;">
+                Explanation. <a id="dialog-link" href="#">Embed this chart</a>
+            </div>
+            <div class="header-logo" style="float:right;">
+            </div>
+        </div>
+    </div>
+    <div class="divider solid"></div>
+    <div class="chart-area">
+        <svg class="canvas">
+        </svg>
+    </div>
+    
+</div>
+{% endblock content %}
