@@ -298,7 +298,7 @@ function read_data(text) {
         
         .on("mouseover", function(f,g){
           d3.select(this).attr("stroke", "black").attr("stroke-width", 2);
-          var thistext = "<div style='text-align:center; margin-bottom:0px;'><b>" + f.name + "</b></div>Return on investment: " + f.roi + "%<br>Positive spending: " + roundwCommas(f.fraction_positive) + "%<br>Total spending: $" + roundwCommas(f.total_spending);
+          var thistext = "<div style='text-align:center; margin-bottom:0px;'><b>" + f.name + "</b></div>Return on investment: " + roundwCommas(f.roi) + "%<br>Positive spending: " + roundwCommas(f.fraction_positive) + "%<br>Total spending: $" + roundwCommas(f.total_spending);
           tooltipdiv.style("opacity",1);
             tooltipdiv.html( thistext);
             expand_tooltip();
