@@ -233,6 +233,7 @@ function read_data(text) {
        .innerTickSize(-height) // really long ticks become gridlines
        .outerTickSize(0)
        .tickPadding(5)
+       .tickFormat(function(d){ return d + "%"})
        .orient("bottom");
 
    var yAxis = d3.svg.axis()
@@ -241,7 +242,7 @@ function read_data(text) {
        .innerTickSize(-width) // really long ticks become gridlines
        .outerTickSize(0)
        .tickPadding(5)
-       .tickFormat(function(d){ return d});
+       .tickFormat(function(d){ return d + "%"});
    
 
    /*
