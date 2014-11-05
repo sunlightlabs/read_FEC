@@ -291,6 +291,8 @@ function read_data(text) {
         .attr("r", function(d) { return circle_scale(d.total_spending) })
         .attr("name", function(d) { return d.name; })
         .attr("fill", function(d) { return get_fill_color(d); })
+        .attr("stroke", "white")
+        .attr("stroke-width", 1)
         
 
         
@@ -303,7 +305,7 @@ function read_data(text) {
             
           })
           .on("mouseout", function(){
-          d3.select(this).attr("stroke-width", 0);
+          d3.select(this).attr("stroke", "white").attr("stroke-width", 1);
           tooltipdiv.style("opacity",0);
           shrink_tooltip();
             
