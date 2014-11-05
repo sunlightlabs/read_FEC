@@ -316,6 +316,12 @@ class Candidate_Overlay(models.Model):
         return "/outside-spending/#?ordering=-expenditure_date_formatted&candidate_id_checked=%s" % self.fec_id
     
     def show_candidate_status(self):
+        if self.cand_is_gen_winner and self.is_general_candidate:
+            return "Won General"
+        
+        if self.cand_is_gen_winner == False and self.is_general_candidate:
+            return "Lost General"
+        
         if self.candidate_status:
             try: 
                 return CANDIDATE_STATUS_DICT[self.candidate_status]
