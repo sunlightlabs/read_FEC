@@ -321,10 +321,10 @@ d3.json(window.jsonURL, function(error, s) {
         styles = s;
         
         // Styles are too faint
-        // r_color = styles.colors.data.parties.republican.hex;
-        // d_color = styles.colors.data.parties.democrat.hex;
-        r_color = "#FF0000";
-        d_color = "#0000FF";
+        r_color = styles.colors.data.parties.republican.hex;
+        d_color = styles.colors.data.parties.democrat.hex;
+        //r_color = "#FF0000";
+        //d_color = "#0000FF";
         i_color = styles.colors.network_graph['mints'][0].hex;
 
         // grab the data as text, we'll parse the rows out later
