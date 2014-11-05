@@ -1,0 +1,43 @@
+{% extends "datapages/realtime_generated_base.html" %}
+{% load staticfiles %}
+
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+{% endblock sitecss %}
+
+{% block pagetitle %}2013-14 Return on investment overview {% endblock pagetitle %}
+
+
+{% block rtmain_generated %}
+
+<div class="module RT clearfix">
+
+      <h3>2013-14 Return on investment overview</h3>
+       
+        <div style="clear:both;">
+        </div>
+    
+        {% include "includes/overview_nav.html" %}
+         
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Return On Investment Chart</h4>
+</div>
+<iframe src="http://realtime.influenceexplorer.com/charts/roi/feature/" width="880" height="520" frameborder="0" scrolling="no"> </iframe>
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Return On Investment Details</h4>
+</div>
+
+<iframe src="http://realtime.influenceexplorer.com/roi/" width="880" height="520" frameborder="0" style="border: 1px solid #f0eded" scrolling="yes"> </iframe>
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Return On Investment Methodology</h4>
+</div>
+<p>This analysis considers independent expenditures made during the 2014 general election, and whether it achieved it's objective. The return on investment we calculated counts money spent backing winners and opposing losers as successful, and money spent backing losers or opposing winners. Money spent on races that have not been decided is not counted. We will update it as results come in.
+</p>
+
+</div>
+
+{% endblock %}
