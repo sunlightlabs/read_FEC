@@ -24,9 +24,9 @@ class Command(BaseCommand):
         today = date.today()
         update_time = datetime.now()
         
-        outside_spenders = Committee_Overlay.objects.filter(total_indy_expenditures__gt=0)
+        outside_spenders_raw = Committee_Overlay.objects.filter(total_indy_expenditures__gt=0)
         
-        outside_spenders.extra(select={'total_ge_spending': 'support_winners + support_losers + oppose_winners + oppose_losers + support_unclassified + oppose_unclassified'}, order_by=['-total_ge_spending'])
+        outside_spenders = outside_spenders_raw.extra(select={'total_ge_spending': 'support_winners + support_losers + oppose_winners + oppose_losers + support_unclassified + oppose_unclassified'}, where=['support_winners + support_losers + oppose_winners + oppose_losers + support_unclassified + oppose_unclassified > 10'], order_by=['-total_ge_spending'])
         
         outside_spenders = outside_spenders[:20]
         
