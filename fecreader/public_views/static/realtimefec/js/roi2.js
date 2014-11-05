@@ -228,7 +228,7 @@ function read_data(text) {
     * Creating Axes and Gridlines (innerTick)
     */
    var xAxis = d3.svg.axis()
-       .ticks(10)
+       .ticks(5)
        .scale(x)
        .innerTickSize(-height) // really long ticks become gridlines
        .outerTickSize(0)
@@ -237,6 +237,7 @@ function read_data(text) {
        .orient("bottom");
 
    var yAxis = d3.svg.axis()
+        .ticks(5)
        .scale(y)
        .orient("left")
        .innerTickSize(-width) // really long ticks become gridlines
