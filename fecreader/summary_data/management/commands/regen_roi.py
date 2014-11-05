@@ -24,7 +24,11 @@ class Command(BaseCommand):
         today = date.today()
         update_time = datetime.now()
         
-        outside_spenders = Committee_Overlay.objects.filter(total_indy_expenditures__gt=0).order_by('-total_indy_expenditures')[:20]
+        outside_spenders = Committee_Overlay.objects.filter(total_indy_expenditures__gt=0)
+        
+        outside_spenders.extra(select={'total_ge_spending': 'support_winners + support_losers + oppose_winners + oppose_losers + support_unclassified + oppose_unclassified'}, order_by=['-total_ge_spending'])
+        
+        outside_spenders = outside_spenders[:20]
         
         for os in outside_spenders:
             # ATTACH LINE ITEMS;
