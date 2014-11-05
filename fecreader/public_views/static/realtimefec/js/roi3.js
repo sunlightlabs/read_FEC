@@ -340,8 +340,8 @@ d3.json(window.jsonURL, function(error, s) {
         i_color = styles.colors.network_graph['mints'][0].hex;
 
         // grab the data as text, we'll parse the rows out later
-        //d3.text("/static/data/roi.csv", read_data);
-        d3.text("/static/realtimefec/js/roi.csv", read_data);
+        d3.text("/static/data/roi.csv", read_data);
+        //d3.text("/static/realtimefec/js/roi.csv", read_data);
         
         
 
