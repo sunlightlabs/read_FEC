@@ -65,13 +65,14 @@ class MinimalDistrictSerializer(serializers.ModelSerializer):
 class CandidateSerializer(serializers.ModelSerializer):
     candidate_url = serializers.Field(source='get_absolute_url')  
     race_url = serializers.Field(source='get_race_url')
-    ie_url = serializers.Field(source='get_filtered_ie_url')  
+    ie_url = serializers.Field(source='get_filtered_ie_url')
+    status = serializers.Field(source='show_candidate_status')  
     district = MinimalDistrictSerializer(source='district')
     
 
     class Meta:
         model = Candidate_Overlay
-        fields=('name', 'fec_id', 'pcc', 'party', 'candidate_url', 'race_url', 'ie_url', 'is_incumbent', 'cycle', 'not_seeking_reelection', 'other_office_sought', 'other_fec_id', 'election_year', 'state', 'office', 'office_district', 'term_class', 'candidate_status', 'total_expenditures', 'expenditures_supporting', 'expenditures_opposing', 'total_receipts', 'total_contributions', 'total_disbursements', 'cash_on_hand', 'cash_on_hand_date', 'district', 'outstanding_loans')
+        fields=('name', 'fec_id', 'pcc', 'party', 'candidate_url', 'race_url', 'ie_url', 'is_incumbent', 'cycle', 'not_seeking_reelection', 'other_office_sought', 'other_fec_id', 'election_year', 'state', 'office', 'office_district', 'term_class', 'candidate_status', 'total_expenditures', 'expenditures_supporting', 'expenditures_opposing', 'total_receipts', 'total_contributions', 'total_disbursements', 'cash_on_hand', 'cash_on_hand_date', 'district', 'outstanding_loans', 'cand_is_gen_winner', 'status')
 
 
 
