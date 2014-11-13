@@ -53,7 +53,7 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         # stop after the election
-        today = date(2014,11,4)
+        today = date(2014,11,1)
         last_week = get_week_number(today)
         first_week = get_week_number(data_start)
         
