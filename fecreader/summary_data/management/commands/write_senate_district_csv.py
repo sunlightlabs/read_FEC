@@ -52,8 +52,9 @@ class Command(BaseCommand):
    
     
     def handle(self, *args, **options):
-        today = date.today()
-        last_week = get_week_number(today) - 1
+        # stop after the election
+        today = date(2014,11,4)
+        last_week = get_week_number(today)
         first_week = get_week_number(data_start)
         
         outf = "%s/%s" % (CHART_CSV_DOWNLOAD_DIR, CSV_FILE_NAME)

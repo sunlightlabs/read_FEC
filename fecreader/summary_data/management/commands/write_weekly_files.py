@@ -106,7 +106,7 @@ class Command(BaseCommand):
     
     
     def handle(self, *args, **options):
-        today = date.today()
+        today = date(2014,11,4)
         last_week = get_week_number(today) - 1
         first_week = get_week_number(data_start)
         
