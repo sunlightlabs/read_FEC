@@ -58,11 +58,13 @@ def run_districts(district_queryset, queryset_name):
     
         candidate_winners = 0
         victors = 0
+        victor_array = []
         numcandidates = 0 
         for candidate in candidates:
             numcandidates += 1
             if candidate.cand_is_gen_winner:                    
                 victors += 1
+                victor_array.append(candidate)
     
                 
         if victors==0:
@@ -80,6 +82,9 @@ def run_districts(district_queryset, queryset_name):
         if victors > 1:
             print "WARN: More than one winner for %s - %s" % (district, district.rothenberg_rating_text)
             too_many_winners += 1
+            for this_victor in victor_array:
+                print this_victor
+            
             print "\t\tMarking this race as undecided until this is fixed!!!"
             if district.general_is_decided:
                 district.general_is_decided = False
