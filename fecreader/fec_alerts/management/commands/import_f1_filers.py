@@ -10,9 +10,9 @@ from fec_alerts.models import f1filer
 from summary_data.utils.overlay_utils import make_committee_from_f1filer
 
 
-two_digit_cycle = "14"
+two_digit_cycle = "16"
 #override
-CYCLE = 2014
+CYCLE = 2016
 
 
 def readfile(filelocation):
