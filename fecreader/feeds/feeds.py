@@ -131,8 +131,11 @@ class IEFeedBase(Feed):
 
     def item_pubdate(self, item):
         thisdate = item.expenditure_date_formatted
-        return datetime.datetime(thisdate.year, thisdate.month, thisdate.day)
-
+        try:
+            return datetime.datetime(thisdate.year, thisdate.month, thisdate.day)
+        except AttributeError:
+            return None
+        
     def title(self):
         return "RECENT INDEPENDENT EXPENDITURES"
 
