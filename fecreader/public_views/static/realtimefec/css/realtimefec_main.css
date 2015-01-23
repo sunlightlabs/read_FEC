@@ -1,3 +1,13 @@
+
+
+/* make real-time stay highlighted*/
+#realtime {
+    padding-top: 2px;
+    background: rgba(90, 157, 141, .14);
+    border: 1px solid rgba(108, 98, 98, .14);
+    }
+
+
 /* slim down subnav; adapted from td_nav.  */
 #rt_nav {
 /* background: url('../../dryrub/images/bg_tdNav2.png') no-repeat top left;
