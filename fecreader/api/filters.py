@@ -167,10 +167,10 @@ def periodTypeFilter(queryset, querydict):
         elif period_type.startswith('M'):
                         
             if period_type == 'M1':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,1,1), coverage_to_date=date(2013,1,31))|Q(coverage_from_date=date(2014,1,1), coverage_to_date=date(2014,1,31)))
+                queryset = queryset.filter(Q(coverage_from_date=date(2013,1,1), coverage_to_date=date(2013,1,31))|Q(coverage_from_date=date(2014,1,1), coverage_to_date=date(2014,1,31))|Q(coverage_from_date=date(2015,1,1), coverage_to_date=date(2015,1,31)))
 
             elif period_type == 'M2':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,2,1), coverage_to_date=date(2013,2,28))|Q(coverage_from_date=date(2014,2,1), coverage_to_date=date(2014,2,28)))
+                queryset = queryset.filter(Q(coverage_from_date=date(2013,2,1), coverage_to_date=date(2013,2,28))|Q(coverage_from_date=date(2014,2,1), coverage_to_date=date(2014,2,28))|Q(coverage_from_date=date(2015,2,1), coverage_to_date=date(2015,2,28)))
 
             elif period_type == 'M3':
                 queryset = queryset.filter(Q(coverage_from_date=date(2013,3,1), coverage_to_date=date(2013,3,31))|Q(coverage_from_date=date(2014,3,1), coverage_to_date=date(2014,3,31)))
