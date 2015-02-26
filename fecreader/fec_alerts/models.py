@@ -10,6 +10,11 @@ from djorm_hstore.models import HStoreManager
 from parsing.read_FEC_settings import FEC_HTML_LOCATION
 from api.nulls_last_queryset import NullsLastManager
 from summary_data.data_references import type_hash
+from shared_utils.cycle_utils import get_cycle_from_date, is_current_cycle, is_active_cycle
+from django.conf import settings
+
+
+CURRENT_CYCLE = settings.CURRENT_CYCLE
 
 # This committee files paper filings that appear inaccurate.
 # C00547109 files both paper and electronic
@@ -17,9 +22,6 @@ webk_blacklist = ['C00507947', 'C00547109']
 
 
 eastern = timezone('US/Eastern')
-
-# SHOULD GO SOMEWHERE
-CURRENT_CYCLE = '2014'
 
 form_types = [['F3X','Monthly/quarterly report'],
 ['F3P','Monthly/quarterly report'],
@@ -125,6 +127,7 @@ class f1filer(models.Model):
 
 # Class to hold new filings, whether or not they've been parsed yet. 
 class new_filing(models.Model):
+    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="The even-numbered year that ends a two-year cycle.")
     fec_id = models.CharField(max_length=9, help_text="The FEC id of the committee filing this report")
     committee_name = models.CharField(max_length=200, help_text="The committee's name as reported to the FEC")
     filing_number = models.IntegerField(primary_key=True, help_text="The numeric filing number assigned to this electronic filing by the FEC")
@@ -202,7 +205,21 @@ class new_filing(models.Model):
     # make nulls sort last
     nulls_last_objects = NullsLastManager()
 
-    # also appears in the committee_time_summary model--normalize this.     
+    # also appears in the committee_time_summary model--normalize this.   
+    
+    
+    # cycle should be set initially for form types that permit it--this should only be used for form types whose coverage_from_date has to be set from the body row lines.
+    def set_cycle(self, save_now=True):
+        if self.coverage_from_date:
+            self.cycle = get_cycle_from_date(self.coverage_from_date)
+            if save_now:
+                self.save()
+        elif self.filed_date:
+            self.cycle = get_cycle_from_date(self.filed_date)
+            if save_now:
+                self.save()
+        
+        
     def get_fec_url(self):
         url = "http://docquery.fec.gov/cgi-bin/dcdev/forms/%s/%s/" % (self.fec_id, self.filing_number)
         return url

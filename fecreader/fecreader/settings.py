@@ -224,6 +224,12 @@ BULK_EXPORT_KEY = 'bulk_export'
 SUMMARY_EXPORT_KEY = 'summary_export'
 
 
+## which cycle is it now?
+CURRENT_CYCLE = '2016'
+## which cycles are we currently updating? s
+ACTIVE_CYCLES = ['2016', '2014']
+
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
