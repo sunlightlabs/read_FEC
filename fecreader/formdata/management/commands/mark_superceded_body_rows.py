@@ -133,6 +133,12 @@ class Command(BaseCommand):
                     mark_superceded_F65s(this_filing)
                 except KeyError:
                     pass
-                    
+            
+            # By now we should have dates for all filings, including the ones that don't start with a coverage from date
+            # that we added by finding the first transaction date, so we can safely set the cycle. 
+            if not this_filing.cycle:
+                # we're about to save it, so don't hit the db twice.
+                this_filing.set_cycle(save_now=False)
+            
             this_filing.body_rows_superceded = True
             this_filing.save()
