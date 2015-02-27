@@ -1,6 +1,6 @@
 -- Procedure to empty and reload summary data; 
-\set cycle 14
-\set year 2014
+\set cycle 16
+\set year 2016
 \set datadir /projects/realtimefec/src/realtimefec/fecreader/ftpdata/data
 
 -- Insane variable concatenization scheme. Oy. 
