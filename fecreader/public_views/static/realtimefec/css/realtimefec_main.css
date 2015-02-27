@@ -19,34 +19,57 @@
     border-bottom: 1px dashed #dcdcd8;
     }
 
-#rt_nav ul {
+#rt_nav > ul {
     margin-right: 25px;
+    padding-left: 25px;
     }
 
-#rt_nav li {
+#rt_nav > ul > li {
     float:left;
+    position:relative;
     border-right: 1px solid #cacdce;
     padding: 0 15px;
     line-height: 15px;
     text-align: center;
     }
 
-#rt_nav li.last, .content-header-links li.last {
+
+#rt_nav > ul > li.last, .content-header-links li.last {
     border-right: none;
     padding-right: 0;
     }
 
-#rt_nav li.first{
-    margin-left: 25px;
-    }
-
-#rt_nav li:hover, .documentation #rt_nav #documentation, .downloads #tr_nav #downloads, .api #rt_nav #api, .flexwidth #rt_nav #searchTD, .searchTD #rt_nav #searchTD{
+#rt_nav > ul > li:hover, .documentation #rt_nav #documentation, .downloads #tr_nav #downloads, .api #rt_nav #api, .flexwidth #rt_nav #searchTD, .searchTD #rt_nav #searchTD{
     font-weight: normal;
     }
 
-#rt_nav li:hover {
+#rt_nav > ul > li:hover {
    background-color: #FFF;
    padding: 0 15px;
+}
+
+/* sub-nav items */
+#rt_nav > ul > li > ul {
+    position: absolute;
+    top: 15px;
+    z-index: 999;
+    border: 1px solid rgba(108, 98, 98, .14);
+    background: rgba(255,255,255,0.9);
+    width: 170px;
+    display: none;
+}
+
+#rt_nav > ul > li > ul li a  {
+    display: block;
+    background: rgba(90, 157, 141, .14);
+    border: 1px solid rgba(0,0,0,0);
+    padding: 4px 0px 4px 15px;
+    text-align: left;
+}
+#rt_nav > ul > li > ul li a:hover  {
+    background: rgba(0, 0, 0, 0);
+    border: 1px solid rgba(108, 98, 98, .14);
+    text-decoration: none;
 }
 
 
