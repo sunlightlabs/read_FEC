@@ -7,7 +7,7 @@ datadir=/projects/realtimefec/src/realtimefec/fecreader/ftpdata/data/
 
 # http://fec.gov/data/Form1Filer.do?format=csv
 
-for year in  '14'
+for year in  '16'
 do
     curl -o $datadir/$year/Form1Filer_$year.csv "http://www.fec.gov/data/Form1Filer.do?format=csv&election_yr=20$year"
     
