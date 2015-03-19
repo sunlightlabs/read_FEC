@@ -1,0 +1,146 @@
+
+
+
+
+<div class="module RT clearfix">
+       <h3>Competitive primaries</h3>
+       <div id="timestamp"><strong>Last update:</strong>  Jan. 27, 2015 | 9:47 a.m.</div>
+       <p>This is a list of <b>primary</b> contests to watch based solely on fundraising. It includes primary races that feature at least two viable candidates. Sunlight defines a viable candidate as the incumbent or a challenger who<br>&nbsp;&nbsp;&bull; As of the end of 2013, had raised at least $100,000 and had at least $50,000 in the bank for House races<br>&nbsp;&nbsp;&bull; Or had raised $300,000 and had $150,000 in the bank for Senate races.
+         <br>We consider "open" primaries (those in California, Louisiana and Washington where candidates of all parties run in the same contest) competitive if there are three or more viable candidates vying for one of the two general election berths. House races are listed below senate races. For a list of all races, including those without competitive primaries, see our <a href="/races/">races</a> page.
+         </p>
+       
+</div>
+
+<script type="text/javascript" src="/static/realtimefec/js/chosen.jquery.min.js"></script>
+
+<!-- start filter  -->
+
+<div class="module">
+  <p>
+Show: <select name="filter_display" class="dropdown_field chosen-select" id="candidate_filter" tabindex="2" style="width:100px;">
+    <option value='0'>All Races</option>
+    <option value='S'>Only Senate</option>
+    <option value='H'>Only House</option>
+  </select>&nbsp;&nbsp;
+  State:
+  <select data-placeholder="Pick a state..." name="state" class="chosen-select" tabindex="2" id="candidate_state_checked" style="width:100px;">
+  </select>&nbsp;&nbsp;
+  <a href="http://rothenbergpoliticalreport.com/">Rothenberg rating</a>&dagger;: <select name="rating_filter" class="dropdown_field chosen-select" id="rating_filter" tabindex="2" style="width:150px;">
+      <option value='0'>All races</option>
+      <option value='126'>Toss-up races</option>
+      <option value='12637'>Toss-ups and leaners</option>
+      <option value='45'>Democrat favored / safe Democrat</option>
+      <option value='28'>Republican favored / safe Republican</option>
+      
+    </select>
+    
+    &nbsp;&nbsp;
+    Party: <select name="party_filter" class="dropdown_field chosen-select" id="party_filter" tabindex="2" style="width:140px;">
+        <option value='0'>All primaries</option>
+        <option value='Republican'>Republican primaries</option>
+        <option value='Democratic'>Democratic primaries</option>
+        <option value='Open*'>Open primaries</option>
+
+      </select>
+      <br><span style="font-size:11px;">&dagger;Rothenberg ratings refer to the seats' competitiveness in the general election.</span>
+      </p>
+  
+    
+
+</div>
+
+<script type="text/javascript" >
+
+var states = [
+  {'name':'Show All', 'value':'0'},
+  { 'value':'AL', 'name':'Alabama'}, { 'value':'AK', 'name':'Alaska'}, { 'value':'AZ', 'name':'Arizona'}, { 'value':'AR', 'name':'Arkansas'}, { 'value':'CA', 'name':'California'}, { 'value':'CO', 'name':'Colorado'}, { 'value':'CT', 'name':'Connecticut'}, { 'value':'DE', 'name':'Delaware'}, { 'value':'DC', 'name':'District of Columbia'}, { 'value':'FL', 'name':'Florida'}, { 'value':'GA', 'name':'Georgia'}, { 'value':'HI', 'name':'Hawaii'}, { 'value':'ID', 'name':'Idaho'}, { 'value':'IL', 'name':'Illinois'}, { 'value':'IN', 'name':'Indiana'}, { 'value':'IA', 'name':'Iowa'}, { 'value':'KS', 'name':'Kansas'}, { 'value':'KY', 'name':'Kentucky'}, { 'value':'LA', 'name':'Louisiana'}, { 'value':'ME', 'name':'Maine'}, { 'value':'MD', 'name':'Maryland'}, { 'value':'MA', 'name':'Massachusetts'}, { 'value':'MI', 'name':'Michigan'}, { 'value':'MN', 'name':'Minnesota'}, { 'value':'MS', 'name':'Mississippi'}, { 'value':'MO', 'name':'Missouri'}, { 'value':'MT', 'name':'Montana'}, { 'value':'NE', 'name':'Nebraska'}, { 'value':'NV', 'name':'Nevada'}, { 'value':'NH', 'name':'New Hampshire'}, { 'value':'NJ', 'name':'New Jersey'}, { 'value':'NM', 'name':'New Mexico'}, { 'value':'NY', 'name':'New York'}, { 'value':'NC', 'name':'North Carolina'}, { 'value':'ND', 'name':'North Dakota'}, { 'value':'OH', 'name':'Ohio'}, { 'value':'OK', 'name':'Oklahoma'}, { 'value':'OR', 'name':'Oregon'}, { 'value':'PA', 'name':'Pennsylvania'}, { 'value':'RI', 'name':'Rhode Island'}, { 'value':'SC', 'name':'South Carolina'}, { 'value':'SD', 'name':'South Dakota'}, { 'value':'TN', 'name':'Tennessee'}, { 'value':'TX', 'name':'Texas'}, { 'value':'UT', 'name':'Utah'}, { 'value':'VT', 'name':'Vermont'}, { 'value':'VA', 'name':'Virginia'}, { 'value':'WA', 'name':'Washington'}, { 'value':'WV', 'name':'West Virginia'}, { 'value':'WI', 'name':'Wisconsin'}, { 'value':'WY', 'name':'Wyoming'}
+]
+
+
+function make_states() {
+  state_element = '';
+  for (var i = 0; i < states.length; i++) {
+          state_element += '<option value="' + states[i].value + '">' + states[i].name + '</option>';
+      }
+
+  $("#candidate_state_checked").html(state_element);
+  $("#candidate_state_checked").trigger("chosen:updated");
+}
+
+
+
+function apply_filters() {
+  
+  state_selected = $("#candidate_state_checked").val();
+  rating_selected = $("#rating_filter").val();
+  chamber_selected = $("#candidate_filter").val();
+  party_selected = $("#party_filter").val();
+  
+  
+  
+  $(".primary_race").each(function(index) {    
+    race_id = this.id;
+    
+    //#@$$ javascript
+    var race_elements = race_id.split("-");
+    var chamber = race_elements[0];
+    var state = race_elements[1];
+    var rating = race_elements[2];
+    var party = race_elements[3];
+    
+    display = true;
+    if (chamber_selected != 0 && chamber_selected != chamber) {
+      display = false;
+    };
+    if (party_selected != 0 && party_selected != party) {
+      display = false;
+    };
+    if (state_selected != 0 && state_selected != state) {
+      display = false;
+    };
+    if (rating_selected != 0 && rating_selected.indexOf(rating) < 0) {
+      display = false;
+    };
+    
+    
+    if (display) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+    
+  });
+}
+
+
+$(document).ready(function() {
+  
+  $('.chosen-select'  ).chosen({disable_search_threshold: 10});
+  make_states();
+  
+    $( "#candidate_filter" ).val("0");
+    
+    $( ".chosen-select" )
+    .bind( "change", function() {
+      apply_filters();
+      
+      
+    });
+});
+
+
+
+
+</script>
+
+<!-- end filter  -->
+
+
+<div class="module" id="races">
+
+
+
+* "Open" primaries -- also known as "jungle" primaries -- allow candidates from both parties to compete.
+</div>
+
+

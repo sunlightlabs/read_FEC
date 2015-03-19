@@ -1,0 +1,434 @@
+
+
+/* make real-time stay highlighted*/
+#realtime {
+    padding-top: 2px;
+    background: rgba(90, 157, 141, .14);
+    border: 1px solid rgba(108, 98, 98, .14);
+    }
+
+
+/* slim down subnav; adapted from td_nav.  */
+#rt_nav {
+/* background: url('../../dryrub/images/bg_tdNav2.png') no-repeat top left;
+    height: 42px; */
+    background: rgba(105,165,159,.17);
+    padding: 14px 0;
+    margin-bottom: 30px;
+    margin-top: -15px;
+    border-bottom: 1px dashed #dcdcd8;
+    }
+
+#rt_nav ul {
+    margin-right: 25px;
+    }
+
+#rt_nav li {
+    float:left;
+    border-right: 1px solid #cacdce;
+    padding: 0 15px;
+    line-height: 15px;
+    text-align: center;
+    }
+
+#rt_nav li.last, .content-header-links li.last {
+    border-right: none;
+    padding-right: 0;
+    }
+
+#rt_nav li.first{
+    margin-left: 25px;
+    }
+
+#rt_nav li:hover, .documentation #rt_nav #documentation, .downloads #tr_nav #downloads, .api #rt_nav #api, .flexwidth #rt_nav #searchTD, .searchTD #rt_nav #searchTD{
+    font-weight: normal;
+    }
+
+#rt_nav li:hover {
+   background-color: #FFF;
+   padding: 0 15px;
+}
+
+
+.RTh2{
+    float: left;
+    padding-bottom: 10px;
+}
+
+.content-header-links {
+    float: right;
+    padding-top: 25px;
+    }
+
+.content-header-links li{
+    float: right;
+    border-right: 1px solid #cacdce;
+    padding: 0 15px;
+    line-height: 15px;
+    text-align: center;
+    font-weight: bold;
+    }
+
+.content-header-links li a:hover{
+    color:#004762;
+    }
+
+/* last update time. Appears on most pages. */
+
+
+.RT h3 {
+    padding-top:20px;
+    float: left;
+    margin-bottom: 0px;
+    }
+
+.RT p {
+    clear: both;
+    width: 100%;
+    padding-top: 20px;
+    }
+
+#timestamp {
+    float:right;
+    padding-top: 24px;
+    font-style: italic;
+    font-family: georgia;
+    font-size: 120%;
+    }
+
+/* Need some sorta style for the summary boxes. This is not gonna do it */
+.numeric_summary {
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    margin-bottom: 5px;
+    margin-top:5px;
+    padding-bottom: 5px;
+    padding-top:5px;
+    width: 550px;
+    }
+
+/* For the love of meatballs, don't break English grammar! WTF! WTF WTF WTF! */
+.tip {
+    margin-bottom:0px;
+    margin-top:0px;
+    padding: 0px;
+    text-transform: none;
+    }
+
+/* Use colors, size from existing span.amount */
+.amount_description {
+    text-transform: uppercase;
+    font-size: 140%;
+    }
+
+.amount_dollars {
+    font-color: #797070;
+    text-transform: uppercase;
+    font-size: 140%;
+    }
+
+/* make tables more usable - the font should be a bit bigger and there should be greater visual distinction between columns cells.  */
+
+
+#mainPageTable th {
+    border-bottom: solid 1px #DADFDB;
+}
+
+#mainPageTable td {
+    border-bottom: solid 1px #DADFDB;
+}
+
+.compressed th {
+    padding: 8px 5px;
+    line-height: 14px;
+    }
+
+
+.compressed td {
+    padding: 8px 5px;
+    line-height: 14px;
+    }
+
+th.sort.header.headerSortUp, th.headerSortDown {
+    background-color:#D1DBDA !important;
+    border: 1px solid #DADFDB !important;
+    }
+
+th.sort.header:hover {
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    	box-sizing: border-box;         /* Opera/IE 8+ */
+    background-color:#E0EAE9 !important;
+    border: 1px solid #DADFDB !important;
+    }
+
+/* Filter form */
+
+#formdiv {
+    background-color: #F5F4F4;
+    border: 1px solid #DCDCD8;
+    padding: 15px;
+    margin-bottom: 40px;
+    }
+
+.form-row {
+    clear: both;
+    display: block;
+}
+
+.form-row a:hover{
+    color:#004762;
+}
+
+.form-break {
+    border-top: 1px dotted #c8c8c3;
+    padding-top: 15px;
+    margin-top: 5px;
+}
+
+.form_spacer {
+    padding-right:10px;
+    padding-bottom: 10px;
+    float: left;
+    }
+
+.form-row label{
+    font-weight: bold;
+    width: auto;
+    display: block;
+    float: left;
+    cursor: default;
+    padding-right: 10px;
+    color:#666;
+    }
+
+#load_button {
+    width: 150px;
+    height:36px;
+    padding:8px 2px;
+    font-size: 14px;
+    background-color: #006186;
+    color: #FFF;
+    font-style: bold;
+    border: 1px solid #DCDCD8;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    float:right;
+    }
+
+#load_button:hover, #load_button:focus {
+    background-color: #FFF;
+    outline: none;
+    color: #006186;
+    }
+
+#load_button:active {
+    color: #006186;
+    outline: none;
+    background-color: #F5F4F4;
+    }
+
+#load_button[disabled],
+#load_button[disabled]:hover,
+#load_button[disabled]:active {
+    color: #666666;
+    outline: none;
+    background-color: #F5F4F4;
+    }
+
+.dropdown_field {
+    width: 260px;
+    }
+
+.dropdown_field_narrow {
+    width: 305px;
+    }
+
+.dropdown_field_long {
+    width: 320px;
+    }
+
+
+.dollar_field {
+    width:105px;
+    padding:2px;
+    }
+
+.text_field {
+    width:175px;
+    padding:2px;
+    }
+
+.date_field {
+    width:100px;
+    padding:0px;
+    }
+
+.dropdown_super_narrow {
+    width:120px;
+}
+
+.dropdown_slightly_narrow {
+    width:160px;
+}
+.pagination_container {
+    padding-top:0px;
+    padding-bottom:0px;
+    }
+
+#display_info {
+    font-family: Georgia,Serif;
+    font-style: italic;
+    }
+
+.sortable {
+    margin-top: 0px;
+    padding-top: 0px;
+    }
+
+
+/* subscribe form */
+#form_filings {
+    float: left;
+    width: 500px;
+    margin-right: 25px;
+    }
+
+.subscribe_to_committee {
+    display: block;
+    text-indent: -9999em;
+    float: left;
+    margin-right: 10px;
+    background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_add.png) left top no-repeat;
+    width: 16px;
+    height: 14px;
+    padding-bottom: 3px;
+    margin-top: 2px;
+    }
+
+.subscribe_to_committee:hover {
+    background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_add.png) left -17px no-repeat;
+    height: 15px;
+    padding-bottom: 1px;
+    }
+
+.selected_committee_display {
+    display: block;
+    text-indent: -9999em;
+    float: left;
+    margin-right: 10px;
+    background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_subtract.png) left top no-repeat;
+    width: 16px;
+    height: 14px;
+    padding-bottom: 3px;
+    margin-top: 2px;
+    }
+
+.selected_committee_display:hover {
+    background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_subtract.png) left -17px no-repeat;
+    height: 15px;
+    padding-bottom: 1px;
+    }
+
+#alertSet {
+    float: right;
+    width: 272px;
+    margin-right: 25px;
+    background-color: #fafaf8; -moz-border-radius: 3px; -webkit-border-radius: 3px;
+    padding: 15px;
+    }
+
+.module {
+    margin-bottom: 30px;
+    }
+
+#gotoscout {
+    background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_getAlert.png) left top no-repeat;
+    display: block;
+    text-indent: -9999em;
+    width: 118px;
+    height: 39px;
+    margin-top: 20px;
+    }
+
+#gotoscout:hover {
+    background: url(http://s3.amazonaws.com/sunlight-assets/site/4.0/images/btn_getAlert.png) left bottom no-repeat;
+    }
+
+#alertSettings {
+    padding-left: 20px;
+    }
+
+/*  more jf styles  */
+
+
+.download_bullets{
+    margin-left: 20px;
+    display: block;
+    list-style-type: disc;
+    margin-before: 1em;
+    margin-after: 1em;
+    margin-start: 0;
+    margin-end: 0;
+    padding-start: 40px;
+}
+
+.downloadable_files{
+    margin-left: 40px;
+    display: block;
+    list-style-type: none;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-start: 0;
+    margin-end: 0;
+    padding-start: 40px;
+    font-family: Georgia,Serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height:30px;
+}
+
+#download_icon{
+    background: url(http://assets.realtime.influenceexplorer.com.s3.amazonaws.com/1.0/realtimefec/css/images/download.png) left top no-repeat;
+    height: 16px;
+    width: 16px;
+    margin: 1px;
+    padding: 0px;
+}
+
+.label-support { width: 60px; text-align: center; padding: 2px; background: #f2e388; color: black; text-transform: uppercase; font-size: 75%; }
+
+.label-oppose { width: 60px; text-align: center; padding: 2px; background: #f27e01; color: black; text-transform: uppercase; font-size: 75%; }
+
+A.link { border: none; color: #0A6E92;}
+A.link:hover {text-decoration: underline}
+
+/* BUTTON RESET */
+.textBtn {
+    text-indent:0px;
+}
+
+.left_bar {
+    width: 450px;
+    float: left;
+}
+
+.right_bar {
+    width: 410px;
+    float:right;
+}
+
+.map_div {
+    width: 410px;
+    border: 1px solid black;
+    height:250px;
+}
+
+.map_attribution {
+    font-size:11px;
+    float:right;
+}
+/* force the dialog to be on top */
+.ui-dialog { z-index: 1000 !important ;}
+

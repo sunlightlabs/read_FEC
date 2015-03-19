@@ -27,10 +27,12 @@
 #rt_nav > ul > li {
     float:left;
     position:relative;
-    border-right: 1px solid #cacdce;
+    /*border-right: 1px solid #cacdce;*/
     padding: 0 15px;
-    line-height: 15px;
+    line-height: 20px;
     text-align: center;
+    font-size: 14px;
+    font-weight: 800;
     }
 
 
