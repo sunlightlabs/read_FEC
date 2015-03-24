@@ -55,7 +55,7 @@
 /* sub-nav items */
 #rt_nav > ul > li > ul {
     position: absolute;
-    top: 15px;
+    top: 34px;
     z-index: 999;
     border: 1px solid rgba(108, 98, 98, .14);
     background: rgba(255,255,255,0.9);
