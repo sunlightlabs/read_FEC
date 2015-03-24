@@ -69,11 +69,17 @@
     border: 1px solid rgba(0,0,0,0);
     padding: 4px 0px 4px 15px;
     text-align: left;
+    text-decoration: none;
 }
 #rt_nav > ul > li > ul li a:hover  {
     background: rgba(0, 0, 0, 0);
     border: 1px solid rgba(108, 98, 98, .14);
     text-decoration: none;
+}
+
+
+a:link {
+  text-decoration: none;
 }
 
 
