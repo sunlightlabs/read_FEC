@@ -41,6 +41,11 @@
     padding-right: 0;
     }
 
+#rt_nav a:link {
+  display: inline-block;
+  padding: 5px;
+}
+
 #rt_nav > ul > li:hover, .documentation #rt_nav #documentation, .downloads #tr_nav #downloads, .api #rt_nav #api, .flexwidth #rt_nav #searchTD, .searchTD #rt_nav #searchTD{
     font-weight: normal;
     }
@@ -55,7 +60,7 @@
 /* sub-nav items */
 #rt_nav > ul > li > ul {
     position: absolute;
-    top: 34px;
+    top: 30px;
     z-index: 999;
     border: 1px solid rgba(108, 98, 98, .14);
     background: rgba(255,255,255,0.9);
