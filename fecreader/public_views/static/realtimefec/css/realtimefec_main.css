@@ -82,6 +82,11 @@
     text-decoration: none;
 }
 
+.li.rt-dropdown{
+    text-align:left;
+
+}
+
 
 a:link {
   text-decoration: none;
