@@ -42,23 +42,27 @@
     font-weight: 800;
     }
 
-#rt_nav a:link {
-  display: inline-block;
-  padding: 5px;
-font-weight: 800;
+#rt_nav a{
+    display: inline-block;
+    padding: 5px;
+    font-weight: 800;
 }
+
+#rt_nav a:hover{
+    color:#000000;
+    }
 
 #rt_nav > ul > li:hover, .documentation #rt_nav #documentation, .downloads #tr_nav #downloads, .api #rt_nav #api, .flexwidth #rt_nav #searchTD, .searchTD #rt_nav #searchTD{
     font-weight: normal;
     }
 
-#rt_nav > ul > a:hover {
+/*#rt_nav > ul > a:hover {*/
 /*   background-color: #FFF;*/
-   padding: 0 15px;
+/*   padding: 0 15px;*/
 /*   font-weight:800;*/
-   text-decoration:none;
-   color:#000000;
-}
+/*   text-decoration:none;
+   color:#000000;*/
+/*}*/
 
 /* sub-nav items */
 #rt_nav > ul > li > ul {
