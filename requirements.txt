@@ -25,7 +25,7 @@ django-redis
 django_compressor
 
 
--e git+https://github.com/sunlightlabs/dryrub.git#egg=dryrub
+-e git+https://github.com/sunlightlabs/dryrub.git@e2fa28624d0c516e620f7ae64158ca06cd28ac8f#egg=dryrub
 
 # from other branch
 
