@@ -1,3 +1,4 @@
+fecreader/static-root/*
 local_settings.py
 local_FEC_settings.py
 mongo_settings.py
@@ -29,4 +30,4 @@ develop-eggs
 lib
 lib64
 
-
+*reqs.txt
