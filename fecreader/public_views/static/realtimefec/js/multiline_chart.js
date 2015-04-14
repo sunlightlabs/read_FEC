@@ -214,9 +214,8 @@ function read_data(text) {
    });
    
    // Add day at the end
-   //var displayendDate = new Date();
-   //displayendDate.setDate(maxDate.getDate() + 2); 
-   var displayendDate = new Date(2014,12,1);
+   var displayendDate = new Date();
+   displayendDate.setDate(maxDate.getDate() + 2); 
    
    
    

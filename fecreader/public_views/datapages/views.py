@@ -11,6 +11,8 @@ from django.http import Http404
 
 from fec_alerts.models import new_filing, newCommittee, f1filer
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate, DistrictWeekly
+from shared_utils.cycle_utils import get_cycle_abbreviation, is_valid_four_digit_string_cycle, get_cycle_endpoints
+
 this_cycle = '2014'
 this_cycle_start = datetime.date(2013,1,1)
 from formdata.models import SkedA, SkedB, SkedE
@@ -408,6 +410,7 @@ def filings_skede(request, filing_num):
         context_instance=RequestContext(request)
     )
 
+"""  this will be replaced with committee_cycle, but will need a redirect once it's up. """
 @cache_page(LONG_CACHE_TIME)
 def committee(request, committee_id):
     committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id)
@@ -442,7 +445,51 @@ def committee(request, committee_id):
         }, 
         context_instance=RequestContext(request)
     )
+
+
+@cache_page(1)
+def committee_cycle(request, cycle, committee_id):
     
+    if not is_valid_four_digit_string_cycle(cycle):
+        # should redirect, but for now:
+        raise Http404
+    
+    cycle_endpoints = get_cycle_endpoints(int(cycle))
+    
+    committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id, cycle=int(cycle))
+
+    title = committee_overlay.name + " - " + str(cycle)
+    
+    report_list = Committee_Time_Summary.objects.filter(com_id=committee_id, coverage_from_date__gte=cycle_endpoints['start'], coverage_from_date__lte=cycle_endpoints['end']).order_by('-coverage_through_date')
+
+
+    end_of_coverage_date = committee_overlay.cash_on_hand_date
+    recent_report_list = None
+
+    if end_of_coverage_date:
+        recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=end_of_coverage_date, coverage_to_date__lte=cycle_endpoints['end'], form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
+    else:
+        recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=cycle_endpoints['start'], coverage_to_date__lte=cycle_endpoints['end'],  form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
+
+    independent_spending = Pac_Candidate.objects.filter(committee=committee_overlay, total_ind_exp__gte=5000, cycle=cycle).select_related('candidate')
+
+    recent_ies = None
+    if committee_overlay.total_indy_expenditures > 5000:
+        recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end']).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
+
+
+    return render_to_response('datapages/committee.html',
+        {
+        'title':title,
+        'report_list':report_list,
+        'recent_report_list':recent_report_list,
+        'committee':committee_overlay,
+        'independent_spending':independent_spending,
+        'recent_ies':recent_ies,
+        }, 
+        context_instance=RequestContext(request)
+    )
+
 @cache_page(LONG_CACHE_TIME)
 def candidate(request, candidate_id):
     candidate_overlay = get_object_or_404(Candidate_Overlay, fec_id=candidate_id)
