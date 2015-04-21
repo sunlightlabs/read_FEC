@@ -1,0 +1,39 @@
+{% load humanize %}
+{% load staticfiles %}
+
+<div class="module RT clearfix">
+       <h3>Presidential fundraising</h3>
+       <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
+       
+        <div style="clear:both;">
+        
+             
+        <p class="tip">It's too early to track presidential candidates' fundraising comprehensively, but we've been keeping tabs on which PACs are which, regardless of whether someone's officially in or out of the race for President. We'll have more details once more reports have been filed.</p>
+    </div>
+
+<div class="overviewBar withNav withTip" id="positive">
+    <h4>Possible Candidates</h4>
+</div>
+
+<table id="mainPageTable" class="sortable">
+  <thead>
+    <tr>
+      <th class="sort">Name</th><th>Candidate committees</th><th>Leadership PAC</th><th>Super PAC</th><th>Other</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for object in summary_obj_list %}
+      <tr class="{% cycle 'odd' 'even' %}">
+       	<td>{{ object.name }}, {{ object.first_name }} ({{object.party|upper }})</td>
+<td>{% for com in object.candidate_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
+
+				<td>{% for com in object.leadership_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
+				<td>{% for com in object.superpacs %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
+				<td>{% for com in object.other_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="{{com.other_url}}">{{ com.pac_name}}</a>{% endfor %}</td>
+
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</div>
