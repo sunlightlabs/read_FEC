@@ -20,32 +20,12 @@
 <link rel="stylesheet" href="{% static 'realtimefec/css/realtimefec_main.css' %}" />
 {% endblock sitecss %}
 {% block main %}
-{% block subnavitems %}
 {# override search #}
 {% block search %}{% endblock search %}
 
-<div id="contentHeader" class="clearfix">
-    <h2 class="RTh2">Real-Time Federal Campaign Finance</h2>
-        <ul class="content-header-links">
-            <li class="last"><a href="/alerts/">Get Alerts About New Filings</a></li>
-            <li><a href="/download-index/">Bulk Data Downloads</a></li>
-            <li><a href="/about/">About</a></li>
-        </ul>
-    </h2>
-</div>
-<nav id="rt_nav" class="realtimesubnav clearfix">
-    <ul>
-        <li class="first"><a href="/overview/">Overview</a></li>
-        <li><a href="/newest-filings/">Newest Filings</a></li>
-        <li><a href="/new-committees/">New Committees</a></li>
-        <li><a href="/outside-spending/">Outside Spending</a></li>
-        <li><a href="/pacs/">PACs</a></li>
-        <li><a href="/house/">House</a></li>
-        <li><a href="/senate/">Senate</a></li>
-        <li class="last"><a href="/races/">Races</a></li>
-    </ul>
+{% block subnavitems %}
+{% include "includes/main_nav.html" %}
 {% endblock %}
-</nav>
 
 <div class="module RT clearfix">
        <h3>{% block title %}{{ title|safe }} {% endblock %}</h3>

@@ -29,4 +29,4 @@ develop-eggs
 lib
 lib64
 
-
+*reqs.txt
