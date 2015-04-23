@@ -25,6 +25,68 @@
 
 {% block subnavitems %}
 {% include "includes/main_nav.html" %}
+
+<div id="contentHeader" class="clearfix">
+    <h2 class="RTh2">Real-Time Federal Campaign Finance</h2>
+      <!--   <ul class="content-header-links">
+            <li class="last"><a href="/alerts/">Get Alerts About New Filings</a></li>
+            <li><a href="/download-index/">Bulk Data Downloads</a></li>
+            <li><a href="/about/">About</a></li>
+        </ul> -->
+    </h2>
+    {% include "includes/cycle_selector.html" %}
+</div>
+<nav id="rt_nav" class="realtimesubnav clearfix">
+    <ul>
+        <li>
+            <a href="/overview/">Overview</a>
+            <ul>
+                <li><a href="/overview/roi/">Return on investment</a></li>
+                <li><a href="/overview/results/">Results</a></li>
+                <li><a href="/overview/">Cycle Overview</a></li>
+                <li><a href="/overview/outside-money/">Outside Money</a></li>
+                <li><a href="/overview/super-pacs/">Super PACs</a></li>
+                <li><a href="/overview/dark-money/">Dark Money</a></li>
+                <li><a href="/overview/connected/">Connected PACs</a></li>
+            </ul>
+      </li>
+      <li><a href="/newest-filings/">Newest Filings</a></li>
+      <li>
+            <a href="/new-committees/">Presidential</a>
+            <ul>
+                <li><a href="#">Candidates</a></li>
+                <li><a href="#">Related Committees</a></li>
+            </ul>
+      </li>
+      <li>
+            <a href="/outside-spending/">New Committees</a>
+            <ul>
+                <li><a href="#">New Superpacs</a></li>
+                <li><a href="#">New Leadership Pacs</a></li>
+            </ul>
+
+      </li>
+      <li>
+          <a href="/pacs/">Outside Spending</a>
+          <ul>
+                <li><a href="#">Independent Expenditures</a></li>
+                <li><a href="#">Top Groups</a></li>
+          </ul>
+
+      </li>
+        <li class="last">
+          <a href="/house/">PAC Summaries</a>
+          <ul>
+                <li><a href="#">Leadership Pacs</a></li>
+                <li><a href="#">McCutcheon committees / Joint fundraising</a></li>
+                <li><a href="#">527s !</a></li>
+          </ul>
+      </li>
+        
+    </ul>
+
+{% block subnavitems %}
+{% include "includes/main_nav.html" %}
 {% endblock %}
 
 <div class="module RT clearfix">
