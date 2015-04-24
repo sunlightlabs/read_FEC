@@ -108,6 +108,7 @@ a:link {
 .RTh2{
     float: left;
     padding-bottom: 10px;
+    line-height: 70px;
 }
 
 .content-header-links {
@@ -491,7 +492,7 @@ A.link:hover {text-decoration: underline}
 
 .cycle-selector-container{
     margin:0 auto;
-    width: 225px;
+    width: 177px;
     float: right;
 }
 
@@ -564,7 +565,7 @@ option {
 }
 
 .cycle-year{
-  height:42px;
+  height:26px;
   width: 225px;
   font-family: helvetica;
   font-weight: 800;
