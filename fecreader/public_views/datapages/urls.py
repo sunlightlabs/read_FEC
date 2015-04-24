@@ -26,7 +26,7 @@ urlpatterns = patterns('',
         url(r'^filings/(\d+)/$', 'public_views.datapages.views.filing'),
         url(r'^committee/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee'),
         # new cycle:
-        url(r'^committee\/cycle\/(?P<cycle>20\d\d)\/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee_cycle'),
+        url(r'^committee\/(?P<cycle>20\d\d)\/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee_cycle'),
         
         
         url(r'^candidate/[\w-]+\/(?P<candidate_id>[\w\d]+)\/?$', 'public_views.datapages.views.candidate'),        

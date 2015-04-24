@@ -478,7 +478,7 @@ def committee_cycle(request, cycle, committee_id):
         recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end']).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
 
 
-    return render_to_response('datapages/committee.html',
+    return render_to_response('datapages/committee_cycle.html',
         {
         'title':title,
         'report_list':report_list,
@@ -489,6 +489,7 @@ def committee_cycle(request, cycle, committee_id):
         }, 
         context_instance=RequestContext(request)
     )
+""" to be replaced with candidate_cycle """
 
 @cache_page(LONG_CACHE_TIME)
 def candidate(request, candidate_id):
@@ -538,6 +539,60 @@ def candidate(request, candidate_id):
         }, 
         context_instance=RequestContext(request)
     )
+
+
+
+@cache_page(LONG_CACHE_TIME)
+def candidate_cycle(request, candidate_id):
+    candidate_overlay = get_object_or_404(Candidate_Overlay, fec_id=candidate_id)
+    title = "%s (%s) " % (candidate_overlay.name, candidate_overlay.party)
+
+    authorized_committee_list = Authorized_Candidate_Committees.objects.filter(candidate_id=candidate_id)
+    committee_list = [x.get('committee_id') for x in authorized_committee_list.values('committee_id')]
+
+    report_list = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start).order_by('-coverage_through_date')
+
+
+    end_of_coverage_date = None
+    recent_report_list = None
+    if report_list:
+        end_of_coverage_date = report_list[0].coverage_through_date
+
+
+    recent_report_total = 0
+    if end_of_coverage_date:
+        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=end_of_coverage_date, form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
+        if recent_report_list:
+            recent_report_total = recent_report_list.aggregate(spending_total=Sum('tot_raised'))['spending_total']
+
+    else:
+        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=this_cycle_start, form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
+
+
+    # are their outside groups who've spent for/against this candidate? 
+    outside_spenders = Pac_Candidate.objects.filter(candidate=candidate_overlay, total_ind_exp__gte=1000).select_related('committee')
+
+    recent_ies = None
+    if outside_spenders:
+        recent_ies = SkedE.objects.filter(candidate_checked=candidate_overlay, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
+
+
+    return render_to_response('datapages/candidate.html',
+        {
+        'title':title,
+        'report_list':report_list,
+        'candidate':candidate_overlay,
+        'authorized_committee_list':authorized_committee_list,
+        'outside_spenders':outside_spenders,
+        'recent_report_list':recent_report_list,
+        'recent_ies':recent_ies,
+        'recent_report_total':recent_report_total,
+        }, 
+        context_instance=RequestContext(request)
+    )
+
+
+
 @cache_page(LONG_CACHE_TIME)
 def subscribe(request):
     return render_to_response('datapages/subscribe.html',

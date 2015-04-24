@@ -6,7 +6,11 @@ from django.conf import settings
 
 from datetime import date
 
+
+""" Are cycles consistent? """
 cycle_calendar = {
+    2008: {'start':date(2007,1,1), 'end':date(2008,12,31)},
+    2010: {'start':date(2009,1,1), 'end':date(2010,12,31)},
     2012: {'start':date(2011,1,1), 'end':date(2012,12,31)},
     2014: {'start':date(2013,1,1), 'end':date(2014,12,31)},
     2016: {'start':date(2015,1,1), 'end':date(2016,12,31)},
