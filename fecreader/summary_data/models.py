@@ -788,7 +788,9 @@ class Committee_Time_Summary(models.Model):
         return "%s: (%s-%s)" % (self.com_name, self.coverage_from_date, self.coverage_through_date)
 
 # reference table. Has these relationships for everyone. We're not building candidate overlays for other cycles.
+## 
 class Authorized_Candidate_Committees(models.Model):
+    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     candidate_id = models.CharField(max_length=9, blank=True)
     committee_id = models.CharField(max_length=9, blank=True)
     committee_name = models.CharField(max_length=255)

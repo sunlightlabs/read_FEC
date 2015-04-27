@@ -20,6 +20,7 @@ filer_type_hash={'Q': 'Quarterly',
           'T': 'Termination report',
           }
 
+""" No longer used """
 def set_gap_list(gap_start, gap_end, committee_id):
     # save dictionary of gaps, in chronological order, in an hstore field. 
     filing_gap, created = Filing_Gap.objects.get_or_create(committee_id=committee_id, gap_start=gap_start, gap_end=gap_end)
@@ -89,9 +90,10 @@ def write_all_webks(file_name):
     webks = WebK.objects.filter(cycle='2014')
     write_webk_csv(webks, file_name)
 
-
+# needs cycle update
 def summarize_committee_periodic_webk(committee_id, force_update=False):
-    # Populate the Committee_Time_Summary with webk data. Only do this for the senate. 
+    """ Populate the Committee_Time_Summary with webk data. Only do this for paper filers. 
+        this can be a source of delay if a committee converts from paper to """
     
     relevant_webks = WebK.objects.filter(com_id=committee_id, cov_sta_dat__gte=this_cycle_start).order_by('cov_sta_dat')
     if not relevant_webks:
@@ -251,6 +253,7 @@ def map_summary_form_to_dict(form, header_data):
         cts_dict = map_f5_to_cts(header_data)
     return cts_dict
     
+# needs cycle update
 def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
     committee_name = ""
     try:
@@ -279,14 +282,14 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
         if i==0:
             if this_filing.coverage_from_date - this_cycle_start > one_day:
                 #print "Missing coverage from start of cycle!!"
-                set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
+                # set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
 
 
         if i>0:
             difference = this_filing.coverage_from_date - last_end_date
             if difference > one_day:
                 #print "gap found!"
-                set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
+                # icpsrset_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 
         #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
 
@@ -332,6 +335,7 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
 
 
 
+# needs cycle update
 
 
 ## rewrite so this can handle F5's to replace the above
@@ -364,14 +368,14 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         if i==0:
             if this_filing.coverage_from_date - this_cycle_start > one_day:
                 #print "Missing coverage from start of cycle!!"
-                set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
+                # set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
                 
         
         if i>0:
             difference = this_filing.coverage_from_date - last_end_date
             if difference > one_day:
                 #print "gap found!"
-                set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
+                # set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 
         #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
         

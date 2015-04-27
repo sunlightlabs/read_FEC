@@ -8,9 +8,8 @@ from django.conf import settings
 
 from formdata.models import SkedE
 from summary_data.models import Pac_Candidate, Candidate_Overlay, Committee_Overlay
-from shared_utils import cycle_calendar
+from shared_utils.cycle_utils import cycle_calendar
 
-from 
 
 try:
     ACTIVE_CYCLES = settings.ACTIVE_CYCLES
@@ -29,10 +28,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # get all committees where there's outside spending
         for cycle in ACTIVE_CYCLES:
-            
-            
-            
-            committee_list = Pac_Candidate.objects.values('committee__fec_id', cycle=cycle).order_by('committee__fec_id').distinct()
+            print "handling cycle: %s" % cycle
+            committee_list = Pac_Candidate.objects.filter(cycle=cycle).values('committee__fec_id').order_by('committee__fec_id').distinct()
             for ie_committee in committee_list:
                 fec_id = ie_committee['committee__fec_id']
             
@@ -46,7 +43,7 @@ class Command(BaseCommand):
             
                 rep_oppose_ies = Pac_Candidate.objects.filter(committee__fec_id=fec_id, candidate__party__iexact='R',support_oppose__iexact='O', cycle=cycle).aggregate(total=Sum('total_ind_exp'))['total']
             
-                print "total=%s support d = %s support r = %s oppose d = %s oppose r = %s" % (total_ies, dem_support_ies, rep_support_ies, dem_oppose_ies, rep_oppose_ies)
+                print "id = %s total=%s support d = %s support r = %s oppose d = %s oppose r = %s" % (fec_id, total_ies, dem_support_ies, rep_support_ies, dem_oppose_ies, rep_oppose_ies)
             
                 try:
                     this_committee = Committee_Overlay.objects.get(fec_id=fec_id, cycle=cycle)
