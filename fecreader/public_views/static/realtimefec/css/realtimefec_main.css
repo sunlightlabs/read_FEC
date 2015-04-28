@@ -540,7 +540,7 @@ filter {
   cursor: pointer;
 }
 
-.select-field:after {
+.multi-cycle.select-field:after {
   position: absolute;
   top: 50%;
   right: 60px;
