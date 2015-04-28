@@ -1,0 +1,16 @@
+<div class="cycle-selector-container">
+{% if display %}
+<form action method="get" class="filter">
+    <div class="select-field{% if is_selectable %} multi-cycle{% endif %}"><!--  add "multi-cycle" to classes to make the clickable triangle thing visible   -->
+        <span class="select-option">{% if is_selectable %}Select Cycle{% else %}Showing Cycle{% endif %}</span>
+        {% if is_selectable %}
+        <select name="cycle-filter">
+            <option value="">Select Cycle</option>
+            {% for cycle in cycles %}<option value="{{ cycle }}">{{ cycle }}</option>{% endfor %}
+        </select>
+        {% endif %}
+    </div><!-- /.select-field -->
+</form>
+<div class="cycle-year">{{ selected_cycle }}</div>
+{% endif %}
+</div>
