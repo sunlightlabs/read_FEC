@@ -106,12 +106,12 @@ class District(models.Model):
             
     def __unicode__(self):
         if self.office == 'S':
-            return "%s Sen. (%s)" % (self.state, self.term_class)
+            return "%s %s Sen. (%s)" % (self.cycle, self.state, self.term_class)
         elif self.office== 'H':
             if self.office_district:
-                return "%s-%s (House)" % (self.state, self.office_district)
+                return "%s %s-%s (House)" % (self.cycle, self.state, self.office_district)
             else:
-                return "%s" % (self.state) 
+                return "%s %s" % (self.cycle, self.state) 
         elif self.office == 'P':
             return "President"
             
