@@ -7,7 +7,7 @@ from django.template.defaultfilters import slugify
 
 
 
-def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2014, election_year=2014, cycle_to_copy_to=2014, verify_does_not_exist=True, display_candidate=False):
+def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2016, election_year=2016, cycle_to_copy_to=2016, verify_does_not_exist=True, display_candidate=False):
     
     if candidate_id == 'P20003851':
         return None
@@ -187,7 +187,7 @@ def make_committee_from_new_committee_list(committee_id, cycle='2014'):
         return cm
 
 
-def make_committee_from_f1filer(committee_id, cycle='2014'):
+def make_committee_from_f1filer(committee_id, cycle):
     nc = None
     try:
         nc = f1filer.objects.get(cmte_id = committee_id, cycle=cycle)

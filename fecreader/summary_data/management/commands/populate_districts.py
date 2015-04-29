@@ -11,9 +11,9 @@ from summary_data.utils.party_reference import get_party_from_pty, get_party_fro
 from summary_data.utils.session_data import senate_special_elections, house_special_elections
 
 today = date.today()
-cycle = '2014'
-cycle_start = date(2013,1,5)
-cycle_end = date(2014,12,31)
+cycle = '2016'
+cycle_start = date(2015,1,5)
+cycle_end = date(2016,12,31)
 def create_house_districts():
     # pull this from us_congress repo data--which is in the legislators app
     
@@ -22,7 +22,7 @@ def create_house_districts():
     for d in unique_hd:
         print d
         district_fixed = d['district'].zfill(2)
-        thisdistrict, created = District.objects.get_or_create(cycle=cycle,state=d['state'], office='H', office_district=district_fixed, election_year='2014')
+        thisdistrict, created = District.objects.get_or_create(cycle=cycle,state=d['state'], office='H', office_district=district_fixed, election_year=cycle)
         
         incumbent_term = Term.objects.filter(start__lte=cycle_end, end__gte=cycle_start, term_type='rep', district=d['district'], state=d['state']).order_by('-start')[0]
         party = get_party_from_term_party(incumbent_term.party)
@@ -95,6 +95,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options): 
         create_house_districts()
         create_senate_districts()
-        set_house_special_elections()
-        set_senate_special_elections()
+        # set_house_special_elections()
+        # set_senate_special_elections()
 

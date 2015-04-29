@@ -281,6 +281,7 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
         #print i, this_filing.coverage_from_date, this_filing.coverage_through_date
         if i==0:
             if this_filing.coverage_from_date - this_cycle_start > one_day:
+                pass
                 #print "Missing coverage from start of cycle!!"
                 # set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
 
@@ -288,6 +289,7 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
         if i>0:
             difference = this_filing.coverage_from_date - last_end_date
             if difference > one_day:
+                pass
                 #print "gap found!"
                 # icpsrset_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 
@@ -367,6 +369,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         #print i, this_filing.coverage_from_date, this_filing.coverage_through_date
         if i==0:
             if this_filing.coverage_from_date - this_cycle_start > one_day:
+                pass
                 #print "Missing coverage from start of cycle!!"
                 # set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
                 
@@ -374,6 +377,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         if i>0:
             difference = this_filing.coverage_from_date - last_end_date
             if difference > one_day:
+                pass
                 #print "gap found!"
                 # set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 

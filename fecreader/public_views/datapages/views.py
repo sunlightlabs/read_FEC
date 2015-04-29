@@ -486,6 +486,7 @@ def committee_cycle(request, cycle, committee_id):
         'committee':committee_overlay,
         'independent_spending':independent_spending,
         'recent_ies':recent_ies,
+        'cycle_list':[2014]
         }, 
         context_instance=RequestContext(request)
     )
