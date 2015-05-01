@@ -244,9 +244,11 @@ class Candidate_Overlay(models.Model):
     
     def __unicode__(self):
         if self.office == 'S':
-            return '%s (%s) %s Sen.' % (self.name, self.party, self.state)
+            return '%s (%s) %s Sen. [%s]' % (self.name, self.party, self.state, self.cycle)
+        elif self.office == 'P':
+            return '%s (%s) %s President [%]' % (self.name, self.party, self.cycle)           
         else:
-            return '%s (%s) %s-%s' % (self.name, self.party, self.state, self.office_district)
+            return '%s (%s) %s-%s [%]' % (self.name, self.party, self.state, self.office_district, self.cycle)
         
     def incumbency_status(self):
         if self.is_incumbent:
@@ -800,6 +802,7 @@ class Authorized_Candidate_Committees(models.Model):
     # maybe we're missing a year? 
     
 
+""" Not used, see below.
 
 ## This is untenable, I think; mismatched filing periods make this a total pain. 
 class Candidate_Time_Summary(models.Model):
@@ -818,8 +821,10 @@ class Candidate_Time_Summary(models.Model):
     coverage_through_date = models.DateField(null=True)
     data_source = models.CharField(max_length=10, help_text="webk|electronic")
 
+"""
 
 
+# This is only used during testing. 
 class Filing_Gap(models.Model):
     # record-keeping for what filings are missing. 
     # Will attempt to backfill with webk data to handle case of 
