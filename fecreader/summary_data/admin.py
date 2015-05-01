@@ -13,7 +13,7 @@ class DistrictAdmin(admin.ModelAdmin):
         }),
     )
     search_fields=['incumbent_name', 'state']
-    list_display=['office', 'state', 'incumbent_name', 'office_district', 'term_class']
+    list_display=['office', 'cycle', 'state', 'incumbent_name', 'office_district', 'term_class']
 admin.site.register(District, DistrictAdmin) 
     
     
@@ -32,6 +32,7 @@ class Candidate_OverlayAdmin(admin.ModelAdmin):
 
     )
     search_fields=['name', 'state']
+    list_display=['name', 'office', 'cycle', 'state', 'office_district', 'term_class']
     
 admin.site.register(Candidate_Overlay, Candidate_OverlayAdmin)
 
@@ -60,7 +61,7 @@ class Committee_OverlayAdmin(admin.ModelAdmin):
         }),
     )
     search_fields=['name']
-    list_display=['name', 'ctype', 'designation',]
+    list_display=['name', 'cycle','ctype', 'designation',]
     
 
 admin.site.register(Committee_Overlay, Committee_OverlayAdmin)
