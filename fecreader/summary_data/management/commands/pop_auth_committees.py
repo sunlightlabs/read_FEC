@@ -19,8 +19,9 @@ class Command(BaseCommand):
         ccls = CandComLink.objects.filter(cycle=CURRENT_CYCLE, cmte_dsgn__in=['A', 'P'], fec_election_yr=int(CURRENT_CYCLE))
         
         for ccl in ccls:
+            print "handling %s %s" % (ccl.cmte_id, ccl.cmte_name)
             try:
-                acc = Authorized_Candidate_Committees.objects.get(candidate_id=ccl.cand_id, committee_id=ccl.cmte_id)
+                acc = Authorized_Candidate_Committees.objects.get(candidate_id=ccl.cand_id, committee_id=ccl.cmte_id, cycle=int(CURRENT_CYCLE))
             except Authorized_Candidate_Committees.DoesNotExist:
                 
                 cm_name = None
@@ -28,14 +29,15 @@ class Command(BaseCommand):
                     cm = Committee.objects.get(cycle=CURRENT_CYCLE, cmte_id=ccl.cmte_id)
                     cm_name = cm.cmte_name
                 except Committee.DoesNotExist:
-                    pass
+                    print "Committee object doesn't exist for id=%s name=%s" % (ccl.cmte_id, ccl.cmte_name)
                 
                 acc = Authorized_Candidate_Committees.objects.create(
                     candidate_id = ccl.cand_id,
                     committee_id = ccl.cmte_id,
                     committee_name = cm_name,
                     com_type = ccl.cmte_tp,
-                    is_pcc = ccl.cmte_dsgn == 'P'
+                    is_pcc = ccl.cmte_dsgn == 'P',
+                    cycle = CURRENT_CYCLE
                 )
 
         
