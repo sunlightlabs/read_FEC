@@ -1,17 +1,22 @@
 from django.core.management.base import BaseCommand, CommandError
 from summary_data.models import Authorized_Candidate_Committees
 from ftpdata.models import CandComLink, Committee, Candidate
+from django.conf import settings
 
 
-election_year = 2014
-cycle = str(election_year)
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = ['2016']
+
 
 class Command(BaseCommand):
     help = "Set the authorized candidate committees"
     requires_model_validation = False
     
     def handle(self, *args, **options):
-        ccls = CandComLink.objects.filter(cycle=election_year, cmte_dsgn__in=['A', 'P'], fec_election_yr=election_year)
+        ccls = CandComLink.objects.filter(cycle=CURRENT_CYCLE, cmte_dsgn__in=['A', 'P'], fec_election_yr=int(CURRENT_CYCLE))
         
         for ccl in ccls:
             try:
@@ -20,7 +25,7 @@ class Command(BaseCommand):
                 
                 cm_name = None
                 try:
-                    cm = Committee.objects.get(cycle=election_year, cmte_id=ccl.cmte_id)
+                    cm = Committee.objects.get(cycle=CURRENT_CYCLE, cmte_id=ccl.cmte_id)
                     cm_name = cm.cmte_name
                 except Committee.DoesNotExist:
                     pass
