@@ -18,9 +18,9 @@ try:
     CURRENT_CYCLE = settings.CURRENT_CYCLE
 except:
     print "Missing current cycle list. Defaulting to 2016. "
-    CURRENT_CYCLE = ['2016']
+    CURRENT_CYCLE = '2016'
     
-this_cycle_calendar = cycle_calendar(int(CURRENT_CYCLE))
+this_cycle_calendar = cycle_calendar[int(CURRENT_CYCLE)]
 this_cycle_start = this_cycle_calendar['start']
 this_cycle_end = this_cycle_calendar['end']
 one_day = timedelta(days=1)

@@ -2,7 +2,7 @@ from django.contrib import admin
 from models import District, Candidate_Overlay, Committee_Overlay, ElectionSummary
 
 class DistrictAdmin(admin.ModelAdmin):
-    readonly_fields = ('cycle')
+    readonly_fields = ('cycle',)
     fieldsets = (
         ("Human-verified data", {
             'fields': ('next_election_date','next_election_code', 'special_election_scheduled', 'open_seat', 'district_notes'),

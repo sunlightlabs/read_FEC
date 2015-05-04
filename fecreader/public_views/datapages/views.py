@@ -322,10 +322,10 @@ def outside_spending(request):
 def filing(request, filing_num):
     filing = get_object_or_404(new_filing, filing_number=filing_num)
     committee = None
-    title="%s:details of filing #%s" % ( filing.committee_name, filing_num)
+    title="%s: details of filing #%s" % ( filing.committee_name, filing_num)
     
     try:
-        committee = Committee_Overlay.objects.get(fec_id = filing.fec_id)
+        committee = Committee_Overlay.objects.get(fec_id = filing.fec_id, cycle=filing.cycle)
         title="<a href=\"%s\">%s</a>: details of filing #%s" % (committee.get_absolute_url(), filing.committee_name, filing_num)
         
     except:
@@ -478,6 +478,10 @@ def committee_cycle(request, cycle, committee_id):
         recent_ies = SkedE.objects.filter(filer_committee_id_number=committee_id, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end']).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
 
 
+    # figure out which cycles are available. The current one goes first, because it is being displayed.     
+    cycle_values = Committee_Overlay.objects.filter(fec_id=committee_id).exclude(cycle=cycle)
+    cycle_list = [committee_overlay] + list(cycle_values)
+
     return render_to_response('datapages/committee_cycle.html',
         {
         'title':title,
@@ -486,7 +490,7 @@ def committee_cycle(request, cycle, committee_id):
         'committee':committee_overlay,
         'independent_spending':independent_spending,
         'recent_ies':recent_ies,
-        'cycle_list':[2014]
+        'cycle_list':cycle_list
         }, 
         context_instance=RequestContext(request)
     )

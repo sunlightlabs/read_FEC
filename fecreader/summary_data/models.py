@@ -536,7 +536,7 @@ class Committee_Overlay(models.Model):
             return None
 
     def get_absolute_url(self):  
-        return ("/committee/%s/%s/" % (self.slug, self.fec_id))
+        return ("/committee/%s/%s/%s/" % (self.cycle, self.slug, self.fec_id))
 
     def is_not_a_committee(self):
         if self.ctype=='I':
