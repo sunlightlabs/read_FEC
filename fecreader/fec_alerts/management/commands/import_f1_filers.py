@@ -21,7 +21,7 @@ def readfile(filelocation):
     count = 0
     for row in reader:
         try:
-            thiscom = f1filer.objects.get(cmte_id=row['cmte_id'], cycle=CYCLE)
+            thiscom = f1filer.objects.get(cmte_id=row['cmte_id'])
         except f1filer.DoesNotExist:
             print "Creating %s %s" % (row['cmte_id'], row['cmte_nm'])
             # first create the f1filer object:
