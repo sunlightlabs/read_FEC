@@ -9,10 +9,20 @@ from fec_alerts.models import WebK
 from ftpdata.models import Committee
 from fec_alerts.models import new_filing
 from summary_data.models import Candidate_Overlay, Committee_Overlay, type_hash, Committee_Time_Summary, committee_designation_hash, Filing_Gap
+from shared_utils.cycle_utils import cycle_calendar
+
+from django.conf import settings
 
 
-CYCLE = '2014'
-this_cycle_start = date(2013,1,1)
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = ['2016']
+    
+this_cycle_calendar = cycle_calendar(int(CURRENT_CYCLE))
+this_cycle_start = this_cycle_calendar['start']
+this_cycle_end = this_cycle_calendar['end']
 one_day = timedelta(days=1)
 
 filer_type_hash={'Q': 'Quarterly',
@@ -338,8 +348,6 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
 
 
 # needs cycle update
-
-
 ## rewrite so this can handle F5's to replace the above
 def summarize_committee_periodic_electronic(committee_id, force_update=True):
     # it's a pain, but we need the committee name in this model. 
@@ -451,25 +459,30 @@ def get_recent_reports(fec_id, coverage_through_date):
     
     
 
-# run the summary routine, generally, for any committee. Takes a committee overlay as an argument. 
-def update_committee_times(committee):
-    #print "Handling %s" % (committee.fec_id)
+# run the summary routine, generally, for any committee. Takes a committee overlay and a cycle as an argument. 
+def update_committee_times(committee, cycle):
+    
+    this_cycle_calendar = cycle_calendar(int(cycle))
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
+    
+    print "Handling %s and cycle=%s" % (committee.fec_id, cycle)
 
     if committee.is_paper_filer:
         summarize_committee_periodic_webk(committee.fec_id, force_update=True)
     else:
         # if they file on F5's it's different since, the same form is used for monthly and daily reports
         if committee.ctype == 'I':
-            summarize_noncommittee_periodic_electronic(committee.fec_id, force_update=True)                    
+            summarize_noncommittee_periodic_electronic(committee.fec_id, cycle, force_update=True)                    
         else:
-            summarize_committee_periodic_electronic(committee.fec_id, force_update=True)
+            summarize_committee_periodic_electronic(committee.fec_id, cycle, force_update=True)
 
 
     ## Now that the data is summarized, update the committee_overlay. At the moment we're just looking at the two year cycle; for senate races older webk files need to be populated. Senate special elections complicte this a little; e.g. Hawaii senate race being held off cycle. 
 
     ## we need to log the gaps somewhere. 
 
-    all_summaries = Committee_Time_Summary.objects.filter(com_id=committee.fec_id, coverage_from_date__gte=(date(2012,12,31))).order_by('-coverage_from_date')
+    all_summaries = Committee_Time_Summary.objects.filter(com_id=committee.fec_id, coverage_from_date__gte=(this_cycle_start), coverage_through_date__gte=(this_cycle_end)).order_by('-coverage_from_date')
 
     if all_summaries:
         most_recent_report = all_summaries[0]

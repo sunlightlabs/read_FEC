@@ -18,6 +18,7 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         accs = Authorized_Candidate_Committees.objects.filter(cycle=CURRENT_CYCLE)
+        
         for acc in accs:
             como = cando = None
             
