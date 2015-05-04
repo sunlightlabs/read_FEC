@@ -25,8 +25,12 @@ def readfile(filelocation):
         except f1filer.DoesNotExist:
             print "Creating %s %s" % (row['cmte_id'], row['cmte_nm'])
             # first create the f1filer object:
-            row['cycle'] = '2014'
-            row['receipt_dt'] = dateparse(row['receipt_dt'])
+            row['cycle'] = str(CYCLE)
+            try:
+                row['receipt_dt'] = dateparse(row['receipt_dt'])
+            except:
+                print "can't parse original receipt date='%s', skipping" % (row['receipt_dt'])
+            
             try:
                 del row[None]
             except KeyError:
