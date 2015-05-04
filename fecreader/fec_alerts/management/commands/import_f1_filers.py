@@ -21,12 +21,17 @@ def readfile(filelocation):
     count = 0
     for row in reader:
         try:
-            thiscom = f1filer.objects.get(cmte_id=row['cmte_id'], cycle=CYCLE)
+            thiscom = f1filer.objects.get(cmte_id=row['cmte_id'])
         except f1filer.DoesNotExist:
             print "Creating %s %s" % (row['cmte_id'], row['cmte_nm'])
             # first create the f1filer object:
-            row['cycle'] = '2014'
-            row['receipt_dt'] = dateparse(row['receipt_dt'])
+            row['cycle'] = str(CYCLE)
+            try:
+                row['receipt_dt'] = dateparse(row['receipt_dt'])
+            except:
+                print "can't parse original receipt date='%s', skipping" % (row['receipt_dt'])
+                continue
+            
             try:
                 del row[None]
             except KeyError:
@@ -37,7 +42,7 @@ def readfile(filelocation):
             thisf1.save()
             
             ## if we are creating a new f1, check if it's a committee and if not, create one. 
-            make_committee_from_f1filer(row['cmte_id'])
+            make_committee_from_f1filer(row['cmte_id'], cycle)
 
 
 class Command(BaseCommand): 
