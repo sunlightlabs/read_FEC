@@ -57,7 +57,7 @@ class Command(BaseCommand):
                 
             print this_candidate
             
-            for sp_id in ("_1", "_2", "_3", "_4"):
+            for sp_id in ("_1", "_2", "_3", "_4", "_5", "_6"):
                 this_pac = row["super_pac" + sp_id]
                 this_id = row["super_id" + sp_id]
                 
