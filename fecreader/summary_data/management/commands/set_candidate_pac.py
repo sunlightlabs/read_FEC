@@ -33,9 +33,11 @@ class Command(BaseCommand):
                 #print "Candidate: %s s/o: %s amt: %s committee_id %s" % (summary_line['candidate_checked'], summary_line['support_oppose_checked'], summary_line['total'], summary_line['filer_committee_id_number'])
                 try:
                     committee = Committee_Overlay.objects.get(fec_id=summary_line['filer_committee_id_number'], cycle=cycle)
-                    candidate = Candidate_Overlay.objects.get(pk=summary_line['candidate_checked'], cycle=cycle)
+                    candidate = Candidate_Overlay.objects.get(pk=summary_line['candidate_checked'])
                     pc, created = Pac_Candidate.objects.get_or_create(candidate=candidate, committee=committee, support_oppose=summary_line['support_oppose_checked'], cycle=cycle)
                     pc.total_ind_exp = int(round(summary_line['total']))
                     pc.save()
                 except Committee_Overlay.DoesNotExist:
                     print "Missing committee overlay for %s" % (summary_line['filer_committee_id_number'])
+                except Candidate_Overlay.DoesNotExist:
+                    print "Missing candidate pk for %s" % (summary_line['filer_committee_id_number')
