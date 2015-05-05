@@ -5,8 +5,10 @@ from django.db.models import Sum
 
 
 
-from summary_data.utils.summary_utils import summarize_committee_periodic_webk, summarize_committee_periodic_electronic
+from summary_data.utils.summary_utils import summarize_committee_periodic_webk
 from summary_data.models import Candidate_Overlay, Candidate_Time_Summary, Authorized_Candidate_Committees, Committee_Time_Summary, Committee_Overlay
+
+
 
 class Command(BaseCommand):
     help = "Redo the summaries of *all candidates* - not just those that need it"

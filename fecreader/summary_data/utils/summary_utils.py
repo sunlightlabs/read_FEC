@@ -264,10 +264,10 @@ def map_summary_form_to_dict(form, header_data):
     return cts_dict
     
 # needs cycle update
-def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
+def summarize_noncommittee_periodic_electronic(committee_id, cycle, force_update=True):
     committee_name = ""
     try:
-        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
+        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=cycle)
         committee_name = this_committee.cmte_name
     
     except Committee.DoesNotExist:
@@ -278,13 +278,19 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
         print "multiple committees!! id=%s" % (committee_id)
         
         pass
+    
+    
+    this_cycle_calendar = cycle_calendar[int(cycle)]
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
         
-    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_f5_quarterly=True, is_superceded=False, coverage_from_date__gte=date(2013,1,1)).order_by('coverage_from_date')
+    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_f5_quarterly=True, is_superceded=False, coverage_from_date__gte=this_cycle_start, coverage_to_date__lte=this_cycle_end).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
         return None
 
+    
     # check gaps
     last_end_date = None
     for i, this_filing in enumerate(relevant_filings):
@@ -304,7 +310,8 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
                 # icpsrset_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 
         #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
-
+        
+        
         last_end_date = this_filing.coverage_to_date
         form = this_filing.form_type
         header_data = this_filing.header_data
@@ -349,11 +356,11 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
 
 # needs cycle update
 ## rewrite so this can handle F5's to replace the above
-def summarize_committee_periodic_electronic(committee_id, force_update=True):
+def summarize_committee_periodic_electronic(committee_id, cycle, force_update=True):
     # it's a pain, but we need the committee name in this model. 
     committee_name = ""
     try:
-        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
+        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=cycle)
         committee_name = this_committee.cmte_name
     
     except Committee.DoesNotExist:
@@ -364,12 +371,17 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         print "multiple committees!! id=%s" % (committee_id)
         
         pass
+    
+    this_cycle_calendar = cycle_calendar[int(cycle)]
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
         
-    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT', 'F3', 'F3A', 'F3N', 'F3T', 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
+    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_superceded=False, coverage_from_date__gte=this_cycle_start, coverage_to_date__lte=this_cycle_end, form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT', 'F3', 'F3A', 'F3N', 'F3T', 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
         return None
+    
     
     # check gaps
     last_end_date = None
@@ -390,6 +402,7 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
                 # set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 
         #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
+        
         
         last_end_date = this_filing.coverage_to_date
         form = this_filing.form_type
@@ -440,6 +453,9 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
 ## from summary_data.utils.summary_utils import summarize_committee_periodic_electronic
 ## summarize_committee_periodic_electronic()
 
+
+# we assume that get_recent_reports is only run on the current cycle--there's no reason to run this on previous cycles.
+
 def get_recent_reports(fec_id, coverage_through_date):
     if not coverage_through_date:
         coverage_through_date = this_cycle_start
@@ -482,7 +498,7 @@ def update_committee_times(committee, cycle):
 
     ## we need to log the gaps somewhere. 
 
-    all_summaries = Committee_Time_Summary.objects.filter(com_id=committee.fec_id, coverage_from_date__gte=(this_cycle_start), coverage_through_date__gte=(this_cycle_end)).order_by('-coverage_from_date')
+    all_summaries = Committee_Time_Summary.objects.filter(com_id=committee.fec_id, coverage_from_date__gte=(this_cycle_start), coverage_through_date__lte=(this_cycle_end)).order_by('-coverage_from_date')
 
     if all_summaries:
         most_recent_report = all_summaries[0]
@@ -533,9 +549,17 @@ def update_committee_times(committee, cycle):
     committee.save()
     
 
-def update_district_totals(district):
-    # get authorized spending
-    candidates = Candidate_Overlay.objects.filter(district=district).exclude(not_seeking_reelection=True)
+def update_district_totals(district, cycle):
+    
+    this_cycle_calendar = cycle_calendar(int(cycle))
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
+    
+    # get authorized spending, but do not include those not seeking reelection.
+    # This is actually a pretty big assumption -- that we should measure district spending
+    # by only including the actual candidates. CRP does a nice job of this by having a variety 
+    # of ways of measuring district spending that we may want to, uh, emulate.
+    candidates = Candidate_Overlay.objects.filter(district=district, cycle=cycle).exclude(not_seeking_reelection=True)
     # expenditures is independent expenditures for or against; disbursements is spending by them.
     sums = candidates.aggregate(total_expenditures=Sum('total_expenditures'), total_receipts=Sum('total_receipts'), total_disbursements=Sum('total_disbursements'))
     for i in sums:
