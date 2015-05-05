@@ -38,7 +38,7 @@ class Command(BaseCommand):
             committee_list = [x.get('committee_id') for x in authorized_committee_list]
             
             print "For candidate %s entering from list: %s" % (candidate.name, committee_list)
-            all_summaries = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start, coverage_through_date__lte=this_cycle_end)).order_by('-coverage_through_date', '-coverage_from_date')
+            all_summaries = Committee_Time_Summary.objects.filter(com_id__in=committee_list, coverage_from_date__gte=this_cycle_start, coverage_through_date__lte=this_cycle_end).order_by('-coverage_through_date', '-coverage_from_date')
             
             
             if all_summaries:
