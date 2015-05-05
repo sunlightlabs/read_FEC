@@ -478,7 +478,7 @@ def get_recent_reports(fec_id, coverage_through_date):
 # run the summary routine, generally, for any committee. Takes a committee overlay and a cycle as an argument. 
 def update_committee_times(committee, cycle):
     
-    this_cycle_calendar = cycle_calendar(int(cycle))
+    this_cycle_calendar = cycle_calendar[int(cycle)]
     this_cycle_start = this_cycle_calendar['start']
     this_cycle_end = this_cycle_calendar['end']
     
