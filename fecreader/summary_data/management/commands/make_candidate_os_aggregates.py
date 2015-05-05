@@ -25,7 +25,7 @@ class Command(BaseCommand):
     # in the current cycle. That just means the logic of attaching skede lines needs to be right. 
     def handle(self, *args, **options):
         for cycle in ACTIVE_CYCLES:
-            this_cycle_calendar = cycle_calendar[int(CURRENT_CYCLE)]
+            this_cycle_calendar = cycle_calendar[int(cycle)]
             this_cycle_start = this_cycle_calendar['start']
             this_cycle_end = this_cycle_calendar['end']
             
