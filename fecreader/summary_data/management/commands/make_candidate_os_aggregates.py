@@ -21,8 +21,6 @@ class Command(BaseCommand):
     help = "Create race aggregates"
     requires_model_validation = False
 
-    # for now the logic here is off, slightly. We just use the candidate id, instead of looking for the candidate
-    # in the current cycle. That just means the logic of attaching skede lines needs to be right. 
     def handle(self, *args, **options):
         for cycle in ACTIVE_CYCLES:
             this_cycle_calendar = cycle_calendar[int(cycle)]
@@ -33,7 +31,7 @@ class Command(BaseCommand):
             for candidate_id in candidate_ids:
                 print "handling candidate id %s" % (candidate_id['candidate_id_checked'])
                 try:
-                    candidate = Candidate_Overlay.objects.get(fec_id=candidate_id['candidate_id_checked'])
+                    candidate = Candidate_Overlay.objects.get(fec_id=candidate_id['candidate_id_checked'], cycle=cycle)
                 
                     total_supporting = SkedE.objects.filter(expenditure_date_formatted__gte=this_cycle_start,expenditure_date_formatted__lte=this_cycle_end, superceded_by_amendment=False, candidate_checked=candidate, support_oppose_checked__iexact='S').aggregate(total=Sum('expenditure_amount'))
                     total_opposing = SkedE.objects.filter(expenditure_date_formatted__gte=this_cycle_start,expenditure_date_formatted__lte=this_cycle_end, superceded_by_amendment=False, candidate_checked=candidate, support_oppose_checked__iexact='O').aggregate(total=Sum('expenditure_amount'))
