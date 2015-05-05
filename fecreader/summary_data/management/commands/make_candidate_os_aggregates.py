@@ -35,9 +35,9 @@ class Command(BaseCommand):
                 try:
                     candidate = Candidate_Overlay.objects.get(fec_id=candidate_id['candidate_id_checked'])
                 
-                    total_supporting = SkedE.objects.filter(expenditure_date_formatted__gte=cycle_start, superceded_by_amendment=False, candidate_checked=candidate, support_oppose_checked__iexact='S').aggregate(total=Sum('expenditure_amount'))
-                    total_opposing = SkedE.objects.filter(expenditure_date_formatted__gte=cycle_start, superceded_by_amendment=False, candidate_checked=candidate, support_oppose_checked__iexact='O').aggregate(total=Sum('expenditure_amount'))
-                    total = SkedE.objects.filter(expenditure_date_formatted__gte=cycle_start, superceded_by_amendment=False, candidate_checked=candidate).aggregate(total=Sum('expenditure_amount'))
+                    total_supporting = SkedE.objects.filter(expenditure_date_formatted__gte=this_cycle_start,expenditure_date_formatted__lte=this_cycle_end, superceded_by_amendment=False, candidate_checked=candidate, support_oppose_checked__iexact='S').aggregate(total=Sum('expenditure_amount'))
+                    total_opposing = SkedE.objects.filter(expenditure_date_formatted__gte=this_cycle_start,expenditure_date_formatted__lte=this_cycle_end, superceded_by_amendment=False, candidate_checked=candidate, support_oppose_checked__iexact='O').aggregate(total=Sum('expenditure_amount'))
+                    total = SkedE.objects.filter(expenditure_date_formatted__gte=this_cycle_start,expenditure_date_formatted__lte=this_cycle_end, superceded_by_amendment=False, candidate_checked=candidate).aggregate(total=Sum('expenditure_amount'))
                 
                     candidate.total_expenditures = total['total'] or 0
                     candidate.expenditures_supporting = total_supporting['total'] or 0
