@@ -559,7 +559,9 @@ def update_district_totals(district):
     # This is actually a pretty big assumption -- that we should measure district spending
     # by only including the actual candidates. CRP does a nice job of this by having a variety 
     # of ways of measuring district spending that we may want to, uh, emulate.
-    candidates = Candidate_Overlay.objects.filter(district=district, cycle=cycle).exclude(not_seeking_reelection=True)
+    
+    # The candidates have to be attached to the right district, obviously, for this to work. 
+    candidates = Candidate_Overlay.objects.filter(district=district).exclude(not_seeking_reelection=True)
     # expenditures is independent expenditures for or against; disbursements is spending by them.
     sums = candidates.aggregate(total_expenditures=Sum('total_expenditures'), total_receipts=Sum('total_receipts'), total_disbursements=Sum('total_disbursements'))
     for i in sums:
