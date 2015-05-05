@@ -551,7 +551,7 @@ def update_committee_times(committee, cycle):
 
 def update_district_totals(district):
     this_cycle = district.cycle
-    this_cycle_calendar = cycle_calendar(int(this_cycle))
+    this_cycle_calendar = cycle_calendar[int(this_cycle)]
     this_cycle_start = this_cycle_calendar['start']
     this_cycle_end = this_cycle_calendar['end']
     
