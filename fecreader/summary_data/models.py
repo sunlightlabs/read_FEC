@@ -246,9 +246,9 @@ class Candidate_Overlay(models.Model):
         if self.office == 'S':
             return '%s (%s) %s Sen. [%s]' % (self.name, self.party, self.state, self.cycle)
         elif self.office == 'P':
-            return '%s (%s) %s President [%]' % (self.name, self.party, self.cycle)           
+            return '%s (%s) %s President [%s]' % (self.name, self.party, self.cycle)           
         else:
-            return '%s (%s) %s-%s [%]' % (self.name, self.party, self.state, self.office_district, self.cycle)
+            return '%s (%s) %s-%s [%s]' % (self.name, self.party, self.state, self.office_district, self.cycle)
         
     def incumbency_status(self):
         if self.is_incumbent:
