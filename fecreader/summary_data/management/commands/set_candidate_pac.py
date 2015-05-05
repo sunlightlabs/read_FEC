@@ -40,4 +40,4 @@ class Command(BaseCommand):
                 except Committee_Overlay.DoesNotExist:
                     print "Missing committee overlay for %s" % (summary_line['filer_committee_id_number'])
                 except Candidate_Overlay.DoesNotExist:
-                    print "Missing candidate pk for %s" % (summary_line['filer_committee_id_number')
+                    print "Missing candidate pk for %s" % (summary_line['filer_committee_id_number'])
