@@ -467,7 +467,7 @@ def committee_cycle(request, cycle, committee_id):
     recent_report_list = None
 
     if end_of_coverage_date:
-        recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=end_of_coverage_date, coverage_to_date__lte=cycle_endpoints['end'], form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
+        recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=end_of_coverage_date, coverage_from_date__gte=cycle_endpoints['start'], coverage_to_date__lte=cycle_endpoints['end'], form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
     else:
         recent_report_list = new_filing.objects.filter(fec_id=committee_id, coverage_from_date__gte=cycle_endpoints['start'], coverage_to_date__lte=cycle_endpoints['end'],  form_type__in=['F5A', 'F5', 'F5N', 'F24', 'F24A', 'F24N', 'F6', 'F6A', 'F6N']).exclude(is_f5_quarterly=True).exclude(is_superceded=True)
 
