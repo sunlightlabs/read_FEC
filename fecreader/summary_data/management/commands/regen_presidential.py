@@ -11,7 +11,7 @@ from django.db.models import Sum, Count
 from django.core.management.base import BaseCommand, CommandError
 
 
-infile = open('shared_utils/2016ers_april.csv', 'r')
+infile = open('shared_utils/2016ers_may.csv', 'r')
 reader = csv.DictReader(infile)
 
 
@@ -44,8 +44,8 @@ class Command(BaseCommand):
             this_candidate['other_committees'] = []
 
 
-            if row['campaign_id']:
-                this_candidate['candidate_committees'].append({'pac_name': row['campaign'], 'pac_id':row['campaign_id']})
+            if row['prez_id']:
+                this_candidate['candidate_committees'].append({'pac_name': row['prez_cmte'], 'pac_id':row['prez_id']})
             
             if row['pac_id']:
                 this_candidate['leadership_committees'].append({'pac_name': row['leadership_pac'], 'pac_id':row['pac_id']})
