@@ -4,6 +4,13 @@ from fec_alerts.models import new_filing
 from summary_data.utils.party_reference import get_party_from_pty
 from ftpdata.models import Committee
 from summary_data.models import Committee_Overlay
+from django.conf import settings
+
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing active cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = ['2016']
 
 
 def dateparse_notnull(datestring):
@@ -90,6 +97,8 @@ def handle_filing(this_filing):
     except Committee_Overlay.DoesNotExist:
         try:
             ## remember that ftpdata committees have cycles as ints, not strings. Not ideal. 
+            if not this_filing.cycle:
+                this_filing.cycle = CURRENT_CYCLE
             co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=int(this_filing.cycle))
             this_filing.committee_designation = co.cmte_dsgn
             this_filing.committee_type = co.cmte_tp
@@ -105,7 +114,7 @@ def handle_filing(this_filing):
     
     if form_type in ['F3A', 'F3N', 'F3T','F3PA', 'F3PN', 'F3PT', 'F3', 'F3P']:
         parsed_data = process_f3_header(header_data)
-        #print "got data %s" % (parsed_data)
+        print "got data %s" % (parsed_data)
         
         this_filing.coh_end =  parsed_data['coh_end'] if parsed_data['coh_end'] else 0
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
@@ -114,6 +123,7 @@ def handle_filing(this_filing):
         
     elif form_type in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
         parsed_data = process_f3x_header(header_data)
+        print "got data %s" % (parsed_data)
         
         this_filing.coh_end =  parsed_data['coh_end'] if parsed_data['coh_end'] else 0
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
