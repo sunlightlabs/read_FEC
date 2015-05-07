@@ -77,7 +77,7 @@ def process_f13_header(header_data):
 def handle_filing(this_filing):
     
     try:
-        co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id)
+        co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id, cycle=filing.cycle)
         this_filing.committee_designation = co.designation
         this_filing.committee_type = co.ctype
         this_filing.committee_slug = co.slug
@@ -89,7 +89,7 @@ def handle_filing(this_filing):
         
     except Committee_Overlay.DoesNotExist:
         try:
-            co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=2014)
+            co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=filing.cycle)
             this_filing.committee_designation = co.cmte_dsgn
             this_filing.committee_type = co.cmte_tp
             this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
