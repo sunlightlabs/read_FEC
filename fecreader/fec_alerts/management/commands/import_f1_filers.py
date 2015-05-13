@@ -42,7 +42,7 @@ def readfile(filelocation):
             thisf1.save()
             
             ## if we are creating a new f1, check if it's a committee and if not, create one. 
-            make_committee_from_f1filer(row['cmte_id'], cycle)
+            make_committee_from_f1filer(row['cmte_id'], row['cycle'])
 
 
 class Command(BaseCommand): 
