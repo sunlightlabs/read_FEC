@@ -150,7 +150,8 @@ class new_filing(models.Model):
     ### processing status notes
     filing_is_downloaded = models.NullBooleanField(default=False)
     header_is_processed = models.NullBooleanField(default=False)
-    previous_amendments_processed = models.NullBooleanField(default=False)
+    header_is_processed = models.NullBooleanField(default=False)    
+    new_filing_details_set = models.NullBooleanField(default=False)
     data_is_processed = models.NullBooleanField(default=False)
     
     ## New # Have the body rows in superceded filings been marked as amendments? 

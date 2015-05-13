@@ -120,6 +120,7 @@ def handle_filing(this_filing):
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
         this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
         this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else 0
+        new_filing_details_set = True
         
     elif form_type in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
         parsed_data = process_f3x_header(header_data)
@@ -131,6 +132,8 @@ def handle_filing(this_filing):
         this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else 0
         this_filing.tot_coordinated = parsed_data['tot_coordinated'] if parsed_data['tot_coordinated'] else 0
         this_filing.tot_ies = parsed_data['tot_ies'] if parsed_data['tot_ies'] else 0
+        new_filing_details_set = True
+    
     
     elif form_type in ['F5', 'F5A', 'F5N']:
         parsed_data = process_f5_header(header_data)
@@ -143,6 +146,8 @@ def handle_filing(this_filing):
         this_filing.coverage_to_date = parsed_data['coverage_to_date']
         
         this_filing.is_f5_quarterly = header_data['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+        new_filing_details_set = True
+        
         
     
     elif form_type in ['F7', 'F7A', 'F7N']:
@@ -152,6 +157,8 @@ def handle_filing(this_filing):
         this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
         this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else None
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
+        new_filing_details_set = True
+        
 
     elif form_type in ['F9', 'F9A', 'F9N']:
         parsed_data = process_f9_header(header_data)
@@ -160,6 +167,8 @@ def handle_filing(this_filing):
         this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
         this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else None
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
+        new_filing_details_set = True
+        
     
     elif form_type in ['F13', 'F13A', 'F13N']:
         parsed_data = process_f13_header(header_data)
@@ -168,6 +177,8 @@ def handle_filing(this_filing):
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
         this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else None
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
+        new_filing_details_set = True
+        
     
     
     this_filing.save() 
@@ -181,9 +192,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        new_filings_to_process = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')        
-
-        #new_filings_to_process = new_filing.objects.all().order_by('filing_number')        
+        #new_filings_to_process = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')        
+        new_filings_to_process = new_filing.objects.filter(new_filing_details_set=False,header_is_processed=True).order_by('filing_number')        
         
         
         for this_filing in new_filings_to_process:
