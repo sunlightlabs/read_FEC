@@ -8,9 +8,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'new_filing.previous_amendments_processed'
-        db.delete_column(u'fec_alerts_new_filing', 'previous_amendments_processed')
-
         # Adding field 'new_filing.new_filing_details_set'
         db.add_column(u'fec_alerts_new_filing', 'new_filing_details_set',
                       self.gf('django.db.models.fields.NullBooleanField')(default=False, null=True, blank=True),
@@ -18,11 +15,6 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Adding field 'new_filing.previous_amendments_processed'
-        db.add_column(u'fec_alerts_new_filing', 'previous_amendments_processed',
-                      self.gf('django.db.models.fields.NullBooleanField')(default=False, null=True, blank=True),
-                      keep_default=False)
-
         # Deleting field 'new_filing.new_filing_details_set'
         db.delete_column(u'fec_alerts_new_filing', 'new_filing_details_set')
 
@@ -89,6 +81,7 @@ class Migration(SchemaMigration):
             'new_filing_details_set': ('django.db.models.fields.NullBooleanField', [], {'default': 'False', 'null': 'True', 'blank': 'True'}),
             'new_loans': ('django.db.models.fields.DecimalField', [], {'default': '0', 'null': 'True', 'max_digits': '14', 'decimal_places': '2'}),
             'party': ('django.db.models.fields.CharField', [], {'max_length': '3', 'null': 'True', 'blank': 'True'}),
+            'previous_amendments_processed': ('django.db.models.fields.NullBooleanField', [], {'default': 'False', 'null': 'True', 'blank': 'True'}),
             'process_time': ('django.db.models.fields.DateTimeField', [], {}),
             'tot_coordinated': ('django.db.models.fields.DecimalField', [], {'default': '0', 'null': 'True', 'max_digits': '14', 'decimal_places': '2'}),
             'tot_ies': ('django.db.models.fields.DecimalField', [], {'default': '0', 'null': 'True', 'max_digits': '14', 'decimal_places': '2'}),
