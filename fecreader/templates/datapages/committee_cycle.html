@@ -2,7 +2,6 @@
 {% extends "datapages/realtime_base.html" %}
 {% load humanize %}
 {% load staticfiles %}
-{% load cycle_selector %}
 
 {# because we allow various slugs in, try to get this straight #}
 {% block canonicalurl %}{{ committee.get_absolute_url }}{% endblock %}
@@ -15,8 +14,6 @@
 
 
 {% block body_class %}{% endblock %}
-
-{% block cycle_selector %}{% cycle_select_block cycle_list %}{% endblock cycle_selector %}
 
 {% block pagetitle %}{{ title }} {% endblock %}
 

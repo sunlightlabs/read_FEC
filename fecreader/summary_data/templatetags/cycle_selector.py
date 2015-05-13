@@ -12,6 +12,7 @@ def get_cycle_details(object):
 def cycle_select_block(cycled_object_list):
     selected_cycle = None
     cycles = []
+    selected_cycle_object = None
     if cycled_object_list:
         selected_cycle_object = get_cycle_details(cycled_object_list[0])
         

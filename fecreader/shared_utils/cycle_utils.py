@@ -71,4 +71,18 @@ def get_cycle_endpoints(integer_cycle):
     except KeyError:
         return None
 
+""" For cycle select """
+
+class cycle_fake(object):
+    
+    def __init__(self, cycle, url):
+        self.cycle = cycle
+        self.url = url
+    
+    def get_absolute_url(self):
+        return self.url
+    
+list_2014_only = [cycle_fake(2014, "")]
+
+    
         

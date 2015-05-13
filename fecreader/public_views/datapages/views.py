@@ -11,7 +11,7 @@ from django.http import Http404
 
 from fec_alerts.models import new_filing, newCommittee, f1filer
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate, DistrictWeekly
-from shared_utils.cycle_utils import get_cycle_abbreviation, is_valid_four_digit_string_cycle, get_cycle_endpoints
+from shared_utils.cycle_utils import get_cycle_abbreviation, is_valid_four_digit_string_cycle, get_cycle_endpoints, list_2014_only, cycle_fake
 
 this_cycle = '2014'
 this_cycle_start = datetime.date(2013,1,1)
@@ -29,8 +29,6 @@ from summary_data.utils.chart_reference import chart_name_reference, chart_donor
 from django.views.decorators.cache import cache_page, cache_control
 
 STATE_LIST = [{'name':x[1], 'abbrev':x[0]} for x in US_STATES]
-
-
 
 try:
     PAGINATE_BY = settings.REST_FRAMEWORK['PAGINATE_BY']
@@ -50,6 +48,7 @@ except AttributeError:
     print "Missing cache times; using defaults"
     LONG_CACHE_TIME = 60
     SHORT_CACHE_TIME = 30
+
 
 
 def newbase(request):
@@ -95,6 +94,7 @@ def senate(request):
         'object_list':legislators,
         'title':title,
         'explanatory_text':explanatory_text,
+        'cycle_list':list_2014_only
         }, 
         context_instance=RequestContext(request)
     )
@@ -117,6 +117,8 @@ def house(request):
         'explanatory_text':explanatory_text,
         'STATE_LIST':STATE_LIST,
         'districts':districts,
+        'cycle_list':list_2014_only        
+        
         }, 
         context_instance=RequestContext(request)
     )
@@ -135,6 +137,7 @@ def races(request):
         'title':title,
         'explanatory_text':explanatory_text,
         'races':districts,
+        'cycle_list':list_2014_only        
         }, 
         context_instance=RequestContext(request)
     )
@@ -157,7 +160,10 @@ def house_race(request, cycle, state, district):
     committees = Committee_Overlay.objects.filter(curated_candidate__in=candidates)
     committee_ids = [x.get('fec_id') for x in committees.values('fec_id')]
     recent_filings = new_filing.objects.filter(fec_id__in=committee_ids, is_superceded=False).exclude(coverage_to_date__isnull=True).order_by('-coverage_to_date')[:5]
-    print recent_filings
+    
+    # 'cycle_list':list_2014_only
+    cycle_list = [cycle_fake(cycle, "")]
+    
     
     return render_to_response('datapages/race_detail.html', 
         {
@@ -167,6 +173,7 @@ def house_race(request, cycle, state, district):
         'outside_spenders':outside_spenders,
         'recent_ies':recent_ies,
         'recent_filings':recent_filings,
+        'cycle_list':cycle_list
         },
         context_instance=RequestContext(request)
     )
@@ -181,6 +188,7 @@ def senate_race(request, cycle, state, term_class):
     
     recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
+    cycle_list = [cycle_fake(cycle, "")]
     
     return render_to_response('datapages/race_detail.html', 
         {
@@ -189,6 +197,7 @@ def senate_race(request, cycle, state, term_class):
         'race':race,
         'outside_spenders':outside_spenders,
         'recent_ies':recent_ies,
+        'cycle_list':cycle_list
         },
         context_instance=RequestContext(request)
     )
