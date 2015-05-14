@@ -53,10 +53,10 @@ def load_house(filepath, cycle):
             thisrace = HouseRace.objects.get(state=result['state'],district=result['district'], cycle=cycle)
             thisrace.rating_id = result['rating_id']
             thisrace.rating_label = result['rating_label']
-            thisrace.cycle = cycle
             thisrace.save()
             
         except HouseRace.DoesNotExist:
+            result['cycle'] = cycle
             HouseRace.objects.create(**result)
             
 
@@ -67,13 +67,13 @@ def load_senate(filepath, cycle):
         result = parse_senate_line(elt)
         print result
         try:
-            thisrace = SenateRace.objects.get(state=result['state'],seat_class=result['seat_class'])
+            thisrace = SenateRace.objects.get(state=result['state'],seat_class=result['seat_class'], cycle=cycle)
             thisrace.rating_id = result['rating_id']
             thisrace.rating_label = result['rating_label']
-            thisrace.cycle = cycle
             thisrace.save()
 
         except SenateRace.DoesNotExist:
+            result['cycle'] = cycle
             SenateRace.objects.create(**result)
         
         
