@@ -88,5 +88,17 @@ class Command(BaseCommand):
         print "loading senate..."
         load_senate(ROTHENBERG_SENATE_FILE, CURRENT_CYCLE)
         
-        # can run custom loads by specifying an earlier file and cycle:
-        #  HOUSE_FILE = house11-01-2014-04-09.xml
+"""
+ can run custom loads by specifying an earlier file and cycle:
+
+from rothenberg.management.commands.load_rothenberg_ratings import load_house, load_senate
+HOUSE_FILE = 'rothenberg/data/backups/house10-22-2014-04-09.xml'
+SENATE_FILE = 'rothenberg/data/backups/senate10-22-2014-04-09.xml'
+CURRENT_CYCLE = '2014'
+load_house(HOUSE_FILE, CURRENT_CYCLE)
+load_senate(SENATE_FILE, CURRENT_CYCLE)
+
+"""
+
+
+"""
