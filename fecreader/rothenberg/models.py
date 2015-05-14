@@ -9,9 +9,11 @@ class HouseRace(models.Model):
     rating_label = models.CharField(max_length=63)
     incumbent = models.CharField(max_length=127)
     update_time = models.DateTimeField(auto_now=True)
+    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
+    
     
     class Meta:
-        unique_together = ("state", "district")
+        unique_together = ("state", "district", "cycle")
     
 class SenateRace(models.Model):
     state = models.CharField(max_length=2)
@@ -21,6 +23,8 @@ class SenateRace(models.Model):
     rating_label = models.CharField(max_length=63)
     incumbent = models.CharField(max_length=127)
     update_time = models.DateTimeField(auto_now=True)
+    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
+    
     
     class Meta:
-        unique_together = ("state", "seat_class")
+        unique_together = ("state", "seat_class", "cycle")
