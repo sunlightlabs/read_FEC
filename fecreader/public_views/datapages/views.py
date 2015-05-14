@@ -85,7 +85,7 @@ def senate(request):
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
     districts = District.objects.filter(office='S')
 
-    legislators = Candidate_Overlay.objects.filter(office='S').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
+    legislators = Candidate_Overlay.objects.filter(office='S', cycle='2014').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
 
     return render_to_response('datapages/senate_legislator_list.html',
         {
@@ -99,6 +99,7 @@ def senate(request):
         context_instance=RequestContext(request)
     )
 
+
 @cache_page(LONG_CACHE_TIME)
 def house(request):
 
@@ -106,7 +107,7 @@ def house(request):
     explanatory_text="Fundraising totals are for the entire election cycle for current U.S. House members and House candidates who reported having $1,000 or more, or who have been targeted by $1,000 or more in independent expenditures. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(office='H').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
+    legislators = Candidate_Overlay.objects.filter(office='H', cycle='2014').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
     
     districts = District.objects.filter(office='H')
 
@@ -129,7 +130,7 @@ def races(request):
     title="Race-wide spending totals"
     explanatory_text="District totals (ie. House and Senate races) are based on the most recent information available, but different political groups report to the FEC on different schedules. Super PACs must report independent expenditures within 48- or 24-hours, but candidate committees only disclose on a quarterly basis. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer. <br>For primary contests see our list of <a href='/competitive-primaries/'>competitive primaries</a>."
 
-    districts = District.objects.all()
+    districts = District.objects.filter(cycle='2014')
 
     return render_to_response('datapages/races.html',
         {
