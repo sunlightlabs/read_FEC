@@ -9,10 +9,20 @@ from fec_alerts.models import WebK
 from ftpdata.models import Committee
 from fec_alerts.models import new_filing
 from summary_data.models import Candidate_Overlay, Committee_Overlay, type_hash, Committee_Time_Summary, committee_designation_hash, Filing_Gap
+from shared_utils.cycle_utils import cycle_calendar
+
+from django.conf import settings
 
 
-CYCLE = '2014'
-this_cycle_start = date(2013,1,1)
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = '2016'
+    
+this_cycle_calendar = cycle_calendar[int(CURRENT_CYCLE)]
+this_cycle_start = this_cycle_calendar['start']
+this_cycle_end = this_cycle_calendar['end']
 one_day = timedelta(days=1)
 
 filer_type_hash={'Q': 'Quarterly',
@@ -20,6 +30,7 @@ filer_type_hash={'Q': 'Quarterly',
           'T': 'Termination report',
           }
 
+""" No longer used """
 def set_gap_list(gap_start, gap_end, committee_id):
     # save dictionary of gaps, in chronological order, in an hstore field. 
     filing_gap, created = Filing_Gap.objects.get_or_create(committee_id=committee_id, gap_start=gap_start, gap_end=gap_end)
@@ -89,9 +100,10 @@ def write_all_webks(file_name):
     webks = WebK.objects.filter(cycle='2014')
     write_webk_csv(webks, file_name)
 
-
+# needs cycle update
 def summarize_committee_periodic_webk(committee_id, force_update=False):
-    # Populate the Committee_Time_Summary with webk data. Only do this for the senate. 
+    """ Populate the Committee_Time_Summary with webk data. Only do this for paper filers. 
+        this can be a source of delay if a committee converts from paper to """
     
     relevant_webks = WebK.objects.filter(com_id=committee_id, cov_sta_dat__gte=this_cycle_start).order_by('cov_sta_dat')
     if not relevant_webks:
@@ -251,10 +263,11 @@ def map_summary_form_to_dict(form, header_data):
         cts_dict = map_f5_to_cts(header_data)
     return cts_dict
     
-def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
+# needs cycle update
+def summarize_noncommittee_periodic_electronic(committee_id, cycle, force_update=True):
     committee_name = ""
     try:
-        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
+        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=cycle)
         committee_name = this_committee.cmte_name
     
     except Committee.DoesNotExist:
@@ -265,31 +278,40 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
         print "multiple committees!! id=%s" % (committee_id)
         
         pass
+    
+    
+    this_cycle_calendar = cycle_calendar[int(cycle)]
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
         
-    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_f5_quarterly=True, is_superceded=False, coverage_from_date__gte=date(2013,1,1)).order_by('coverage_from_date')
+    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_f5_quarterly=True, is_superceded=False, coverage_from_date__gte=this_cycle_start, coverage_to_date__lte=this_cycle_end).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
         return None
 
+    
     # check gaps
     last_end_date = None
     for i, this_filing in enumerate(relevant_filings):
         #print i, this_filing.coverage_from_date, this_filing.coverage_through_date
         if i==0:
             if this_filing.coverage_from_date - this_cycle_start > one_day:
+                pass
                 #print "Missing coverage from start of cycle!!"
-                set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
+                # set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
 
 
         if i>0:
             difference = this_filing.coverage_from_date - last_end_date
             if difference > one_day:
+                pass
                 #print "gap found!"
-                set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
+                # icpsrset_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 
         #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
-
+        
+        
         last_end_date = this_filing.coverage_to_date
         form = this_filing.form_type
         header_data = this_filing.header_data
@@ -332,14 +354,13 @@ def summarize_noncommittee_periodic_electronic(committee_id, force_update=True):
 
 
 
-
-
+# needs cycle update
 ## rewrite so this can handle F5's to replace the above
-def summarize_committee_periodic_electronic(committee_id, force_update=True):
+def summarize_committee_periodic_electronic(committee_id, cycle, force_update=True):
     # it's a pain, but we need the committee name in this model. 
     committee_name = ""
     try:
-        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=CYCLE)
+        this_committee = Committee.objects.get(cmte_id=committee_id, cycle=cycle)
         committee_name = this_committee.cmte_name
     
     except Committee.DoesNotExist:
@@ -350,12 +371,17 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         print "multiple committees!! id=%s" % (committee_id)
         
         pass
+    
+    this_cycle_calendar = cycle_calendar[int(cycle)]
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
         
-    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_superceded=False, coverage_from_date__gte=date(2013,1,1), form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT', 'F3', 'F3A', 'F3N', 'F3T', 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
+    relevant_filings = new_filing.objects.filter(fec_id=committee_id, is_superceded=False, coverage_from_date__gte=this_cycle_start, coverage_to_date__lte=this_cycle_end, form_type__in=['F3P', 'F3PN', 'F3PA', 'F3PT', 'F3', 'F3A', 'F3N', 'F3T', 'F3X', 'F3XA', 'F3XN', 'F3XT']).order_by('coverage_from_date')
     #print "processing %s" % committee_id
     if not relevant_filings:
         #print "No filings found for %s" % (committee_id)
         return None
+    
     
     # check gaps
     last_end_date = None
@@ -363,17 +389,20 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
         #print i, this_filing.coverage_from_date, this_filing.coverage_through_date
         if i==0:
             if this_filing.coverage_from_date - this_cycle_start > one_day:
+                pass
                 #print "Missing coverage from start of cycle!!"
-                set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
+                # set_gap_list(this_cycle_start,this_filing.coverage_from_date, committee_id)
                 
         
         if i>0:
             difference = this_filing.coverage_from_date - last_end_date
             if difference > one_day:
+                pass
                 #print "gap found!"
-                set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
+                # set_gap_list(last_end_date,this_filing.coverage_from_date, committee_id)
 
         #print "Got filing %s - %s" % (this_filing.coverage_from_date, this_filing.coverage_through_date)
+        
         
         last_end_date = this_filing.coverage_to_date
         form = this_filing.form_type
@@ -424,6 +453,9 @@ def summarize_committee_periodic_electronic(committee_id, force_update=True):
 ## from summary_data.utils.summary_utils import summarize_committee_periodic_electronic
 ## summarize_committee_periodic_electronic()
 
+
+# we assume that get_recent_reports is only run on the current cycle--there's no reason to run this on previous cycles.
+
 def get_recent_reports(fec_id, coverage_through_date):
     if not coverage_through_date:
         coverage_through_date = this_cycle_start
@@ -443,25 +475,30 @@ def get_recent_reports(fec_id, coverage_through_date):
     
     
 
-# run the summary routine, generally, for any committee. Takes a committee overlay as an argument. 
-def update_committee_times(committee):
-    #print "Handling %s" % (committee.fec_id)
+# run the summary routine, generally, for any committee. Takes a committee overlay and a cycle as an argument. 
+def update_committee_times(committee, cycle):
+    
+    this_cycle_calendar = cycle_calendar[int(cycle)]
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
+    
+    print "Handling %s and cycle=%s" % (committee.fec_id, cycle)
 
     if committee.is_paper_filer:
         summarize_committee_periodic_webk(committee.fec_id, force_update=True)
     else:
         # if they file on F5's it's different since, the same form is used for monthly and daily reports
         if committee.ctype == 'I':
-            summarize_noncommittee_periodic_electronic(committee.fec_id, force_update=True)                    
+            summarize_noncommittee_periodic_electronic(committee.fec_id, cycle, force_update=True)                    
         else:
-            summarize_committee_periodic_electronic(committee.fec_id, force_update=True)
+            summarize_committee_periodic_electronic(committee.fec_id, cycle, force_update=True)
 
 
     ## Now that the data is summarized, update the committee_overlay. At the moment we're just looking at the two year cycle; for senate races older webk files need to be populated. Senate special elections complicte this a little; e.g. Hawaii senate race being held off cycle. 
 
     ## we need to log the gaps somewhere. 
 
-    all_summaries = Committee_Time_Summary.objects.filter(com_id=committee.fec_id, coverage_from_date__gte=(date(2012,12,31))).order_by('-coverage_from_date')
+    all_summaries = Committee_Time_Summary.objects.filter(com_id=committee.fec_id, coverage_from_date__gte=(this_cycle_start), coverage_through_date__lte=(this_cycle_end)).order_by('-coverage_from_date')
 
     if all_summaries:
         most_recent_report = all_summaries[0]
@@ -513,7 +550,17 @@ def update_committee_times(committee):
     
 
 def update_district_totals(district):
-    # get authorized spending
+    this_cycle = district.cycle
+    this_cycle_calendar = cycle_calendar[int(this_cycle)]
+    this_cycle_start = this_cycle_calendar['start']
+    this_cycle_end = this_cycle_calendar['end']
+    
+    # get authorized spending, but do not include those not seeking reelection.
+    # This is actually a pretty big assumption -- that we should measure district spending
+    # by only including the actual candidates. CRP does a nice job of this by having a variety 
+    # of ways of measuring district spending that we may want to, uh, emulate.
+    
+    # The candidates have to be attached to the right district, obviously, for this to work. 
     candidates = Candidate_Overlay.objects.filter(district=district).exclude(not_seeking_reelection=True)
     # expenditures is independent expenditures for or against; disbursements is spending by them.
     sums = candidates.aggregate(total_expenditures=Sum('total_expenditures'), total_receipts=Sum('total_receipts'), total_disbursements=Sum('total_disbursements'))

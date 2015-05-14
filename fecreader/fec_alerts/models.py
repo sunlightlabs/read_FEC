@@ -151,6 +151,7 @@ class new_filing(models.Model):
     filing_is_downloaded = models.NullBooleanField(default=False)
     header_is_processed = models.NullBooleanField(default=False)
     previous_amendments_processed = models.NullBooleanField(default=False)
+    new_filing_details_set = models.NullBooleanField(default=False)
     data_is_processed = models.NullBooleanField(default=False)
     
     ## New # Have the body rows in superceded filings been marked as amendments? 
@@ -295,7 +296,10 @@ class new_filing(models.Model):
             return False    
     
     def get_committee_url(self):    
-        return ("/committee/%s/%s/" % (self.committee_slug, self.fec_id))
+        cycle = CURRENT_CYCLE
+        if self.cycle:
+            cycle = self.cycle
+        return ("/committee/%s/%s/%s/" % (cycle, self.committee_slug, self.fec_id))
         
     def process_time_formatted(self):
         return self.process_time.astimezone(eastern).strftime("%m/%d %I:%M %p")
