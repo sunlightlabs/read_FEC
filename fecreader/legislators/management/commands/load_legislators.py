@@ -11,13 +11,16 @@ from legislators.file_chunker import yamlChunker
 
 
 PROJECT_ROOT = getattr(settings, 'PROJECT_ROOT')
-current = os.path.join(PROJECT_ROOT, '..', 'legislators', 'data', 'legislators-current.yaml')
-historic = os.path.join(PROJECT_ROOT, '..', 'legislators', 'data', 'legislators-historical.yaml')
+current = os.path.join(PROJECT_ROOT, 'legislators', 'data', 'legislators-current.yaml')
+historic = os.path.join(PROJECT_ROOT, 'legislators', 'data', 'legislators-historical.yaml')
  
 def getmultidict(dictionary, key_list):
     try:
-        return reduce(dict.get, key_list, dictionary)
+        result = reduce(dict.get, key_list, dictionary)
+        print "multidict: %s" % (result)
+        return result
     except TypeError:
+        print "type error - returning none"
         return None
 
 def process_file(filename):
@@ -53,7 +56,7 @@ def process_file(filename):
                     icpsr=getmultidict(legislator_yaml, ('id','icpsr')),
                     cspan=getmultidict(legislator_yaml, ('id','cspan')),
                     wikipedia=getmultidict(legislator_yaml, ('id','wikipedia')),
-                    house_history=getmultidict(legislator_yaml, ('id','house_history')),
+                    #house_history=getmultidict(legislator_yaml, ('id','house_history')),
                     bioguide_previous=getmultidict(legislator_yaml, ('id','bioguide_previous')),                
                     first_name=getmultidict(legislator_yaml, ('name','first')),
                     middle_name=getmultidict(legislator_yaml, ('name','middle')),

@@ -106,12 +106,12 @@ class District(models.Model):
             
     def __unicode__(self):
         if self.office == 'S':
-            return "%s Sen. (%s)" % (self.state, self.term_class)
+            return "%s %s Sen. (%s)" % (self.cycle, self.state, self.term_class)
         elif self.office== 'H':
             if self.office_district:
-                return "%s-%s (House)" % (self.state, self.office_district)
+                return "%s %s-%s (House)" % (self.cycle, self.state, self.office_district)
             else:
-                return "%s" % (self.state) 
+                return "%s %s" % (self.cycle, self.state) 
         elif self.office == 'P':
             return "President"
             
@@ -244,9 +244,11 @@ class Candidate_Overlay(models.Model):
     
     def __unicode__(self):
         if self.office == 'S':
-            return '%s (%s) %s Sen.' % (self.name, self.party, self.state)
+            return '%s (%s) %s Sen. [%s]' % (self.name, self.party, self.state, self.cycle)
+        elif self.office == 'P':
+            return '%s (%s) President [%s]' % (self.name, self.party, self.cycle)           
         else:
-            return '%s (%s) %s-%s' % (self.name, self.party, self.state, self.office_district)
+            return '%s (%s) %s-%s [%s]' % (self.name, self.party, self.state, self.office_district, self.cycle)
         
     def incumbency_status(self):
         if self.is_incumbent:
@@ -534,7 +536,11 @@ class Committee_Overlay(models.Model):
             return None
 
     def get_absolute_url(self):  
-        return ("/committee/%s/%s/" % (self.slug, self.fec_id))
+        return ("/committee/%s/%s/%s/" % (self.cycle, self.slug, self.fec_id))
+        
+    def get_cycle_url(self, cycle):
+        return ("/committee/%s/%s/%s/" % (cycle, self.slug, self.fec_id))
+        
 
     def is_not_a_committee(self):
         if self.ctype=='I':
@@ -788,7 +794,9 @@ class Committee_Time_Summary(models.Model):
         return "%s: (%s-%s)" % (self.com_name, self.coverage_from_date, self.coverage_through_date)
 
 # reference table. Has these relationships for everyone. We're not building candidate overlays for other cycles.
+## 
 class Authorized_Candidate_Committees(models.Model):
+    cycle = models.CharField(max_length=4, blank=True, null=True, help_text="text cycle; even number.")
     candidate_id = models.CharField(max_length=9, blank=True)
     committee_id = models.CharField(max_length=9, blank=True)
     committee_name = models.CharField(max_length=255)
@@ -798,6 +806,7 @@ class Authorized_Candidate_Committees(models.Model):
     # maybe we're missing a year? 
     
 
+""" Not used, see below.
 
 ## This is untenable, I think; mismatched filing periods make this a total pain. 
 class Candidate_Time_Summary(models.Model):
@@ -816,8 +825,10 @@ class Candidate_Time_Summary(models.Model):
     coverage_through_date = models.DateField(null=True)
     data_source = models.CharField(max_length=10, help_text="webk|electronic")
 
+"""
 
 
+# This is only used during testing. 
 class Filing_Gap(models.Model):
     # record-keeping for what filings are missing. 
     # Will attempt to backfill with webk data to handle case of 

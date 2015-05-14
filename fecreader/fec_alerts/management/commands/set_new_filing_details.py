@@ -4,6 +4,13 @@ from fec_alerts.models import new_filing
 from summary_data.utils.party_reference import get_party_from_pty
 from ftpdata.models import Committee
 from summary_data.models import Committee_Overlay
+from django.conf import settings
+
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing active cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = ['2016']
 
 
 def dateparse_notnull(datestring):
@@ -77,7 +84,7 @@ def process_f13_header(header_data):
 def handle_filing(this_filing):
     
     try:
-        co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id)
+        co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id, cycle=this_filing.cycle)
         this_filing.committee_designation = co.designation
         this_filing.committee_type = co.ctype
         this_filing.committee_slug = co.slug
@@ -89,7 +96,10 @@ def handle_filing(this_filing):
         
     except Committee_Overlay.DoesNotExist:
         try:
-            co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=2014)
+            ## remember that ftpdata committees have cycles as ints, not strings. Not ideal. 
+            if not this_filing.cycle:
+                this_filing.cycle = CURRENT_CYCLE
+            co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=int(this_filing.cycle))
             this_filing.committee_designation = co.cmte_dsgn
             this_filing.committee_type = co.cmte_tp
             this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
@@ -104,15 +114,17 @@ def handle_filing(this_filing):
     
     if form_type in ['F3A', 'F3N', 'F3T','F3PA', 'F3PN', 'F3PT', 'F3', 'F3P']:
         parsed_data = process_f3_header(header_data)
-        #print "got data %s" % (parsed_data)
+        print "got data %s" % (parsed_data)
         
         this_filing.coh_end =  parsed_data['coh_end'] if parsed_data['coh_end'] else 0
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
         this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
         this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else 0
+        this_filing.new_filing_details_set = True
         
     elif form_type in ['F3X', 'F3XA', 'F3XN', 'F3XT']:
         parsed_data = process_f3x_header(header_data)
+        print "got data %s" % (parsed_data)
         
         this_filing.coh_end =  parsed_data['coh_end'] if parsed_data['coh_end'] else 0
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
@@ -120,6 +132,8 @@ def handle_filing(this_filing):
         this_filing.new_loans = parsed_data['new_loans'] if parsed_data['new_loans'] else 0
         this_filing.tot_coordinated = parsed_data['tot_coordinated'] if parsed_data['tot_coordinated'] else 0
         this_filing.tot_ies = parsed_data['tot_ies'] if parsed_data['tot_ies'] else 0
+        this_filing.new_filing_details_set = True
+    
     
     elif form_type in ['F5', 'F5A', 'F5N']:
         parsed_data = process_f5_header(header_data)
@@ -132,6 +146,8 @@ def handle_filing(this_filing):
         this_filing.coverage_to_date = parsed_data['coverage_to_date']
         
         this_filing.is_f5_quarterly = header_data['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+        this_filing.new_filing_details_set = True
+        
         
     
     elif form_type in ['F7', 'F7A', 'F7N']:
@@ -141,6 +157,8 @@ def handle_filing(this_filing):
         this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
         this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else None
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
+        this_filing.new_filing_details_set = True
+        
 
     elif form_type in ['F9', 'F9A', 'F9N']:
         parsed_data = process_f9_header(header_data)
@@ -149,6 +167,8 @@ def handle_filing(this_filing):
         this_filing.tot_spent = parsed_data['tot_spent'] if parsed_data['tot_spent'] else 0
         this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else None
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
+        this_filing.new_filing_details_set = True
+        
     
     elif form_type in ['F13', 'F13A', 'F13N']:
         parsed_data = process_f13_header(header_data)
@@ -157,6 +177,8 @@ def handle_filing(this_filing):
         this_filing.tot_raised = parsed_data['tot_raised'] if parsed_data['tot_raised'] else 0
         this_filing.coverage_from_date = parsed_data['coverage_from_date'] if parsed_data['coverage_from_date'] else None
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
+        this_filing.new_filing_details_set = True
+        
     
     
     this_filing.save() 
@@ -170,9 +192,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        new_filings_to_process = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')        
-
-        #new_filings_to_process = new_filing.objects.all().order_by('filing_number')        
+        #new_filings_to_process = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')        
+        new_filings_to_process = new_filing.objects.filter(new_filing_details_set=False,header_is_processed=True).order_by('filing_number')        
         
         
         for this_filing in new_filings_to_process:

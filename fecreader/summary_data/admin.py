@@ -2,7 +2,7 @@ from django.contrib import admin
 from models import District, Candidate_Overlay, Committee_Overlay, ElectionSummary
 
 class DistrictAdmin(admin.ModelAdmin):
-    
+    readonly_fields = ('cycle',)
     fieldsets = (
         ("Human-verified data", {
             'fields': ('next_election_date','next_election_code', 'special_election_scheduled', 'open_seat', 'district_notes'),
@@ -13,12 +13,12 @@ class DistrictAdmin(admin.ModelAdmin):
         }),
     )
     search_fields=['incumbent_name', 'state']
-    list_display=['office', 'state', 'incumbent_name', 'office_district', 'term_class']
+    list_display=['office', 'cycle', 'state', 'incumbent_name', 'office_district', 'term_class']
 admin.site.register(District, DistrictAdmin) 
     
     
 class Candidate_OverlayAdmin(admin.ModelAdmin):
-    readonly_fields = ('fec_id', 'pcc')
+    readonly_fields = ('fec_id', 'pcc', 'cycle')
     fieldsets = (
         ("Human-curated data", {
             'fields': ('name', 'cand_is_gen_winner', 'is_general_candidate', 'curated_election_year', 'candidate_status', 'other_office_sought', 'other_fec_id', 'not_seeking_reelection', 'is_incumbent'),
@@ -32,6 +32,7 @@ class Candidate_OverlayAdmin(admin.ModelAdmin):
 
     )
     search_fields=['name', 'state']
+    list_display=['name', 'office', 'cycle', 'state', 'office_district', 'term_class']
     
 admin.site.register(Candidate_Overlay, Candidate_OverlayAdmin)
 
@@ -47,12 +48,12 @@ class ElectionSummaryAdmin(admin.ModelAdmin):
 admin.site.register(ElectionSummary, ElectionSummaryAdmin)
 
 class Committee_OverlayAdmin(admin.ModelAdmin):
-    readonly_fields = ('name','designation', 'ctype')
+    readonly_fields = ('name','designation', 'ctype', 'cycle')
     ordering = ('name',)
     
     fieldsets = (
     ("Autopopulated", {
-        'fields': ('name', 'designation','ctype'),
+        'fields': ('name', 'designation','ctype', 'cycle'),
                
     }),
         ("Human-verified data", {
@@ -60,7 +61,7 @@ class Committee_OverlayAdmin(admin.ModelAdmin):
         }),
     )
     search_fields=['name']
-    list_display=['name', 'ctype', 'designation',]
+    list_display=['name', 'cycle','ctype', 'designation',]
     
 
 admin.site.register(Committee_Overlay, Committee_OverlayAdmin)

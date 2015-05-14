@@ -4,6 +4,13 @@ from django.core.management.base import BaseCommand, CommandError
 
 from rothenberg.models import HouseRace, SenateRace
 from summary_data.models import District
+from django.conf import settings
+
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = '2016'
 
 
 
@@ -13,7 +20,7 @@ class Command(BaseCommand):
     requires_model_validation = False
 
     def handle(self, *args, **options):
-        districts = District.objects.all()
+        districts = District.objects.filter(cycle=CURRENT_CYCLE)
         
         for district in districts:
             
@@ -31,7 +38,7 @@ class Command(BaseCommand):
                 if office_district != '00':
                     rothenberg_district = int(office_district)
                 try:
-                    rating = HouseRace.objects.get(state=state, district=rothenberg_district)
+                    rating = HouseRace.objects.get(state=state, district=rothenberg_district, cycle=CURRENT_CYCLE)
                     #print "Got rating %s %s %s" % (rating.rating_id, rating.rating_label, rating.update_time)
                     district.rothenberg_rating_id = rating.rating_id
                     district.rothenberg_rating_text = rating.rating_label
@@ -50,7 +57,7 @@ class Command(BaseCommand):
                         rothenberg_seat_class = 'III'
                 
                 try:
-                    rating = SenateRace.objects.get(state=state, seat_class=rothenberg_seat_class)
+                    rating = SenateRace.objects.get(state=state, seat_class=rothenberg_seat_class, cycle=CURRENT_CYCLE)
                     #print "Got rating %s %s %s" % (rating.rating_id, rating.rating_label, rating.update_time)
                     district.rothenberg_rating_id = rating.rating_id
                     district.rothenberg_rating_text = rating.rating_label

@@ -62,7 +62,7 @@ class Term(models.Model):
     address = models.CharField(max_length=511, blank=True, null=True)
     
     def __unicode__(self):
-        return "%s, %s, %s %s %s %s" % (self.legislator.last_name, self.legislator.first_name, self.party, self.term_type, self.state, self.district)
+        return "%s, %s, %s %s %s %s %s through %s" % (self.legislator.last_name, self.legislator.first_name, self.party, self.term_type, self.state, self.district, self.start, self.end)
     
     def chamber(self):
         if self.term_type=='rep':

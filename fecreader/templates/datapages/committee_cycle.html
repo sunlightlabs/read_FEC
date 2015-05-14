@@ -1,0 +1,195 @@
+{# committee details #}
+{% extends "datapages/realtime_base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+
+{# because we allow various slugs in, try to get this straight #}
+{% block canonicalurl %}{{ committee.get_absolute_url }}{% endblock %}
+
+{% block sitecss %}
+<link rel="stylesheet" href="{% static 'realtimefec/css/custom-theme/jquery-ui-1.10.3.custom.css' %}" /> 
+
+{{ block.super }}
+{% endblock sitecss %}
+
+
+{% block body_class %}{% endblock %}
+
+{% block pagetitle %}{{ title }} {% endblock %}
+
+ {% block rtmain %}
+
+
+<div class="module">
+  {% if committee.is_electronic_filer %}<b>Downloadable files: </b><a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name|escapejs }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name|escapejs }}');">Disbursements</a>{% if independent_spending %}
+  &nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','E', '{{ committee.name }}');">Independent Expenditures</a>{% endif %}
+  <br><b>Alerts: </b><a class="link" href="javascript:submit_gotoscout('{{ committee.fec_id }}');">Get automatic alerts</a> when this committee files new campaign finance reports
+  {% endif %}
+  
+  <div class="numeric_summary">
+<span class="amount_description">Total receipts:</span>&nbsp;<span class="amount_dollars">{% if committee.total_receipts %}${{committee.total_receipts|intcomma}}{% else %}$0{% endif %}</span>
+
+<br><span class="amount_description">Total disbursements:</span>&nbsp;<span class="amount_dollars">{% if committee.total_disbursements %}${{committee.total_disbursements|intcomma}}{% else %}$0{% endif %}</span>  
+
+<br><span class="amount_description">Total independent expenditures:</span>&nbsp;<span class="amount_dollars">{% if committee.total_indy_expenditures %}${{committee.total_indy_expenditures|intcomma}}{% else %}$0{% endif %}</span>
+
+<br><span class="amount_description">Cash on hand (as of {{ committee.cash_on_hand_date }})</span>&nbsp;<span class="amount_dollars">{% if committee.cash_on_hand %}${{committee.cash_on_hand|intcomma}}{% else %}$0{% endif %}</span>
+
+</div>
+
+
+
+<p>Committee Type: "{{ committee.ctype }}" - {{ committee.display_type}} 
+  {% if committee.curated_candidate %}<br>Supports <a href="{{committee.curated_candidate.get_absolute_url}}">{{committee.curated_candidate.name }} ({{committee.curated_candidate.party}})</a> {% if committee.curated_candidate.is_incumbent %}Incumbent {% else %}Candidate for {% endif %}<a href="{{  committee.curated_candidate.district.get_absolute_url }}">{{ committee.curated_candidate.detailed_office}}</a>{% endif %}
+  <br>Designation: "{{ committee.designation}}" - {{ committee.display_designation}}
+  <br>Treasurer: {{ committee.treasurer }}
+  <br>Location: {{ committee.city}}, {{ committee.state}} {{committee.zip}}
+  <br>Filing frequency: {{ committee.filing_frequency_text }}
+  <br><a href="{{committee.fec_all_filings}}">See filings</a> on the FEC's web site.
+
+
+{% if independent_spending %}
+<div class="overviewBar withNav withTip">
+    <h4>Independent Expenditure Summary</h4>
+</div>
+<p>Candidates supported or opposed by independent expenditures of $5,000 or more are listed below. <a href="{{committee.get_filtered_ie_url}}">See all of this committee's independent expenditures</a>.</p>
+
+<table id="mainPageTable" class="sortable">
+  <thead>
+    <tr>
+      <th class="sort">Candidate</th>
+      <th>Incumbent</th>
+      <th> Office Sought </th>
+      <th class="sort">Support / Oppose</th>
+      <th class="sort">Total outside spending</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for object in independent_spending %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td><a class="link" href="{{object.candidate.get_absolute_url}}">{{object.candidate.name}} {{ object.candidate.display_party}}</a>
+          {% if object.candidate.show_candidate_status %}<br><b>{{ object.candidate.show_candidate_status }}</b>{% endif %}
+          </td>
+        <td>{{ object.candidate.incumbency_status }}</td>
+        <td><a class="link" href="{{ object.candidate.get_race_url }}">{{ object.candidate.detailed_office }}</a></td>
+        <td>{{ object.support_or_oppose|safe }}</td>
+        <td>${{object.total_ind_exp|intcomma}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+
+{% if recent_ies %}
+<div class="overviewBar withNav withTip">
+    <h4>Recent Independent Expenditures</h4>
+</div>
+<p>The most recent independent expenditures $5,000 or more are listed below. <a href="{{committee.get_filtered_ie_url}}">See all of this committee's independent expenditures</a>.</p>
+
+<table id="mainPageTable" class="sortable">
+  <thead>
+    <tr>
+      <th class="sort">Candidate</th>
+      <th>Support<br>Oppose</th>
+      <th class="sort">Payee</th>
+      <th class="sort">Amount</th>
+      <th class="sort">Date</th>
+      <th class="sort">Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for object in recent_ies %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>{% if object.candidate_checked %}<a class="link" href="{{ object.get_candidate_url }}">{{ object.candidate_name_checked }}</a>{% else %}{{ object.candidate_name_raw }}{% endif %}</td>
+        <td>{{ object.support_oppose|safe}}</td>
+        <td>{{ object.payee_name_simplified }} - {{ object.payee_city}}, {{ object.payee_state}} {{ object.contributor_zip}} </td>
+        <td>${{ object.expenditure_amount|intcomma}}</td>
+        <td>{{ object.expenditure_date_formatted|date:"Y-m-d"}}</td>
+        <td>{% if object.expenditure_purpose_descrip %}{{ object.expenditure_purpose_descrip}}{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+{% if recent_report_list %}
+<div class="overviewBar withNav withTip">
+    <h4>Recent 24- and 48-hour filings</h4>
+</div>
+<p>Only filings made since the last monthly/quarterly report are shown</p>
+
+
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Filing ID (Type)</th>
+                <th>Coverage Date</th>
+                <th class="sort">Raised</th>
+                <th class="sort">Independent Expenditures</th>
+
+                
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in recent_report_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}">
+                          <td>{% if object.filing_number %}<a class="link" href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% endif %} </td>
+                          
+                          <td>{% if object.coverage_to_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_to_date|date:"n/j/y" }}{% endif %}</td> 
+                          <td>{% if object.tot_raised %}{% if object.filing_number %}<a class="link" href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_raised|intcomma }}</a>{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_ies %}{% if object.filing_number %}<a class="link" href="{{object.get_spending_url}}">{% endif %}${{ object.tot_ies|intcomma }}{% if object.tot_ies %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                           
+                        </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+{% endif %}
+
+{% if report_list %}
+<div class="overviewBar withNav withTip">
+    <h4>Committee Summary Filings</h4>
+</div>
+<table id="mainPageTable" class="sortable">
+            <thead>
+              <tr>
+                <th>Filing ID (Type)</th>
+                <th>Coverage Date</th>
+                <th class="sort">Raised</th>
+                <th class="sort">Spent</th>
+                <th class="sort">Cash on hand</th>
+                <th class="sort">Debts</th>
+                
+              </tr>
+              </thead>
+              <tbody>
+                  {% for object in report_list %}    
+                      <tr class="{% cycle 'odd' 'even' %}">
+                          <td>{% if object.filing_number %}<a class="link" href="{{object.get_absolute_url}}">{{ object.filing_number }} {{object.get_form_name}}</a>{% else %}<a class="link" href="{{object.get_fec_url}}">paper filing</a>{% endif %} </td>
+                          
+                          <td>{% if object.coverage_through_date %}{{ object.coverage_from_date|date:"n/j/y" }} - {{ object.coverage_through_date|date:"n/j/y" }}{% endif %}</td> 
+                          <td>{% if object.tot_receipts %}{% if object.filing_number %}<a class="link" href="{{object.get_skeda_url}}">{% endif %}${{ object.tot_receipts|intcomma }}</a>{% else %}$0{% endif %}</td>
+                          <td>{% if object.tot_disburse %}{% if object.filing_number %}<a class="link" href="{{object.get_skedb_url}}">{% endif %}${{ object.tot_disburse|intcomma }}{% if object.filing_number %}</a>{% endif %}{% else %}$0{% endif %}</td>
+                          <td>{% if object.cash_on_hand_end %}${{ object.cash_on_hand_end|intcomma }}{% else %}$0{% endif %}</td>
+                          <td>{% if object.outstanding_loans %}${{ object.outstanding_loans|intcomma }}{% else %}$0{% endif %}</td> 
+                          
+                        </tr>
+                  {% endfor %}
+                  
+</tbody>
+</table>
+
+{% endif %}
+
+</div>
+{% endblock %}
+
+
+{% block sitejs %}
+{{ block.super }}
+{% include "includes/file_download.js" %}
+{% include "includes/go_to_scout.js" %}
+{% endblock %}

@@ -1,6 +1,7 @@
 {% extends "dryrub/base.html" %}
 {% load timestamp %}
 {% load staticfiles %}
+{% load cycle_selector %}
 
 
 {% block head_analytics %}
@@ -19,11 +20,16 @@
 {% block sitecss %}
 <link rel="stylesheet" href="{% static 'realtimefec/css/realtimefec_main.css' %}" />
 {% endblock sitecss %}
+
 {% block main %}
+<div id="contentHeader" class="clearfix">
+    <h2 class="RTh2">Real-Time Federal Campaign Finance</h2>
+		<div id="cycle-selector">{% block cycle_selector %}{% cycle_select_block cycle_list %}{% endblock cycle_selector %}</div>
+</div>
 {# override search #}
 {% block search %}{% endblock search %}
-
 {% block subnavitems %}
+
 {% include "includes/main_nav.html" %}
 {% endblock %}
 

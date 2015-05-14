@@ -1,0 +1,28 @@
+<div class="cycle-selector-container">
+{% if display %}
+<form action method="get" class="filter">
+    <div class="select-field{% if is_selectable %} multi-cycle{% endif %}"><!--  add "multi-cycle" to classes to make the clickable triangle thing visible   -->
+        <span class="select-option">{% if is_selectable %}Select Cycle{% else %}Showing Cycle{% endif %}</span>
+        {% if is_selectable %}
+        <select name="cycle-filter" onchange="switchCycle(this.value)">
+            <option value="">Select Cycle</option>
+            {% for object in cycles %}<option value="{{ object.url }}">{{ object.cycle }}</option>{% endfor %}
+        </select>
+        {% endif %}
+    </div><!-- /.select-field -->
+    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+</form>
+<div class="cycle-year">{{ selected_cycle_object.cycle }}</div>
+{% endif %}
+</div>
+<script type="text/javascript">
+  function switchCycle(url) {
+    if (url) {
+      if (url != window.location.pathname) {
+        window.location = url;
+        return false;
+      }
+    }
+  }
+  
+</script>

@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         
-        all_new_amendment_headers = new_filing.objects.filter(previous_amendments_processed=False,header_is_processed=True).order_by('filing_number')
+        all_new_amendment_headers = new_filing.objects.filter(previous_amendments_processed=False,new_filing_details_set=True).order_by('filing_number')
         for new_amended_filing in all_new_amendment_headers:
             #print "processing %s " % (new_amended_filing.filing_number)
 
