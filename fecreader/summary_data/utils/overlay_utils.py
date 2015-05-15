@@ -46,9 +46,8 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2016
         elif thiscandidate.cand_office == 'H':
             this_district = District.objects.get(election_year=election_year, state=state, office=thiscandidate.cand_office, office_district=thiscandidate.cand_office_district)
         elif thiscandidate.cand_office == 'P':
-            # there's no district, so pass
-            # do we need a presidential placeholder ? 
-            pass
+            # there's a single presidential district per cycle, it needs to be created manually
+            this_district = District.objects.get(election_year=election_year, office=thiscandidate.cand_office)
     except District.DoesNotExist:
         print "!! Invalid %s district for %s term_class=%s district=%s election_year=%s state=%s" % (thiscandidate.cand_office, thiscandidate.cand_name, term_class, thiscandidate.cand_office_district, thiscandidate.cand_election_year, state)
         
@@ -79,7 +78,7 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2016
 
 
 # udpate committee information
-def update_committee_from_masterfile(committee_id, cycle_to_copy_from=2014, cycle_to_copy_to=2014):
+def update_committee_from_masterfile(committee_id, cycle_to_copy_from=2016, cycle_to_copy_to=2016):
     #print "Updating %s" % (committee_id)
     c = None
     try:
@@ -140,7 +139,7 @@ def update_committee_from_masterfile(committee_id, cycle_to_copy_from=2014, cycl
     committee_overlay.save()
     
 # the new committee list is now longer used. See below. 
-def make_committee_from_new_committee_list(committee_id, cycle='2014'):
+def make_committee_from_new_committee_list(committee_id, cycle='2016'):
     nc = None
     try:
         nc = newCommittee.objects.get(fec_id = committee_id, cycle=cycle)
@@ -186,7 +185,7 @@ def make_committee_from_new_committee_list(committee_id, cycle='2014'):
         )
         return cm
 
-
+""" I think this format was also changed roughly May 12, 2015--this needs to be rewritten"""
 def make_committee_from_f1filer(committee_id, cycle):
     nc = None
     try:
@@ -248,7 +247,7 @@ def make_committee_from_f1filer(committee_id, cycle):
         )
         return cm
     
-def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014, cycle_to_copy_to=2014, verify_does_not_exist=True):
+def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2016, cycle_to_copy_to=2016, verify_does_not_exist=True):
     if committee_id == 'C00507947':
         return None
     c = None
@@ -262,7 +261,7 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
         try:
             Committee_Overlay.objects.get(fec_id=committee_id, cycle=cycle_to_copy_from)
             # if it exists, update it with the current information
-            update_committee_from_masterfile(committee_id, cycle_to_copy_from=2014, cycle_to_copy_to=2014)
+            update_committee_from_masterfile(committee_id, cycle_to_copy_from=2016, cycle_to_copy_to=2016)
             return None
         except Committee_Overlay.DoesNotExist:
             pass
@@ -316,11 +315,10 @@ def make_committee_overlay_from_masterfile(committee_id, cycle_to_copy_from=2014
 
 """
 from summary_data.utils.overlay_utils import make_candidate_overlay_from_masterfile
-make_candidate_overlay_from_masterfile('H0CA48024') # issa
-make_candidate_overlay_from_masterfile('S8NC00239') # hagan
+make_candidate_overlay_from_masterfile('H0CA48024', '2016') # issa
 
 from summary_data.utils.overlay_utils import make_committee_overlay_from_masterfile
-make_committee_overlay_from_masterfile('C00542779')
+make_committee_overlay_from_masterfile('C00542779', '2016')
 
 
 """
