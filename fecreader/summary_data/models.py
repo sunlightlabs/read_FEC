@@ -125,7 +125,7 @@ class District(models.Model):
         elif self.office == 'S':
             url= "/race/%s/%s/%s/%s/" % (self.cycle, self.office, self.state, self.term_class)
         elif self.office == 'P':
-            url= "/presidential/" % (self.cycle)
+            url= "/presidential/" 
         
         return url
         
