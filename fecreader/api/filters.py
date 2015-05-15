@@ -176,16 +176,16 @@ def periodTypeFilter(queryset, querydict):
                 queryset = queryset.filter(Q(coverage_from_date=date(2013,3,1), coverage_to_date=date(2013,3,31))|Q(coverage_from_date=date(2014,3,1), coverage_to_date=date(2014,3,31))|Q(coverage_from_date=date(2015,3,1), coverage_to_date=date(2015,3,31)))
 
             elif period_type == 'M4':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,4,1), coverage_to_date=date(2013,4,30))|Q(coverage_from_date=date(2014,4,1), coverage_to_date=date(2014,4,30)))
+                queryset = queryset.filter(Q(coverage_from_date=date(2013,4,1), coverage_to_date=date(2013,4,30))|Q(coverage_from_date=date(2014,4,1), coverage_to_date=date(2014,4,30))|Q(coverage_from_date=date(2015,4,1), coverage_to_date=date(2015,4,30)))
 
             elif period_type == 'M5':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,5,1), coverage_to_date=date(2013,5,31))|Q(coverage_from_date=date(2014,5,1), coverage_to_date=date(2014,5,31)))
+                queryset = queryset.filter(Q(coverage_from_date=date(2013,5,1), coverage_to_date=date(2013,5,31))|Q(coverage_from_date=date(2014,5,1), coverage_to_date=date(2014,5,31))|Q(coverage_from_date=date(2015,5,1), coverage_to_date=date(2015,5,31)))
 
             elif period_type == 'M6':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,6,1), coverage_to_date=date(2013,6,30))|Q(coverage_from_date=date(2014,6,1), coverage_to_date=date(2014,6,30)))
+                queryset = queryset.filter(Q(coverage_from_date=date(2013,6,1), coverage_to_date=date(2013,6,30))|Q(coverage_from_date=date(2014,6,1), coverage_to_date=date(2014,6,30))|Q(coverage_from_date=date(2015,6,1), coverage_to_date=date(2015,6,30)))
 
             elif period_type == 'M7':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,7,1), coverage_to_date=date(2013,7,31))|Q(coverage_from_date=date(2014,7,1), coverage_to_date=date(2014,7,31)))
+                queryset = queryset.filter(Q(coverage_from_date=date(2013,7,1), coverage_to_date=date(2013,7,31))|Q(coverage_from_date=date(2014,7,1), coverage_to_date=date(2014,7,31))|Q(coverage_from_date=date(2015,7,1), coverage_to_date=date(2015,7,31)))
 
             elif period_type == 'M8':
                 queryset = queryset.filter(Q(coverage_from_date=date(2013,8,1), coverage_to_date=date(2013,8,31))|Q(coverage_from_date=date(2014,8,1), coverage_to_date=date(2014,8,31)))
