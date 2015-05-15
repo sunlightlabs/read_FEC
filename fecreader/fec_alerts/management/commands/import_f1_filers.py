@@ -14,12 +14,35 @@ two_digit_cycle = "16"
 #override
 CYCLE = 2016
 
+""" FEC 'update' means new file headers. Grr.  """
+def transform_column_headers(new_row):
+    return  {
+        'cmte_id': new_row['COMMITTEE_ID'],
+        'cmte_nm': new_row['COMMITTEE_NAME'],
+        'cmte_st1': new_row['COMMITTEE_STREET_1'],
+        'cmte_st2': new_row['COMMITTEE_STREET_2'],
+        'cmte_city': new_row['COMMITTEE_CITY'],
+        'cmte_st': new_row['COMMITTEE_STATE'],
+        'cmte_zip': new_row['COMMITTEE_ZIP'],
+        'affiliated_cmte_nm': new_row['AFFILIATED_COMMITTEE_NAME'],
+        'filed_cmte_tp': new_row['FILED_COMMITTEE_TYPE'],
+        'filed_cmte_dsgn': new_row['FILED_COMMITTEE_DESIGNATION'],
+        'filing_freq': new_row['FILING_FREQUENCY'],
+        'org_tp': new_row['ORGANIZATION_TYPE'],
+        'tres_nm': new_row['TREASURER_NAME'],
+        'receipt_dt': new_row['RECEIPT_DATE'],
+        'cmte_email': new_row['COMMITTEE_EMAIL'],
+        'cmte_web_url': new_row['COMMITTEE_WEB_URL'],
+        'begin_image_num': new_row['BEGIN_IMAGE_NUMBER']
+    }
+
 
 def readfile(filelocation):
     fh = open(filelocation, 'r')
     reader = csv.DictReader(fh)
     count = 0
-    for row in reader:
+    for newstyle_row in reader:
+        row = transform_column_headers(newstyle_row)
         try:
             thiscom = f1filer.objects.get(cmte_id=row['cmte_id'])
         except f1filer.DoesNotExist:
