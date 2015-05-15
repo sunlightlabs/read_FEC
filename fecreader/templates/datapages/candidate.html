@@ -50,7 +50,7 @@
   
   {% if candidate.not_seeking_reelection %}{% else %}{% if candidate.candidate_status %}<b>{{ candidate.show_candidate_status }}</b>{% else %}{% if candidate.has_next_election %}{% comment "2014 dates look confusing" %}Next scheduled election: {{ candidate.district.next_election }} to be held {{ candidate.district.next_election_date|date:"n/j/y" }}{% endcomment %}{% endif %}{% endif %}{% endif %}
 
-<br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>{% if not forloop.last %}&nbsp;|&nbsp;{% endif %}{% endfor %}
+<br>Authorized committee(s): {% for committee in authorized_committee_list %}<a href="/committee/{{cycle}}/{{committee.committee_name|slugify}}/{{committee.committee_id}}/">{{committee.committee_name}}</a>{% if not forloop.last %}&nbsp;|&nbsp;{% endif %}{% endfor %}
 
 {% if recent_ies %}
 <div class="overviewBar withNav withTip">
