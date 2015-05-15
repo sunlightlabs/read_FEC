@@ -285,7 +285,7 @@ class Candidate_Overlay(models.Model):
         
 
     def get_absolute_url(self):
-        return "/candidate/%s/%s/" % (self.slug, self.fec_id)
+        return "/candidate/%s/%s/%s/" % (self.cycle, self.slug, self.fec_id)
 
 
     def display_party(self):
