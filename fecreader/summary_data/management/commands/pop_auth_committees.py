@@ -3,13 +3,11 @@ from summary_data.models import Authorized_Candidate_Committees
 from ftpdata.models import CandComLink, Committee, Candidate
 from django.conf import settings
 
-
 try:
     CURRENT_CYCLE = settings.CURRENT_CYCLE
 except:
     print "Missing current cycle list. Defaulting to 2016. "
     CURRENT_CYCLE = ['2016']
-
 
 class Command(BaseCommand):
     help = "Set the authorized candidate committees"
@@ -39,6 +37,4 @@ class Command(BaseCommand):
                     is_pcc = ccl.cmte_dsgn == 'P',
                     cycle = CURRENT_CYCLE
                 )
-
-        
         

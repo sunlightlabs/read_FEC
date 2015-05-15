@@ -24,12 +24,13 @@ urlpatterns = patterns('',
         url(r'^filings/(\d+)/[sS][bB]\/?$', 'public_views.datapages.views.filings_skedb'),
         url(r'^filings/(\d+)/[sS][eE]\/?$', 'public_views.datapages.views.filings_skede'),
         url(r'^filings/(\d+)/$', 'public_views.datapages.views.filing'),
-        url(r'^committee/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee'),
+        url(r'^committee/(?P<slug>[\w-]+)\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee'),
         # new cycle:
         url(r'^committee\/(?P<cycle>20\d\d)\/[\w-]+\/(?P<committee_id>[\w\d]+)\/?$', 'public_views.datapages.views.committee_cycle'),
         
         
-        url(r'^candidate/[\w-]+\/(?P<candidate_id>[\w\d]+)\/?$', 'public_views.datapages.views.candidate'),        
+        url(r'^candidate/(?P<cycle>20\d\d)\/[\w-]+\/(?P<candidate_id>[\w\d]+)\/?$', 'public_views.datapages.views.candidate_cycle'),
+        url(r'^candidate/[\w-]+\/(?P<candidate_id>[\w\d]+)\/?$', 'public_views.datapages.views.candidate'),                
         url(r'^race/(?P<cycle>\d\d\d\d)\/H\/(?P<state>\w\w)\/(?P<district>\d+)\/', 'public_views.datapages.views.house_race'),
         url(r'^race/(?P<cycle>\d\d\d\d)\/S\/(?P<state>\w\w)\/(?P<term_class>\d+)\/', 'public_views.datapages.views.senate_race'),
         url(r'^race_id/(?P<race_id>\d+)\/$', 'public_views.datapages.views.race_id_redirect'),
