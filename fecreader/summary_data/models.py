@@ -79,6 +79,7 @@ class District(models.Model):
         elif self.rothenberg_rating_id == 5:
             return 'Safe Democrat'
         return self.rothenberg_rating_text
+        
     def display_map(self):
         if self.office=='H':
             if self.state not in ['AK']:
@@ -124,7 +125,7 @@ class District(models.Model):
         elif self.office == 'S':
             url= "/race/%s/%s/%s/%s/" % (self.cycle, self.office, self.state, self.term_class)
         elif self.office == 'P':
-            url= "/race/%s/president/" % (self.cycle)
+            url= "/presidential/" % (self.cycle)
         
         return url
         
@@ -318,7 +319,8 @@ class Candidate_Overlay(models.Model):
         elif self.office == 'S':
             url= "/race/%s/%s/%s/%s/" % (self.cycle, self.office, self.state, self.term_class)
         elif self.office == 'P':
-            url= "/race/%s/president/" % (self.cycle)
+            # may want to change this later
+            url= "/presidential/"
 
         return url
 
