@@ -586,7 +586,7 @@ def candidate_cycle(request, candidate_id, cycle):
 
     recent_report_total = 0
     if end_of_coverage_date:
-        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=end_of_coverage_date, coverage_through_date__lte=cycle_endpoints['end'], form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
+        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=end_of_coverage_date, coverage_to_date__lte=cycle_endpoints['end'], form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
         if recent_report_list:
             recent_report_total = recent_report_list.aggregate(spending_total=Sum('tot_raised'))['spending_total']
 
