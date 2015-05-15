@@ -25,10 +25,10 @@
       {% for object in summary_obj_list %}
       <tr class="{% cycle 'odd' 'even' %}">
        	<td>{{ object.name }}, {{ object.first_name }} ({{object.party|upper }})</td>
-<td>{% for com in object.candidate_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
+<td>{% for com in object.candidate_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/2016/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
 
-				<td>{% for com in object.leadership_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
-				<td>{% for com in object.superpacs %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
+				<td>{% for com in object.leadership_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/2016/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
+				<td>{% for com in object.superpacs %}{% if forloop.first %}{% else %} | {% endif %}<a href="/committee/2016/{{ com.pac_name|slugify }}/{{ com.pac_id }}/">{{ com.pac_name}}</a>{% endfor %}</td>
 				<td>{% for com in object.other_committees %}{% if forloop.first %}{% else %} | {% endif %}<a href="{{com.other_url}}">{{ com.pac_name}}</a>{% endfor %}</td>
 
       </tr>

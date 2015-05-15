@@ -265,15 +265,23 @@ class Candidate_Overlay(models.Model):
     def detailed_office(self):
         if self.office == 'S':
             return 'US Sen. (%s)' % (self.state)
-        else:
+        elif self.office == 'H':
             return 'US Rep. (%s-%s)' % (self.state, self.office_district) 
+        elif self.office == 'P':
+            return 'US President'
+        else:
+            return ''
 
     def short_office(self):
         if self.office == 'S':
             return '(%s)' % (self.state)
-        else:
+        elif self.office == 'H':
             return '(%s-%s)' % (self.state, self.office_district)
-
+        elif self.office == 'P':
+            return 'President'
+        else:
+            return ""
+        
 
     def has_next_election(self):
         try:
