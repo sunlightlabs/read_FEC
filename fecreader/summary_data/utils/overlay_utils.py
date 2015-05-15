@@ -50,7 +50,7 @@ def make_candidate_overlay_from_masterfile(candidate_id, cycle_to_copy_from=2016
             # do we need a presidential placeholder ? 
             pass
     except District.DoesNotExist:
-        print "!! Invalid %s district for %s term_class=%s district=%S election_year=%s state=%s" % (thiscandidate.cand_office, thiscandidate.cand_name, term_class, thiscandidate.cand_office_district, thiscandidate.cand_election_year, state)
+        print "!! Invalid %s district for %s term_class=%s district=%s election_year=%s state=%s" % (thiscandidate.cand_office, thiscandidate.cand_name, term_class, thiscandidate.cand_office_district, thiscandidate.cand_election_year, state)
         
         # If we can't find a district, override the display setting--just don't display it. 
         display_candidate = False
