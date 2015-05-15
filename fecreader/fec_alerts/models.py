@@ -92,6 +92,7 @@ class newCommittee(models.Model):
         return ("/committee/%s/%s/" % (slugify(self.name), self.fec_id))
 
 
+### the header rows were changed May 2015, but I'm leaving the model field names as is. 
 class f1filer(models.Model):
     cycle = models.CharField(max_length=4, default=CURRENT_CYCLE)
     cmte_id = models.CharField(max_length=9, blank=True, unique=True)
@@ -122,7 +123,7 @@ class f1filer(models.Model):
             return None
             
     def get_absolute_url(self):          
-        return ("/committee/%s/%s/" % (slugify(self.cmte_nm), self.cmte_id))
+        return ("/committee/%s/%s/%s/" % (self.cycle, slugify(self.cmte_nm), self.cmte_id))
     
 
 # Class to hold new filings, whether or not they've been parsed yet. 
