@@ -14,9 +14,14 @@ from django.conf import settings
 
 COMMITTEES_SCRAPE_KEY  = settings.COMMITTEES_SCRAPE_KEY
 
-two_digit_cycle = "16"
-#override
-CYCLE = 2016
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = '2016'
+
+two_digit_cycle = CURRENT_CYCLE[2:4]
+
 
 """ FEC 'update' means new file headers. Grr.  """
 def transform_column_headers(new_row):

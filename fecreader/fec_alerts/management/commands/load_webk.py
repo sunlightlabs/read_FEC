@@ -8,10 +8,19 @@ from django.core.management.base import BaseCommand
 from parsing.read_FEC_settings import FTP_DATA_DIR, CYCLE
 from fec_alerts.models import WebK, webk_blacklist
 
+from django.conf import settings
+
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = '2016'
+
+two_digit_cycle = CURRENT_CYCLE[2:4]
 
 two_digit_cycle = "14"
 #override
-CYCLE = 2014
+CYCLE = int(CURRENT_CYCLE)
 
 def currency_to_decimal(currency_string):
     if currency_string:
