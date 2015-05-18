@@ -18,7 +18,6 @@ except:
 
 two_digit_cycle = CURRENT_CYCLE[2:4]
 
-two_digit_cycle = "14"
 #override
 CYCLE = int(CURRENT_CYCLE)
 
