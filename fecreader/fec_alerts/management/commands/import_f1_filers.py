@@ -8,7 +8,11 @@ from django.core.management.base import BaseCommand
 from parsing.read_FEC_settings import FTP_DATA_DIR, CYCLE
 from fec_alerts.models import f1filer
 from summary_data.utils.overlay_utils import make_committee_from_f1filer
+from summary_data.utils.update_utils import set_update
 
+from django.conf import settings
+
+COMMITTEES_SCRAPE_KEY  = settings.COMMITTEES_SCRAPE_KEY
 
 two_digit_cycle = "16"
 #override
@@ -74,3 +78,4 @@ class Command(BaseCommand):
         filename =  "/%s/Form1Filer_%s.csv" % (two_digit_cycle, two_digit_cycle)
         filelocation = FTP_DATA_DIR + filename
         readfile(filelocation)
+        set_update(COMMITTEES_SCRAPE_KEY)
