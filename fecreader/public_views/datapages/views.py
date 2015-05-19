@@ -217,16 +217,27 @@ def newest_filings(request):
     )
 
 @cache_control(no_cache=True)
-def pacs(request):
+def pacs(request, cycle):
+    other_year = None
+    if cycle == '2016':
+        other_year = '2014'
+    elif cycle == '2014':
+        other_year = '2016'
+    cycle_list = [cycle_fake(cycle, "/pacs/%s/" % cycle), cycle_fake(other_year, "/pacs/%s/" % other_year)]
+    
     return render_to_response('datapages/dynamic_pacs.html', 
         {
-        'explanatory_text':'Find and filter committee summary information for the entire election cycle (since Jan. 1, 2013). Review how much groups raised and spent, their debts and cash on hand. Click the committee name to see filings. For more, see a <a href="/about/#pacs">more detailed explanation</a>.',
+        'explanatory_text':'Find and filter committee summary information for an entire two-year cycle (2016 or 2014). Review how much groups raised and spent, their debts and cash on hand. Click the committee name to see filings. For more, see a <a href="/about/#pacs">more detailed explanation</a>.',
         'title':'Political action committee summaries',
         'PAGINATE_BY':PAGINATE_BY,
+        'cycle_list':cycle_list
         },
         context_instance=RequestContext(request)
     ) 
 
+# old links here will get sent to the new cycle. 
+def pacs_redirect(request):
+    return redirect("/pacs/2016/")
 
 
 @cache_control(no_cache=True)
