@@ -57,7 +57,7 @@ def readfile(filelocation):
         except f1filer.DoesNotExist:
             print "Creating %s %s" % (row['cmte_id'], row['cmte_nm'])
             # first create the f1filer object:
-            row['cycle'] = str(CYCLE)
+            row['cycle'] = CURRENT_CYCLE
             try:
                 row['receipt_dt'] = dateparse(row['receipt_dt'])
             except:
