@@ -549,7 +549,7 @@ def committee_cycle(request, cycle, committee_id):
     
     committee_overlay = get_object_or_404(Committee_Overlay, fec_id=committee_id, cycle=int(cycle))
 
-    title = committee_overlay.name + " - " + str(cycle)
+    title = committee_overlay.name + " (%s cycle )" % (cycle)
     
     report_list = Committee_Time_Summary.objects.filter(com_id=committee_id, coverage_from_date__gte=cycle_endpoints['start'], coverage_from_date__lte=cycle_endpoints['end']).order_by('-coverage_through_date')
 
@@ -605,7 +605,7 @@ def candidate_cycle(request, candidate_id, cycle):
     cycle_endpoints = get_cycle_endpoints(int(cycle))
         
     candidate_overlay = get_object_or_404(Candidate_Overlay, fec_id=candidate_id, cycle=cycle)
-    title = "%s (%s) - %s" % (candidate_overlay.name, candidate_overlay.party, cycle)
+    title = "%s (%s) (%s cycle)" % (candidate_overlay.name, candidate_overlay.party, cycle)
 
     authorized_committee_list = Authorized_Candidate_Committees.objects.filter(candidate_id=candidate_id, cycle=cycle)
     committee_list = [x.get('committee_id') for x in authorized_committee_list.values('committee_id')]
