@@ -49,6 +49,13 @@ except AttributeError:
     LONG_CACHE_TIME = 60
     SHORT_CACHE_TIME = 30
 
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = '2016'
+
+
 
 
 def newbase(request):
@@ -77,15 +84,29 @@ def candidates(request):
     )
 """
 @cache_page(LONG_CACHE_TIME)
-def senate(request):
-
+def senate(request, cycle):
+    
+    if not is_valid_four_digit_string_cycle(cycle):
+        # should redirect, but for now:
+        raise Http404
+        
     title="Senate - Cycle Summary"
     explanatory_text="Fundraising totals are since the beginning of the election cycle (Jan. 1, 2013) for current U.S. senators and Senate candidates who reported having $1,000 or more, or who have been targeted by $1,000 or more in independent expenditures. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
-    districts = District.objects.filter(office='S')
+    districts = District.objects.filter(office='S', cycle=cycle)
 
-    legislators = Candidate_Overlay.objects.filter(office='S', cycle='2014').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
+    legislators = Candidate_Overlay.objects.filter(office='S', cycle=cycle).filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
+    
+    districts = District.objects.filter(office='H', cycle=cycle)
+
+    other_year = None
+    if cycle == '2016':
+        other_year = '2014'
+    elif cycle == '2014':
+        other_year = '2016'
+    cycle_list = [cycle_fake(cycle, "/senate/%s/" % cycle), cycle_fake(other_year, "/senate/%s/" % other_year)]
+    
 
     return render_to_response('datapages/senate_legislator_list.html',
         {
@@ -94,22 +115,38 @@ def senate(request):
         'object_list':legislators,
         'title':title,
         'explanatory_text':explanatory_text,
-        'cycle_list':list_2014_only
+        'cycle_list':cycle_list
         }, 
         context_instance=RequestContext(request)
     )
 
+def senate_redirect(request):
+    return redirect("/senate/2016/")
 
 @cache_page(LONG_CACHE_TIME)
-def house(request):
+def house(request, cycle):
 
+    if not is_valid_four_digit_string_cycle(cycle):
+        # should redirect, but for now:
+        raise Http404
+        
     title="House - Cycle Summary"
     explanatory_text="Fundraising totals are for the entire election cycle for current U.S. House members and House candidates who reported having $1,000 or more, or who have been targeted by $1,000 or more in independent expenditures. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
-    legislators = Candidate_Overlay.objects.filter(office='H', cycle='2014').filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
+    legislators = Candidate_Overlay.objects.filter(office='H', cycle=cycle).filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
     
-    districts = District.objects.filter(office='H')
+    
+    
+    districts = District.objects.filter(office='H', cycle=cycle)
+
+    other_year = None
+    if cycle == '2016':
+        other_year = '2014'
+    elif cycle == '2014':
+        other_year = '2016'
+    cycle_list = [cycle_fake(cycle, "/house/%s/" % cycle), cycle_fake(other_year, "/house/%s/" % other_year)]
+
 
     return render_to_response('datapages/house_legislator_list.html',
         {
@@ -118,11 +155,14 @@ def house(request):
         'explanatory_text':explanatory_text,
         'STATE_LIST':STATE_LIST,
         'districts':districts,
-        'cycle_list':list_2014_only        
+        'cycle_list':cycle_list        
         
         }, 
         context_instance=RequestContext(request)
     )
+
+def house_redirect(request):
+    return redirect("/house/2016/")
 
 @cache_page(LONG_CACHE_TIME)
 def races(request, cycle):
@@ -228,7 +268,7 @@ def senate_race(request, cycle, state, term_class):
     
 @cache_control(no_cache=True)
 def newest_filings(request):
-    candidates = Candidate_Overlay.objects.filter(office='H').order_by('name')
+    candidates = Candidate_Overlay.objects.filter(office__in=['H', 'P'], cycle=CURRENT_CYCLE).order_by('name')
     return render_to_response('datapages/dynamic_filings.html', 
         {
         'candidates':candidates,
