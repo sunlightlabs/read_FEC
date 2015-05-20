@@ -274,7 +274,7 @@ def newest_filings(request):
         'candidates':candidates,
         'title':'Newest Filings',
         'PAGINATE_BY':PAGINATE_BY,
-        'explanatory_text':'Find and filter the latest electronic campaign finance filings made to the Federal Election Commission. Use the tabs below to filter and sort the type of filings showed. Only House candidates who have raised money are shown in the candidate dropdown menu.  For more details, see the <a href="/about/#newest_filings" class="link">about page</a>.<br><b>Senate candidates do not file electronic reports.</b>',
+        'explanatory_text':'Find and filter electronic campaign finance filings made to the Federal Election Commission in the 2013/14 and 2015/16 cycles. Use the tabs below to filter and sort the type of filings showed. Only House candidates who have raised money are shown in the candidate dropdown menu.  For more details, see the <a href="/about/#newest_filings" class="link">about page</a>.<br><b>Senate candidates do not file electronic reports.</b>',
         },
         context_instance=RequestContext(request)
     )
