@@ -100,5 +100,3 @@ load_senate(SENATE_FILE, CURRENT_CYCLE)
 
 """
 
-
-"""

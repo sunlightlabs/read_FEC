@@ -169,6 +169,9 @@ class SkedE(models.Model):
     support_oppose_checked = models.CharField(max_length=1, blank=True, null=True, help_text="Whether the expenditure supports (S) or opposes (O) the candidate.")
     committee_name = models.CharField(max_length=255, blank=True, null=True, help_text="The name of the committee making the expenditure")
     committee_slug = models.CharField(max_length=255, blank=True, null=True)
+    
+    effective_date = models.DateField(null=True, help_text="What date should we use? Through version 8.0 of FECfile, there was only an 'expenditure date', but beginning with v8.1 there were two dates--a dissemination date and an expenditure date. For v8.1 use the dissemination date; for earlier version use the expenditure date.")
+    
 
     # from the model
     form_type = models.CharField(max_length=8, blank=True)
@@ -194,6 +197,10 @@ class SkedE(models.Model):
     election_other_description = models.CharField(max_length=20, blank=True, null=True, help_text="Any additional description of the election")
     expenditure_date = models.CharField(max_length=8, blank=True, null=True)
     expenditure_date_formatted = models.DateField(null=True, help_text="The date of the expenditure")
+    dissemination_date = models.CharField(max_length=8, blank=True, null=True, help_text="The dissemination date, only in v8.1 and higher.")
+    dissemination_date_formatted = models.DateField(null=True, help_text="The dissemination date, only in v8.1 and higher.")
+    
+    
     expenditure_amount = models.DecimalField(max_digits=14, decimal_places=2, null=True, help_text="The expenditure amount")
     calendar_y_t_d_per_election_office = models.DecimalField(max_digits=14, decimal_places=2, null=True)
     expenditure_purpose_code = models.CharField(max_length=3, blank=True, null=True, help_text="The filer-entered code of the expenditure. This isn't required.")

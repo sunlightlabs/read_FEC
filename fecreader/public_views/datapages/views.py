@@ -125,12 +125,23 @@ def house(request):
     )
 
 @cache_page(LONG_CACHE_TIME)
-def races(request):
-
-    title="Race-wide spending totals"
+def races(request, cycle):
+    if not is_valid_four_digit_string_cycle(cycle):
+        # should redirect, but for now:
+        raise Http404
+        
+    title="Race-wide spending totals for %s cycle" % (cycle)
     explanatory_text="District totals (ie. House and Senate races) are based on the most recent information available, but different political groups report to the FEC on different schedules. Super PACs must report independent expenditures within 48- or 24-hours, but candidate committees only disclose on a quarterly basis. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer. <br>For primary contests see our list of <a href='/competitive-primaries/'>competitive primaries</a>."
 
-    districts = District.objects.filter(cycle='2014')
+
+    other_year = None
+    if cycle == '2016':
+        other_year = '2014'
+    elif cycle == '2014':
+        other_year = '2016'
+    cycle_list = [cycle_fake(cycle, "/races/%s/" % cycle), cycle_fake(other_year, "/races/%s/" % other_year)]
+
+    districts = District.objects.filter(cycle=cycle)
 
     return render_to_response('datapages/races.html',
         {
@@ -138,11 +149,15 @@ def races(request):
         'title':title,
         'explanatory_text':explanatory_text,
         'races':districts,
-        'cycle_list':list_2014_only        
+        'cycle_list':cycle_list        
         }, 
         context_instance=RequestContext(request)
     )
 
+# old links here will get sent to the new cycle. 
+def races_redirect(request):
+    return redirect("/races/2016/")
+        
 # this is a fallback--the IE api doesn't know the senate term classes, so can't create the full race url. It does have the raceid though. The full fix is to make the ie api include the senate term class, but...
 def race_id_redirect(request, race_id):
     race = get_object_or_404(District, pk=race_id)
@@ -156,14 +171,18 @@ def house_race(request, cycle, state, district):
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
-    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
+    
+    cycle_endpoints = get_cycle_endpoints(int(cycle))
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end'] ).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
     committees = Committee_Overlay.objects.filter(curated_candidate__in=candidates)
     committee_ids = [x.get('fec_id') for x in committees.values('fec_id')]
     recent_filings = new_filing.objects.filter(fec_id__in=committee_ids, is_superceded=False).exclude(coverage_to_date__isnull=True).order_by('-coverage_to_date')[:5]
     
-    # 'cycle_list':list_2014_only
-    cycle_list = [cycle_fake(cycle, "")]
+    
+    # figure out which cycles are available. The current one goes first, because it is being displayed.     
+    cycle_values = District.objects.filter(state=state, office_district=district, office='H').exclude(cycle=cycle)
+    cycle_list = [race] + list(cycle_values)
     
     
     return render_to_response('datapages/race_detail.html', 
@@ -187,10 +206,14 @@ def senate_race(request, cycle, state, term_class):
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
-    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
-    cycle_list = [cycle_fake(cycle, "")]
+    cycle_endpoints = get_cycle_endpoints(int(cycle))    
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end'] ).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
+    # figure out which cycles are available. The current one goes first, because it is being displayed.     
+    cycle_values = District.objects.filter(state=state, term_class=term_class, office='S').exclude(cycle=cycle)
+    cycle_list = [race] + list(cycle_values)
+        
     return render_to_response('datapages/race_detail.html', 
         {
         'candidates':candidates,
@@ -218,6 +241,10 @@ def newest_filings(request):
 
 @cache_control(no_cache=True)
 def pacs(request, cycle):
+    
+    if not is_valid_four_digit_string_cycle(cycle):
+        raise Http404
+        
     other_year = None
     if cycle == '2016':
         other_year = '2014'
