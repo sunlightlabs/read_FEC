@@ -171,7 +171,9 @@ def house_race(request, cycle, state, district):
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
-    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
+    
+    cycle_endpoints = get_cycle_endpoints(int(cycle))
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end'] ).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
     committees = Committee_Overlay.objects.filter(curated_candidate__in=candidates)
     committee_ids = [x.get('fec_id') for x in committees.values('fec_id')]
@@ -204,10 +206,14 @@ def senate_race(request, cycle, state, term_class):
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=5000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
     
-    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=this_cycle_start).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
-    cycle_list = [cycle_fake(cycle, "")]
+    cycle_endpoints = get_cycle_endpoints(int(cycle))    
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=1000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end'] ).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
     
+    # figure out which cycles are available. The current one goes first, because it is being displayed.     
+    cycle_values = District.objects.filter(state=state, term_class=term_class, office='S').exclude(cycle=cycle)
+    cycle_list = [race] + list(cycle_values)
+        
     return render_to_response('datapages/race_detail.html', 
         {
         'candidates':candidates,
