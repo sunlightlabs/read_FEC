@@ -177,8 +177,10 @@ def house_race(request, cycle, state, district):
     committee_ids = [x.get('fec_id') for x in committees.values('fec_id')]
     recent_filings = new_filing.objects.filter(fec_id__in=committee_ids, is_superceded=False).exclude(coverage_to_date__isnull=True).order_by('-coverage_to_date')[:5]
     
-    # 'cycle_list':list_2014_only
-    cycle_list = [cycle_fake(cycle, "")]
+    
+    # figure out which cycles are available. The current one goes first, because it is being displayed.     
+    cycle_values = District.objects.filter(state=state, office_district=district, office='H').exclude(cycle=cycle)
+    cycle_list = [race] + list(cycle_values)
     
     
     return render_to_response('datapages/race_detail.html', 
