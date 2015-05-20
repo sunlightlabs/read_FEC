@@ -91,7 +91,7 @@ def senate(request, cycle):
         raise Http404
         
     title="Senate - Cycle Summary"
-    explanatory_text="Fundraising totals are since the beginning of the election cycle (Jan. 1, 2013) for current U.S. senators and Senate candidates who reported having $1,000 or more, or who have been targeted by $1,000 or more in independent expenditures. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
+    explanatory_text="Fundraising totals are for the selected two-year election cycle for Senate candidates who reported having $1,000 or more, or who have been targeted by $1,000 or more in independent expenditures. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
 
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
     districts = District.objects.filter(office='S', cycle=cycle)
@@ -131,7 +131,7 @@ def house(request, cycle):
         raise Http404
         
     title="House - Cycle Summary"
-    explanatory_text="Fundraising totals are for the entire election cycle for current U.S. House members and House candidates who reported having $1,000 or more, or who have been targeted by $1,000 or more in independent expenditures. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
+    explanatory_text="Fundraising totals are for the selected two-year election cycle for current candidates for U.S. House who reported having $1,000 or more, or who have been targeted by $1,000 or more in independent expenditures. Only candidates actually running in the current cycle who filed a statement of candidacy are included. If we included anyone who isn't running--or missed anyone who is, please <a href='mailto:realtimefec@sunlightfoundation.com'>let us know</a>. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer."
     # Give up on ORM for data; we're not willing to enforce all the relationships required for them
 
     legislators = Candidate_Overlay.objects.filter(office='H', cycle=cycle).filter(Q(cash_on_hand__gte=1000)|Q(is_incumbent=True)|Q(total_expenditures__gte=1000)).select_related('district').order_by('-cash_on_hand')
