@@ -103,7 +103,7 @@ class District(models.Model):
     def get_rothenberg_link(self):
         # They don't have links to individual districts, but instead just link to states. Provide link back to them as a courtesy. 
         state_slug = STATE_CHOICES_DICT[self.state].lower().replace(' ','-')
-        return "http://rothenbergpoliticalreport.com/state/" + state_slug
+        return "http://rothenberggonzales.com/state/" + state_slug
             
     def __unicode__(self):
         if self.office == 'S':
