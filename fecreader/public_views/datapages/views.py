@@ -125,12 +125,23 @@ def house(request):
     )
 
 @cache_page(LONG_CACHE_TIME)
-def races(request):
-
-    title="Race-wide spending totals"
+def races(request, cycle):
+    if not is_valid_four_digit_string_cycle(cycle):
+        # should redirect, but for now:
+        raise Http404
+        
+    title="Race-wide spending totals for %s cycle" % (cycle)
     explanatory_text="District totals (ie. House and Senate races) are based on the most recent information available, but different political groups report to the FEC on different schedules. Super PACs must report independent expenditures within 48- or 24-hours, but candidate committees only disclose on a quarterly basis. Please note these totals reflect current FEC filings and may not match the summarized data available elsewhere on Influence Explorer. <br>For primary contests see our list of <a href='/competitive-primaries/'>competitive primaries</a>."
 
-    districts = District.objects.filter(cycle='2014')
+
+    other_year = None
+    if cycle == '2016':
+        other_year = '2014'
+    elif cycle == '2014':
+        other_year = '2016'
+    cycle_list = [cycle_fake(cycle, "/races/%s/" % cycle), cycle_fake(other_year, "/races/%s/" % other_year)]
+
+    districts = District.objects.filter(cycle=cycle)
 
     return render_to_response('datapages/races.html',
         {
@@ -138,11 +149,15 @@ def races(request):
         'title':title,
         'explanatory_text':explanatory_text,
         'races':districts,
-        'cycle_list':list_2014_only        
+        'cycle_list':cycle_list        
         }, 
         context_instance=RequestContext(request)
     )
 
+# old links here will get sent to the new cycle. 
+def races_redirect(request):
+    return redirect("/races/2016/")
+        
 # this is a fallback--the IE api doesn't know the senate term classes, so can't create the full race url. It does have the raceid though. The full fix is to make the ie api include the senate term class, but...
 def race_id_redirect(request, race_id):
     race = get_object_or_404(District, pk=race_id)
@@ -218,6 +233,10 @@ def newest_filings(request):
 
 @cache_control(no_cache=True)
 def pacs(request, cycle):
+    
+    if not is_valid_four_digit_string_cycle(cycle):
+        raise Http404
+        
     other_year = None
     if cycle == '2016':
         other_year = '2014'

@@ -6,7 +6,8 @@ from django.views.generic import TemplateView
 urlpatterns = patterns('',
         url(r'^house/$', 'public_views.datapages.views.house'),
         url(r'^senate/$', 'public_views.datapages.views.senate'),
-        url(r'^races/$', 'public_views.datapages.views.races'),        
+        url(r'^races/(?P<cycle>201\d)\/$', 'public_views.datapages.views.races'),        
+        url(r'^races/$', 'public_views.datapages.views.races_redirect'),        
         url(r'^newest-filings/$', 'public_views.datapages.views.newest_filings'),
         url(r'^outside-spenders/$', 'public_views.datapages.views.outside_spenders'),
         # make this the home page--will need a canonical url if we deploy like this. 
