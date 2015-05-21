@@ -19,7 +19,7 @@ def fix_dissemination_date(this_filing, fp):
     ## we gotta parse the rows again. 
     
     print "handling %s" % this_filing.filing_number
-    f1 = filing(filing.filing_number)
+    f1 = filing(this_filing.filing_number)
     form = f1.get_form_type()
     version = f1.get_version()
     filer_id = f1.get_filer_id()
