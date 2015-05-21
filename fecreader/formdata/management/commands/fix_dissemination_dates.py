@@ -13,7 +13,7 @@ from fec_alerts.utils.form_mappers import *
 # from djorm_hstore.expressions import HstoreExpression as HE
 
 
-
+alter_db = False
 
 def fix_dissemination_date(this_filing, fp):
     ## we gotta parse the rows again. 
@@ -48,10 +48,17 @@ def fix_dissemination_date(this_filing, fp):
             expenditure_date = linedict['expenditure_date']
             transaction_id = linedict['transaction_id']
             
-            print "filingnum=%s dissemination_date=%s expenditure_date=%s transaction_id=%s" % (this_filing.filing_number, dissemination_date, expenditure_date, transaction_id)
+            #print "filingnum=%s dissemination_date=%s expenditure_date=%s transaction_id=%s" % (this_filing.filing_number, dissemination_date, expenditure_date, transaction_id)
             
             # then fix the original date in the db. 
-        
+            if dissemination_date:
+                try:
+                    original_line = SkedE.objects.get(filing_number=this_filing.filing_number, transaction_id=transaction_id)
+                    original_line.dissemination_date = dissemination_date
+                    if alter_db:
+                        original_line.save()
+                except SkedE.DoesNotExist:
+                    print "Couldn't find filing%s transaction %s" % (this_filing.filing_number, transaction_id)
     
     
     
