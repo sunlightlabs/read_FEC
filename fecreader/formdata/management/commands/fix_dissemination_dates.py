@@ -8,17 +8,19 @@ from formdata.models import SkedE
 from parsing.filing import filing
 from parsing.form_parser import form_parser, ParserMissingError
 from fec_alerts.utils.form_mappers import *
+from dateutil.parser import parse as dateparse
+
 
 # see https://github.com/djangonauts/djorm-ext-hstore
 # from djorm_hstore.expressions import HstoreExpression as HE
 
 
-alter_db = False
+alter_db = True
 
 def fix_dissemination_date(this_filing, fp):
     ## we gotta parse the rows again. 
     
-    print "handling %s" % this_filing.filing_number
+    print "handling %s line_count=%s" % (this_filing.filing_number, this_filing.lines_present)
     f1 = filing(this_filing.filing_number)
     form = f1.get_form_type()
     version = f1.get_version()
@@ -55,6 +57,13 @@ def fix_dissemination_date(this_filing, fp):
                 try:
                     original_line = SkedE.objects.get(filing_number=this_filing.filing_number, transaction_id=transaction_id)
                     original_line.dissemination_date = dissemination_date
+                    try:
+                        original_line.dissemination_date_formatted = dateparse(dissemination_date)
+                        original_line.effective_date = original_line.dissemination_date_formatted
+                        original_line.expenditure_date_formatted = dateparse(original_line.expenditure_date)
+                    except:
+                        pass
+                    
                     if alter_db:
                         original_line.save()
                 except SkedE.DoesNotExist:
@@ -64,7 +73,7 @@ def fix_dissemination_date(this_filing, fp):
     
 
 class Command(BaseCommand):
-    help = "Fix skede lines in fecfile v8.1 to use the dissemination date as the effective date, not the expenditure date. "
+    help = "Fix skede lines in fecfile v8.1 to use the dissemination date, which didn't exist in previous versions"
     
     requires_model_validation = False
     

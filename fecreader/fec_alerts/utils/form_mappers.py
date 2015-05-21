@@ -200,24 +200,24 @@ def skede_from_skededict(data_dict, filing_number, header_row_id, is_amended, cd
     ## We now prefer the dissemination date, but fall back to the expenditure date if it's not available.
     ## The spec says that not having either is an error, so... 
     
-    datefound = False
+    disseminationdatefound = False
     try: 
-        data_dict['expenditure_date_formatted'] = dateparse(data_dict['dissemination_date'])
-        datefound = True
-    except ValueError:
-        pass
-    except KeyError:
+        data_dict['dissemination_date_formatted'] = dateparse(data_dict['dissemination_date'])
+        disseminationdatefound = True
+    except:
         pass
         
-    if not datefound:
-        try:
-            data_dict['expenditure_date_formatted'] = dateparse(data_dict['expenditure_date'])
-            datefound = True
-        except ValueError:
-            pass
-        except KeyError:
-            pass
+
+    try:
+        data_dict['expenditure_date_formatted'] = dateparse(data_dict['expenditure_date'])
+    except:
+        pass
     
+    if disseminationdatefound:
+        data_dict['effective_date'] = data_dict['dissemination_date_formatted']
+    else:
+        data_dict['effective_date'] = data_dict['effective_date_formatted']
+
 
     data_dict['expenditure_amount'] = validate_decimal(data_dict['expenditure_amount'])
     data_dict['calendar_y_t_d_per_election_office'] = validate_decimal(data_dict['calendar_y_t_d_per_election_office'])
