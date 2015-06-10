@@ -7,6 +7,7 @@ from ftpdata.models import Candidate
 from nameparser import HumanName
 from datetime import date
 from operator import itemgetter
+from reconciliation.utils.candidate_aliases import candidate_hash
 
 from django.conf import settings
 
@@ -19,13 +20,12 @@ log = logging.getLogger('reconcilers')
 
 CHECK_FOR_NAME_REVERSALS = getattr(settings, 'CHECK_FOR_NAME_REVERSALS')
 
-CHECK_FOR_NAME_REVERSALS = getattr(settings, 'CHECK_FOR_NAME_REVERSALS')
+# alias table has this format. 
 #candidate_hash = {'2014': {'JACK, JACK': {'cand_name': u'JACK, JACK', 'cand_office': u'H', 'cand_office_district': u'06', 'cand_id': 'H8CO06138', 'cand_pty_affiliation': u'REP', 'cand_office_st': u'CO'}}}
 
-candidate_hash = {}
 
 #push to settings?
-default_cycle='2014'
+default_cycle='2016'
 
 # Log to the log file ? 
 debug=False
@@ -111,7 +111,7 @@ def hash_lookup(name, state=None, office=None, cycle=None):
     # This doesn't address bootstrapping 2012 lookups for 2014...
 
     ### Need to cleanly remove this logic for multicycle
-    if hash_lookup_cycle=='2014':
+    if hash_lookup_cycle==default_cycle:
         
         try:
             found_candidate = candidate_hash[hash_lookup_cycle][hashname]
