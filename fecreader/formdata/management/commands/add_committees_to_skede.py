@@ -19,7 +19,7 @@ def attach_committee_to_skedeline(skedeline):
         skedeline.save()
         
     except Committee_Overlay.DoesNotExist:
-        print "Missing committee overlay for %s" % (skedeline.filer_committee_id_number)
+        print "Missing committee overlay for %s and cycle %s" % (skedeline.filer_committee_id_number, THIS_CYCLE)
         
 class Command(BaseCommand):
     help = "Set the name and details of the committee making the ie"
