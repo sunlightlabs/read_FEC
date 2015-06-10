@@ -261,10 +261,11 @@ class SkedE(models.Model):
             return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name or "")
     
     def get_candidate_url(self):
-        if self.candidate_id_checked:
-            return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_checked)
+        cycle = get_cycle_from_date(self.effective_date)
+        if self.candidate_id_checked:            
+            return "/candidate/%s/%s/%s/" % (cycle, slugify(unicode(self.candidate_name_raw())), self.candidate_id_checked)
         elif self.candidate_id_number:
-            return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_number)
+            return "/candidate/%s/%s/%s/" % (cycle, slugify(unicode(self.candidate_name_raw())), self.candidate_id_number)
         else:
             return None
             
