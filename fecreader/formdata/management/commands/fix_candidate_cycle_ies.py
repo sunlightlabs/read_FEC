@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from process_skede_lines import attach_ie_target
 from formdata.models import SkedE
-
+from datetime import date
 
 
 class Command(BaseCommand):
