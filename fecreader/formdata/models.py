@@ -271,7 +271,8 @@ class SkedE(models.Model):
             return None
             
     def get_committee_url(self):
-        return "/committee/%s/%s/" % (self.committee_slug, self.filer_committee_id_number)
+        cycle = get_cycle_from_date(self.effective_date)
+        return "/committee/%s/%s/%s/" % (cycle, self.committee_slug, self.filer_committee_id_number)
     
     def short_office(self):
             
