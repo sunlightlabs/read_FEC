@@ -7,6 +7,7 @@ from ftpdata.models import Candidate
 from nameparser import HumanName
 from datetime import date
 from operator import itemgetter
+from reconciliation.utils.candidate_aliases import candidate_hash
 
 from django.conf import settings
 
@@ -19,16 +20,15 @@ log = logging.getLogger('reconcilers')
 
 CHECK_FOR_NAME_REVERSALS = getattr(settings, 'CHECK_FOR_NAME_REVERSALS')
 
-CHECK_FOR_NAME_REVERSALS = getattr(settings, 'CHECK_FOR_NAME_REVERSALS')
+# alias table has this format. 
 #candidate_hash = {'2014': {'JACK, JACK': {'cand_name': u'JACK, JACK', 'cand_office': u'H', 'cand_office_district': u'06', 'cand_id': 'H8CO06138', 'cand_pty_affiliation': u'REP', 'cand_office_st': u'CO'}}}
 
-candidate_hash = {}
 
 #push to settings?
-default_cycle='2014'
+default_cycle='2016'
 
 # Log to the log file ? 
-debug=False
+debug=True
 starts_with_blocklength = 5
 
 # standardize the name that gets passed back to refine - add details to help id the candidate
@@ -45,7 +45,8 @@ def standardize_name_from_dict(candidate):
 def block_by_startswith(name, numchars, state=None, office=None, cycle=None):
     namestart = name[:numchars]
     if debug:
-        log.debug("block_by_startswith = state=%s office=%s cycle=%s" % (state,office, cycle))
+        log.debug("block_by_startswith = %s state=%s office=%s cycle=%s" % (name, state,office, cycle))
+    print("block_by_startswith = %s state=%s office=%s cycle=%s" % (name, state,office, cycle))
         
     matches = Candidate.objects.filter(cand_name__istartswith=namestart)
     president_flag = False
@@ -97,10 +98,11 @@ def unnickname(firstname):
 
 def hash_lookup(name, state=None, office=None, cycle=None):
     result_array = []
-    #print "1. running hash lookup with name='%s' and cycle='%s' and state='%s' office='%s'" % (name, cycle, state, office)
+    print "1. running hash lookup with name='%s' and cycle='%s' and state='%s' office='%s'" % (name, cycle, state, office)
     # try to short circuit with the alias table. For now we're using a default cycle--but maybe we should only do this when a cycle is present ?
     # Again, cycle is a string. 
     hashname = str(name).upper().strip().strip('"')
+    print "Hash lookup name = %s" % (hashname)
     if cycle and len(str(cycle)) > 3:
         hash_lookup_cycle = str(cycle)
     else:
@@ -109,7 +111,9 @@ def hash_lookup(name, state=None, office=None, cycle=None):
     # Our lookup hash is only for 2012 for now, so... 
     # This doesn't address bootstrapping 2012 lookups for 2014...
 
-    if hash_lookup_cycle=='2014':
+    ### Need to cleanly remove this logic for multicycle
+    if hash_lookup_cycle==default_cycle:
+        
         try:
             found_candidate = candidate_hash[hash_lookup_cycle][hashname]
         except KeyError:
@@ -136,6 +140,7 @@ def hash_lookup(name, state=None, office=None, cycle=None):
                 result_array.append({'name':name_standardized, 'id':found_candidate['cand_id'], 'score':1, 'type':[], 'match':True})
                 return result_array
     return None
+
 
 def match_by_name(name, state=None, office=None, cycle=None, reverse_name_order=False):
     result_array = []
