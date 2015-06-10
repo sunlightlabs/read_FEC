@@ -3,7 +3,7 @@ from datetime import date
 from fec_alerts.models import new_filing
 from formdata.models import SkedE
 from summary_data.models import Candidate_Overlay
-from reconciliation.fec_reconciler import match_by_name
+from reconciliation.fec_reconciler import match_by_name, run_fec_query
 
 from add_committees_to_skede import attach_committee_to_skedeline
 
@@ -66,7 +66,7 @@ def fuzzy_match_candidate(skedeline):
     if cycle_date:
         THIS_CYCLE = get_cycle_from_date(cycle_date)
     
-    result = match_by_name(name_to_check, state=state, office=office, cycle=THIS_CYCLE, reverse_name_order=False)
+    result = run_fec_query(name_to_check, state=state, office=office, cycle=THIS_CYCLE, fuzzy=True)
     if result:
         if result[0]['match']:
             print "Fuzzy matching matched %s, %s, %s to %s with id %s" % (name_to_check, state, office, result[0]['name'], result[0]['id'])

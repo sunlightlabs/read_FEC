@@ -141,6 +141,7 @@ def hash_lookup(name, state=None, office=None, cycle=None):
                 return result_array
     return None
 
+
 def match_by_name(name, state=None, office=None, cycle=None, reverse_name_order=False):
     result_array = []
     name1 = HumanName(name)
