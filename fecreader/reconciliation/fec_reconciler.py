@@ -109,7 +109,9 @@ def hash_lookup(name, state=None, office=None, cycle=None):
     # Our lookup hash is only for 2012 for now, so... 
     # This doesn't address bootstrapping 2012 lookups for 2014...
 
+    ### Need to cleanly remove this logic for multicycle
     if hash_lookup_cycle=='2014':
+        
         try:
             found_candidate = candidate_hash[hash_lookup_cycle][hashname]
         except KeyError:

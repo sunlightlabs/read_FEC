@@ -7,10 +7,11 @@ from reconciliation.fec_reconciler import match_by_name
 
 from add_committees_to_skede import attach_committee_to_skedeline
 
-cycle_start = date(2013,1,1)
-THIS_CYCLE = '2014'
+from shared_utils.cycle_utils import get_cycle_from_date
+
 
 def set_data_from_self(skedeline):
+    
     name = None
     if skedeline.candidate_middle_name:
         name = "%s, %s %s" % (skedeline.candidate_last_name, skedeline.candidate_first_name,  skedeline.candidate_middle_name)
@@ -28,6 +29,11 @@ def set_data_from_self(skedeline):
     
 def set_data_from_candidate_id(skedeline, candidate_id):
     
+    cycle_date = skedeline.effective_date
+    THIS_CYCLE = None
+    if cycle_date:
+        THIS_CYCLE = get_cycle_from_date(cycle_date)
+        
     try: 
         this_candidate = Candidate_Overlay.objects.get(fec_id=candidate_id, cycle=(THIS_CYCLE))
         skedeline.candidate_id_checked = this_candidate.fec_id
@@ -55,6 +61,10 @@ def fuzzy_match_candidate(skedeline):
     office = skedeline.candidate_office
     state = skedeline.candidate_state
     
+    cycle_date = skedeline.effective_date
+    THIS_CYCLE = None
+    if cycle_date:
+        THIS_CYCLE = get_cycle_from_date(cycle_date)
     
     result = match_by_name(name_to_check, state=state, office=office, cycle=THIS_CYCLE, reverse_name_order=False)
     if result:
@@ -69,36 +79,30 @@ def fuzzy_match_candidate(skedeline):
 
 
 def attach_ie_target(skedeline):
-    candidate_id = skedeline.candidate_id_number    
+    candidate_id = skedeline.candidate_id_number   
+    
     
     # If there's a candidate id, enter the data from the overlay
-    if skedeline.expenditure_date_formatted:
-        if not skedeline.expenditure_date_formatted <= cycle_start:
-        
-            if candidate_id:
-                result = set_data_from_candidate_id(skedeline, candidate_id)
-            
-                if result:
-                    return True
+    if candidate_id:
+        result = set_data_from_candidate_id(skedeline, candidate_id)
     
-            else:
-    
-                # if we're still here, try a fuzzy match
-    
-                fuzzy_match_result = fuzzy_match_candidate(skedeline)
-                if fuzzy_match_result:
-                    return True
-        
-                # fall back on data that's already there. 
-                set_data_from_self(skedeline)
-                return False
-    
+        if result:
+            return True
+
         else:
-            # don't care about the out of cycle stuff.
+
+            # if we're still here, try a fuzzy match
+
+            fuzzy_match_result = fuzzy_match_candidate(skedeline)
+            if fuzzy_match_result:
+                return True
+    
+            # fall back on data that's already there. 
+            set_data_from_self(skedeline)
             return False
+
     else:
         return False
-
 
     
 
