@@ -45,7 +45,8 @@ def standardize_name_from_dict(candidate):
 def block_by_startswith(name, numchars, state=None, office=None, cycle=None):
     namestart = name[:numchars]
     if debug:
-        log.debug("block_by_startswith = state=%s office=%s cycle=%s" % (state,office, cycle))
+        log.debug("block_by_startswith = %s state=%s office=%s cycle=%s" % (name, state,office, cycle))
+    print("block_by_startswith = %s state=%s office=%s cycle=%s" % (name, state,office, cycle))
         
     matches = Candidate.objects.filter(cand_name__istartswith=namestart)
     president_flag = False
