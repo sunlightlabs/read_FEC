@@ -28,7 +28,7 @@ CHECK_FOR_NAME_REVERSALS = getattr(settings, 'CHECK_FOR_NAME_REVERSALS')
 default_cycle='2016'
 
 # Log to the log file ? 
-debug=False
+debug=True
 starts_with_blocklength = 5
 
 # standardize the name that gets passed back to refine - add details to help id the candidate
