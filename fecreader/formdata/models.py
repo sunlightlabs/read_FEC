@@ -14,6 +14,7 @@ from djorm_hstore.models import HStoreManager
 from summary_data.models import District, Candidate_Overlay
 from api.nulls_last_queryset import NullsLastManager
 
+from shared_utils.cycle_utils import get_cycle_from_date
 
 # field sizes are based on v8.0 specs, generally
 class SkedA(models.Model):
