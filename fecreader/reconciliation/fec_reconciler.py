@@ -98,10 +98,11 @@ def unnickname(firstname):
 
 def hash_lookup(name, state=None, office=None, cycle=None):
     result_array = []
-    #print "1. running hash lookup with name='%s' and cycle='%s' and state='%s' office='%s'" % (name, cycle, state, office)
+    print "1. running hash lookup with name='%s' and cycle='%s' and state='%s' office='%s'" % (name, cycle, state, office)
     # try to short circuit with the alias table. For now we're using a default cycle--but maybe we should only do this when a cycle is present ?
     # Again, cycle is a string. 
     hashname = str(name).upper().strip().strip('"')
+    print "Hash lookup name = %s" % (hashname)
     if cycle and len(str(cycle)) > 3:
         hash_lookup_cycle = str(cycle)
     else:
