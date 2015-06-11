@@ -612,14 +612,27 @@ def candidate(request, slug, candidate_id):
 
 
 @cache_page(LONG_CACHE_TIME)
-def candidate_cycle(request, candidate_id, cycle):
+def candidate_cycle(request, slug, candidate_id, cycle):
     if not is_valid_four_digit_string_cycle(cycle):
         raise Http404
     
+    # figure out which cycles are available. The current one goes first, because it is being displayed.     
+    cycles = Candidate_Overlay.objects.filter(fec_id=candidate_id)
     
+    candidate_overlay = None
+    try:
+        candidate_overlay = cycles.get(cycle=cycle)
+    except Candidate_Overlay.DoesNotExist:
+        if len(cycles) > 0:
+            candidate_overlay = cycles.order_by('-cycle')[0]
+            return redirect("/candidate/%s/%s/%s/" % (candidate_overlay.cycle, slug, candidate_id))
+        else:
+            raise Http404
+    
+    other_cycles = cycles.exclude(cycle=cycle)
+    cycle_list = [candidate_overlay] + list(other_cycles)
     cycle_endpoints = get_cycle_endpoints(int(cycle))
         
-    candidate_overlay = get_object_or_404(Candidate_Overlay, fec_id=candidate_id, cycle=cycle)
     title = "%s (%s) (%s cycle)" % (candidate_overlay.name, candidate_overlay.party, cycle)
 
     authorized_committee_list = Authorized_Candidate_Committees.objects.filter(candidate_id=candidate_id, cycle=cycle)
@@ -652,9 +665,6 @@ def candidate_cycle(request, candidate_id, cycle):
         recent_ies = SkedE.objects.filter(candidate_checked=candidate_overlay, expenditure_amount__gte=5000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end'] ).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:10]
 
 
-    # figure out which cycles are available. The current one goes first, because it is being displayed.     
-    previous_cycles = Candidate_Overlay.objects.filter(fec_id=candidate_id).exclude(cycle=cycle)
-    cycle_list = [candidate_overlay] + list(previous_cycles)
 
     return render_to_response('datapages/candidate.html',
         {

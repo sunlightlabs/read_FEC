@@ -25,8 +25,9 @@ try:
 except AttributeError:
     raise Exception("Make sure to define CURRENT CYCLE and ACTIVE CYCLES in the settings file. Cycles are given as 4-digit strings. ")
 
+# Is this a valid cycle that's out of our range, but that we could redirect to a better cycle for? 
 def is_valid_four_digit_string_cycle(string_cycle):
-    if string_cycle in ['2010', '2012', '2014', '2016']:
+    if string_cycle in ['2008', '2010', '2012', '2014', '2016', '2018', '2020']:
         return True
     return False
 
