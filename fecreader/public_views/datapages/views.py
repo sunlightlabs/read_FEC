@@ -308,15 +308,30 @@ def pacs_redirect(request):
 
 
 @cache_control(no_cache=True)
-def outside_spenders(request):
+def outside_spenders(request, cycle):
+    
+    other_year = None
+    if cycle == '2016':
+        other_year = '2014'
+    elif cycle == '2014':
+        other_year = '2016'
+    cycle_list = [cycle_fake(cycle, "/outside-spenders/%s/" % cycle), cycle_fake(other_year, "/outside-spenders/%s/" % other_year)]
+    
+    explanatory_text = "Find and filter outside spender information for the entire %s election cycle. Click the committee name to see filings; click the expenditure amount to see this spending broken down line-by-line. By \"major activity\" we mean the activity the PAC has reported spending the most money on." % cycle
+    
     return render_to_response('datapages/dynamic_outside_spenders.html', 
         {
-        'explanatory_text':'Find and filter outside spender information for the entire election cycle (since Jan. 1, 2013). Click the committee name to see filings; click the expenditure amount to see this spending broken down line-by-line. By "major activty" we mean the activity the PAC has reported spending the most money on.',
-        'title':'Outside spending committee summaries',
+        'explanatory_text':explanatory_text,
+        'title':"Outside spending committee summaries (%s cycle)" % cycle,
         'PAGINATE_BY':PAGINATE_BY,
+        'cycle_list':cycle_list,
         },
         context_instance=RequestContext(request)
     )
+
+def outside_spenders_redirect(request):
+    return redirect("/outside-spenders/2014/")
+
 
 
 
