@@ -184,10 +184,14 @@ def process_filing_body(filingnum, fp=None, logger=None):
 
 
 if __name__ == '__main__':
-    filings = new_filing.objects.filter(filing_number__gt=1007393, data_is_processed=False, filing_is_downloaded=True)
+    filings = new_filing.objects.filter(filing_number__gt=1007393, data_is_processed=False, filing_is_downloaded=True, header_is_processed=True)
     fp = form_parser()
     
     for this_filing in filings:
+        if this_filing.filing_number == 1009404:
+            # borked filing, I think
+            continue
+
         process_filing_body(this_filing.filing_number, fp=fp)
 
 
