@@ -1,6 +1,6 @@
 # hack to fix a bug that made celery-delegated processes bail on sked e's
 
-import sys, time
+import sys, time, os
 
 sys.path.append('../../')
 
@@ -17,6 +17,8 @@ from hstore_helpers import dict_to_hstore
 from db_utils import get_connection
 verbose = True
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fecreader.settings")
+from django.conf import settings
 from fec_alerts.models import new_filing
 
 class FilingHeaderDoesNotExist(Exception):
