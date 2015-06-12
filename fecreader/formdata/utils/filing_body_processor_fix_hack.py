@@ -2,6 +2,8 @@
 
 import sys, time
 
+sys.path.append('../../')
+
 
 from parsing.filing import filing
 from parsing.form_parser import form_parser, ParserMissingError
