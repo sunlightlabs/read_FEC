@@ -151,7 +151,7 @@ def process_filing_body(filingnum, fp=None, logger=None):
             
             # make sure the transaction isn't already there before entering. 
             try:
-                SkedE.objects.get(filingnumber=filingnum, transaction_id=linedict['transaction_id'])
+                SkedE.objects.get(filing_number=filingnum, transaction_id=linedict['transaction_id'])
             except SkedE.DoesNotExist:
                 process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
         except ParserMissingError:
