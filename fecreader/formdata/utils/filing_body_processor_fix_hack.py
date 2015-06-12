@@ -141,7 +141,9 @@ def process_filing_body(filingnum, fp=None, logger=None):
         #print "\n\n\nForm is %s" % form
         try:
             linedict = fp.parse_form_line(row, version)
-            print "\n\n\nform is %s" % form
+            if linedict['form_type'].upper().startswith('SE'):
+                print "\n\n\nfiling %s form is %s transaction_id is: %s" % (filingnum, linedict['form_type'], linedict['transaction_id'])
+            
             # process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
         except ParserMissingError:
             msg = 'process_filing_body: Unknown line type in filing %s line %s: type=%s Skipping.' % (filingnum, linenum, row[0])
@@ -185,6 +187,10 @@ if __name__ == '__main__':
     fp = form_parser()
     
     for this_filing in filings:
+        if this_filing.filing_number == 1009404:
+            # borked filing, I think
+            continue
+
         process_filing_body(this_filing.filing_number, fp=fp)
 
 
