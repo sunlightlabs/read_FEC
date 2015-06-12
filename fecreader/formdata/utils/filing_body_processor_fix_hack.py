@@ -148,14 +148,18 @@ def process_filing_body(filingnum, fp=None, logger=None):
             if linedict['form_type'].upper().startswith('SE'):
                 print "\n\n\nfiling %s form is %s transaction_id is: %s" % (filingnum, linedict['form_type'], linedict['transaction_id'])
             
-            # process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
+            # make sure the transaction isn't already there before entering. 
+            try:
+                SkedE.objects.get(filingnumber=filingnum, transaction_id=linedict['transaction_id'])
+            except SkedE.DoesNotExist:
+                process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
         except ParserMissingError:
             msg = 'process_filing_body: Unknown line type in filing %s line %s: type=%s Skipping.' % (filingnum, linenum, row[0])
             logger.warn(msg)
             continue
         except KeyError:
             "missing form type? in filing %s" % (filingnum)
-    """    
+    
     # commit all the leftovers
     cd.commit_all()
     cd.close()
@@ -167,9 +171,9 @@ def process_filing_body(filingnum, fp=None, logger=None):
     msg = "process_filing_body: Filing # %s Total rows: %s Tally is: %s" % (filingnum, total_rows, counter)
     # print msg
     logger.info(msg)
-    """
     
-    """ don't commit during testing of fix 
+    
+    # don't commit during testing of fix 
     
     # this data has been moved here. At some point we should pick a single location for this data. 
     header_data = dict_to_hstore(counter)
@@ -184,7 +188,7 @@ def process_filing_body(filingnum, fp=None, logger=None):
     cmd = "update summary_data_committee_overlay set is_dirty=True where fec_id='%s'" % (filer_id)
     cursor.execute(cmd)
     
-    """
+    #
 
 
 if __name__ == '__main__':
