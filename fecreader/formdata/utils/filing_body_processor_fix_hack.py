@@ -116,7 +116,11 @@ def process_filing_body(filingnum, fp=None, logger=None):
         raise FilingHeaderAlreadyProcessed(msg)
     
     #print "Processing filing %s" % (filingnum)
-    f1 = filing(filingnum)
+    try:
+        f1 = filing(filingnum)
+    except:
+        print "*** couldn't handle filing %s" % (filingnum)
+        return False
     form = f1.get_form_type()
     version = f1.get_version()
     filer_id = f1.get_filer_id()
