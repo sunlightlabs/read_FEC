@@ -20,6 +20,7 @@ verbose = True
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fecreader.settings")
 from django.conf import settings
 from fec_alerts.models import new_filing
+from formdata.models import SkedE
 
 class FilingHeaderDoesNotExist(Exception):
     pass
