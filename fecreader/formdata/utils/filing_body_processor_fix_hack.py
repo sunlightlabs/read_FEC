@@ -149,7 +149,8 @@ def process_filing_body(filingnum, fp=None, logger=None):
             msg = 'process_filing_body: Unknown line type in filing %s line %s: type=%s Skipping.' % (filingnum, linenum, row[0])
             logger.warn(msg)
             continue
-        
+        except KeyError:
+            "missing form type? in filing %s" % (filingnum)
     """    
     # commit all the leftovers
     cd.commit_all()
