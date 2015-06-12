@@ -148,12 +148,32 @@ def process_filing_body(filingnum, fp=None, logger=None):
             linedict = fp.parse_form_line(row, version)
             if linedict['form_type'].upper().startswith('SE'):
                 print "\n\n\nfiling %s form is %s transaction_id is: %s" % (filingnum, linedict['form_type'], linedict['transaction_id'])
+                # make sure the transaction isn't already there before entering. 
+                try:
+                    SkedE.objects.get(filing_number=filingnum, transaction_id=linedict['transaction_id'])
+                except SkedE.DoesNotExist:
+                    process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
+
+            elif linedict['form_type'].upper().startswith('SA'):
+                print "\n\n\nfiling %s form is %s transaction_id is: %s" % (filingnum, linedict['form_type'], linedict['transaction_id'])
+                # make sure the transaction isn't already there before entering. 
+                try:
+                    SkedA.objects.get(filing_number=filingnum, transaction_id=linedict['transaction_id'])
+                    print "Already present! %s form is %s transaction_id is: %s" % (filingnum, linedict['form_type'], linedict['transaction_id'])
+                except SkedA.DoesNotExist:
+                    process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
+
+
+            elif linedict['form_type'].upper().startswith('SB'):
+                print "\n\n\nfiling %s form is %s transaction_id is: %s" % (filingnum, linedict['form_type'], linedict['transaction_id'])
+                # make sure the transaction isn't already there before entering. 
+                try:
+                    SkedB.objects.get(filing_number=filingnum, transaction_id=linedict['transaction_id'])
+                    print "Already present! %s form is %s transaction_id is: %s" % (filingnum, linedict['form_type'], linedict['transaction_id'])
+                except SkedB.DoesNotExist:
+                    process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
             
-            # make sure the transaction isn't already there before entering. 
-            try:
-                SkedE.objects.get(filing_number=filingnum, transaction_id=linedict['transaction_id'])
-            except SkedE.DoesNotExist:
-                process_body_row(linedict, filingnum, header_id, is_amended, cd, filer_id)
+            
         except ParserMissingError:
             msg = 'process_filing_body: Unknown line type in filing %s line %s: type=%s Skipping.' % (filingnum, linenum, row[0])
             logger.warn(msg)
