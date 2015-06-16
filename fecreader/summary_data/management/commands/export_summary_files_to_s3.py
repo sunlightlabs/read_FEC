@@ -36,7 +36,7 @@ def push_to_s3(local_file_zipped, AWS_STORAGE_BUCKET_NAME, s3_path):
     elapsed_time = time.time() - start
     print "elapsed time for pushing to s3 is %s" % (elapsed_time)
 
-dry_run = True
+dry_run = False
 
 class Command(BaseCommand):
     help = "Dump the big files to a predefined spot in the filesystem. They need to then get moved to S3"

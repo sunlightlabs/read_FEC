@@ -62,6 +62,6 @@ class Command(BaseCommand):
                 print "elapsed time for pushing to s3 is %s" % (elapsed_time)
             
         
-            # if we didn't die, set the update time
-            set_update(BULK_EXPORT_KEY)
+        # if we didn't die, set the update time
+        set_update(BULK_EXPORT_KEY)
             
