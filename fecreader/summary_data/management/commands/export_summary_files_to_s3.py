@@ -36,6 +36,7 @@ def push_to_s3(local_file_zipped, AWS_STORAGE_BUCKET_NAME, s3_path):
     elapsed_time = time.time() - start
     print "elapsed time for pushing to s3 is %s" % (elapsed_time)
 
+dry_run = True
 
 class Command(BaseCommand):
     help = "Dump the big files to a predefined spot in the filesystem. They need to then get moved to S3"
@@ -55,11 +56,11 @@ class Command(BaseCommand):
             local_contrib_file = "%s/%s" % (CSV_EXPORT_DIR, contrib_filename)
             local_nonindiv_contrib_file = "%s/%s" % (CSV_EXPORT_DIR, nonindiv_contrib_filename)
         
-        
-            dump_big_non_indiv_contribs(local_nonindiv_contrib_file, CYCLE)
-            write_all_candidates(local_file, CYCLE)
-            write_all_webks(local_webk_file, CYCLE)
-            dump_big_contribs(local_contrib_file, CYCLE)
+            if not dry_run:
+                dump_big_non_indiv_contribs(local_nonindiv_contrib_file, CYCLE)
+                write_all_candidates(local_file, CYCLE)
+                write_all_webks(local_webk_file, CYCLE)
+                dump_big_contribs(local_contrib_file, CYCLE)
         
         
             # need to gzip these
@@ -76,17 +77,21 @@ class Command(BaseCommand):
         
         
             # old style os.system just works - subprocess sucks. 
-            proc = os.system(gzip_cmd)
+            print "Gzipping with: %s" % gzip_cmd
+            if not dry_run:
+                proc = os.system(gzip_cmd)
             s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_zipped)
             webk_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_webk_zipped)
             contrib_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_contrib_zipped)
             nonindiv_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_nonindiv_contrib_zipped)
         
-            push_to_s3(local_file_zipped, AWS_STORAGE_BUCKET_NAME, s3_path)
-            push_to_s3(local_webk_file_zipped, AWS_STORAGE_BUCKET_NAME, webk_s3_path)
-            push_to_s3(local_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, contrib_s3_path)
-            push_to_s3(local_nonindiv_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, nonindiv_s3_path)
+            if not dry_run:
+                push_to_s3(local_file_zipped, AWS_STORAGE_BUCKET_NAME, s3_path)
+                push_to_s3(local_webk_file_zipped, AWS_STORAGE_BUCKET_NAME, webk_s3_path)
+                push_to_s3(local_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, contrib_s3_path)
+                push_to_s3(local_nonindiv_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, nonindiv_s3_path)
 
         
             # if we didn't die, set the update time
-            set_update(SUMMARY_EXPORT_KEY)
+            if not dry_run:
+                set_update(SUMMARY_EXPORT_KEY)
