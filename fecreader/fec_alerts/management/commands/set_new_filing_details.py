@@ -179,7 +179,10 @@ def handle_filing(this_filing):
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
         this_filing.new_filing_details_set = True
         
-    
+    else:
+        # Nothing to be done, but mark this step as done. 
+        this_filing.new_filing_details_set = True
+        
     
     this_filing.save() 
     
