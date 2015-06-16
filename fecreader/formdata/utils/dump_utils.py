@@ -74,8 +74,9 @@ def dump_candidate_sked(sked_name, candidate_id, destination_file):
     dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False and fec_alerts_new_filing.fec_id in (%s)) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, committee_formatted_list, destination_file)
     cursor.execute(dumpcmd);
 
-def dump_all_sked(sked_name, destination_file):
+def dump_all_sked(sked_name, destination_file, CYCLE):
     
+    cycle_details = cycle_calendar[int(CYCLE)]
 
     # break if we're given junk args. 
     sked_name = sked_name.lower()
@@ -88,7 +89,7 @@ def dump_all_sked(sked_name, destination_file):
     cursor = connection.cursor()
     
     # need to join to get the committee name. 
-    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, destination_file)
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number  WHERE superceded_by_amendment=False and %s >= %s and %s <= %s and is_superceded=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, get_db_formatted_string(cycle_details['start']), datefield, get_db_formatted_string(cycle_details['end']), destination_file)
     start = time.time()
     result = cursor.execute(dumpcmd);
     elapsed_time = time.time() - start
