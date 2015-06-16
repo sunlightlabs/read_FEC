@@ -377,8 +377,23 @@ def render_blank_page(title, explanatory_text, request):
                 }, 
                 context_instance=RequestContext(request)
                 )
-                
-def downloads(request):
+
+def downloads_redirect(request):
+    return redirect("/download-index/2016/")
+
+
+def downloads(request, cycle):
+    
+    if not is_valid_four_digit_string_cycle(cycle):
+        # should redirect, but for now:
+        raise Http404
+
+    other_year = None
+    if cycle == '2016':
+        other_year = '2014'
+    elif cycle == '2014':
+        other_year = '2016'
+    cycle_list = [cycle_fake(cycle, "/download-index/%s/" % cycle), cycle_fake(other_year, "/download-index/%s/" % other_year)]
     
     title="Bulk Downloads" 
     update_time = get_update_time(BULK_EXPORT_KEY)
@@ -386,6 +401,8 @@ def downloads(request):
     return render_to_response('datapages/downloads.html',
         {
         'title':title,
+        'cycle':cycle,
+        'cycle_list':cycle_list,
         'update_time':update_time,
         }, 
         context_instance=RequestContext(request)
