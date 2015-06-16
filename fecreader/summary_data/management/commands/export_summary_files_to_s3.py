@@ -18,6 +18,12 @@ AWS_STORAGE_BUCKET_NAME = getattr(settings, 'AWS_STORAGE_BUCKET_NAME')
 AWS_BULK_EXPORT_PATH = getattr(settings, 'AWS_BULK_EXPORT_PATH')
 SUMMARY_EXPORT_KEY = getattr(settings, 'SUMMARY_EXPORT_KEY')
 
+try:
+    ACTIVE_CYCLES = settings.ACTIVE_CYCLES
+except:
+    print "Missing active cycle list. Defaulting to 2016. "
+    ACTIVE_CYCLES = '2016'
+
 def push_to_s3(local_file_zipped, AWS_STORAGE_BUCKET_NAME, s3_path):
     
     conn = S3Connection(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
@@ -38,49 +44,49 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         
+        for CYCLE in ACTIVE_CYCLES:
+            filename = "candidates_%s.csv" % (CYCLE) 
+            webk_filename = "all_webk_%s.csv" % (CYCLE) 
+            contrib_filename = 'superpac_contribs_%s.csv' % (CYCLE) 
+            nonindiv_contrib_filename = 'nonindiv_nonpac_superpac_contribs_%s.csv' % (CYCLE) 
         
-        filename = "candidates.csv" 
-        webk_filename = "all_webk.csv"
-        contrib_filename = 'superpac_contribs.csv'
-        nonindiv_contrib_filename = 'nonindiv_nonpac_superpac_contribs.csv'
-        
-        local_file = "%s/%s" % (CSV_EXPORT_DIR, filename)
-        local_webk_file = "%s/%s" % (CSV_EXPORT_DIR, webk_filename)
-        local_contrib_file = "%s/%s" % (CSV_EXPORT_DIR, contrib_filename)
-        local_nonindiv_contrib_file = "%s/%s" % (CSV_EXPORT_DIR, nonindiv_contrib_filename)
-        
-        
-        dump_big_non_indiv_contribs(local_nonindiv_contrib_file)
-        write_all_candidates(local_file)
-        write_all_webks(local_webk_file)
-        dump_big_contribs(local_contrib_file)
+            local_file = "%s/%s" % (CSV_EXPORT_DIR, filename)
+            local_webk_file = "%s/%s" % (CSV_EXPORT_DIR, webk_filename)
+            local_contrib_file = "%s/%s" % (CSV_EXPORT_DIR, contrib_filename)
+            local_nonindiv_contrib_file = "%s/%s" % (CSV_EXPORT_DIR, nonindiv_contrib_filename)
         
         
-        # need to gzip these
-        gzip_cmd = "gzip -f %s %s %s %s" % (local_file, local_webk_file, local_contrib_file, local_nonindiv_contrib_file)
-        filename_zipped = filename + ".gz"
-        filename_webk_zipped = webk_filename + ".gz"
-        filename_contrib_zipped = contrib_filename + ".gz"
-        filename_nonindiv_contrib_zipped = nonindiv_contrib_filename + ".gz"
-        
-        local_file_zipped = local_file + ".gz"
-        local_webk_file_zipped = local_webk_file + ".gz"
-        local_contrib_file_zipped = local_contrib_file + ".gz"
-        local_nonindiv_contrib_file_zipped = local_nonindiv_contrib_file + ".gz"
+            dump_big_non_indiv_contribs(local_nonindiv_contrib_file, CYCLE)
+            write_all_candidates(local_file, CYCLE)
+            write_all_webks(local_webk_file, CYCLE)
+            dump_big_contribs(local_contrib_file, CYCLE)
         
         
-        # old style os.system just works - subprocess sucks. 
-        proc = os.system(gzip_cmd)
-        s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_zipped)
-        webk_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_webk_zipped)
-        contrib_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_contrib_zipped)
-        nonindiv_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_nonindiv_contrib_zipped)
+            # need to gzip these
+            gzip_cmd = "gzip -f %s %s %s %s" % (local_file, local_webk_file, local_contrib_file, local_nonindiv_contrib_file)
+            filename_zipped = filename + ".gz"
+            filename_webk_zipped = webk_filename + ".gz"
+            filename_contrib_zipped = contrib_filename + ".gz"
+            filename_nonindiv_contrib_zipped = nonindiv_contrib_filename + ".gz"
         
-        push_to_s3(local_file_zipped, AWS_STORAGE_BUCKET_NAME, s3_path)
-        push_to_s3(local_webk_file_zipped, AWS_STORAGE_BUCKET_NAME, webk_s3_path)
-        push_to_s3(local_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, contrib_s3_path)
-        push_to_s3(local_nonindiv_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, nonindiv_s3_path)
+            local_file_zipped = local_file + ".gz"
+            local_webk_file_zipped = local_webk_file + ".gz"
+            local_contrib_file_zipped = local_contrib_file + ".gz"
+            local_nonindiv_contrib_file_zipped = local_nonindiv_contrib_file + ".gz"
+        
+        
+            # old style os.system just works - subprocess sucks. 
+            proc = os.system(gzip_cmd)
+            s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_zipped)
+            webk_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_webk_zipped)
+            contrib_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_contrib_zipped)
+            nonindiv_s3_path = "%s/%s" % (AWS_BULK_EXPORT_PATH,filename_nonindiv_contrib_zipped)
+        
+            push_to_s3(local_file_zipped, AWS_STORAGE_BUCKET_NAME, s3_path)
+            push_to_s3(local_webk_file_zipped, AWS_STORAGE_BUCKET_NAME, webk_s3_path)
+            push_to_s3(local_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, contrib_s3_path)
+            push_to_s3(local_nonindiv_contrib_file_zipped, AWS_STORAGE_BUCKET_NAME, nonindiv_s3_path)
 
         
-        # if we didn't die, set the update time
-        set_update(SUMMARY_EXPORT_KEY)
+            # if we didn't die, set the update time
+            set_update(SUMMARY_EXPORT_KEY)

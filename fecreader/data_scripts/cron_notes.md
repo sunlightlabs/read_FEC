@@ -1,3 +1,13 @@
+<style>
+table:nth-of-type(1) {
+    display:table;
+    width:100%;
+}
+table:nth-of-type(1) th:nth-of-type(4) {
+    width:50%;
+}
+</style>
+
 ### Processing flags on new_filing  
 
     ### processing status notes

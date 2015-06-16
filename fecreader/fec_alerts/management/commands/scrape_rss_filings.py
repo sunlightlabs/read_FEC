@@ -131,7 +131,7 @@ def parse_xml_from_text(xml):
     return results
 
 class Command(BaseCommand):
-    
+    """  Creates new_filing objects from RSS feed. Will set cycle if possible. """
     requires_model_validation = False
     
     def handle(self, *args, **options):

@@ -8,7 +8,7 @@ from fec_alerts.models import new_filing
 from django.db import connection
 
 class Command(BaseCommand):
-    help = "Make sure sked e aggregates are set. Mostly redundant"
+    help = "Make sure sked e body rows in amended filings are themselves set to amended. Mostly redundant"
     requires_model_validation = False
 
 
