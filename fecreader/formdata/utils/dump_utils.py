@@ -2,7 +2,7 @@ import sys, time
 
 from db_utils import get_connection
 from dumper_field_reference import fields
-from shared_utils.cycle_utils import cycle_calendar
+from shared_utils.cycle_utils import cycle_calendar, is_valid_four_digit_string_cycle
 
 
 def get_db_formatted_string(date):
@@ -26,13 +26,14 @@ def dump_filing_sked(sked_name, filing_number, destination_file):
     dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE fec_alerts_new_filing.filing_number = %s and superceded_by_amendment=False) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, filing_number, destination_file)
     cursor.execute(dumpcmd);
 
-def dump_committee_sked(sked_name, committee_number, destination_file):
+def dump_committee_sked(cycle, sked_name, committee_number, destination_file):
     """
     Blindly dump a csv file of an entire committee, regardless of size. *Some filings are 200MB plus -- see #876048 or ACTBLUE's monthly stuff. 
     
     The rule is a body line is superceded EITHER if it's parent filing is superceded, or if the line itself is superceded. F24's and F6's are superceded line by line--though perhaps that could be improved on. 
     
     """
+    cycle_details = cycle_calendar[int(CYCLE)]
     
     # break if we're given junk args. 
     sked_name = sked_name.lower()
@@ -43,16 +44,17 @@ def dump_committee_sked(sked_name, committee_number, destination_file):
     
     connection = get_connection()
     cursor = connection.cursor()
-    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False and fec_alerts_new_filing.fec_id = '%s') to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, committee_number, destination_file)
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and %s <= %s and is_superceded=False and fec_alerts_new_filing.fec_id = '%s') to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, get_db_formatted_string(cycle_details['start']), datefield, get_db_formatted_string(cycle_details['end']), committee_number, destination_file)
     cursor.execute(dumpcmd);
 
-def dump_candidate_sked(sked_name, candidate_id, destination_file):
+def dump_candidate_sked(cycle, sked_name, candidate_id, destination_file):
     """
     Blindly dump a csv file of a candidate's authorized committees, regardless of size. *Some filings are 200MB plus -- see #876048 or ACTBLUE's monthly stuff. 
 
     The rule is a body line is superceded EITHER if it's parent filing is superceded, or if the line itself is superceded. F24's and F6's are superceded line by line--though perhaps that could be improved on. 
 
     """
+    cycle_details = cycle_calendar[int(CYCLE)]
 
     # break if we're given junk args. 
     sked_name = sked_name.lower()
@@ -71,7 +73,7 @@ def dump_candidate_sked(sked_name, candidate_id, destination_file):
     committees = ["'" + x[0] + "'" for x in results]
     committee_formatted_list = ", ".join(committees)
     
-    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and is_superceded=False and fec_alerts_new_filing.fec_id in (%s)) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, CYCLE_START_STRING, committee_formatted_list, destination_file)
+    dumpcmd = """copy (SELECT %s FROM formdata_sked%s left join fec_alerts_new_filing on formdata_sked%s.filing_number = fec_alerts_new_filing.filing_number WHERE superceded_by_amendment=False and %s >= %s and %s <= %s and is_superceded=False and fec_alerts_new_filing.fec_id in (%s)) to '%s' with csv header quote as '"' escape as '\\'""" % (fieldlist, sked_name, sked_name, datefield, get_db_formatted_string(cycle_details['start']), datefield, get_db_formatted_string(cycle_details['end']), committee_formatted_list, destination_file)
     cursor.execute(dumpcmd);
 
 def dump_all_sked(sked_name, destination_file, CYCLE):

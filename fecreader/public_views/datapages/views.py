@@ -615,6 +615,7 @@ def committee_cycle(request, cycle, committee_id):
         'independent_spending':independent_spending,
         'recent_ies':recent_ies,
         'cycle_list':cycle_list,
+        'cycle':cycle,
         }, 
         context_instance=RequestContext(request)
     )

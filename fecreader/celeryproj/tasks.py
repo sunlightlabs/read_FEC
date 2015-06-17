@@ -53,7 +53,7 @@ def dump_filing_sked_celery(sked_name, filing_number):
     return destination_url
 
 @celery.task
-def dump_committee_sked_celery(sked_name, committee_number):
+def dump_committee_sked_celery(cycle, sked_name, committee_number):
     cache_key = "%s_sked%s" % (committee_number, sked_name)
     result = r.get(cache_key)
     if result:
@@ -65,7 +65,7 @@ def dump_committee_sked_celery(sked_name, committee_number):
     filename = "%ssked%s_%s.csv" % (committee_number, sked_name, this_request_id)
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
-    dump_committee_sked(sked_name, committee_number, destination_file)
+    dump_committee_sked(cycle, sked_name, committee_number, destination_file)
     gzip_file(destination_file)
     destination_url = destination_url + ".gz"
     set_cachekey(cache_key, destination_url)
@@ -73,7 +73,7 @@ def dump_committee_sked_celery(sked_name, committee_number):
 
 
 @celery.task
-def dump_candidate_sked_celery(sked_name, candidate_id):
+def dump_candidate_sked_celery(cycle, sked_name, candidate_id):
     cache_key = "%s_sked%s" % (candidate_id, sked_name)
     result = r.get(cache_key)
     if result:
@@ -85,7 +85,7 @@ def dump_candidate_sked_celery(sked_name, candidate_id):
     filename = "%ssked%s_%s.csv" % (candidate_id, sked_name, this_request_id)
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
-    dump_candidate_sked(sked_name, candidate_id, destination_file)
+    dump_candidate_sked(cycle, sked_name, candidate_id, destination_file)
     gzip_file(destination_file)
     destination_url = destination_url + ".gz"
     set_cachekey(cache_key, destination_url)
