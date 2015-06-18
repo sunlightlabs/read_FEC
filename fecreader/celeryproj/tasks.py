@@ -62,7 +62,7 @@ def dump_committee_sked_celery(cycle, sked_name, committee_number):
     
     this_request_id = dump_committee_sked_celery.request.id
     this_request_id = this_request_id.replace("-", "")
-    filename = "%ssked%s_%s.csv" % (committee_number, sked_name, this_request_id)
+    filename = "%ssked%s_%s_%s.csv" % (committee_number, sked_name, cycle, this_request_id)
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
     dump_committee_sked(cycle, sked_name, committee_number, destination_file)
@@ -82,7 +82,7 @@ def dump_candidate_sked_celery(cycle, sked_name, candidate_id):
 
     this_request_id = dump_candidate_sked_celery.request.id
     this_request_id = this_request_id.replace("-", "")
-    filename = "%ssked%s_%s.csv" % (candidate_id, sked_name, this_request_id)
+    filename = "%ssked%s_%s_%s.csv" % (candidate_id, sked_name, cycle, this_request_id)
     destination_file = CUSTOM_DOWNLOAD_DIR + "/" + filename
     destination_url = CUSTOM_DOWNLOAD_URL + "/" + filename
     dump_candidate_sked(cycle, sked_name, candidate_id, destination_file)
