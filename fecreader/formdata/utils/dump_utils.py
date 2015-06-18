@@ -33,7 +33,7 @@ def dump_committee_sked(cycle, sked_name, committee_number, destination_file):
     The rule is a body line is superceded EITHER if it's parent filing is superceded, or if the line itself is superceded. F24's and F6's are superceded line by line--though perhaps that could be improved on. 
     
     """
-    cycle_details = cycle_calendar[int(CYCLE)]
+    cycle_details = cycle_calendar[int(cycle)]
     
     # break if we're given junk args. 
     sked_name = sked_name.lower()
@@ -54,7 +54,7 @@ def dump_candidate_sked(cycle, sked_name, candidate_id, destination_file):
     The rule is a body line is superceded EITHER if it's parent filing is superceded, or if the line itself is superceded. F24's and F6's are superceded line by line--though perhaps that could be improved on. 
 
     """
-    cycle_details = cycle_calendar[int(CYCLE)]
+    cycle_details = cycle_calendar[int(cycle)]
 
     # break if we're given junk args. 
     sked_name = sked_name.lower()
