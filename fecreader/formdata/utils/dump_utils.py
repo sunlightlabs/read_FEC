@@ -2,7 +2,7 @@ import sys, time
 
 from db_utils import get_connection
 from dumper_field_reference import fields
-from shared_utils.cycle_utils import cycle_calendar, is_valid_four_digit_string_cycle
+from shared_utils.cycle_utils_no_django import cycle_calendar, is_valid_four_digit_string_cycle
 
 
 def get_db_formatted_string(date):
