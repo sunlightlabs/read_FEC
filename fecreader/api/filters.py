@@ -303,6 +303,10 @@ def filingTimeFilter(queryset, querydict):
             today = date.today()
             one_week_ago = today-timedelta(days=7)
             queryset = queryset.filter(filed_date__gte=one_week_ago)
+        elif time_range == '2014_cycle':
+            queryset = queryset.filter(filed_date__gte=date(2013,1,1), filed_date__lte=date(2014,12,31))
+        elif time_range == '2016_cycle':
+            queryset = queryset.filter(filed_date__gte=date(2015,1,1), filed_date__lte=date(2016,12,31))
     except KeyError:
         pass
     return queryset
