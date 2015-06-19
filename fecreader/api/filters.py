@@ -152,73 +152,55 @@ def periodTypeFilter(queryset, querydict):
         period_type=querydict['period_type']
         if period_type.startswith('Q'):
             if period_type == 'Q1':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,1,1), coverage_to_date=date(2013,3,31))|Q(coverage_from_date=date(2014,1,1), coverage_to_date=date(2014,3,31))|Q(coverage_from_date=date(2015,1,1), coverage_to_date=date(2015,3,31)))
-        
+                queryset = queryset.filter(coverage_from_date__month=1, coverage_from_date__day=1, coverage_to_date__month=3, coverage_to_date__day=31)
             elif period_type == 'Q2':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,4,1), coverage_to_date=date(2013,6,30))|Q(coverage_from_date=date(2014,4,1), coverage_to_date=date(2014,6,30))|Q(coverage_from_date=date(2015,4,1), coverage_to_date=date(2015,6,30)))
-
+                queryset = queryset.filter(coverage_from_date__month=4, coverage_from_date__day=1, coverage_to_date__month=6, coverage_to_date__day=30)
             elif period_type == 'Q3':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,7,1), coverage_to_date=date(2013,9,30))|Q(coverage_from_date=date(2014,7,1), coverage_to_date=date(2014,9,30)))
-
+                queryset = queryset.filter(coverage_from_date__month=7, coverage_from_date__day=1, coverage_to_date__month=9, coverage_to_date__day=30)
             elif period_type == 'Q4':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,10,1), coverage_to_date=date(2013,12,31))|Q(coverage_from_date=date(2014,10,1), coverage_to_date=date(2014,9,30)))
-
+                queryset = queryset.filter(coverage_from_date__month=10, coverage_from_date__day=1, coverage_to_date__month=12, coverage_to_date__day=31)
 
         elif period_type.startswith('M'):
                         
             if period_type == 'M1':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,1,1), coverage_to_date=date(2013,1,31))|Q(coverage_from_date=date(2014,1,1), coverage_to_date=date(2014,1,31))|Q(coverage_from_date=date(2015,1,1), coverage_to_date=date(2015,1,31)))
-
+                queryset = queryset.filter(coverage_from_date__month=1, coverage_from_date__day=1, coverage_to_date__month=1, coverage_to_date__day=31)
             elif period_type == 'M2':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,2,1), coverage_to_date=date(2013,2,28))|Q(coverage_from_date=date(2014,2,1), coverage_to_date=date(2014,2,28))|Q(coverage_from_date=date(2015,2,1), coverage_to_date=date(2015,2,28)))
-
+                # leap years! 
+                queryset = queryset.filter(Q(coverage_from_date__month=2, coverage_from_date__day=1, coverage_to_date__month=2, coverage_to_date__day=28)|Q(coverage_from_date__month=2, coverage_from_date__day=1, coverage_to_date__month=2, coverage_to_date__day=29))
             elif period_type == 'M3':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,3,1), coverage_to_date=date(2013,3,31))|Q(coverage_from_date=date(2014,3,1), coverage_to_date=date(2014,3,31))|Q(coverage_from_date=date(2015,3,1), coverage_to_date=date(2015,3,31)))
-
+                queryset = queryset.filter(coverage_from_date__month=3, coverage_from_date__day=1, coverage_to_date__month=3, coverage_to_date__day=31)
             elif period_type == 'M4':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,4,1), coverage_to_date=date(2013,4,30))|Q(coverage_from_date=date(2014,4,1), coverage_to_date=date(2014,4,30))|Q(coverage_from_date=date(2015,4,1), coverage_to_date=date(2015,4,30)))
-
+                queryset = queryset.filter(coverage_from_date__month=4, coverage_from_date__day=1, coverage_to_date__month=4, coverage_to_date__day=30)
             elif period_type == 'M5':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,5,1), coverage_to_date=date(2013,5,31))|Q(coverage_from_date=date(2014,5,1), coverage_to_date=date(2014,5,31))|Q(coverage_from_date=date(2015,5,1), coverage_to_date=date(2015,5,31)))
-
+                queryset = queryset.filter(coverage_from_date__month=5, coverage_from_date__day=1, coverage_to_date__month=5, coverage_to_date__day=31)
             elif period_type == 'M6':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,6,1), coverage_to_date=date(2013,6,30))|Q(coverage_from_date=date(2014,6,1), coverage_to_date=date(2014,6,30))|Q(coverage_from_date=date(2015,6,1), coverage_to_date=date(2015,6,30)))
-
+                queryset = queryset.filter(coverage_from_date__month=6, coverage_from_date__day=1, coverage_to_date__month=6, coverage_to_date__day=30)
             elif period_type == 'M7':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,7,1), coverage_to_date=date(2013,7,31))|Q(coverage_from_date=date(2014,7,1), coverage_to_date=date(2014,7,31))|Q(coverage_from_date=date(2015,7,1), coverage_to_date=date(2015,7,31)))
-
+                queryset = queryset.filter(coverage_from_date__month=7, coverage_from_date__day=1, coverage_to_date__month=7, coverage_to_date__day=31)
             elif period_type == 'M8':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,8,1), coverage_to_date=date(2013,8,31))|Q(coverage_from_date=date(2014,8,1), coverage_to_date=date(2014,8,31)))
-
+                queryset = queryset.filter(coverage_from_date__month=8, coverage_from_date__day=1, coverage_to_date__month=8, coverage_to_date__day=31)
             elif period_type == 'M9':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,9,1), coverage_to_date=date(2013,9,30))|Q(coverage_from_date=date(2014,9,1), coverage_to_date=date(2014,9,30)))
-
+                queryset = queryset.filter(coverage_from_date__month=9, coverage_from_date__day=1, coverage_to_date__month=9, coverage_to_date__day=30)
             elif period_type == 'M10':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,10,1), coverage_to_date=date(2013,10,31))|Q(coverage_from_date=date(2014,10,1), coverage_to_date=date(2014,10,31)))
-
+                queryset = queryset.filter(coverage_from_date__month=10, coverage_from_date__day=1, coverage_to_date__month=10, coverage_to_date__day=31)
             elif period_type == 'M11':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,11,1), coverage_to_date=date(2013,11,30))|Q(coverage_from_date=date(2014,11,1), coverage_to_date=date(2014,11,30)))
-
+                queryset = queryset.filter(coverage_from_date__month=11, coverage_from_date__day=1, coverage_to_date__month=11, coverage_to_date__day=30)
             elif period_type == 'M12':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,12,1), coverage_to_date=date(2013,12,31))|Q(coverage_from_date=date(2014,12,1), coverage_to_date=date(2014,12,31)))
-
+                queryset = queryset.filter(coverage_from_date__month=12, coverage_from_date__day=1, coverage_to_date__month=12, coverage_to_date__day=31)
+                
         elif period_type == 'PRE':
             queryset = queryset.filter(Q(coverage_from_date=date(2014,10,1), coverage_to_date=date(2014,10,15)))
-
         elif period_type == 'POS':
             queryset = queryset.filter(Q(coverage_from_date=date(2014,10,16), coverage_to_date=date(2014,11,24)))
-            
         elif period_type == 'EOY':
             queryset = queryset.filter(coverage_to_date=date(2014,12,31))
         
         
         elif period_type.startswith('S'):
-
             if period_type == 'S1':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,1,1), coverage_to_date=date(2013,6,30))|Q(coverage_from_date=date(2014,1,1), coverage_to_date=date(2014,6,30)))
-        
+                queryset = queryset.filter(coverage_from_date__month=1, coverage_from_date__day=1, coverage_to_date__month=6, coverage_to_date__day=30)
             elif period_type == 'S2':
-                queryset = queryset.filter(Q(coverage_from_date=date(2013,7,1), coverage_to_date=date(2013,12,31))|Q(coverage_from_date=date(2014,7,1), coverage_to_date=date(2014,12,31)))
+                queryset = queryset.filter(coverage_from_date__month=7, coverage_from_date__day=1, coverage_to_date__month=12, coverage_to_date__day=31)
         
     except KeyError:
         pass
