@@ -18,8 +18,7 @@ from parsing.read_FEC_settings import FILECACHE_DIRECTORY, USER_AGENT, FEC_DOWNL
 from fec_alerts.utils.fec_logging import fec_logger
 from summary_data.utils.update_utils import set_update
 from django.conf import settings
-from shared_utils.cycle_utils import get_cycle_from_date, is_current_cycle, is_active_cycle
-
+from shared_utils.cycle_utils import get_cycle_from_date
 
 FILING_SCRAPE_KEY = settings.FILING_SCRAPE_KEY
 my_logger=fec_logger()

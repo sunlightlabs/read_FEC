@@ -10,7 +10,8 @@ from djorm_hstore.models import HStoreManager
 from parsing.read_FEC_settings import FEC_HTML_LOCATION
 from api.nulls_last_queryset import NullsLastManager
 from summary_data.data_references import type_hash
-from shared_utils.cycle_utils import get_cycle_from_date, is_current_cycle, is_active_cycle
+from shared_utils.cycle_utils import get_cycle_from_date
+from shared_utils.cycle_helpers import is_current_cycle, is_active_cycle
 from django.conf import settings
 
 

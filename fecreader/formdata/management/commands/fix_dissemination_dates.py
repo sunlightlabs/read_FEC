@@ -15,7 +15,7 @@ from dateutil.parser import parse as dateparse
 # from djorm_hstore.expressions import HstoreExpression as HE
 
 
-alter_db = True
+alter_db = False
 
 def fix_dissemination_date(this_filing, fp):
     ## we gotta parse the rows again. 
@@ -53,6 +53,7 @@ def fix_dissemination_date(this_filing, fp):
             #print "filingnum=%s dissemination_date=%s expenditure_date=%s transaction_id=%s" % (this_filing.filing_number, dissemination_date, expenditure_date, transaction_id)
             
             # then fix the original date in the db. 
+            """
             if dissemination_date:
                 try:
                     original_line = SkedE.objects.get(filing_number=this_filing.filing_number, transaction_id=transaction_id)
@@ -68,7 +69,19 @@ def fix_dissemination_date(this_filing, fp):
                         original_line.save()
                 except SkedE.DoesNotExist:
                     print "Couldn't find filing%s transaction %s" % (this_filing.filing_number, transaction_id)
-    
+            """
+            if not dissemination_date:
+                if original_line.expenditure_date:
+                    try:
+                        print "No dissemination date: setting effective date to: %s ; currently is %s" % (original_line.expenditure_date_formatted, original_line.effective_date)
+                        
+                        original_line.expenditure_date_formatted = dateparse(original_line.expenditure_date)
+                        original_line.effective_date = original_line.expenditure_date_formatted
+                        if alter_db:
+                            original_line.save()
+                    except:
+                        pass
+                
     
     
 

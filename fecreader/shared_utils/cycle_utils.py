@@ -2,7 +2,7 @@
 ## cycles are stored as 4-digit *strings*.
 ## this is for 2-year cycle...
 
-from django.conf import settings
+# from django.conf import settings
 
 from datetime import date
 
@@ -17,13 +17,14 @@ cycle_calendar = {
 }
 
 
-
+"""
 # Warn about this
 try:
     current_cycle = settings.CURRENT_CYCLE
     active_cycles = settings.ACTIVE_CYCLES
 except AttributeError:
     raise Exception("Make sure to define CURRENT CYCLE and ACTIVE CYCLES in the settings file. Cycles are given as 4-digit strings. ")
+"""
 
 # Is this a valid cycle that's out of our range, but that we could redirect to a better cycle for? 
 def is_valid_four_digit_string_cycle(string_cycle):
@@ -44,7 +45,7 @@ def get_cycle_from_date(date):
     else:
         year = date.year
         return fix_year(year)
-
+"""
 def is_current_cycle(date):
     # Should work for a date or datetime
     return get_cycle_from_date == current_cycle
@@ -52,6 +53,7 @@ def is_current_cycle(date):
 def is_active_cycle(date):
     # Should work for a date or datetime
     return get_cycle_from_date in active_cycles
+"""
 
 def get_cycle_from_two_digit_string(twodigitstring):
     try:
