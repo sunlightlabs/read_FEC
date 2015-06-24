@@ -99,7 +99,7 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         # get all the fec filings with IEs in them:
-        all_ie_filings = new_filing.objects.filter(tot_ies__gt=0, filed_date__gte=date(2014,1,14))
+        all_ie_filings = new_filing.objects.filter(tot_ies__gt=0, filed_date__lt=date(2014,1,14))
         fp = form_parser()
         for f in all_ie_filings:
             fix_dissemination_date(f, fp)
