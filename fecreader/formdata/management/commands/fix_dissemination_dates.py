@@ -15,7 +15,7 @@ from dateutil.parser import parse as dateparse
 # from djorm_hstore.expressions import HstoreExpression as HE
 
 
-alter_db = False
+alter_db = True
 
 def fix_dissemination_date(this_filing, fp):
     ## we gotta parse the rows again. 
@@ -66,17 +66,22 @@ def fix_dissemination_date(this_filing, fp):
                 else:
                     original_line.dissemination_date_formatted = None
                                 
-                if original_line.expenditure_date:
+                if expenditure_date:
+                    original_line.expenditure_date = expenditure_date
                     try:
-                    
-                        original_line.expenditure_date_formatted = dateparse(original_line.expenditure_date)
-                        if not original_line.effective_date:
+                        
+                        original_line.expenditure_date_formatted = dateparse(expenditure_date)
+                        if not original_line.dissemination_date:
                             original_line.effective_date = original_line.expenditure_date_formatted
 
                     except ValueError:
                         pass
-                else:
+                else: 
                     original_line.expenditure_date_formatted = None
+                    
+                if not expenditure_date and not dissemination_date:
+                    original_line.effective_date = None
+
 
                 if alter_db:
                     original_line.save()
