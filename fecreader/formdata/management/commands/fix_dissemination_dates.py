@@ -50,38 +50,40 @@ def fix_dissemination_date(this_filing, fp):
             expenditure_date = linedict['expenditure_date']
             transaction_id = linedict['transaction_id']
             
-            #print "filingnum=%s dissemination_date=%s expenditure_date=%s transaction_id=%s" % (this_filing.filing_number, dissemination_date, expenditure_date, transaction_id)
+            print "filingnum=%s dissemination_date=%s expenditure_date=%s transaction_id=%s" % (this_filing.filing_number, dissemination_date, expenditure_date, transaction_id)
             
             # then fix the original date in the db. 
-            """
-            if dissemination_date:
-                try:
-                    original_line = SkedE.objects.get(filing_number=this_filing.filing_number, transaction_id=transaction_id)
+            try:
+                original_line = SkedE.objects.get(filing_number=this_filing.filing_number, transaction_id=transaction_id)
+                
+                if dissemination_date:
                     original_line.dissemination_date = dissemination_date
                     try:
                         original_line.dissemination_date_formatted = dateparse(dissemination_date)
                         original_line.effective_date = original_line.dissemination_date_formatted
-                        original_line.expenditure_date_formatted = dateparse(original_line.expenditure_date)
-                    except:
+                    except ValueError:
                         pass
-                    
-                    if alter_db:
-                        original_line.save()
-                except SkedE.DoesNotExist:
-                    print "Couldn't find filing%s transaction %s" % (this_filing.filing_number, transaction_id)
-            """
-            if not dissemination_date:
+                else:
+                    original_line.dissemination_date_formatted = None
+                                
                 if original_line.expenditure_date:
                     try:
-                        print "No dissemination date: setting effective date to: %s ; currently is %s" % (original_line.expenditure_date_formatted, original_line.effective_date)
-                        
+                    
                         original_line.expenditure_date_formatted = dateparse(original_line.expenditure_date)
-                        original_line.effective_date = original_line.expenditure_date_formatted
-                        if alter_db:
-                            original_line.save()
-                    except:
+                        if not original_line.effective_date:
+                            original_line.effective_date = original_line.expenditure_date_formatted
+
+                    except ValueError:
                         pass
-                
+                else:
+                    original_line.expenditure_date_formatted = None
+
+                if alter_db:
+                    original_line.save()
+                    
+            except SkedE.DoesNotExist:
+                print "Couldn't find filing%s transaction %s" % (this_filing.filing_number, transaction_id)
+             
     
     
 
