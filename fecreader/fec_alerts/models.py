@@ -112,7 +112,7 @@ class f1filer(models.Model):
     receipt_dt = models.DateField(null=True, blank=True)
     cmte_email = models.CharField(max_length=255, null=True, blank=True) 
     cmte_web_url= models.CharField(max_length=255, null=True, blank=True)
-    begin_image_num = models.CharField(max_length=15)
+    begin_image_num = models.CharField(max_length=31)
     
     def __unicode__(self):
         return "%s formed %s" % (self.cmte_nm, self.receipt_dt)
