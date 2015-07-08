@@ -11,7 +11,9 @@ from django.db.models import Sum, Count
 from django.core.management.base import BaseCommand, CommandError
 
 
-infile = open('shared_utils/2016ers_may.csv', 'r')
+#infile = open('shared_utils/2016ers_may.csv', 'r')
+infile = open('shared_utils/2016ers_april_new.csv', 'r')
+
 reader = csv.DictReader(infile)
 
 
@@ -43,31 +45,30 @@ class Command(BaseCommand):
             this_candidate['superpacs'] = []
             this_candidate['other_committees'] = []
 
-
+                
             if row['prez_id']:
                 this_candidate['candidate_committees'].append({'pac_name': row['prez_cmte'], 'pac_id':row['prez_id']})
-            
+        
             if row['pac_id']:
                 this_candidate['leadership_committees'].append({'pac_name': row['leadership_pac'], 'pac_id':row['pac_id']})
 
 
             if row['other']:
                 this_candidate['other_committees'].append({'pac_name': row['other'],'other_url': row['other_url'] })
-                
-                
-            print this_candidate
             
+            
+            print this_candidate
+        
             for sp_id in ("_1", "_2", "_3", "_4", "_5", "_6"):
                 this_pac = row["super_pac" + sp_id]
                 this_id = row["super_id" + sp_id]
-                
+            
                 if this_id:
                     this_candidate['superpacs'].append({'pac_name': this_pac, 'pac_id':this_id})
-                
             
+        
             summary_obj_list.append(this_candidate)
-        
-        
+
         ## get sum summary data
         
         
