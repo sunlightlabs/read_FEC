@@ -8,6 +8,9 @@ from django import template
 from fec_alerts.models import new_filing
 from summary_data.models import Committee_Overlay, District, Candidate_Overlay
 from formdata.models import SkedE
+from django.conf import settings
+
+CURRENT_CYCLE = settings.CURRENT_CYCLE
 
 FEED_LENGTH = 30
 nyt = pytz.timezone('America/New_York')
@@ -34,13 +37,13 @@ class FilingFeedBase(Feed):
 class FilingFeed(FilingFeedBase): 
        
     def title(self, obj):
-        return "%s - RECENT FILINGS" % obj.name
+        return "%s %s CYCLE RECENT FILINGS" % (CURRENT_CYCLE, obj.name)
         
     def get_object(self, request, committee_id):
-        return get_object_or_404(Committee_Overlay, fec_id=committee_id, cycle='2014') 
+        return get_object_or_404(Committee_Overlay, fec_id=committee_id, cycle=CURRENT_CYCLE) 
         
     def description(self, obj):
-        return "%s: Recent electronic campaign finance filings" % (obj.name)             
+        return "%s: Recent electronic campaign finance filings (%s cycle)" % (obj.name, CURRENT_CYCLE)             
 
     def items(self, obj):
         return new_filing.objects.filter(fec_id=obj.fec_id).order_by('-process_time')[:FEED_LENGTH]  
@@ -52,11 +55,11 @@ class CommitteeFormsFeed(FilingFeedBase):
         return "%s - RECENT FORMS %s" % (obj.name, ", ".join(self.form_list) )
 
     def description(self, obj):
-        return "Recent electronic campaign finance filings filed by %s" % (obj.name)        
+        return "Recent electronic campaign finance filings filed by %s (%s cycle)" % (obj.name, CURRENT_CYCLE)        
 
     def get_object(self, request, committee_id, form_types):
         self.form_list=form_types.split("-")
-        return get_object_or_404(Committee_Overlay, fec_id=committee_id) 
+        return get_object_or_404(Committee_Overlay, fec_id=committee_id, cycle=CURRENT_CYCLE) 
 
     def items(self, obj):
         return new_filing.objects.filter(fec_id=obj.fec_id, form_type__in=self.form_list).order_by('-process_time')[:FEED_LENGTH]
@@ -69,7 +72,7 @@ class FilingsFeed(FilingFeedBase):
         return "Is this the timestamp?"
 
     def items(self, obj):
-        return new_filing.objects.filter(fec_id__in=self.committee_list).order_by('-process_time')[:FEED_LENGTH]
+        return new_filing.objects.filter(fec_id__in=self.committee_list, cycle=CURRENT_CYCLE).order_by('-process_time')[:FEED_LENGTH]
 
 class FilingsFormFeed(FilingFeedBase):
     committee_list=[]
@@ -81,7 +84,7 @@ class FilingsFormFeed(FilingFeedBase):
         return "Is this the timestamp?"
     
     def description(self):
-        return "Recent electronic finance filings of forms: " + " ".join(self.form_list)
+        return "Recent electronic finance filings of forms (" + CURRENT_CYCLE + " cycle): " + " ".join(self.form_list)
 
     def items(self, obj):
         return new_filing.objects.filter(fec_id__in=self.committee_list, form_type__in=self.form_list).order_by('-process_time')[:FEED_LENGTH]
