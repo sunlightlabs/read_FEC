@@ -161,7 +161,7 @@ class Command(BaseCommand):
         
         
             ## reuse this stuff as is in noncommittees
-            all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I']).exclude(designation='J')       
+            all_noncommittees = Committee_Overlay.objects.filter(ctype__in=['I'], cycle=cycle).exclude(designation='J')       
             sums = all_noncommittees.aggregate(tot_ie=Sum('total_indy_expenditures'))
             ##
             dark_money_total_ies = sums['tot_ie']
@@ -207,7 +207,7 @@ class Command(BaseCommand):
                 {'name':'Hybrid Super PACs', 'code':'VW'},
                 {'name': 'All Super PACs', 'code':'UOVW'}
             ]
-            all_superpacs = Committee_Overlay.objects.filter(ctype__in=['U', 'O', 'V', 'W']).exclude(designation='J')
+            all_superpacs = Committee_Overlay.objects.filter(cycle=cycle,ctype__in=['U', 'O', 'V', 'W']).exclude(designation='J')
         
             for s in sp_summary_types:
                 code_list = [i for i in s['code']]
@@ -294,7 +294,7 @@ class Command(BaseCommand):
             ]
 
             for j in connected_org_types:
-                committees = Committee.objects.filter(cmte_tp__in=['N', 'Q'],org_tp=j['code'])
+                committees = Committee.objects.filter(cmte_tp__in=['N', 'Q'], cycle=str(cycle),org_tp=j['code'])
                 committee_id_list = [i.cmte_id for i in committees]
 
                 sums = all_webk.filter(com_id__in=committee_id_list).aggregate(tot_rec=Sum('tot_rec'), tot_dis=Sum('tot_dis'), par_com_con=Sum('par_com_con'), oth_com_con=Sum('oth_com_con'), ind_ite_con=Sum('ind_ite_con'), ind_uni_con=Sum('ind_uni_con'), fed_can_com_con=Sum('fed_can_com_con'), tot_ope_exp=Sum('tot_ope_exp'), ope_exp=Sum('ope_exp'))
