@@ -1,7 +1,6 @@
 {% extends "dryrub/base.html" %}
 {% load timestamp %}
 {% load staticfiles %}
-{% load cycle_selector %}
 
 
 {% block head_analytics %}
@@ -25,25 +24,5 @@
 {# override search #}
 {% block search %}{% endblock search %}
 {% block main %}
-<div id="contentHeader" class="clearfix">
-    <h2 class="RTh2">Real-Time Federal Campaign Finance</h2>
-		<div id="cycle-selector">{% block cycle_selector %}{% cycle_select_block cycle_list %}{% endblock cycle_selector %}</div>
-</div>
-
-{% block subnavitems %}
-{% include "includes/main_nav.html" %}
-{% endblock %}
-
-
-{% block rtmain_generated %}
-
-<div class="module RT clearfix">
-       <h3>{% block title %}{{ title|safe }} {% endblock %}</h3>
-       <div id="timestamp">{% block timestamp %}{% timestamp_filings %}{% endblock %}</div>
-       {% if explanatory_text %}<p>{{ explanatory_text|safe }}</p>{% endif %}
-
-</div>
-
-{% endblock %}
 
 {% endblock %}

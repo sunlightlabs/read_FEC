@@ -14,7 +14,6 @@ except:
     ACTIVE_CYCLES = ['2016']
 
 
-ACTIVE_CYCLES = ['2016']
 class Command(BaseCommand):
     help = "Add new candidates"
     requires_model_validation = False
