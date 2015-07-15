@@ -67,3 +67,7 @@ urlpatterns = patterns('',
 #        url(r'^race/(?P<cycle>\d\d\d\d)\/president\/', 'public_views.datapages.views.presidential_race'),
 
 )
+
+urlpatterns += patterns('',
+    ('', include('django.contrib.flatpages.urls')),
+)

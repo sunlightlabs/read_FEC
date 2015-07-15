@@ -30,6 +30,7 @@ from django.views.decorators.cache import cache_page, cache_control
 
 STATE_LIST = [{'name':x[1], 'abbrev':x[0]} for x in US_STATES]
 
+
 try:
     PAGINATE_BY = settings.REST_FRAMEWORK['PAGINATE_BY']
 except:
@@ -672,7 +673,7 @@ def candidate_cycle(request, slug, candidate_id, cycle):
             recent_report_total = recent_report_list.aggregate(spending_total=Sum('tot_raised'))['spending_total']
 
     else:
-        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=this_cycle_start, coverage_to_date__lte=cycle_endpoints['end'], form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
+        recent_report_list = new_filing.objects.filter(fec_id__in=committee_list, coverage_from_date__gte=cycle_endpoints['start'], coverage_to_date__lte=cycle_endpoints['end'], form_type__in=['F6', 'F6A', 'F6N']).exclude(is_superceded=True)
 
 
     # are their outside groups who've spent for/against this candidate? 
