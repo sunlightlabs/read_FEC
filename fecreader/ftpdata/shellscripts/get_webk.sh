@@ -4,7 +4,7 @@
 
 datadir=/projects/realtimefec/src/realtimefec/fecreader/ftpdata/data/
 
-for year in  '14'
+for year in  '16'
 do
     for type in 'HOUSE_SENATE' 'INDEPENDENT_EXPENDITURE' 'PAC' 'PARTY' 'PRESIDENTIAL'
     do
