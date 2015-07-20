@@ -10,7 +10,7 @@ try:
     CURRENT_CYCLE = settings.CURRENT_CYCLE
 except:
     print "Missing active cycle list. Defaulting to 2016. "
-    CURRENT_CYCLE = ['2016']
+    CURRENT_CYCLE = '2016'
 
 
 def dateparse_notnull(datestring):
