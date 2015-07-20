@@ -32,8 +32,9 @@ class Command(BaseCommand):
         print "%s, %s" % (location, trial_file_number, size)
         """
         
-        # highest_filing_number = new_filing.objects.all().order_by('-filing_number')[0].filing_number
-        highest_filing_number = 1015679
+        highest_filing_number = new_filing.objects.all().order_by('-filing_number')[0].filing_number
+        #highest_filing_number = 1015679
+        print "highest previously available filing number: %s" % (highest_filing_number)
         trial_file_number = highest_filing_number
         highest_available_file_number = highest_filing_number
         file_misses = 0
