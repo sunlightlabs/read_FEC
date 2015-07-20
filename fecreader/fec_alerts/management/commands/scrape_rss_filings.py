@@ -39,7 +39,22 @@ def enter_filing(data_hash):
     related_committee = None
     
     try:
-        new_filing.objects.get(filing_number=data_hash['filing_number'])
+        thisobj = new_filing.objects.get(filing_number=data_hash['filing_number'])
+        try:
+            thisobj.filed_date
+        except AttributeError:
+            
+            try:
+                thisobj.filed_date = get_local_time(data_hash['filed_date'])
+                thisobj.process_time = get_local_time(data_hash['filed_date'])
+                thisobj.save()
+            except pytz.exceptions.AmbiguousTimeError:
+                thisobj.filed_date = data_hash['filed_date']
+                thisobj.process_time = data_hash['filed_date']
+                thisobj.save()
+                
+        
+        
     except new_filing.DoesNotExist:
         print "entering %s %s" % (data_hash['filing_number'], data_hash['committee_id'])
         is_superpac=False

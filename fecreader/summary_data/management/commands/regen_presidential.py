@@ -12,7 +12,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 #infile = open('shared_utils/2016ers_may.csv', 'r')
-infile = open('shared_utils/2016ers_april_new.csv', 'r')
+infile = open('shared_utils/2016ers_april_new2.csv', 'r')
 
 reader = csv.DictReader(infile)
 

@@ -20,6 +20,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         new_filings = new_filing.objects.filter(filing_is_downloaded=False, header_is_processed=False).order_by('filing_number')
         for filing in new_filings:
+            if filing.filing_number < 1015680:
+                continue
             print "need to handle %s" % (filing.filing_number)
             location = FEC_DOWNLOAD % (filing.filing_number)
             local_location = FILECACHE_DIRECTORY + "/" + str(filing.filing_number) + ".fec"

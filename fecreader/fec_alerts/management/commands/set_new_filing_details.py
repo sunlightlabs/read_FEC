@@ -145,7 +145,11 @@ def handle_filing(this_filing):
         this_filing.coverage_from_date = parsed_data['coverage_from_date']
         this_filing.coverage_to_date = parsed_data['coverage_to_date']
         
-        this_filing.is_f5_quarterly = header_data['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+        try:
+            this_filing.is_f5_quarterly = header_data['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+        except KeyError:
+            # this is probably a problem. 
+            pass
         this_filing.new_filing_details_set = True
         
         
