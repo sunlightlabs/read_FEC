@@ -445,12 +445,13 @@ def filing(request, filing_num):
     committee = None
     title="%s: details of filing #%s" % ( filing.committee_name, filing_num)
     
-    try:
-        committee = Committee_Overlay.objects.get(fec_id = filing.fec_id, cycle=filing.cycle)
-        title="<a href=\"%s\">%s</a>: details of filing #%s" % (committee.get_absolute_url(), filing.committee_name, filing_num)
+    if not filing.committee_name:
+        try:
+            committee = Committee_Overlay.objects.get(fec_id = filing.fec_id, cycle=filing.cycle)
+            title="<a href=\"%s\">%s</a>: details of filing #%s" % (committee.get_absolute_url(), committee.name, filing_num)
         
-    except:
-        pass
+        except:
+            pass
     
     return render_to_response('datapages/filing.html',
         {
