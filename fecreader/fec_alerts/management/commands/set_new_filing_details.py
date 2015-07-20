@@ -86,6 +86,7 @@ def handle_filing(this_filing):
     try:
         co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id, cycle=this_filing.cycle)
         this_filing.committee_designation = co.designation
+        this_filing.committee_name = co.name
         this_filing.committee_type = co.ctype
         this_filing.committee_slug = co.slug
         this_filing.party = co.party
@@ -102,6 +103,7 @@ def handle_filing(this_filing):
             co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=int(this_filing.cycle))
             this_filing.committee_designation = co.cmte_dsgn
             this_filing.committee_type = co.cmte_tp
+            this_filing.committee_name = co.cmte_name
             this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
         except Committee.DoesNotExist:
             pass
