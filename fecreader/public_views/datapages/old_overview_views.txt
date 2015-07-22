@@ -1,0 +1,8 @@
+url(r'^overview\/super-pacs\/$', TemplateView.as_view(template_name='generated_pages/overview_superpac_template.html')),
+url(r'^overview\/outside-money\/$', TemplateView.as_view(template_name='generated_pages/(?P<cycle>\d\d\d\d)\/overview_outside_money_template.html')),
+url(r'^overview\/dark-money\/$', TemplateView.as_view(template_name='generated_pages/overview_dark_money_template.html')),
+url(r'^overview\/connected\/$', TemplateView.as_view(template_name='generated_pages/overview_connected_template.html')),
+url(r'^overview\/results-raw\/$', TemplateView.as_view(template_name='generated_pages/overview_results_raw_template.html')),
+url(r'^overview\/results\/$', TemplateView.as_view(template_name='generated_pages/overview_results_template.html')),
+url(r'^overview\/roi\/$', TemplateView.as_view(template_name='generated_pages/overview_roi_template.html')),
+url(r'^overview\/$', TemplateView.as_view(template_name='generated_pages/overview_main_template.html')),

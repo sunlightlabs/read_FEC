@@ -263,7 +263,7 @@ def presidential_race(request):
     cycle_list = list_2016_only
 
 
-    return render_to_response('datapages/race_detail.html', 
+    return render_to_response('datapages/presidential_race_detail.html', 
         {
         'candidates':candidates,
         'title':title,
