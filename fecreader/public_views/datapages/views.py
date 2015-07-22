@@ -11,7 +11,7 @@ from django.http import Http404
 
 from fec_alerts.models import new_filing, newCommittee, f1filer
 from summary_data.models import Candidate_Overlay, District, Committee_Overlay, Committee_Time_Summary, Authorized_Candidate_Committees, Pac_Candidate, DistrictWeekly
-from shared_utils.cycle_utils import get_cycle_abbreviation, is_valid_four_digit_string_cycle, get_cycle_endpoints, list_2014_only, cycle_fake
+from shared_utils.cycle_utils import get_cycle_abbreviation, is_valid_four_digit_string_cycle, get_cycle_endpoints, list_2014_only, list_2016_only, cycle_fake
 
 this_cycle = '2014'
 this_cycle_start = datetime.date(2013,1,1)
@@ -238,7 +238,45 @@ def house_race(request, cycle, state, district):
         },
         context_instance=RequestContext(request)
     )
+
+
+
+@cache_page(LONG_CACHE_TIME)
+def presidential_race(request):
     
+    race = get_object_or_404(District, cycle=CURRENT_CYCLE, office='P')
+    title = race.race_name()
+    candidates = Candidate_Overlay.objects.filter(district=race).filter(Q(total_receipts__gte=100000)|Q(total_expenditures__gte=100000)).exclude(not_seeking_reelection=True).order_by('-cash_on_hand')
+    outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=100000).select_related('committee', 'candidate')
+    candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
+
+
+    cycle_endpoints = get_cycle_endpoints(int(CURRENT_CYCLE))
+    recent_ies = SkedE.objects.filter(candidate_id_checked__in=candidate_list, expenditure_amount__gte=10000, superceded_by_amendment=False, expenditure_date_formatted__gte=cycle_endpoints['start'], expenditure_date_formatted__lte=cycle_endpoints['end']).select_related('candidate_checked').order_by('-expenditure_date_formatted')[:5]
+
+    committees = Committee_Overlay.objects.filter(curated_candidate__in=candidates)
+    committee_ids = [x.get('fec_id') for x in committees.values('fec_id')]
+    recent_filings = new_filing.objects.filter(fec_id__in=committee_ids, is_superceded=False).exclude(coverage_to_date__isnull=True).order_by('-coverage_to_date')[:5]
+
+
+    # figure out which cycles are available. The current one goes first, because it is being displayed.     
+    cycle_list = list_2016_only
+
+
+    return render_to_response('datapages/race_detail.html', 
+        {
+        'candidates':candidates,
+        'title':title,
+        'race':race,
+        'outside_spenders':outside_spenders,
+        'recent_ies':recent_ies,
+        'recent_filings':recent_filings,
+        'cycle_list':cycle_list
+        },
+        context_instance=RequestContext(request)
+    )
+
+
 @cache_page(LONG_CACHE_TIME)
 def senate_race(request, cycle, state, term_class):
     race = get_object_or_404(District, cycle=cycle, state=state, term_class=term_class, office='S')

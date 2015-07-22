@@ -86,6 +86,7 @@ class cycle_fake(object):
         return self.url
     
 list_2014_only = [cycle_fake(2014, "")]
+list_2016_only = [cycle_fake(2016, "")]
 
     
         
