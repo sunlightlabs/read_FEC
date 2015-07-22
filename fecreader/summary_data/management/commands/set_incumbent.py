@@ -25,7 +25,7 @@ def set_fec_id(this_fec_id):
     
     # Now set the incumbent flag in candidate_overlay
     try:
-        this_co = Candidate_Overlay.objects.get(fec_id=this_fec_id)
+        this_co = Candidate_Overlay.objects.get(fec_id=this_fec_id, cycle='2016')
         this_co.is_incumbent = True
         this_co.save()
         #print "set incumbent %s, %s" % (ftpcandidate.cand_name, this_fec_id)
