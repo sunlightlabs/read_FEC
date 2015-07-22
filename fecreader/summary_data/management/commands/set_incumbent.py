@@ -14,7 +14,7 @@ def set_fec_id(this_fec_id):
         return
     print "Got cycle: %s" % (ftpcandidate.cycle)
     this_incumbent, created = Incumbent.objects.get_or_create(fec_id=this_fec_id)
-    this_incumbent.cycle='2014'
+    this_incumbent.cycle='2016'
     this_incumbent.name = ftpcandidate.cand_name
     this_incumbent.fec_id = this_fec_id
     this_incumbent.state = ftpcandidate.cand_office_st
