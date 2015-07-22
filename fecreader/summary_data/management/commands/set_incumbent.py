@@ -50,52 +50,54 @@ class Command(BaseCommand):
             
             fec_id_list = fec.objects.filter(legislator=leg)
             if len(fec_id_list) != 1:
-                term = Term.objects.get(end__gte=date.today(), legislator=leg)
-                chamber = term.term_type
-                possible_ids = []
+                terms = Term.objects.filter(end__gte=date.today(), legislator=leg)
+                if terms:
+                    term = terms[0]
+                    chamber = term.term_type
+                    possible_ids = []
                 
-                #print "not 1 fec id: %s - chamber: %s" % (leg, chamber)
-                for fec_id in fec_id_list:
-                    tfi = fec_id.fec_id
-                    #print "fec_id is %s" % (tfi)
-                    if (chamber == 'rep' and tfi.startswith('H')) or (chamber == 'sen' and tfi.startswith('S')):
-                        #print "possible fec_id %s" % (tfi)
-                        possible_ids.append(tfi)
+                    #print "not 1 fec id: %s - chamber: %s" % (leg, chamber)
+                    for fec_id in fec_id_list:
+                        tfi = fec_id.fec_id
+                        #print "fec_id is %s" % (tfi)
+                        if (chamber == 'rep' and tfi.startswith('H')) or (chamber == 'sen' and tfi.startswith('S')):
+                            #print "possible fec_id %s" % (tfi)
+                            possible_ids.append(tfi)
                 
-                if len(possible_ids) == 1:
-                    # we've only got one candidate, so use it
-                    set_fec_id(possible_ids[0])
+                    if len(possible_ids) == 1:
+                        # we've only got one candidate, so use it
+                        set_fec_id(possible_ids[0])
                     
-                else: 
-                    #print "Still have multiple candidates"
-                    # go through each of them
-                    possible_ids_2 = []
-                    for fec_id in possible_ids:
-                        try:
-                            Candidate.objects.get(cand_id=fec_id, cycle=2014)
-                            possible_ids_2.append(fec_id)
-                        except Candidate.DoesNotExist:
-                            pass
-                    
-                    if len(possible_ids_2) == 0:
-                        print "*2: no possible candidates %s" % (leg)
-                    elif len(possible_ids_2) == 1:
-                        set_fec_id(possible_ids_2[0])
-                    else:
-                        print "*2: more than one possible candidate with current id found %s : %s" % (leg, possible_ids_2)
-                        possible_ids_3 = []
-                        for fec_id in possible_ids_3:
+                    else: 
+                        #print "Still have multiple candidates"
+                        # go through each of them
+                        possible_ids_2 = []
+                        for fec_id in possible_ids:
                             try:
-                                Candidate.objects.get(cand_id=fec_id, cand_election_year=2014)
-                                possible_ids_3.append(fec_id)
+                                Candidate.objects.get(cand_id=fec_id, cycle=2014)
+                                possible_ids_2.append(fec_id)
                             except Candidate.DoesNotExist:
                                 pass
-                        if len(possible_ids_3) == 0:
-                            print "*3: no possible candidates %s" % (leg)
-                        elif len(possible_ids_3) == 1:
-                            set_fec_id(possible_ids_3[0])
+                    
+                        if len(possible_ids_2) == 0:
+                            print "*2: no possible candidates %s" % (leg)
+                        elif len(possible_ids_2) == 1:
+                            set_fec_id(possible_ids_2[0])
                         else:
-                            print "*3: more than one possible candidate with current id found %s : %s" % (leg, possible_ids_3)
+                            print "*2: more than one possible candidate with current id found %s : %s" % (leg, possible_ids_2)
+                            possible_ids_3 = []
+                            for fec_id in possible_ids_3:
+                                try:
+                                    Candidate.objects.get(cand_id=fec_id, cand_election_year=2014)
+                                    possible_ids_3.append(fec_id)
+                                except Candidate.DoesNotExist:
+                                    pass
+                            if len(possible_ids_3) == 0:
+                                print "*3: no possible candidates %s" % (leg)
+                            elif len(possible_ids_3) == 1:
+                                set_fec_id(possible_ids_3[0])
+                            else:
+                                print "*3: more than one possible candidate with current id found %s : %s" % (leg, possible_ids_3)
                     
                 
             else:
