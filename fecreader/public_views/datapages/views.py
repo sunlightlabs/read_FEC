@@ -245,7 +245,7 @@ def house_race(request, cycle, state, district):
 def presidential_race(request):
     
     race = get_object_or_404(District, cycle=CURRENT_CYCLE, office='P')
-    title = race.race_name()
+    title = "2016 Presidential Candidates"
     candidates = Candidate_Overlay.objects.filter(district=race).filter(Q(total_receipts__gte=100000)|Q(total_expenditures__gte=100000)).exclude(not_seeking_reelection=True).order_by('-cash_on_hand')
     outside_spenders = Pac_Candidate.objects.filter(candidate__in=candidates, total_ind_exp__gte=100000).select_related('committee', 'candidate')
     candidate_list = [x.get('fec_id') for x in candidates.values('fec_id')]
