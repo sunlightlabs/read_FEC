@@ -80,7 +80,7 @@ def write_webk_csv(webk_list, file_name):
         csvwriter.writerow(this_webk)
 
 
-def write_all_candidates(file_name):
+def write_all_candidates(file_name, CYCLE):
     outfile = open(file_name, 'w')
     field_list = ['is_incumbent','cycle','not_seeking_reelection','other_office_sought','other_fec_id','name','pty','party','fec_id','pcc','election_year','state','office','office_district','term_class','total_receipts','total_contributions','total_disbursements','outstanding_loans','cash_on_hand','cash_on_hand_date','total_expenditures','expenditures_supporting','expenditures_opposing']
     human_readable_field_list = ['is_incumbent', 'cycle ', 'not_seeking_reelection', 'other_office_sought ', 'other_fec_id ', 'name', 'pty ', 'party ', 'fec_id ', 'pcc ', 'election_year', 'state', 'office', 'office_district', 'term_class', 'total_receipts', 'total_contributions', 'total_disbursements', 'outstanding_loans', 'cash_on_hand', 'cash_on_hand_date', 'total_independent_expenditures', 'independent_expenditures_supporting', 'independent_expenditures_opposing']
@@ -90,14 +90,14 @@ def write_all_candidates(file_name):
     #outfile.write(header + "\n")
     csvwriter = csv.DictWriter(outfile, field_list, restval='', extrasaction='ignore')
     # calling values on this--dunno about efficiency. 
-    candidates = Candidate_Overlay.objects.all()
+    candidates = Candidate_Overlay.objects.filter(cycle=CYCLE)
     for candidate in candidates.values():
         
         csvwriter.writerow(candidate)
 
 
-def write_all_webks(file_name):
-    webks = WebK.objects.filter(cycle='2014')
+def write_all_webks(file_name, CYCLE):
+    webks = WebK.objects.filter(cycle=CYCLE)
     write_webk_csv(webks, file_name)
 
 # needs cycle update

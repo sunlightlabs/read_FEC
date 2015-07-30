@@ -5,7 +5,7 @@ from celery.result import AsyncResult
 
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404, render_to_response
-
+from shared_utils.cycle_utils import is_valid_four_digit_string_cycle
 from reconciliation.utils.json_helpers import render_to_json, render_to_json_via_template
 
 def get_filing(request, filing_number, sked):
@@ -13,13 +13,17 @@ def get_filing(request, filing_number, sked):
     task_id = celery_request.id
     return redirect('/download/build_file/%s/' % task_id)
     
-def get_committee(request, committee_id, sked):
-    celery_request = dump_committee_sked_celery.apply_async([sked,committee_id], queue='fast',routing_key="fast")
+def get_committee(request, cycle, committee_id, sked):
+    if not is_valid_four_digit_string_cycle(cycle):
+        return None
+    celery_request = dump_committee_sked_celery.apply_async([cycle,sked,committee_id], queue='fast',routing_key="fast")
     task_id = celery_request.id
     return redirect('/download/build_file/%s/' % task_id)
     
-def get_candidate(request, candidate_id, sked):
-    celery_request = dump_candidate_sked_celery.apply_async([sked,candidate_id], queue='fast',routing_key="fast")
+def get_candidate(request, cycle, candidate_id, sked):
+    if not is_valid_four_digit_string_cycle(cycle):
+        return None
+    celery_request = dump_candidate_sked_celery.apply_async([cycle,sked,candidate_id], queue='fast',routing_key="fast")
     task_id = celery_request.id
     return redirect('/download/build_file/%s/' % task_id)
         

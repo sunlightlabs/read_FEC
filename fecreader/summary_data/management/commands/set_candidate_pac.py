@@ -25,10 +25,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for cycle in ACTIVE_CYCLES:
+            print "handling cycle %s" % (cycle)
             cycle_details = cycle_calendar[int(cycle)]
             cycle_start = cycle_details['start']
             cycle_end = cycle_details['end']
-            summary = SkedE.objects.all().exclude(superceded_by_amendment=True).exclude(candidate_checked__isnull=True).exclude(support_oppose_checked__isnull=True).exclude(expenditure_date_formatted__lt=cycle_start, expenditure_date_formatted__gt=cycle_end).order_by('candidate_checked', 'support_oppose_checked','filer_committee_id_number').values('candidate_checked', 'support_oppose_checked','filer_committee_id_number').annotate(total=Sum('expenditure_amount'))
+            summary = SkedE.objects.filter(effective_date__gte=cycle_start, effective_date__lte=cycle_end).exclude(superceded_by_amendment=True).exclude(candidate_checked__isnull=True).exclude(support_oppose_checked__isnull=True).order_by('candidate_checked', 'support_oppose_checked','filer_committee_id_number').values('candidate_checked', 'support_oppose_checked','filer_committee_id_number').annotate(total=Sum('expenditure_amount'))
             for summary_line in summary:
                 #print "Candidate: %s s/o: %s amt: %s committee_id %s" % (summary_line['candidate_checked'], summary_line['support_oppose_checked'], summary_line['total'], summary_line['filer_committee_id_number'])
                 try:
@@ -38,6 +39,6 @@ class Command(BaseCommand):
                     pc.total_ind_exp = int(round(summary_line['total']))
                     pc.save()
                 except Committee_Overlay.DoesNotExist:
-                    print "Missing committee overlay for %s" % (summary_line['filer_committee_id_number'])
+                    print "Missing committee overlay for %s, cycle=%s" % (summary_line['filer_committee_id_number'], cycle)
                 except Candidate_Overlay.DoesNotExist:
-                    print "Missing candidate pk for %s" % (summary_line['filer_committee_id_number'])
+                    print "Missing candidate pk for %s cycle=%s" % (summary_line['filer_committee_id_number'], cycle)

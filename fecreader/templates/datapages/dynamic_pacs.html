@@ -197,6 +197,10 @@ function roundwCommas(nStr) {
 function get_json_url() {
   query_string = "?ordering=" + $("#ordering").val();
 
+  var selected_cycle = $("#selected_cycle").text();
+  if (selected_cycle.length > 0) {
+    query_string += "&cycle=" + selected_cycle
+  }
   var min_spent = $("#min_spent").val();
   if (min_spent.length > 0) {
     query_string += "&min_spent=" + min_spent

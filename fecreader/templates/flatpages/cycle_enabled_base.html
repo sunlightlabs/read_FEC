@@ -1,0 +1,18 @@
+{% extends "datapages/realtime_generated_base_navless.html" %}
+{% load staticfiles %}
+
+{% block sitecss %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'realtimefec/css/chosen.min.css' %}" />
+{% endblock sitecss %}
+
+{% block pagetitle %}{{ flatpage.title }} - {% endblock pagetitle %}
+
+
+{% block main %}
+
+
+{{ flatpage.content }}
+
+
+{% endblock %}

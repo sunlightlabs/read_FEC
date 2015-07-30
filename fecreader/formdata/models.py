@@ -14,6 +14,7 @@ from djorm_hstore.models import HStoreManager
 from summary_data.models import District, Candidate_Overlay
 from api.nulls_last_queryset import NullsLastManager
 
+from shared_utils.cycle_utils import get_cycle_from_date
 
 # field sizes are based on v8.0 specs, generally
 class SkedA(models.Model):
@@ -169,6 +170,9 @@ class SkedE(models.Model):
     support_oppose_checked = models.CharField(max_length=1, blank=True, null=True, help_text="Whether the expenditure supports (S) or opposes (O) the candidate.")
     committee_name = models.CharField(max_length=255, blank=True, null=True, help_text="The name of the committee making the expenditure")
     committee_slug = models.CharField(max_length=255, blank=True, null=True)
+    
+    effective_date = models.DateField(null=True, help_text="What date should we use? Through version 8.0 of FECfile, there was only an 'expenditure date', but beginning with v8.1 there were two dates--a dissemination date and an expenditure date. For v8.1 use the dissemination date; for earlier version use the expenditure date.")
+    
 
     # from the model
     form_type = models.CharField(max_length=8, blank=True)
@@ -194,6 +198,10 @@ class SkedE(models.Model):
     election_other_description = models.CharField(max_length=20, blank=True, null=True, help_text="Any additional description of the election")
     expenditure_date = models.CharField(max_length=8, blank=True, null=True)
     expenditure_date_formatted = models.DateField(null=True, help_text="The date of the expenditure")
+    dissemination_date = models.CharField(max_length=8, blank=True, null=True, help_text="The dissemination date, only in v8.1 and higher.")
+    dissemination_date_formatted = models.DateField(null=True, help_text="The dissemination date, only in v8.1 and higher.")
+    
+    
     expenditure_amount = models.DecimalField(max_digits=14, decimal_places=2, null=True, help_text="The expenditure amount")
     calendar_y_t_d_per_election_office = models.DecimalField(max_digits=14, decimal_places=2, null=True)
     expenditure_purpose_code = models.CharField(max_length=3, blank=True, null=True, help_text="The filer-entered code of the expenditure. This isn't required.")
@@ -254,15 +262,17 @@ class SkedE(models.Model):
             return "%s, %s %s" % (self.candidate_last_name, self.candidate_first_name, self.candidate_middle_name or "")
     
     def get_candidate_url(self):
-        if self.candidate_id_checked:
-            return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_checked)
+        cycle = get_cycle_from_date(self.effective_date)
+        if self.candidate_id_checked:            
+            return "/candidate/%s/%s/%s/" % (cycle, slugify(unicode(self.candidate_name_raw())), self.candidate_id_checked)
         elif self.candidate_id_number:
-            return "/candidate/%s/%s/" % (slugify(unicode(self.candidate_name_raw())), self.candidate_id_number)
+            return "/candidate/%s/%s/%s/" % (cycle, slugify(unicode(self.candidate_name_raw())), self.candidate_id_number)
         else:
             return None
             
     def get_committee_url(self):
-        return "/committee/%s/%s/" % (self.committee_slug, self.filer_committee_id_number)
+        cycle = get_cycle_from_date(self.effective_date)
+        return "/committee/%s/%s/%s/" % (cycle, self.committee_slug, self.filer_committee_id_number)
     
     def short_office(self):
             

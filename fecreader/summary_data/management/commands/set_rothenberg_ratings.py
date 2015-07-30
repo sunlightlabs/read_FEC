@@ -67,6 +67,9 @@ class Command(BaseCommand):
                 except SenateRace.DoesNotExist:
                     print "Missing %s %s" % (state, rothenberg_seat_class)
                     
+            
+            elif office=='P':
+                continue
                 
             else:
                 print "Missing chamber!!"

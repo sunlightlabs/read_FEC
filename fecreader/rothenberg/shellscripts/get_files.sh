@@ -11,9 +11,9 @@ do
     download_filename=$datadir/$type.xml
     backup_filename=$datadir/backups/$type$now.xml
     echo "Running command: curl -o $download_filename --connect-timeout 500 \"http://www.rothenbergpoliticalreport.com/api/xml/ratings/$type\""
-    curl -o $download_filename --connect-timeout 500 "http://www.rothenbergpoliticalreport.com/api/xml/ratings/$type"
+    curl -o $download_filename --connect-timeout 500 "http://www.rothenberggonzales.com/api/xml/ratings/$type"
     cp $download_filename $backup_filename
-    echo "sleeping 10"
-    sleep 10
+    echo "sleeping 1"
+    sleep 1
 done
 

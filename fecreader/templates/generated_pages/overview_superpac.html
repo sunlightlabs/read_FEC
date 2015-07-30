@@ -1,18 +1,26 @@
 {% load humanize %}
 {% load staticfiles %}
+{% load cycle_selector %}
+
+<div id="contentHeader" class="clearfix">
+    <h2 class="RTh2">Real-Time Federal Campaign Finance</h2>
+		<div id="cycle-selector">{% block cycle_selector %}{% cycle_select_block cycle_list %}{% endblock cycle_selector %}</div>
+</div>
+
+{% block subnavitems %}
+{% include "includes/main_nav.html" %}
+{% endblock %}
 
 <div class="module RT clearfix">
 
-      <h3>Top Super PACs by Independent Expenditures, 2013/14 Cycle</h3>
+      <h3>{{ page_title }}</h3>
        <div id="timestamp"><strong>Last update:</strong>  {{ update_time|date:"N j, Y | P" }}</div>
        
         <div style="clear:both;">
         </div>
     
-        {% include "includes/overview_nav.html" %}
-        
     
-        <p class="tip" style="margin:0px; padding:5px;">All numbers are for the entire two-year cycle, beginning Jan. 1, 2013 through {{ update_time|date:"P, N j, Y" }}. 
+        <p class="tip" style="margin:0px; padding:5px;">All numbers are for the two-year cycle, from {{ cycle_start|date:"N j, Y"}} through {{ cycle_end|date:"N j, Y"}}.</p>
 
 <div class="overviewBar withNav withTip" id="positive">
     <h4>Super PAC Totals</h4>

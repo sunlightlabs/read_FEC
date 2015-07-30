@@ -21,8 +21,8 @@
 
 
 <div class="module">
-  {% if committee.is_electronic_filer %}<b>Downloadable files: </b><a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name|escapejs }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name|escapejs }}');">Disbursements</a>{% if independent_spending %}
-  &nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','E', '{{ committee.name }}');">Independent Expenditures</a>{% endif %}
+  {% if committee.is_electronic_filer %}<b>Downloadable files: </b><a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','A', '{{ committee.name|escapejs }}', '{{ cycle }}');">Contributions</a>&nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','B', '{{ committee.name|escapejs }}', '{{ cycle }}');">Disbursements</a>{% if independent_spending %}
+  &nbsp;|&nbsp;<a class="link" href="javascript:download_committee_data('{{ committee.fec_id }}','E', '{{ committee.name }}', '{{ cycle }}');">Independent Expenditures</a>{% endif %}
   <br><b>Alerts: </b><a class="link" href="javascript:submit_gotoscout('{{ committee.fec_id }}');">Get automatic alerts</a> when this committee files new campaign finance reports
   {% endif %}
   

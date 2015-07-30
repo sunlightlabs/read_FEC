@@ -1,0 +1,13 @@
+# 
+# m h  dom mon dow   command
+
+1,4,7,13,16,19,22,25,28,31,34,37,43,46,49,52,55,58 * * * * /projects/realtimefec/bin/load_step_1_findfilings.sh 2>&1 >> /mnt/cron/load_1_findfilings.log
+10,40 * * * * /projects/realtimefec/bin/load_step_1.sh 2>&1 >> /mnt/cron/load_1.log
+2,15,31,47 * * * * /projects/realtimefec/bin/load_step_2.sh 2>&1 >> /mnt/cron/load_2.log
+2 * * * * /projects/realtimefec/bin/hourly_updates.sh 2>&1 >> /mnt/cron/hourly.log
+30 12 * * *  /projects/realtimefec/bin/load_webk.sh 2>&1 >> /mnt/cron/loadwebk.log
+7 1 * * *  /projects/realtimefec/bin/reload_ftp_data.sh 2>&1 >> /mnt/cron/reload_ftp_data.log
+27 19,7 * * * /projects/realtimefec/bin/send_exports.sh 2>&1 >> /mnt/cron/export.log
+17 10 * * * /projects/realtimefec/bin/run_skede_fixes.sh 2>&1 >> /mnt/cron/skedefixes.log
+9 4 * * * /projects/realtimefec/bin/update-rothenberg.sh 2>&1 >> /mnt/cron/rothenberg.log
+## 5,35 * * * * /projects/realtimefec/bin/run-roi.sh 2>&1 >> /mnt/cron/roi.log

@@ -89,10 +89,10 @@
     
   }
   
-  function download_committee_data(committee_id, sked, committee_name) {
+  function download_committee_data(committee_id, sked, committee_name, cycle) {
     $('#confirm_button').unbind('click');
     $('#confirm_button').on('click', function() {
-      url = "/download/committee/" + committee_id + "/"+ sked + "/";
+      url = "/download/committee/" + cycle + "/" + committee_id + "/"+ sked + "/";
       load_iframe(url);
     });
     reset_window();
@@ -100,10 +100,10 @@
     $( "#dialog" ).dialog( "open" );
   }
 
-  function download_candidate_data(candidate_id, sked, candidate_name, detailed_office) {
+  function download_candidate_data(candidate_id, sked, candidate_name, detailed_office, cycle) {
     $('#confirm_button').unbind('click');
     $('#confirm_button').on('click', function() {
-      url = "/download/candidate/" + candidate_id + "/"+ sked + "/";
+      url = "/download/candidate/" + cycle + "/"  + candidate_id + "/"+ sked + "/";
       load_iframe(url);
     });
     reset_window();

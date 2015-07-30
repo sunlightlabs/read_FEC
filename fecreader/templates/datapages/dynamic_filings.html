@@ -85,7 +85,9 @@
                 <select name="time_range" id="time_range" class="dropdown_super_narrow">
                   <option value='day'>today</option>
                   <option value='week'>last 7 days</option>
-                  <option value='cycle'>entire cycle</option>
+                  <option value='2016_cycle'>2015/2016 cycle</option>
+                  <option value='2014_cycle'>2013/2014 cycle</option>
+                  <option value='cycle'>2013-present</option>
                 </select>
             </div>
 
@@ -345,7 +347,7 @@ function reset_all_fields() {
   });
   // default is filing order
   $("#ordering").val('-filing_number');
-  $("#time_range").val('cycle');
+  $("#time_range").val('2016_cycle');
 }
 
 function search_all() {
