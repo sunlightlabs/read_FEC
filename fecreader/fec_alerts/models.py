@@ -10,7 +10,8 @@ from djorm_hstore.models import HStoreManager
 from parsing.read_FEC_settings import FEC_HTML_LOCATION
 from api.nulls_last_queryset import NullsLastManager
 from summary_data.data_references import type_hash
-from shared_utils.cycle_utils import get_cycle_from_date, is_current_cycle, is_active_cycle
+from shared_utils.cycle_utils import get_cycle_from_date
+from shared_utils.cycle_helpers import is_current_cycle, is_active_cycle
 from django.conf import settings
 
 
@@ -111,7 +112,7 @@ class f1filer(models.Model):
     receipt_dt = models.DateField(null=True, blank=True)
     cmte_email = models.CharField(max_length=255, null=True, blank=True) 
     cmte_web_url= models.CharField(max_length=255, null=True, blank=True)
-    begin_image_num = models.CharField(max_length=15)
+    begin_image_num = models.CharField(max_length=31)
     
     def __unicode__(self):
         return "%s formed %s" % (self.cmte_nm, self.receipt_dt)
@@ -129,14 +130,14 @@ class f1filer(models.Model):
 # Class to hold new filings, whether or not they've been parsed yet. 
 class new_filing(models.Model):
     cycle = models.CharField(max_length=4, blank=True, null=True, help_text="The even-numbered year that ends a two-year cycle.")
-    fec_id = models.CharField(max_length=9, help_text="The FEC id of the committee filing this report")
-    committee_name = models.CharField(max_length=200, help_text="The committee's name as reported to the FEC")
+    fec_id = models.CharField(max_length=9, null=True, blank=True, help_text="The FEC id of the committee filing this report")
+    committee_name = models.CharField(max_length=200, null=True, blank=True, help_text="The committee's name as reported to the FEC")
     filing_number = models.IntegerField(primary_key=True, help_text="The numeric filing number assigned to this electronic filing by the FEC")
-    form_type = models.CharField(max_length=7, help_text="The type of form used.")
+    form_type = models.CharField(max_length=7, null=True, blank=True, help_text="The type of form used.")
     filed_date = models.DateField(null=True, blank=True, help_text="The date that this filing was processed")
     coverage_from_date = models.DateField(null=True, blank=True, help_text="The start of the reporting period that this filing covers. Not all forms list this.")
     coverage_to_date = models.DateField(null=True, blank=True, help_text="The end of the reporting period that this filing covers. Not all forms include this")
-    process_time = models.DateTimeField(help_text="This is the time that FEC processed the filing")
+    process_time = models.DateTimeField(null=True, blank=True, help_text="This is the time that FEC processed the filing")
     is_superpac = models.NullBooleanField(help_text="Is this group a super PAC?")
     
     # populate from committee_overlay file. 
@@ -258,11 +259,12 @@ class new_filing(models.Model):
         report_extra = ""
         if (self.is_amendment):
             report_extra=" (AMENDED)"
-        if re.search('T', self.form_type):
-            report_extra=" (TERMINATION REPORT)"
-        for f in form_types:
-            if (re.match(f[0], self.form_type)):
-                return f[1] + report_extra
+        if self.form_type:
+            if re.search('T', self.form_type):
+                report_extra=" (TERMINATION REPORT)"
+            for f in form_types:
+                if (re.match(f[0], self.form_type)):
+                    return f[1] + report_extra
         return ''
     
     def FEC_url(self):
@@ -303,7 +305,10 @@ class new_filing(models.Model):
         return ("/committee/%s/%s/%s/" % (cycle, self.committee_slug, self.fec_id))
         
     def process_time_formatted(self):
-        return self.process_time.astimezone(eastern).strftime("%m/%d %I:%M %p")
+        try:
+            return self.process_time.astimezone(eastern).strftime("%m/%d %I:%M %p")
+        except AttributeError:
+            pass
         
     def get_total_debts(self):
         if self.form_type.startswith('F3'):

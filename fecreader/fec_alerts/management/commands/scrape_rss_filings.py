@@ -18,8 +18,7 @@ from parsing.read_FEC_settings import FILECACHE_DIRECTORY, USER_AGENT, FEC_DOWNL
 from fec_alerts.utils.fec_logging import fec_logger
 from summary_data.utils.update_utils import set_update
 from django.conf import settings
-from shared_utils.cycle_utils import get_cycle_from_date, is_current_cycle, is_active_cycle
-
+from shared_utils.cycle_utils import get_cycle_from_date
 
 FILING_SCRAPE_KEY = settings.FILING_SCRAPE_KEY
 my_logger=fec_logger()
@@ -40,7 +39,22 @@ def enter_filing(data_hash):
     related_committee = None
     
     try:
-        new_filing.objects.get(filing_number=data_hash['filing_number'])
+        thisobj = new_filing.objects.get(filing_number=data_hash['filing_number'])
+        try:
+            thisobj.filed_date
+        except AttributeError:
+            
+            try:
+                thisobj.filed_date = get_local_time(data_hash['filed_date'])
+                thisobj.process_time = get_local_time(data_hash['filed_date'])
+                thisobj.save()
+            except pytz.exceptions.AmbiguousTimeError:
+                thisobj.filed_date = data_hash['filed_date']
+                thisobj.process_time = data_hash['filed_date']
+                thisobj.save()
+                
+        
+        
     except new_filing.DoesNotExist:
         print "entering %s %s" % (data_hash['filing_number'], data_hash['committee_id'])
         is_superpac=False
@@ -131,7 +145,7 @@ def parse_xml_from_text(xml):
     return results
 
 class Command(BaseCommand):
-    
+    """  Creates new_filing objects from RSS feed. Will set cycle if possible. """
     requires_model_validation = False
     
     def handle(self, *args, **options):

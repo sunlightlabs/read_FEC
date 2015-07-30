@@ -8,11 +8,20 @@ from django.core.management.base import BaseCommand
 from parsing.read_FEC_settings import FTP_DATA_DIR, CYCLE
 from fec_alerts.models import f1filer
 from summary_data.utils.overlay_utils import make_committee_from_f1filer
+from summary_data.utils.update_utils import set_update
 
+from django.conf import settings
 
-two_digit_cycle = "16"
-#override
-CYCLE = 2016
+COMMITTEES_SCRAPE_KEY  = settings.COMMITTEES_SCRAPE_KEY
+
+try:
+    CURRENT_CYCLE = settings.CURRENT_CYCLE
+except:
+    print "Missing current cycle list. Defaulting to 2016. "
+    CURRENT_CYCLE = '2016'
+
+two_digit_cycle = CURRENT_CYCLE[2:4]
+
 
 """ FEC 'update' means new file headers. Grr.  """
 def transform_column_headers(new_row):
@@ -48,7 +57,7 @@ def readfile(filelocation):
         except f1filer.DoesNotExist:
             print "Creating %s %s" % (row['cmte_id'], row['cmte_nm'])
             # first create the f1filer object:
-            row['cycle'] = str(CYCLE)
+            row['cycle'] = CURRENT_CYCLE
             try:
                 row['receipt_dt'] = dateparse(row['receipt_dt'])
             except:
@@ -74,3 +83,4 @@ class Command(BaseCommand):
         filename =  "/%s/Form1Filer_%s.csv" % (two_digit_cycle, two_digit_cycle)
         filelocation = FTP_DATA_DIR + filename
         readfile(filelocation)
+        set_update(COMMITTEES_SCRAPE_KEY)

@@ -10,7 +10,7 @@ try:
     CURRENT_CYCLE = settings.CURRENT_CYCLE
 except:
     print "Missing active cycle list. Defaulting to 2016. "
-    CURRENT_CYCLE = ['2016']
+    CURRENT_CYCLE = '2016'
 
 
 def dateparse_notnull(datestring):
@@ -86,6 +86,7 @@ def handle_filing(this_filing):
     try:
         co = Committee_Overlay.objects.get(fec_id=this_filing.fec_id, cycle=this_filing.cycle)
         this_filing.committee_designation = co.designation
+        this_filing.committee_name = co.name
         this_filing.committee_type = co.ctype
         this_filing.committee_slug = co.slug
         this_filing.party = co.party
@@ -102,6 +103,7 @@ def handle_filing(this_filing):
             co = Committee.objects.get(cmte_id=this_filing.fec_id, cycle=int(this_filing.cycle))
             this_filing.committee_designation = co.cmte_dsgn
             this_filing.committee_type = co.cmte_tp
+            this_filing.committee_name = co.cmte_name
             this_filing.party = get_party_from_pty(co.cmte_pty_affiliation)
         except Committee.DoesNotExist:
             pass
@@ -145,7 +147,11 @@ def handle_filing(this_filing):
         this_filing.coverage_from_date = parsed_data['coverage_from_date']
         this_filing.coverage_to_date = parsed_data['coverage_to_date']
         
-        this_filing.is_f5_quarterly = header_data['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+        try:
+            this_filing.is_f5_quarterly = header_data['report_code'] in ['Q1', 'Q2', 'Q3', 'Q4', 'YE']
+        except KeyError:
+            # this is probably a problem. 
+            pass
         this_filing.new_filing_details_set = True
         
         
@@ -179,7 +185,10 @@ def handle_filing(this_filing):
         this_filing.coverage_to_date = parsed_data['coverage_to_date'] if parsed_data['coverage_to_date'] else None
         this_filing.new_filing_details_set = True
         
-    
+    else:
+        # Nothing to be done, but mark this step as done. 
+        this_filing.new_filing_details_set = True
+        
     
     this_filing.save() 
     
