@@ -11,7 +11,7 @@ from data_references import STATES_FIPS_DICT, STATE_CHOICES_DICT, STATE_CHOICES,
 # There are many different data sets that are updated. Keep track of them here.
 # options are "scrape_electronic_filings", "scrape_new_committees",...
 class Update_Time(models.Model):
-  key = models.SlugField()
+  key = models.SlugField(max_length=255)
   update_time = models.DateTimeField()
 
   def save(self, *args, **kwargs):
@@ -205,7 +205,7 @@ class Candidate_Overlay(models.Model):
 
     #
 
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     
     # independent expenditures data
     total_expenditures = models.DecimalField(max_digits=19, decimal_places=2, null=True, default=0)
