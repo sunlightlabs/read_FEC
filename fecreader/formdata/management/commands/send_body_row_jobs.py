@@ -4,7 +4,7 @@ from fec_alerts.models import new_filing
 
 from formdata.utils.fec_import_logging import fec_logger
 
-excluded_filings_list = ['F99', 'F1', 'F2', 'F1A', 'F1N', 'F2A', 'F2N', 'F1MN', 'F1MA']
+excluded_filings_list = ['F99', 'F1', 'F2', 'F1M', 'F1A', 'F1N', 'F2A', 'F2N', 'F1MN', 'F1MA']
 
 class Command(BaseCommand):
     help = "Queue filing body row entry for execution by celery processes"
